@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "notice": "Conteúdo integralmente sintético, sem reprodução de documentos reais.",
+  "chunks": [
+    {
+      "chunk_id": "manual-a-v1-c1",
+      "document_id": "manual-a-v1",
+      "text": "O procedimento PX-101 exige autorização prévia para atendimento eletivo.",
+      "page": 10,
+      "section": "Autorização"
+    },
+    {
+      "chunk_id": "manual-a-v1-c2",
+      "document_id": "manual-a-v1",
+      "text": "Em situação de urgência comprovada, a autorização do PX-101 pode ser regularizada posteriormente.",
+      "page": 11,
+      "section": "Exceções"
+    },
+    {
+      "chunk_id": "tabela-b-v2-c1",
+      "document_id": "tabela-b-v2",
+      "text": "O código EX-220 corresponde ao exame sintético de imagem e possui quantidade máxima de duas unidades.",
+      "page": 3,
+      "section": "Exames"
+    },
+    {
+      "chunk_id": "regra-c-v1-c1",
+      "document_id": "regra-c-v1",
+      "text": "A diária hospitalar DH-300 inclui acomodação e alimentação, mas não inclui gases medicinais.",
+      "page": 7,
+      "section": "Itens inclusos"
+    },
+    {
+      "chunk_id": "regra-d-v1-c1",
+      "document_id": "regra-d-v1",
+      "text": "O procedimento TR-450 não pode ser classificado como urgência.",
+      "page": 2,
+      "section": "Classificação"
+    },
+    {
+      "chunk_id": "glosa-e-v1-c1",
+      "document_id": "glosa-e-v1",
+      "text": "A contestação da glosa deve ser apresentada em até trinta dias corridos.",
+      "page": 15,
+      "section": "Prazos"
+    }
+  ]
+}

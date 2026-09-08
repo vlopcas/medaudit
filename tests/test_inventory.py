@@ -1,8 +1,8 @@
 import hashlib
 import json
-from pathlib import Path
 import tempfile
 import unittest
+from pathlib import Path
 
 from medaudit.ingestion.inventory import collect_inventory, main
 

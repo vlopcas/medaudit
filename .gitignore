@@ -32,8 +32,10 @@ data/**
 !data/processed/.gitkeep
 !data/synthetic_cases/
 !data/synthetic_cases/.gitkeep
+!data/synthetic_cases/*.json
 !data/eval/
 !data/eval/.gitkeep
+!data/eval/*.json
 
 # Local experiment outputs
 artifacts/

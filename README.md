@@ -14,8 +14,8 @@ reproduzível demonstrar a limitação do baseline atual. O plano completo está
 
 ## Estado atual
 
-Fase 0: fundação do projeto, proteção dos documentos privados, configuração,
-observabilidade mínima, contrato de LLM e inventário local reproduzível.
+A fundação da Fase 0 está concluída. O projeto possui agora um baseline BM25
+local sobre corpus e golden dataset sintéticos, sem depender de API ou LLM.
 
 ## Ambiente de desenvolvimento
 
@@ -43,6 +43,22 @@ medaudit-inventory --input data --output data/manifest.local.json
 
 O manifesto resultante também é privado e não deve ser publicado.
 
+## Baseline de retrieval
+
+Execute a avaliação lexical reproduzível com:
+
+```bash
+medaudit-evaluate-bm25 \
+  --corpus data/synthetic_cases/corpus.json \
+  --cases data/eval/bm25_cases.json \
+  --top-k 3 \
+  --min-score 3.0
+```
+
+O limiar é experimental e específico do pequeno benchmark atual. Consulte o
+[primeiro resultado](docs/results/001-bm25-synthetic-baseline.md) para métricas,
+limitações e próximos passos.
+
 ## Estrutura
 
 ```text
@@ -55,4 +71,3 @@ tests/                 testes automatizados com dados sintéticos
 
 O código é distribuído sob a licença MIT. Essa licença não se estende aos
 documentos privados utilizados localmente.
-

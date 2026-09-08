@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "notice": "Casos integralmente sintéticos, sem reprodução de documentos reais.",
+  "cases": [
+    {
+      "id": "exact-code-001",
+      "question": "O PX-101 precisa de autorização prévia?",
+      "relevant_chunk_ids": ["manual-a-v1-c1"],
+      "category": "exact_lookup"
+    },
+    {
+      "id": "exception-001",
+      "question": "Qual é a exceção de urgência para o PX-101?",
+      "relevant_chunk_ids": ["manual-a-v1-c2"],
+      "category": "exception"
+    },
+    {
+      "id": "quantity-001",
+      "question": "Qual a quantidade máxima do exame EX-220?",
+      "relevant_chunk_ids": ["tabela-b-v2-c1"],
+      "category": "exact_lookup"
+    },
+    {
+      "id": "inclusion-001",
+      "question": "A diária DH-300 inclui gases medicinais?",
+      "relevant_chunk_ids": ["regra-c-v1-c1"],
+      "category": "factual"
+    },
+    {
+      "id": "classification-001",
+      "question": "O TR-450 pode ser urgencializado?",
+      "relevant_chunk_ids": ["regra-d-v1-c1"],
+      "category": "exact_lookup"
+    },
+    {
+      "id": "deadline-001",
+      "question": "Qual é o prazo para contestação de glosa?",
+      "relevant_chunk_ids": ["glosa-e-v1-c1"],
+      "category": "factual"
+    },
+    {
+      "id": "missing-001",
+      "question": "Qual regra se aplica ao código inexistente ZQ-999?",
+      "relevant_chunk_ids": [],
+      "category": "missing_evidence"
+    }
+  ]
+}

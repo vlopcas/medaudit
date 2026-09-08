@@ -36,8 +36,9 @@ data/
 
 Arquivos que já estejam diretamente em `data/` podem ser migrados para
 `data/raw/` localmente quando conveniente. Essa movimentação não é necessária
-para protegê-los: todo o conteúdo da pasta já é ignorado, exceto este README e
-os marcadores vazios de diretório.
+para protegê-los: todo o conteúdo da pasta já é ignorado, exceto este README,
+os marcadores vazios e conjuntos JSON explicitamente revisados e sintéticos em
+`synthetic_cases/` e `eval/`.
 
 O inventário local registra apenas caminho relativo, tamanho, extensão,
 horário de modificação e SHA-256. Ele não lê nem extrai o conteúdo documental:

@@ -28,7 +28,8 @@ human review.
 - Everything under `data/` is private and local by default.
 - Never commit, print, paste, summarize or expose source-document contents,
   filenames, metadata or derived text unless the user explicitly authorizes it.
-- Only `data/README.md` and empty directory placeholders are public artifacts.
+- Only `data/README.md`, empty directory placeholders and explicitly reviewed,
+  wholly synthetic datasets are public artifacts.
 - Generated manifests and processed outputs must use the `.local.*` suffix or
   live below ignored data directories.
 - Tests and examples must use synthetic data with no copied passages or

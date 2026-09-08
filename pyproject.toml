@@ -21,6 +21,7 @@ dev = [
 
 [project.scripts]
 medaudit-inventory = "medaudit.ingestion.inventory:main"
+medaudit-evaluate-bm25 = "medaudit.evaluation.baseline:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/medaudit"]
@@ -40,4 +41,3 @@ select = ["E", "F", "I", "B", "UP", "RUF"]
 python_version = "3.12"
 strict = true
 files = ["src", "tests"]
-
