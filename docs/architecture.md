@@ -39,9 +39,9 @@ Hit Rate / Recall / MRR / abstention
 - `llm`: contrato futuro, ainda sem adaptador externo;
 - `ingestion`: inventário, seleção de parser, pipeline local e serialização.
 
-O parser inicial aceita texto UTF-8 sintético. Adaptadores para PDF e planilhas
-ainda não foram escolhidos. O chunker inicial usa caracteres, respeita páginas
-e seções e mantém tabelas e figuras isoladas.
+Os parsers atuais aceitam texto UTF-8, PDF textual e XLSX. PDF preserva página e
+bounding box; XLSX preserva planilha e linha. O chunker inicial usa caracteres,
+respeita páginas e seções e mantém tabelas e figuras isoladas.
 
 O registro de parsers falha para tipos desconhecidos ou ambíguos. O pipeline
 não acessa rede nem armazenamento: recebe bytes e retorna um resultado. A
@@ -52,3 +52,4 @@ em `data/processed/`, que é ignorado pelo Git.
 
 - [ADR-001: governança dos dados privados](decisions/ADR-001-private-data-governance.md)
 - [ADR-002: separação entre parsing e chunking](decisions/ADR-002-parsing-chunking-boundary.md)
+- [ADR-003: adaptadores locais para PDF e XLSX](decisions/ADR-003-local-document-parsers.md)

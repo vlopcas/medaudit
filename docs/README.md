@@ -34,6 +34,8 @@ arquitetural está em
 [ADR-001](decisions/ADR-001-private-data-governance.md).
 O contrato entre parsing e chunking está em
 [ADR-002](decisions/ADR-002-parsing-chunking-boundary.md).
+Os adaptadores locais estão documentados em
+[ADR-003](decisions/ADR-003-local-document-parsers.md).
 
 ## Conteúdo permitido
 

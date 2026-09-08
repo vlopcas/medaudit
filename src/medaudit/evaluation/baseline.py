@@ -1,10 +1,10 @@
 """Evaluate the BM25 baseline against a synthetic golden dataset."""
 
 import argparse
+import json
 from collections import defaultdict
 from collections.abc import Iterable, Sequence
 from dataclasses import dataclass
-import json
 from pathlib import Path
 from typing import Any
 

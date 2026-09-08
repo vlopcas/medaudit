@@ -10,13 +10,17 @@ readme = "README.md"
 requires-python = ">=3.12"
 license = { file = "LICENSE" }
 authors = [{ name = "Victor Castro" }]
-dependencies = []
+dependencies = [
+  "openpyxl>=3.1,<4",
+  "PyMuPDF>=1.26,<2",
+]
 
 [project.optional-dependencies]
 dev = [
   "mypy>=1.11,<2",
   "pytest>=8.3,<9",
   "ruff>=0.6,<1",
+  "types-openpyxl>=3.1,<4",
 ]
 
 [project.scripts]

@@ -1,7 +1,7 @@
 """Serialize local ingestion results into a versioned JSON representation."""
 
-from dataclasses import asdict
 import json
+from dataclasses import asdict
 
 from medaudit.ingestion.pipeline import IngestionResult
 

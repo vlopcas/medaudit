@@ -1,12 +1,12 @@
 """Build a private, content-agnostic inventory of local documents."""
 
 import argparse
-from dataclasses import asdict, dataclass
-from datetime import UTC, datetime
 import hashlib
 import json
+from collections.abc import Sequence
+from dataclasses import asdict, dataclass
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import Sequence
 
 SUPPORTED_EXTENSIONS = frozenset({".pdf", ".xls", ".xlsx"})
 
