@@ -34,6 +34,9 @@ aplicado apenas às páginas sem texto nativo.
 - o volume de chunks deve ser medido antes de escolher embeddings ou banco
   vetorial.
 
+O diagnóstico posterior agrega contagem e distribuição de caracteres por tipo
+de mídia e estratégia, sem persistir texto ou identificadores no relatório.
+
 ## Como validar
 
 - testar seleção por vigência e status de revisão;

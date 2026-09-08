@@ -70,6 +70,16 @@ O resultado fica em `artifacts/chunks.local.jsonl`. Para uma consulta histórica
 informe a data correspondente em `REFERENCE_DATE`; versões fora daquela
 vigência não entram no resultado.
 
+Depois do processamento, gere estatísticas agregadas antes de escolher uma
+estratégia de indexação:
+
+```bash
+docker compose run --rm chunk-profile
+```
+
+O relatório privado fica em `artifacts/chunk-profile.local.json` e não contém o
+texto nem identificadores dos documentos.
+
 Os documentos são montados como somente leitura e o relatório privado é salvo
 em `artifacts/`. A execução dos containers não possui acesso à rede e os
 relatórios não armazenam texto extraído.

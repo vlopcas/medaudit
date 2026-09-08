@@ -111,6 +111,7 @@ def process_catalog(
                             if result.parsed_document.document.effective_until
                             else None
                         ),
+                        "media_type": entry.media_type,
                         "metadata": result.parsed_document.document.metadata,
                     },
                     "chunk": asdict(chunk),

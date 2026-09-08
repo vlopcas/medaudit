@@ -99,3 +99,12 @@ services:
       - --reference-date
       - "${REFERENCE_DATE:-2026-09-08}"
       - --enable-ocr
+
+  chunk-profile:
+    extends: profile
+    command:
+      - medaudit-profile-chunks
+      - --input
+      - /artifacts/chunks.local.jsonl
+      - --output
+      - /artifacts/chunk-profile.local.json
