@@ -38,8 +38,12 @@ class BM25Index:
         self._chunks = chunks
         self._k1 = k1
         self._b = b
-        self._term_frequencies = [Counter(tokenize(chunk.text)) for chunk in chunks]
-        self._lengths = [sum(frequencies.values()) for frequencies in self._term_frequencies]
+        self._term_frequencies = [
+            Counter(tokenize(chunk.text)) for chunk in chunks
+        ]
+        self._lengths = [
+            sum(frequencies.values()) for frequencies in self._term_frequencies
+        ]
         self._average_length = sum(self._lengths) / len(self._lengths)
         self._document_frequency = Counter(
             term for frequencies in self._term_frequencies for term in frequencies

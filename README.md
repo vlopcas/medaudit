@@ -14,8 +14,10 @@ reproduzível demonstrar a limitação do baseline atual. O plano completo está
 
 ## Estado atual
 
-A fundação da Fase 0 está concluída. O projeto possui agora um baseline BM25
-local sobre corpus e golden dataset sintéticos, sem depender de API ou LLM.
+A fundação da Fase 0 está concluída. O projeto possui um baseline BM25 local e
+os primeiros contratos de parsing e chunking estrutural, todos avaliados com
+dados sintéticos e sem depender de API ou LLM. Consulte a
+[arquitetura atual](docs/architecture.md).
 
 ## Ambiente de desenvolvimento
 

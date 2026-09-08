@@ -32,6 +32,8 @@ O plano principal está em
 [Plano de estudos](plano_estudos_llm_rag_graph_agentic.md). A primeira decisão
 arquitetural está em
 [ADR-001](decisions/ADR-001-private-data-governance.md).
+O contrato entre parsing e chunking está em
+[ADR-002](decisions/ADR-002-parsing-chunking-boundary.md).
 
 ## Conteúdo permitido
 

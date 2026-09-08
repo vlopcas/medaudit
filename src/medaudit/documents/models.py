@@ -2,6 +2,18 @@
 
 from dataclasses import dataclass, field
 from datetime import date
+from enum import StrEnum
+
+
+class ElementKind(StrEnum):
+    """Semantic type preserved by a document parser."""
+
+    TITLE = "title"
+    HEADING = "heading"
+    PARAGRAPH = "paragraph"
+    LIST_ITEM = "list_item"
+    TABLE = "table"
+    FIGURE = "figure"
 
 
 @dataclass(frozen=True, slots=True)
@@ -33,3 +45,22 @@ class Chunk:
     section: str | None = None
     metadata: dict[str, str] = field(default_factory=dict)
 
+
+@dataclass(frozen=True, slots=True)
+class DocumentElement:
+    """Normalized parser output before a chunking strategy is applied."""
+
+    element_id: str
+    document_id: str
+    ordinal: int
+    kind: ElementKind
+    text: str
+    page: int | None = None
+    section: str | None = None
+    metadata: dict[str, str] = field(default_factory=dict)
+
+    def __post_init__(self) -> None:
+        if self.ordinal < 0:
+            raise ValueError("ordinal cannot be negative")
+        if not self.text.strip():
+            raise ValueError("element text cannot be blank")
