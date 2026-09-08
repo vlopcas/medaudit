@@ -5,7 +5,7 @@ from typing import Any
 import pymupdf
 
 from medaudit.documents import Document
-from medaudit.parsing import OCRFallbackPDFParser
+from medaudit.parsing import OCRFallbackPDFParser, TesseractOCRProvider
 
 
 class FakeOCRProvider:
@@ -56,3 +56,35 @@ class OCRFallbackPDFParserTest(unittest.TestCase):
             OCRFallbackPDFParser(provider).parse(
                 self.document, synthetic_mixed_pdf()
             )
+
+
+class TesseractOCRIntegrationTest(unittest.TestCase):
+    @unittest.skipUnless(
+        TesseractOCRProvider().is_available(), "local Tesseract is unavailable"
+    )
+    def test_extracts_text_from_synthetic_image_page(self) -> None:
+        source: Any = pymupdf.open()  # type: ignore[no-untyped-call]
+        source_page = source.new_page(width=600, height=200)
+        source_page.insert_text(
+            (50, 100), "REGRA TESTE PX 101", fontsize=28, color=(0, 0, 0)
+        )
+        matrix: Any = pymupdf.Matrix(2, 2)  # type: ignore[no-untyped-call]
+        image = source_page.get_pixmap(matrix=matrix).tobytes("png")
+
+        scanned: Any = pymupdf.open()  # type: ignore[no-untyped-call]
+        scanned_page = scanned.new_page(width=600, height=200)
+        scanned_page.insert_image(scanned_page.rect, stream=image)
+        content = bytes(scanned.tobytes())
+        source.close()
+        scanned.close()
+        document = Document("scan-v1", "Synthetic scan", "1", date(2026, 1, 1))
+
+        parsed = OCRFallbackPDFParser(
+            TesseractOCRProvider(language="por", dpi=200)
+        ).parse(document, content)
+
+        self.assertEqual(len(parsed.elements), 1)
+        self.assertIn("PX", parsed.elements[0].text.upper())
+        self.assertEqual(
+            parsed.elements[0].metadata["ocr_provider"], "tesseract-pymupdf-v1"
+        )

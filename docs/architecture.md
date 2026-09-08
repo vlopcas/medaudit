@@ -58,3 +58,11 @@ em `data/processed/`, que é ignorado pelo Git.
 - [ADR-002: separação entre parsing e chunking](decisions/ADR-002-parsing-chunking-boundary.md)
 - [ADR-003: adaptadores locais para PDF, XLSX e XLS](decisions/ADR-003-local-document-parsers.md)
 - [ADR-004: OCR local explícito](decisions/ADR-004-explicit-local-ocr.md)
+- [ADR-005: desenvolvimento em Docker](decisions/ADR-005-containerized-development.md)
+
+## Ambiente de execução
+
+Docker Compose é a referência reproduzível. A imagem contém Python e OCR, mas
+não contém o corpus privado. Os serviços executam sem rede, com filesystem raiz
+somente leitura e sem capabilities adicionais. O corpus entra apenas por bind
+mount somente leitura; artefatos locais saem por um mount separado e ignorado.

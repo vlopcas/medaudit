@@ -1,0 +1,22 @@
+.git
+.gitignore
+.env
+.env.*
+.venv
+__pycache__
+*.py[cod]
+.pytest_cache
+.mypy_cache
+.ruff_cache
+.coverage
+htmlcov
+artifacts
+
+# Never copy the private corpus or local derived artifacts into an image.
+data/**
+!data/README.md
+!data/eval/
+!data/eval/*.json
+!data/synthetic_cases/
+!data/synthetic_cases/*.json
+

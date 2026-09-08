@@ -38,6 +38,8 @@ Os adaptadores locais estão documentados em
 [ADR-003](decisions/ADR-003-local-document-parsers.md).
 O fallback de OCR está documentado em
 [ADR-004](decisions/ADR-004-explicit-local-ocr.md).
+O ambiente reproduzível está documentado em
+[ADR-005](decisions/ADR-005-containerized-development.md).
 
 ## Conteúdo permitido
 

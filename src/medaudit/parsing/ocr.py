@@ -9,7 +9,7 @@ import pymupdf
 
 from medaudit.documents import Document, DocumentElement, ElementKind
 from medaudit.parsing.models import ParsedDocument
-from medaudit.parsing.pdf import PDFParser
+from medaudit.parsing.pdf import PDFParser, get_pdf_page_count
 
 
 class OCRProvider(Protocol):
@@ -76,7 +76,7 @@ class OCRFallbackPDFParser:
 
     def parse(self, document: Document, content: bytes) -> ParsedDocument:
         parsed = self._primary.parse(document, content)
-        page_count = _page_count(content)
+        page_count = get_pdf_page_count(content)
         text_pages = {element.page for element in parsed.elements}
         missing_pages = [
             page_number
@@ -116,16 +116,6 @@ class OCRFallbackPDFParser:
             for ordinal, element in enumerate(ordered)
         )
         return ParsedDocument(document=document, elements=normalized)
-
-
-def _page_count(content: bytes) -> int:
-    pdf: Any = pymupdf.open(  # type: ignore[no-untyped-call]
-        stream=content, filetype="pdf"
-    )
-    try:
-        return int(pdf.page_count)
-    finally:
-        pdf.close()
 
 
 def _ocr_element_id(

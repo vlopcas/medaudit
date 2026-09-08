@@ -60,3 +60,17 @@ class PDFParser:
 def _element_id(document_id: str, ordinal: int, text: str) -> str:
     value = f"{document_id}\0{ordinal}\0{text}".encode()
     return f"el-{hashlib.sha256(value).hexdigest()[:16]}"
+
+
+def get_pdf_page_count(content: bytes) -> int:
+    """Return the structural page count without extracting document text."""
+    try:
+        pdf: Any = pymupdf.open(  # type: ignore[no-untyped-call]
+            stream=content, filetype="pdf"
+        )
+    except Exception as error:
+        raise ValueError("invalid or unsupported PDF content") from error
+    try:
+        return int(pdf.page_count)
+    finally:
+        pdf.close()

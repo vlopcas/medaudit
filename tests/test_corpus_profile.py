@@ -48,3 +48,20 @@ class CorpusProfileTest(unittest.TestCase):
             report = profile_corpus(root)
 
             self.assertEqual(report["summary"]["status_counts"]["needs_ocr"], 1)
+
+    def test_zero_page_pdf_is_not_classified_for_ocr(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            empty_pdf = (
+                b"%PDF-1.4\n"
+                b"1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n"
+                b"2 0 obj\n<< /Type /Pages /Kids [] /Count 0 >>\nendobj\n"
+                b"trailer\n<< /Root 1 0 R /Size 3 >>\n%%EOF\n"
+            )
+            (root / "empty.pdf").write_bytes(empty_pdf)
+
+            report = profile_corpus(root)
+
+            self.assertEqual(
+                report["summary"]["status_counts"]["empty_document"], 1
+            )

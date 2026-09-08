@@ -24,6 +24,27 @@ uma allowlist de tipos de mídia e produz artefatos locais versionados. Consulte
 
 Requer Python 3.12 ou superior.
 
+O caminho recomendado usa Docker e não instala bibliotecas ou Tesseract
+globalmente na máquina:
+
+```bash
+mkdir -p artifacts
+docker compose build
+docker compose run --rm checks
+```
+
+Para analisar localmente a compatibilidade do corpus privado:
+
+```bash
+docker compose run --rm profile
+```
+
+Os documentos são montados como somente leitura e o relatório privado é salvo
+em `artifacts/corpus-profile.local.json`. A execução dos containers não possui
+acesso à rede.
+
+Como alternativa, use um ambiente virtual nativo:
+
 ```bash
 python -m venv .venv
 source .venv/bin/activate

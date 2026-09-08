@@ -42,6 +42,10 @@ human review.
 ## Development workflow
 
 - Target Python 3.12 or newer.
+- Prefer Docker Compose as the reproducible environment for checks and document
+  tooling; native virtual environments remain an optional fast path.
+- Never add private `data/` files to a Docker image. Mount the corpus read-only
+  at runtime and write derived artifacts to an ignored, separate directory.
 - Use the `src/` layout and type annotations for public interfaces.
 - Format and lint with Ruff; type-check with mypy; test with pytest.
 - Treat `docs/` as an Obsidian vault that must also render correctly on GitHub.

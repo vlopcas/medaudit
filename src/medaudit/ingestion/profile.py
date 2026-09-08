@@ -12,6 +12,7 @@ from typing import Any
 
 from medaudit.documents import Document
 from medaudit.parsing import PDFParser, XLSParser, XLSXParser
+from medaudit.parsing.pdf import get_pdf_page_count
 from medaudit.parsing.protocol import DocumentParser
 
 MEDIA_TYPES = {
@@ -73,20 +74,25 @@ def profile_corpus(root: Path) -> dict[str, Any]:
             )
             continue
         pages = [element.page for element in parsed.elements if element.page]
+        structural_page_count = (
+            get_pdf_page_count(content) if suffix == ".pdf" else None
+        )
+        if parsed.elements:
+            status = "extracted"
+        elif structural_page_count:
+            status = "needs_ocr"
+        elif suffix == ".pdf":
+            status = "empty_document"
+        else:
+            status = "empty"
         records.append(
             ProfileRecord(
                 relative_path,
                 suffix,
-                (
-                    "extracted"
-                    if parsed.elements
-                    else "needs_ocr"
-                    if suffix == ".pdf"
-                    else "empty"
-                ),
+                status,
                 size_bytes,
                 element_count=len(parsed.elements),
-                page_count=max(pages, default=None),
+                page_count=structural_page_count or max(pages, default=None),
             )
         )
 
