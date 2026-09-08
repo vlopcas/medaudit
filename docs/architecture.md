@@ -37,6 +37,9 @@ conteúdo antes de permitir parsing e chunking.
 O processamento materializa JSONL privado por data de referência. Cada registro
 preserva o identificador e a versão do documento, período de vigência,
 localização estrutural e IDs dos elementos que originaram o chunk.
+O roteador de chunking mantém páginas e seções para documentos estruturais e
+agrupa linhas consecutivas por aba para planilhas, repetindo o cabeçalho e
+registrando o intervalo de linhas.
 
 ## Limites dos módulos
 

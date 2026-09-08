@@ -1,7 +1,7 @@
 import unittest
 from datetime import date
 
-from medaudit.chunking import StructureAwareChunker
+from medaudit.chunking import FormatAwareChunker, StructureAwareChunker
 from medaudit.documents import Document, DocumentElement, ElementKind
 from medaudit.parsing import ParsedDocument, PlainTextParser
 
@@ -66,4 +66,88 @@ class StructureAwareChunkerTest(unittest.TestCase):
         self.assertEqual(
             [chunk.text for chunk in chunks],
             ["Contexto", "A | B", "Conclusão"],
+        )
+
+
+class FormatAwareChunkerTest(unittest.TestCase):
+    def test_groups_spreadsheet_rows_and_repeats_header(self) -> None:
+        document = Document("sheet-v1", "Synthetic", "1", date(2026, 1, 1))
+        parsed = ParsedDocument(
+            document=document,
+            elements=tuple(
+                DocumentElement(
+                    f"e{row}",
+                    "sheet-v1",
+                    row - 1,
+                    ElementKind.TABLE,
+                    text,
+                    section="Rules",
+                    metadata={
+                        "sheet": "Rules",
+                        "row": str(row),
+                        "parser": "openpyxl-rows-v1",
+                    },
+                )
+                for row, text in enumerate(
+                    ["Code\tLimit", "PX-101\t2", "PX-102\t3", "PX-103\t4"],
+                    start=1,
+                )
+            ),
+        )
+
+        chunks = FormatAwareChunker(max_characters=30).chunk(parsed)
+
+        self.assertEqual(len(chunks), 2)
+        self.assertTrue(all(chunk.text.startswith("Code\tLimit\n") for chunk in chunks))
+        self.assertEqual(chunks[0].metadata["row_start"], "2")
+        self.assertEqual(chunks[0].metadata["row_end"], "3")
+        self.assertEqual(chunks[1].metadata["row_start"], "4")
+        self.assertEqual(chunks[0].metadata["strategy"], "spreadsheet-rows-v1")
+
+    def test_groups_non_empty_rows_across_formatting_gaps(self) -> None:
+        document = Document("sheet-v1", "Synthetic", "1", date(2026, 1, 1))
+        elements = (
+            self.row("header", 1, 0),
+            self.row("first", 2, 1),
+            self.row("after gap", 4, 2),
+        )
+
+        chunks = FormatAwareChunker(max_characters=1_000).chunk(
+            ParsedDocument(document, elements)
+        )
+
+        self.assertEqual(len(chunks), 1)
+        self.assertEqual(chunks[0].metadata["row_start"], "2")
+        self.assertEqual(chunks[0].metadata["row_end"], "4")
+
+    def test_does_not_repeat_an_oversized_first_row(self) -> None:
+        document = Document("sheet-v1", "Synthetic", "1", date(2026, 1, 1))
+        elements = (
+            self.row("H" * 301, 1, 0),
+            self.row("first", 2, 1),
+            self.row("second", 3, 2),
+        )
+
+        chunks = FormatAwareChunker(max_characters=1_000).chunk(
+            ParsedDocument(document, elements)
+        )
+
+        self.assertEqual(len(chunks), 1)
+        self.assertNotIn("header_row", chunks[0].metadata)
+        self.assertEqual(chunks[0].text.count("H" * 301), 1)
+
+    @staticmethod
+    def row(text: str, row: int, ordinal: int) -> DocumentElement:
+        return DocumentElement(
+            f"e{row}",
+            "sheet-v1",
+            ordinal,
+            ElementKind.TABLE,
+            text,
+            section="Rules",
+            metadata={
+                "sheet": "Rules",
+                "row": str(row),
+                "parser": "openpyxl-rows-v1",
+            },
         )

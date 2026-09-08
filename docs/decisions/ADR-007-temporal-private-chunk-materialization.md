@@ -37,6 +37,17 @@ aplicado apenas às páginas sem texto nativo.
 O diagnóstico posterior agrega contagem e distribuição de caracteres por tipo
 de mídia e estratégia, sem persistir texto ou identificadores no relatório.
 
+Como o diagnóstico inicial mostrou fragmentação excessiva em planilhas, XLS e
+XLSX usam uma estratégia própria: linhas consecutivas são agrupadas por aba até
+o limite de tamanho, a primeira linha da aba é repetida como cabeçalho e o
+intervalo de linhas permanece na proveniência. Documentos estruturais mantêm a
+estratégia anterior.
+
+O cabeçalho só é repetido quando a primeira linha é curta; linhas iniciais
+grandes são tratadas como dados para evitar duplicação excessiva. Linhas vazias
+não quebram o grupo. Uma linha individual pode exceder o limite configurado,
+pois dividir suas células destruiria a unidade do registro nesta estratégia.
+
 ## Como validar
 
 - testar seleção por vigência e status de revisão;

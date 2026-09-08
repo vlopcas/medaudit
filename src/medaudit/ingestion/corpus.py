@@ -12,7 +12,7 @@ from typing import Any
 from medaudit.catalog import CatalogAccessError, ReviewStatus
 from medaudit.catalog.models import CatalogEntry
 from medaudit.catalog.serialization import load_catalog
-from medaudit.chunking import StructureAwareChunker
+from medaudit.chunking import FormatAwareChunker
 from medaudit.ingestion.inventory import collect_inventory
 from medaudit.ingestion.pipeline import IngestionPipeline, ParserRegistry
 from medaudit.parsing import (
@@ -47,7 +47,7 @@ def build_pipeline(*, enable_ocr: bool) -> IngestionPipeline:
     )
     return IngestionPipeline(
         ParserRegistry([pdf_parser, XLSParser(), XLSXParser()]),
-        StructureAwareChunker(),
+        FormatAwareChunker(),
     )
 
 
