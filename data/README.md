@@ -113,3 +113,9 @@ docker compose run --rm evaluate-private-bm25
 
 O terminal mostra somente métricas agregadas. O relatório por caso permanece
 em `artifacts/retrieval-eval.local.json` e não inclui o texto das perguntas.
+
+Candidatos gerados por uma ferramenta não são automaticamente um golden set.
+Prepare a fila com `docker compose run --rm prepare-eval-review`; revise no
+arquivo privado em `artifacts/rag-evaluation-review.local.json` cada pergunta,
+resposta, citação, data e mapeamento proposto. Troque `review_status` para
+`approved` ou `rejected` e registre a justificativa em `review_comment`.

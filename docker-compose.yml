@@ -123,3 +123,14 @@ services:
       - "${TOP_K:-5}"
       - --min-score
       - "${MIN_SCORE:-0}"
+
+  prepare-eval-review:
+    extends: profile
+    command:
+      - medaudit-prepare-eval-review
+      - --candidates
+      - /private-data/eval/rag-evaluation-candidates.local.json
+      - --catalog
+      - /private-data/catalog.local.json
+      - --output
+      - /artifacts/rag-evaluation-review.local.json

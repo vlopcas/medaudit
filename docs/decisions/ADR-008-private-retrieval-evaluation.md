@@ -29,6 +29,10 @@ identificadores recuperados ou nomes de categorias.
 - `top_k` e limiar mínimo de score precisam ser registrados por experimento;
 - embeddings só serão justificáveis se superarem essa baseline no mesmo set.
 
+Candidatos gerados externamente passam por uma fila privada. O sistema pode
+mapear rótulos de fonte para IDs do catálogo, mas mantém todos os casos como
+`pending` até uma pessoa revisar pergunta, resposta, citação, data e relevância.
+
 ## Como validar
 
 - testar relevância por documento e por chunk;
