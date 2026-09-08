@@ -44,3 +44,13 @@ services:
       - /private-data
       - --output
       - /artifacts/corpus-profile.local.json
+
+  profile-ocr:
+    extends: profile
+    command:
+      - medaudit-profile-corpus
+      - --input
+      - /private-data
+      - --output
+      - /artifacts/corpus-profile-ocr.local.json
+      - --enable-ocr

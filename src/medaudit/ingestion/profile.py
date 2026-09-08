@@ -11,7 +11,14 @@ from pathlib import Path
 from typing import Any
 
 from medaudit.documents import Document
-from medaudit.parsing import PDFParser, XLSParser, XLSXParser
+from medaudit.parsing import (
+    OCRFallbackPDFParser,
+    OCRProvider,
+    PDFParser,
+    TesseractOCRProvider,
+    XLSParser,
+    XLSXParser,
+)
 from medaudit.parsing.pdf import get_pdf_page_count
 from medaudit.parsing.protocol import DocumentParser
 
@@ -35,7 +42,9 @@ class ProfileRecord:
     error_type: str | None = None
 
 
-def profile_corpus(root: Path) -> dict[str, Any]:
+def profile_corpus(
+    root: Path, *, ocr_provider: OCRProvider | None = None
+) -> dict[str, Any]:
     """Parse recognized local files and return content-free diagnostics."""
     resolved_root = root.resolve()
     parsers: dict[str, DocumentParser] = {
@@ -77,8 +86,29 @@ def profile_corpus(root: Path) -> dict[str, Any]:
         structural_page_count = (
             get_pdf_page_count(content) if suffix == ".pdf" else None
         )
+        used_ocr = False
+        if (
+            not parsed.elements
+            and structural_page_count
+            and ocr_provider is not None
+        ):
+            try:
+                parsed = OCRFallbackPDFParser(ocr_provider).parse(document, content)
+                used_ocr = bool(parsed.elements)
+            except Exception as error:
+                records.append(
+                    ProfileRecord(
+                        relative_path,
+                        suffix,
+                        "ocr_error",
+                        size_bytes,
+                        page_count=structural_page_count,
+                        error_type=_root_error_type(error),
+                    )
+                )
+                continue
         if parsed.elements:
-            status = "extracted"
+            status = "ocr_extracted" if used_ocr else "extracted"
         elif structural_page_count:
             status = "needs_ocr"
         elif suffix == ".pdf":
@@ -102,6 +132,7 @@ def profile_corpus(root: Path) -> dict[str, Any]:
         "privacy": "local-only; contains filenames but no extracted content",
         "summary": {
             "file_count": len(records),
+            "ocr_enabled": ocr_provider is not None,
             "status_counts": dict(sorted(status_counts.items())),
         },
         "files": [asdict(record) for record in records],
@@ -130,6 +161,11 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--input", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument(
+        "--enable-ocr",
+        action="store_true",
+        help="apply local Tesseract OCR only to PDFs with no native text",
+    )
     return parser
 
 
@@ -138,7 +174,8 @@ def main(argv: Sequence[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     if not args.input.is_dir():
         raise SystemExit("input directory does not exist")
-    report = profile_corpus(args.input)
+    ocr_provider = TesseractOCRProvider() if args.enable_ocr else None
+    report = profile_corpus(args.input, ocr_provider=ocr_provider)
     write_private_profile(report, args.output)
     print(json.dumps(report["summary"], sort_keys=True))
     return 0

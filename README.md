@@ -39,9 +39,16 @@ Para analisar localmente a compatibilidade do corpus privado:
 docker compose run --rm profile
 ```
 
+Para repetir o diagnóstico aplicando Tesseract somente a PDFs totalmente sem
+texto nativo:
+
+```bash
+docker compose run --rm profile-ocr
+```
+
 Os documentos são montados como somente leitura e o relatório privado é salvo
-em `artifacts/corpus-profile.local.json`. A execução dos containers não possui
-acesso à rede.
+em `artifacts/`. A execução dos containers não possui acesso à rede e os
+relatórios não armazenam texto extraído.
 
 Como alternativa, use um ambiente virtual nativo:
 

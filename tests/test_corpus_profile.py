@@ -10,6 +10,16 @@ import xlwt  # type: ignore[import-untyped]
 from medaudit.ingestion.profile import profile_corpus, write_private_profile
 
 
+class FakeOCRProvider:
+    name = "fake-profile-ocr-v1"
+
+    def is_available(self) -> bool:
+        return True
+
+    def extract_page(self, content: bytes, page_number: int) -> str:
+        return f"Synthetic OCR page {page_number}"
+
+
 class CorpusProfileTest(unittest.TestCase):
     def test_reports_aggregates_without_extracted_content(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -65,3 +75,19 @@ class CorpusProfileTest(unittest.TestCase):
             self.assertEqual(
                 report["summary"]["status_counts"]["empty_document"], 1
             )
+
+    def test_ocr_mode_reports_success_without_persisting_text(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            pdf: Any = pymupdf.open()  # type: ignore[no-untyped-call]
+            pdf.new_page()
+            (root / "scan-like.pdf").write_bytes(pdf.tobytes())
+            pdf.close()
+
+            report = profile_corpus(root, ocr_provider=FakeOCRProvider())
+
+            self.assertTrue(report["summary"]["ocr_enabled"])
+            self.assertEqual(
+                report["summary"]["status_counts"]["ocr_extracted"], 1
+            )
+            self.assertNotIn("Synthetic OCR", json.dumps(report))
