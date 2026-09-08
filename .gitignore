@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+
+# IDE and operating system
+.idea/
+.vscode/
+.obsidian/
+.DS_Store
+
+# Private source documents and generated artifacts.
+# Only the documentation and placeholder files explicitly allowed below may
+# be committed from data/.
+data/**
+!data/README.md
+!data/raw/
+!data/raw/.gitkeep
+!data/processed/
+!data/processed/.gitkeep
+!data/synthetic_cases/
+!data/synthetic_cases/.gitkeep
+!data/eval/
+!data/eval/.gitkeep
+
+# Local experiment outputs
+artifacts/
+*.local.json
+*.local.jsonl
