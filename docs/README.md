@@ -36,6 +36,8 @@ O contrato entre parsing e chunking está em
 [ADR-002](decisions/ADR-002-parsing-chunking-boundary.md).
 Os adaptadores locais estão documentados em
 [ADR-003](decisions/ADR-003-local-document-parsers.md).
+O fallback de OCR está documentado em
+[ADR-004](decisions/ADR-004-explicit-local-ocr.md).
 
 ## Conteúdo permitido
 

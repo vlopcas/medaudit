@@ -43,6 +43,10 @@ Os parsers atuais aceitam texto UTF-8, PDF textual, XLSX e XLS. PDF preserva
 página e bounding box; planilhas preservam aba e linha. O chunker inicial usa
 caracteres, respeita páginas e seções e mantém tabelas e figuras isoladas.
 
+OCR é um caminho local e opt-in. O fallback preserva a extração nativa e aciona
+o provedor somente nas páginas sem texto, marcando os elementos resultantes com
+o método utilizado. Não existe fallback implícito para APIs externas.
+
 O registro de parsers falha para tipos desconhecidos ou ambíguos. O pipeline
 não acessa rede nem armazenamento: recebe bytes e retorna um resultado. A
 persistência é uma responsabilidade separada e seus artefatos devem permanecer
@@ -52,4 +56,5 @@ em `data/processed/`, que é ignorado pelo Git.
 
 - [ADR-001: governança dos dados privados](decisions/ADR-001-private-data-governance.md)
 - [ADR-002: separação entre parsing e chunking](decisions/ADR-002-parsing-chunking-boundary.md)
-- [ADR-003: adaptadores locais para PDF e XLSX](decisions/ADR-003-local-document-parsers.md)
+- [ADR-003: adaptadores locais para PDF, XLSX e XLS](decisions/ADR-003-local-document-parsers.md)
+- [ADR-004: OCR local explícito](decisions/ADR-004-explicit-local-ocr.md)

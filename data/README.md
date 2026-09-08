@@ -56,3 +56,8 @@ medaudit-profile-corpus \
   --input data \
   --output data/corpus-profile.local.json
 ```
+
+O status `needs_ocr` indica PDF sem camada textual extraível. OCR é opcional e
+local; antes de habilitá-lo, confirme que `tesseract --list-langs` contém o
+idioma necessário. A ausência do mecanismo local gera erro explícito e nunca
+aciona automaticamente um serviço externo.
