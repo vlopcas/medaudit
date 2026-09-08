@@ -67,7 +67,13 @@ def _render_cell(value: object) -> str:
         return ""
     if isinstance(value, (datetime, date, time)):
         return value.isoformat()
-    return str(value).replace("\t", " ").replace("\r", " ").replace("\n", " ")
+    return (
+        str(value)
+        .replace("\t", " ")
+        .replace("\r", " ")
+        .replace("\n", " ")
+        .strip()
+    )
 
 
 def _element_id(document_id: str, sheet: str, row: int, text: str) -> str:

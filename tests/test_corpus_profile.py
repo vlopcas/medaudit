@@ -35,3 +35,15 @@ class CorpusProfileTest(unittest.TestCase):
 
             with self.assertRaisesRegex(ValueError, "must end with .local.json"):
                 write_private_profile({}, output)
+
+    def test_empty_pdf_is_classified_for_ocr(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            pdf: Any = pymupdf.open()  # type: ignore[no-untyped-call]
+            pdf.new_page()
+            (root / "scan-like.pdf").write_bytes(pdf.tobytes())
+            pdf.close()
+
+            report = profile_corpus(root)
+
+            self.assertEqual(report["summary"]["status_counts"]["needs_ocr"], 1)

@@ -83,7 +83,13 @@ def profile_corpus(root: Path) -> dict[str, Any]:
             ProfileRecord(
                 relative_path,
                 suffix,
-                "extracted" if parsed.elements else "empty",
+                (
+                    "extracted"
+                    if parsed.elements
+                    else "needs_ocr"
+                    if suffix == ".pdf"
+                    else "empty"
+                ),
                 size_bytes,
                 element_count=len(parsed.elements),
                 page_count=max(pages, default=None),

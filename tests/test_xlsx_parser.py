@@ -16,6 +16,7 @@ class XLSXParserTest(unittest.TestCase):
         worksheet.title = "Synthetic Rules"
         worksheet.append(["Code", "Limit"])
         worksheet.append(["PX-101", 2])
+        worksheet.append(["   ", "\n"])
         worksheet.append([])
         buffer = BytesIO()
         workbook.save(buffer)
