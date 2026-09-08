@@ -2,7 +2,7 @@
 
 import json
 from dataclasses import asdict
-from datetime import date
+from datetime import date, datetime
 from pathlib import Path
 from typing import Any
 
@@ -10,6 +10,15 @@ from medaudit.catalog.models import Catalog, CatalogEntry, ReviewStatus
 from medaudit.catalog.validation import validate_catalog
 
 DATE_FIELDS = ("published_at", "effective_from", "effective_until")
+
+
+def parse_catalog_date(value: str) -> date:
+    """Accept an ISO date or timestamp and normalize it to a calendar date."""
+    try:
+        return date.fromisoformat(value)
+    except ValueError:
+        normalized = value[:-1] + "+00:00" if value.endswith("Z") else value
+        return datetime.fromisoformat(normalized).date()
 
 
 def load_catalog(path: Path) -> Catalog:
@@ -21,7 +30,7 @@ def load_catalog(path: Path) -> Catalog:
         values = dict(raw_entry)
         for field in DATE_FIELDS:
             values[field] = (
-                date.fromisoformat(values[field]) if values.get(field) else None
+                parse_catalog_date(values[field]) if values.get(field) else None
             )
         values["relative_paths"] = tuple(values["relative_paths"])
         values["supersedes"] = tuple(values.get("supersedes", ()))

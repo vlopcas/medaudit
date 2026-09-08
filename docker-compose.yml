@@ -55,11 +55,20 @@ services:
       - /artifacts/corpus-profile-ocr.local.json
       - --enable-ocr
 
-  catalog:
+  catalog-bootstrap:
     extends: profile
     command:
       - medaudit-build-catalog
       - --input
       - /private-data
       - --output
-      - /artifacts/catalog.local.json
+      - /artifacts/catalog-bootstrap.local.json
+
+  catalog-check:
+    extends: profile
+    command:
+      - medaudit-audit-catalog
+      - --catalog
+      - /private-data/catalog.local.json
+      - --input
+      - /private-data

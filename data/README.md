@@ -78,3 +78,15 @@ Preencha manualmente família, organização, versão, vigência e relações de
 substituição. Não marque uma entrada como `reviewed` antes de confirmar esses
 campos no próprio documento. O catálogo contém nomes e metadados privados e não
 deve ser publicado.
+
+`data/catalog.local.json` é a fonte revisada. Cópias incompletas e backups
+também permanecem privados, mas não são consumidos pelo pipeline. No Docker,
+`catalog-bootstrap` gera uma proposta separada em `artifacts/`; ele nunca
+sobrescreve a fonte revisada. Valide-a com:
+
+```bash
+docker compose run --rm catalog-check
+```
+
+O comando aceita datas ISO (`AAAA-MM-DD`) ou timestamps ISO e imprime somente
+contagens agregadas.

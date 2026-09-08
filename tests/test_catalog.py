@@ -14,8 +14,13 @@ from medaudit.catalog import (
     document_from_reviewed_entry,
     validate_catalog,
 )
+from medaudit.catalog.audit import audit_catalog
 from medaudit.catalog.builder import build_catalog
-from medaudit.catalog.serialization import load_catalog, write_catalog
+from medaudit.catalog.serialization import (
+    load_catalog,
+    parse_catalog_date,
+    write_catalog,
+)
 from medaudit.ingestion.inventory import FileRecord
 
 
@@ -97,6 +102,11 @@ class CatalogBuilderTest(unittest.TestCase):
 
         self.assertEqual(loaded, catalog)
 
+    def test_iso_timestamp_is_normalized_to_date(self) -> None:
+        self.assertEqual(
+            parse_catalog_date("2026-03-01T00:00:00Z"), date(2026, 3, 1)
+        )
+
     def test_output_requires_private_suffix(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory) / "catalog.json"
@@ -152,3 +162,33 @@ class CatalogAccessTest(unittest.TestCase):
             )
 
         self.assertEqual(caught.exception.reason, CatalogRejection.CONTENT_MISMATCH)
+
+
+class CatalogAuditTest(unittest.TestCase):
+    def test_reports_only_aggregate_readiness(self) -> None:
+        content_hash = "a" * 64
+        reviewed = entry(
+            content_hash=content_hash,
+            review_status=ReviewStatus.REVIEWED,
+            title="Synthetic policy",
+            family="policy",
+            organization="Synthetic Org",
+            version="1",
+            effective_from=date(2026, 1, 1),
+        )
+        records = [FileRecord("private.pdf", ".pdf", 10, "ignored", content_hash)]
+
+        report = audit_catalog(Catalog(1, (reviewed,)), records, date(2026, 2, 1))
+
+        self.assertTrue(report.ready)
+        self.assertEqual(report.effective_reviewed_count, 1)
+        self.assertFalse(hasattr(report, "relative_paths"))
+
+    def test_detects_catalog_and_corpus_drift(self) -> None:
+        records = [FileRecord("new.pdf", ".pdf", 10, "ignored", "b" * 64)]
+
+        report = audit_catalog(Catalog(1, (entry(),)), records, date(2026, 2, 1))
+
+        self.assertFalse(report.ready)
+        self.assertEqual(report.untracked_content_count, 1)
+        self.assertEqual(report.unavailable_content_count, 1)

@@ -46,10 +46,18 @@ texto nativo:
 docker compose run --rm profile-ocr
 ```
 
-Para criar ou atualizar o catálogo privado que será revisado manualmente:
+Para criar um bootstrap privado que será revisado manualmente:
 
 ```bash
-docker compose run --rm catalog
+docker compose run --rm catalog-bootstrap
+```
+
+O bootstrap fica em `artifacts/catalog-bootstrap.local.json`; ele não substitui
+o catálogo revisado em `data/catalog.local.json`. Para validar este último sem
+exibir nomes ou metadados:
+
+```bash
+docker compose run --rm catalog-check
 ```
 
 Os documentos são montados como somente leitura e o relatório privado é salvo

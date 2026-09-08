@@ -16,6 +16,11 @@ Manter um sidecar `catalog.local.json`, ignorado pelo Git. O bootstrap registra
 identidade por SHA-256, caminhos locais, formato e tamanho. Campos semânticos
 permanecem pendentes até revisão humana no documento de origem.
 
+O arquivo canônico revisado fica em `data/catalog.local.json`. O Docker mantém
+`data/` somente leitura: por isso, `catalog-bootstrap` escreve uma proposta
+separada em `artifacts/catalog-bootstrap.local.json`, enquanto `catalog-check`
+apenas lê e audita a fonte canônica.
+
 Entradas revisadas exigem título, família, organização, versão e início de
 vigência. Relações `supersedes` devem apontar para IDs existentes, não podem
 apontar para si mesmas nem formar ciclos. Atualizações preservam metadados

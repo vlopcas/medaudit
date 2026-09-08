@@ -30,6 +30,7 @@ medaudit-inventory = "medaudit.ingestion.inventory:main"
 medaudit-evaluate-bm25 = "medaudit.evaluation.baseline:main"
 medaudit-profile-corpus = "medaudit.ingestion.profile:main"
 medaudit-build-catalog = "medaudit.catalog.builder:main"
+medaudit-audit-catalog = "medaudit.catalog.audit:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/medaudit"]
