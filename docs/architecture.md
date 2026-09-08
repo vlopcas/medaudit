@@ -32,6 +32,8 @@ Hit Rate / Recall / MRR / abstention
 Em paralelo, o inventário técnico alimenta um catálogo privado revisado. O hash
 define identidade; metadados semânticos e temporais só se tornam confiáveis
 após revisão humana no documento de origem.
+Um gate entre catálogo e ingestão valida revisão, vigência e integridade do
+conteúdo antes de permitir parsing e chunking.
 
 ## Limites dos módulos
 

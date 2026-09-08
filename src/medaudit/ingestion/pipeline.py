@@ -2,7 +2,9 @@
 
 from collections.abc import Iterable
 from dataclasses import dataclass
+from datetime import date
 
+from medaudit.catalog import CatalogEntry, document_from_reviewed_entry
 from medaudit.chunking import Chunker
 from medaudit.documents import Chunk, Document
 from medaudit.parsing import DocumentParser, ParsedDocument
@@ -66,3 +68,13 @@ class IngestionPipeline:
             parsed_document=parsed,
             chunks=chunks,
         )
+
+    def ingest_catalog_entry(
+        self,
+        entry: CatalogEntry,
+        content: bytes,
+        reference_date: date,
+    ) -> IngestionResult:
+        """Ingest only reviewed, effective content matching its catalog hash."""
+        document = document_from_reviewed_entry(entry, content, reference_date)
+        return self.ingest(document, content, entry.media_type)

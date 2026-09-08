@@ -21,13 +21,19 @@ vigência. Relações `supersedes` devem apontar para IDs existentes, não podem
 apontar para si mesmas nem formar ciclos. Atualizações preservam metadados
 humanos pelo hash e mantêm documentos removidos com status `missing`.
 
+Antes da ingestão, um gate determinístico exige status `reviewed`, confirma a
+vigência na data de referência e compara o SHA-256 do conteúdo com o catálogo.
+Qualquer falha interrompe o processamento com um motivo estável e sem registrar
+nomes ou metadados privados.
+
 ## Consequências
 
 - renomear um arquivo não perde os metadados revisados;
 - cópias idênticas formam uma única identidade documental;
 - alteração de conteúdo cria uma nova entrada pendente;
 - o catálogo não pode ser publicado ou usado diretamente em testes públicos;
-- ingestão temporal deverá aceitar somente entradas revisadas.
+- conteúdo pendente, ausente, fora da vigência ou alterado é rejeitado antes do
+  parsing e do chunking.
 
 ## Como validar
 

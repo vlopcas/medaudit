@@ -1,7 +1,9 @@
+import hashlib
 import json
 import unittest
 from datetime import date
 
+from medaudit.catalog import CatalogAccessError, CatalogEntry, ReviewStatus
 from medaudit.chunking import StructureAwareChunker
 from medaudit.documents import Document
 from medaudit.ingestion import IngestionPipeline, ParserRegistry
@@ -54,3 +56,33 @@ class IngestionPipelineTest(unittest.TestCase):
             payload["parsed_document"]["document"]["effective_from"],
             "2026-01-01",
         )
+
+    def test_catalog_ingestion_enforces_review_and_integrity(self) -> None:
+        content = b"Synthetic evidence."
+        catalog_entry = CatalogEntry(
+            document_id="synthetic-v1",
+            content_sha256=hashlib.sha256(content).hexdigest(),
+            relative_paths=("synthetic.txt",),
+            media_type="text/plain",
+            size_bytes=len(content),
+            review_status=ReviewStatus.REVIEWED,
+            title="Synthetic evidence",
+            family="policy",
+            organization="Synthetic Org",
+            version="1",
+            effective_from=date(2026, 1, 1),
+        )
+        pipeline = IngestionPipeline(
+            ParserRegistry([PlainTextParser()]),
+            StructureAwareChunker(max_characters=500),
+        )
+
+        result = pipeline.ingest_catalog_entry(
+            catalog_entry, content, date(2026, 2, 1)
+        )
+
+        self.assertEqual(result.parsed_document.document.document_id, "synthetic-v1")
+        with self.assertRaises(CatalogAccessError):
+            pipeline.ingest_catalog_entry(
+                catalog_entry, b"modified", date(2026, 2, 1)
+            )

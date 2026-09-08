@@ -1,9 +1,19 @@
+import hashlib
 import tempfile
 import unittest
 from datetime import date
 from pathlib import Path
+from typing import Any
 
-from medaudit.catalog import Catalog, CatalogEntry, ReviewStatus, validate_catalog
+from medaudit.catalog import (
+    Catalog,
+    CatalogAccessError,
+    CatalogEntry,
+    CatalogRejection,
+    ReviewStatus,
+    document_from_reviewed_entry,
+    validate_catalog,
+)
 from medaudit.catalog.builder import build_catalog
 from medaudit.catalog.serialization import load_catalog, write_catalog
 from medaudit.ingestion.inventory import FileRecord
@@ -93,3 +103,52 @@ class CatalogBuilderTest(unittest.TestCase):
 
             with self.assertRaisesRegex(ValueError, "must end with .local.json"):
                 write_catalog(Catalog(1, (entry(),)), output)
+
+
+class CatalogAccessTest(unittest.TestCase):
+    content = b"wholly synthetic policy content"
+    content_hash = hashlib.sha256(content).hexdigest()
+
+    def reviewed_entry(self, **changes: Any) -> CatalogEntry:
+        return entry(
+            content_hash=self.content_hash,
+            review_status=ReviewStatus.REVIEWED,
+            title="Synthetic policy",
+            family="policy",
+            organization="Synthetic Org",
+            version="1",
+            effective_from=date(2026, 1, 1),
+            **changes,
+        )
+
+    def test_converts_reviewed_effective_matching_content(self) -> None:
+        document = document_from_reviewed_entry(
+            self.reviewed_entry(), self.content, date(2026, 2, 1)
+        )
+
+        self.assertEqual(document.document_id, "doc-a")
+        self.assertEqual(document.metadata["organization"], "Synthetic Org")
+
+    def test_rejects_pending_entry(self) -> None:
+        pending = entry(content_hash=self.content_hash)
+
+        with self.assertRaises(CatalogAccessError) as caught:
+            document_from_reviewed_entry(pending, self.content, date(2026, 2, 1))
+
+        self.assertEqual(caught.exception.reason, CatalogRejection.PENDING_REVIEW)
+
+    def test_rejects_document_outside_effective_period(self) -> None:
+        expired = self.reviewed_entry(effective_until=date(2026, 1, 31))
+
+        with self.assertRaises(CatalogAccessError) as caught:
+            document_from_reviewed_entry(expired, self.content, date(2026, 2, 1))
+
+        self.assertEqual(caught.exception.reason, CatalogRejection.EXPIRED)
+
+    def test_rejects_content_that_does_not_match_catalog(self) -> None:
+        with self.assertRaises(CatalogAccessError) as caught:
+            document_from_reviewed_entry(
+                self.reviewed_entry(), b"changed", date(2026, 2, 1)
+            )
+
+        self.assertEqual(caught.exception.reason, CatalogRejection.CONTENT_MISMATCH)
