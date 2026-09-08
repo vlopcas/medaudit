@@ -60,6 +60,16 @@ exibir nomes ou metadados:
 docker compose run --rm catalog-check
 ```
 
+Para gerar chunks privados somente das versões vigentes na data de referência:
+
+```bash
+REFERENCE_DATE=2026-09-08 docker compose run --rm process-ocr
+```
+
+O resultado fica em `artifacts/chunks.local.jsonl`. Para uma consulta histórica,
+informe a data correspondente em `REFERENCE_DATE`; versões fora daquela
+vigência não entram no resultado.
+
 Os documentos são montados como somente leitura e o relatório privado é salvo
 em `artifacts/`. A execução dos containers não possui acesso à rede e os
 relatórios não armazenam texto extraído.

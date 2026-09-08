@@ -72,3 +72,30 @@ services:
       - /private-data/catalog.local.json
       - --input
       - /private-data
+
+  process:
+    extends: profile
+    command:
+      - medaudit-process-corpus
+      - --catalog
+      - /private-data/catalog.local.json
+      - --input
+      - /private-data
+      - --output
+      - /artifacts/chunks.local.jsonl
+      - --reference-date
+      - "${REFERENCE_DATE:-2026-09-08}"
+
+  process-ocr:
+    extends: process
+    command:
+      - medaudit-process-corpus
+      - --catalog
+      - /private-data/catalog.local.json
+      - --input
+      - /private-data
+      - --output
+      - /artifacts/chunks.local.jsonl
+      - --reference-date
+      - "${REFERENCE_DATE:-2026-09-08}"
+      - --enable-ocr

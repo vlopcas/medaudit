@@ -90,3 +90,8 @@ docker compose run --rm catalog-check
 
 O comando aceita datas ISO (`AAAA-MM-DD`) ou timestamps ISO e imprime somente
 contagens agregadas.
+
+O processamento usa `data/catalog.local.json`, mas grava chunks apenas em
+`artifacts/chunks.local.jsonl`. A data de referência é obrigatória no comando
+Python e explícita via `REFERENCE_DATE` no Docker. Os chunks contêm texto
+privado e nunca devem ser publicados.

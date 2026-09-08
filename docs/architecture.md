@@ -34,6 +34,9 @@ define identidade; metadados semânticos e temporais só se tornam confiáveis
 após revisão humana no documento de origem.
 Um gate entre catálogo e ingestão valida revisão, vigência e integridade do
 conteúdo antes de permitir parsing e chunking.
+O processamento materializa JSONL privado por data de referência. Cada registro
+preserva o identificador e a versão do documento, período de vigência,
+localização estrutural e IDs dos elementos que originaram o chunk.
 
 ## Limites dos módulos
 
@@ -67,6 +70,7 @@ em `data/processed/`, que é ignorado pelo Git.
 - [ADR-004: OCR local explícito](decisions/ADR-004-explicit-local-ocr.md)
 - [ADR-005: desenvolvimento em Docker](decisions/ADR-005-containerized-development.md)
 - [ADR-006: catálogo documental privado](decisions/ADR-006-private-document-catalog.md)
+- [ADR-007: materialização temporal de chunks privados](decisions/ADR-007-temporal-private-chunk-materialization.md)
 
 ## Ambiente de execução
 

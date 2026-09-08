@@ -42,6 +42,8 @@ O ambiente reproduzível está documentado em
 [ADR-005](decisions/ADR-005-containerized-development.md).
 O catálogo privado está documentado em
 [ADR-006](decisions/ADR-006-private-document-catalog.md).
+A materialização temporal de chunks está documentada em
+[ADR-007](decisions/ADR-007-temporal-private-chunk-materialization.md).
 
 ## Conteúdo permitido
 
