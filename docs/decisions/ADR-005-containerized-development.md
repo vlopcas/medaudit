@@ -39,4 +39,3 @@ desenvolvimento, mas não é a referência de reprodutibilidade.
 - confirmar português com `docker compose run --rm checks tesseract --list-langs`;
 - executar o profiler e confirmar que o relatório está somente em `artifacts/`;
 - confirmar que os serviços executam com rede e raiz do filesystem desativadas.
-

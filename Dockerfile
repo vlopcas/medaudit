@@ -29,4 +29,3 @@ RUN groupadd --gid 10001 medaudit \
 USER medaudit
 
 CMD ["pytest", "-p", "no:cacheprovider"]
-
