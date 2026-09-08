@@ -39,9 +39,9 @@ Hit Rate / Recall / MRR / abstention
 - `llm`: contrato futuro, ainda sem adaptador externo;
 - `ingestion`: inventário, seleção de parser, pipeline local e serialização.
 
-Os parsers atuais aceitam texto UTF-8, PDF textual e XLSX. PDF preserva página e
-bounding box; XLSX preserva planilha e linha. O chunker inicial usa caracteres,
-respeita páginas e seções e mantém tabelas e figuras isoladas.
+Os parsers atuais aceitam texto UTF-8, PDF textual, XLSX e XLS. PDF preserva
+página e bounding box; planilhas preservam aba e linha. O chunker inicial usa
+caracteres, respeita páginas e seções e mantém tabelas e figuras isoladas.
 
 O registro de parsers falha para tipos desconhecidos ou ambíguos. O pipeline
 não acessa rede nem armazenamento: recebe bytes e retorna um resultado. A

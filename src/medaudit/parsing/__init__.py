@@ -4,6 +4,7 @@ from medaudit.parsing.models import ParsedDocument
 from medaudit.parsing.pdf import PDFParser
 from medaudit.parsing.plain_text import PlainTextParser
 from medaudit.parsing.protocol import DocumentParser
+from medaudit.parsing.xls import XLSParser
 from medaudit.parsing.xlsx import XLSXParser
 
 __all__ = [
@@ -11,5 +12,6 @@ __all__ = [
     "PDFParser",
     "ParsedDocument",
     "PlainTextParser",
+    "XLSParser",
     "XLSXParser",
 ]

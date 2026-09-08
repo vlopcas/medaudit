@@ -11,14 +11,14 @@ from pathlib import Path
 from typing import Any
 
 from medaudit.documents import Document
-from medaudit.parsing import PDFParser, XLSXParser
+from medaudit.parsing import PDFParser, XLSParser, XLSXParser
 from medaudit.parsing.protocol import DocumentParser
 
 MEDIA_TYPES = {
     ".pdf": "application/pdf",
+    ".xls": "application/vnd.ms-excel",
     ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
 }
-KNOWN_UNSUPPORTED = frozenset({".xls"})
 
 
 @dataclass(frozen=True, slots=True)
@@ -39,24 +39,18 @@ def profile_corpus(root: Path) -> dict[str, Any]:
     resolved_root = root.resolve()
     parsers: dict[str, DocumentParser] = {
         "application/pdf": PDFParser(),
+        "application/vnd.ms-excel": XLSParser(),
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": (
             XLSXParser()
         ),
     }
     records: list[ProfileRecord] = []
-    supported_suffixes = MEDIA_TYPES.keys() | KNOWN_UNSUPPORTED
     for path in sorted(resolved_root.rglob("*")):
         suffix = path.suffix.casefold()
-        if not path.is_file() or suffix not in supported_suffixes:
+        if not path.is_file() or suffix not in MEDIA_TYPES:
             continue
         relative_path = path.relative_to(resolved_root).as_posix()
         size_bytes = path.stat().st_size
-        if suffix in KNOWN_UNSUPPORTED:
-            records.append(
-                ProfileRecord(relative_path, suffix, "unsupported", size_bytes)
-            )
-            continue
-
         content = path.read_bytes()
         document_id = f"local-{hashlib.sha256(content).hexdigest()[:16]}"
         document = Document(

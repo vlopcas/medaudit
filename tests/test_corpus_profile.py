@@ -5,6 +5,7 @@ from pathlib import Path
 from typing import Any
 
 import pymupdf
+import xlwt  # type: ignore[import-untyped]
 
 from medaudit.ingestion.profile import profile_corpus, write_private_profile
 
@@ -18,15 +19,15 @@ class CorpusProfileTest(unittest.TestCase):
             page.insert_text((72, 72), "Synthetic private-like text")
             (root / "sample.pdf").write_bytes(pdf.tobytes())
             pdf.close()
-            (root / "legacy.xls").write_bytes(b"synthetic placeholder")
+            workbook = xlwt.Workbook()
+            worksheet = workbook.add_sheet("Synthetic")
+            worksheet.write(0, 0, "PX-101")
+            workbook.save(str(root / "legacy.xls"))
 
             report = profile_corpus(root)
 
             self.assertEqual(report["summary"]["file_count"], 2)
-            self.assertEqual(report["summary"]["status_counts"]["extracted"], 1)
-            self.assertEqual(
-                report["summary"]["status_counts"]["unsupported"], 1
-            )
+            self.assertEqual(report["summary"]["status_counts"]["extracted"], 2)
             self.assertNotIn("Synthetic private-like text", json.dumps(report))
 
     def test_output_requires_local_suffix(self) -> None:
