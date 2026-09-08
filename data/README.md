@@ -95,3 +95,21 @@ O processamento usa `data/catalog.local.json`, mas grava chunks apenas em
 `artifacts/chunks.local.jsonl`. A data de referência é obrigatória no comando
 Python e explícita via `REFERENCE_DATE` no Docker. Os chunks contêm texto
 privado e nunca devem ser publicados.
+
+## Golden set privado de retrieval
+
+Copie `data/eval/private_retrieval_template.json` para
+`data/retrieval-eval.local.json` e substitua todos os placeholders. A
+`reference_date` precisa ser igual à usada para gerar os chunks. Comece
+rotulando `relevant_document_ids`; use `relevant_chunk_ids` somente quando a
+localização exata já tiver sido revisada. Um caso não pode misturar os dois
+níveis. Perguntas deliberadamente sem resposta usam ambas as listas vazias.
+
+Execute a baseline lexical com:
+
+```bash
+docker compose run --rm evaluate-private-bm25
+```
+
+O terminal mostra somente métricas agregadas. O relatório por caso permanece
+em `artifacts/retrieval-eval.local.json` e não inclui o texto das perguntas.

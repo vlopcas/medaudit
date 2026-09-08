@@ -74,6 +74,7 @@ em `data/processed/`, que é ignorado pelo Git.
 - [ADR-005: desenvolvimento em Docker](decisions/ADR-005-containerized-development.md)
 - [ADR-006: catálogo documental privado](decisions/ADR-006-private-document-catalog.md)
 - [ADR-007: materialização temporal de chunks privados](decisions/ADR-007-temporal-private-chunk-materialization.md)
+- [ADR-008: avaliação privada de retrieval](decisions/ADR-008-private-retrieval-evaluation.md)
 
 ## Ambiente de execução
 

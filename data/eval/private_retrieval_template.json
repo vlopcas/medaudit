@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "reference_date": "AAAA-MM-DD",
+  "cases": [
+    {
+      "id": "case-001",
+      "question": "Substitua por uma pergunta privada",
+      "category": "exact_lookup",
+      "relevant_document_ids": ["substitua-pelo-document-id"]
+    },
+    {
+      "id": "missing-001",
+      "question": "Substitua por uma pergunta sem evidência no corpus",
+      "category": "missing_evidence",
+      "relevant_document_ids": []
+    }
+  ]
+}

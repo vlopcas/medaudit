@@ -108,3 +108,18 @@ services:
       - /artifacts/chunks.local.jsonl
       - --output
       - /artifacts/chunk-profile.local.json
+
+  evaluate-private-bm25:
+    extends: profile
+    command:
+      - medaudit-evaluate-private-bm25
+      - --chunks
+      - /artifacts/chunks.local.jsonl
+      - --cases
+      - /private-data/retrieval-eval.local.json
+      - --output
+      - /artifacts/retrieval-eval.local.json
+      - --top-k
+      - "${TOP_K:-5}"
+      - --min-score
+      - "${MIN_SCORE:-0}"

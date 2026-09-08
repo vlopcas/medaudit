@@ -80,6 +80,16 @@ docker compose run --rm chunk-profile
 O relatório privado fica em `artifacts/chunk-profile.local.json` e não contém o
 texto nem identificadores dos documentos.
 
+Após preencher `data/retrieval-eval.local.json` conforme
+[`data/README.md`](data/README.md), execute a baseline BM25 privada:
+
+```bash
+docker compose run --rm evaluate-private-bm25
+```
+
+Use `TOP_K` e `MIN_SCORE` para experimentos reproduzíveis, por exemplo
+`TOP_K=10 MIN_SCORE=2.0 docker compose run --rm evaluate-private-bm25`.
+
 Os documentos são montados como somente leitura e o relatório privado é salvo
 em `artifacts/`. A execução dos containers não possui acesso à rede e os
 relatórios não armazenam texto extraído.
