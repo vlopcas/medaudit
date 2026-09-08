@@ -46,3 +46,13 @@ horário de modificação e SHA-256. Ele não lê nem extrai o conteúdo documen
 ```bash
 medaudit-inventory --input data --output data/manifest.local.json
 ```
+
+Para testar localmente os parsers sem persistir texto extraído, gere um
+diagnóstico privado. O terminal exibe somente contagens agregadas; detalhes com
+nomes de arquivos permanecem no relatório ignorado:
+
+```bash
+medaudit-profile-corpus \
+  --input data \
+  --output data/corpus-profile.local.json
+```

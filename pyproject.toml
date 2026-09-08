@@ -26,6 +26,7 @@ dev = [
 [project.scripts]
 medaudit-inventory = "medaudit.ingestion.inventory:main"
 medaudit-evaluate-bm25 = "medaudit.evaluation.baseline:main"
+medaudit-profile-corpus = "medaudit.ingestion.profile:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/medaudit"]
