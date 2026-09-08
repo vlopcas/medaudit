@@ -54,3 +54,12 @@ services:
       - --output
       - /artifacts/corpus-profile-ocr.local.json
       - --enable-ocr
+
+  catalog:
+    extends: profile
+    command:
+      - medaudit-build-catalog
+      - --input
+      - /private-data
+      - --output
+      - /artifacts/catalog.local.json

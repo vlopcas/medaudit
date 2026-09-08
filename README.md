@@ -46,6 +46,12 @@ texto nativo:
 docker compose run --rm profile-ocr
 ```
 
+Para criar ou atualizar o catálogo privado que será revisado manualmente:
+
+```bash
+docker compose run --rm catalog
+```
+
 Os documentos são montados como somente leitura e o relatório privado é salvo
 em `artifacts/`. A execução dos containers não possui acesso à rede e os
 relatórios não armazenam texto extraído.

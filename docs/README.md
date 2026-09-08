@@ -40,6 +40,8 @@ O fallback de OCR está documentado em
 [ADR-004](decisions/ADR-004-explicit-local-ocr.md).
 O ambiente reproduzível está documentado em
 [ADR-005](decisions/ADR-005-containerized-development.md).
+O catálogo privado está documentado em
+[ADR-006](decisions/ADR-006-private-document-catalog.md).
 
 ## Conteúdo permitido
 

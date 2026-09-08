@@ -29,6 +29,10 @@ SearchResult[]
 Hit Rate / Recall / MRR / abstention
 ```
 
+Em paralelo, o inventário técnico alimenta um catálogo privado revisado. O hash
+define identidade; metadados semânticos e temporais só se tornam confiáveis
+após revisão humana no documento de origem.
+
 ## Limites dos módulos
 
 - `documents`: modelos de domínio sem dependência de formato ou fornecedor;
@@ -38,6 +42,7 @@ Hit Rate / Recall / MRR / abstention
 - `evaluation`: datasets, métricas e execução de benchmarks;
 - `llm`: contrato futuro, ainda sem adaptador externo;
 - `ingestion`: inventário, seleção de parser, pipeline local e serialização.
+- `catalog`: identidade, metadados temporais e relações de substituição.
 
 Os parsers atuais aceitam texto UTF-8, PDF textual, XLSX e XLS. PDF preserva
 página e bounding box; planilhas preservam aba e linha. O chunker inicial usa
@@ -59,6 +64,7 @@ em `data/processed/`, que é ignorado pelo Git.
 - [ADR-003: adaptadores locais para PDF, XLSX e XLS](decisions/ADR-003-local-document-parsers.md)
 - [ADR-004: OCR local explícito](decisions/ADR-004-explicit-local-ocr.md)
 - [ADR-005: desenvolvimento em Docker](decisions/ADR-005-containerized-development.md)
+- [ADR-006: catálogo documental privado](decisions/ADR-006-private-document-catalog.md)
 
 ## Ambiente de execução
 

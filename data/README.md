@@ -61,3 +61,20 @@ O status `needs_ocr` indica PDF sem camada textual extraível. OCR é opcional e
 local; antes de habilitá-lo, confirme que `tesseract --list-langs` contém o
 idioma necessário. A ausência do mecanismo local gera erro explícito e nunca
 aciona automaticamente um serviço externo.
+
+## Catálogo documental privado
+
+O catálogo separa identidade técnica de metadados semânticos revisados. Sua
+primeira execução cria entradas pendentes; execuções seguintes preservam os
+campos preenchidos, reconhecem cópias pelo SHA-256 e marcam arquivos ausentes:
+
+```bash
+medaudit-build-catalog \
+  --input data \
+  --output data/catalog.local.json
+```
+
+Preencha manualmente família, organização, versão, vigência e relações de
+substituição. Não marque uma entrada como `reviewed` antes de confirmar esses
+campos no próprio documento. O catálogo contém nomes e metadados privados e não
+deve ser publicado.
