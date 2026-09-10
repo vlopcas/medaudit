@@ -134,3 +134,14 @@ services:
       - /private-data/catalog.local.json
       - --output
       - /artifacts/rag-evaluation-review.local.json
+
+  finalize-eval:
+    extends: profile
+    command:
+      - medaudit-finalize-eval
+      - --review
+      - /artifacts/rag-evaluation-review.local.json
+      - --output
+      - /artifacts/golden-sets
+      - --default-date
+      - "${REFERENCE_DATE:-2026-09-08}"

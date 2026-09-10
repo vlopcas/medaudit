@@ -32,6 +32,9 @@ identificadores recuperados ou nomes de categorias.
 Candidatos gerados externamente passam por uma fila privada. O sistema pode
 mapear rótulos de fonte para IDs do catálogo, mas mantém todos os casos como
 `pending` até uma pessoa revisar pergunta, resposta, citação, data e relevância.
+Depois da aprovação, o finalizador agrupa casos por data de referência e aplica
+uma data explícita aos casos originalmente sem data. A baseline inicial usa
+relevância documental; a rotulagem por chunk é uma etapa posterior.
 
 ## Como validar
 

@@ -119,3 +119,7 @@ Prepare a fila com `docker compose run --rm prepare-eval-review`; revise no
 arquivo privado em `artifacts/rag-evaluation-review.local.json` cada pergunta,
 resposta, citação, data e mapeamento proposto. Troque `review_status` para
 `approved` ou `rejected` e registre a justificativa em `review_comment`.
+
+Quando a revisão estiver completa, `docker compose run --rm finalize-eval`
+gera golden sets separados por data em `artifacts/golden-sets/`. Casos sem data
+usam `REFERENCE_DATE`; a primeira baseline usa relevância no nível de documento.
