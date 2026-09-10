@@ -174,3 +174,14 @@ services:
       - --min-score
       - "${MIN_SCORE:-0}"
       - --enable-ocr
+
+  diagnose-baseline:
+    extends: profile
+    command:
+      - medaudit-diagnose-baseline
+      - --baseline
+      - /artifacts/temporal-baseline/baseline.local.json
+      - --review
+      - /artifacts/rag-evaluation-review.local.json
+      - --output
+      - /artifacts/baseline-diagnostics.local.json

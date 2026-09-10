@@ -99,6 +99,13 @@ docker compose run --rm temporal-baseline
 O comando materializa cada snapshot, executa BM25 e grava o consolidado privado
 em `artifacts/temporal-baseline/baseline.local.json`.
 
+Para diagnosticar falhas por dificuldade, categoria e tipo de raciocínio sem
+mostrar esses detalhes no terminal:
+
+```bash
+docker compose run --rm diagnose-baseline
+```
+
 Os documentos são montados como somente leitura e o relatório privado é salvo
 em `artifacts/`. A execução dos containers não possui acesso à rede e os
 relatórios não armazenam texto extraído.

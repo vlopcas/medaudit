@@ -44,6 +44,10 @@ A baseline temporal materializa e avalia cada data isoladamente. As métricas
 globais são médias ponderadas pelas quantidades de casos aplicáveis, evitando
 que snapshots pequenos tenham o mesmo peso de snapshots maiores.
 
+O diagnóstico cruza resultados e metadados revisados somente em relatório
+privado. O terminal limita-se às quantidades de zero hit, recall parcial e
+abstention incorreta.
+
 ## Como validar
 
 - testar relevância por documento e por chunk;
