@@ -156,3 +156,21 @@ services:
       - /private-data/catalog.local.json
       - --output
       - /artifacts/temporal-eval-conflicts.local.json
+
+  temporal-baseline:
+    extends: profile
+    command:
+      - medaudit-run-temporal-baseline
+      - --catalog
+      - /private-data/catalog.local.json
+      - --input
+      - /private-data
+      - --golden-sets
+      - /artifacts/golden-sets
+      - --output
+      - /artifacts/temporal-baseline
+      - --top-k
+      - "${TOP_K:-5}"
+      - --min-score
+      - "${MIN_SCORE:-0}"
+      - --enable-ocr

@@ -90,6 +90,15 @@ docker compose run --rm evaluate-private-bm25
 Use `TOP_K` e `MIN_SCORE` para experimentos reproduzíveis, por exemplo
 `TOP_K=10 MIN_SCORE=2.0 docker compose run --rm evaluate-private-bm25`.
 
+Para executar todos os golden sets temporais após uma auditoria sem conflitos:
+
+```bash
+docker compose run --rm temporal-baseline
+```
+
+O comando materializa cada snapshot, executa BM25 e grava o consolidado privado
+em `artifacts/temporal-baseline/baseline.local.json`.
+
 Os documentos são montados como somente leitura e o relatório privado é salvo
 em `artifacts/`. A execução dos containers não possui acesso à rede e os
 relatórios não armazenam texto extraído.

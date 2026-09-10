@@ -40,6 +40,10 @@ Uma auditoria temporal obrigatória verifica se cada documento relevante estava
 vigente na data do caso. Conflitos são registrados apenas em relatório privado
 e impedem a execução da baseline até revisão humana.
 
+A baseline temporal materializa e avalia cada data isoladamente. As métricas
+globais são médias ponderadas pelas quantidades de casos aplicáveis, evitando
+que snapshots pequenos tenham o mesmo peso de snapshots maiores.
+
 ## Como validar
 
 - testar relevância por documento e por chunk;
