@@ -123,3 +123,8 @@ resposta, citação, data e mapeamento proposto. Troque `review_status` para
 Quando a revisão estiver completa, `docker compose run --rm finalize-eval`
 gera golden sets separados por data em `artifacts/golden-sets/`. Casos sem data
 usam `REFERENCE_DATE`; a primeira baseline usa relevância no nível de documento.
+
+Antes de materializar snapshots, execute
+`docker compose run --rm audit-temporal-eval`. Conflitos entre a data do caso e
+a vigência da fonte são detalhados somente no relatório privado
+`artifacts/temporal-eval-conflicts.local.json` e bloqueiam a avaliação.

@@ -145,3 +145,14 @@ services:
       - /artifacts/golden-sets
       - --default-date
       - "${REFERENCE_DATE:-2026-09-08}"
+
+  audit-temporal-eval:
+    extends: profile
+    command:
+      - medaudit-audit-temporal-eval
+      - --golden-sets
+      - /artifacts/golden-sets
+      - --catalog
+      - /private-data/catalog.local.json
+      - --output
+      - /artifacts/temporal-eval-conflicts.local.json

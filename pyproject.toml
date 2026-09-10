@@ -36,6 +36,7 @@ medaudit-profile-chunks = "medaudit.ingestion.chunk_profile:main"
 medaudit-evaluate-private-bm25 = "medaudit.evaluation.private_bm25:main"
 medaudit-prepare-eval-review = "medaudit.evaluation.review_queue:main"
 medaudit-finalize-eval = "medaudit.evaluation.finalize:main"
+medaudit-audit-temporal-eval = "medaudit.evaluation.temporal_audit:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/medaudit"]

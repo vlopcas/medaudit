@@ -36,6 +36,10 @@ Depois da aprovação, o finalizador agrupa casos por data de referência e apli
 uma data explícita aos casos originalmente sem data. A baseline inicial usa
 relevância documental; a rotulagem por chunk é uma etapa posterior.
 
+Uma auditoria temporal obrigatória verifica se cada documento relevante estava
+vigente na data do caso. Conflitos são registrados apenas em relatório privado
+e impedem a execução da baseline até revisão humana.
+
 ## Como validar
 
 - testar relevância por documento e por chunk;
