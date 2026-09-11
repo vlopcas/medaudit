@@ -11,6 +11,7 @@ requires-python = ">=3.12"
 license = { file = "LICENSE" }
 authors = [{ name = "Victor Castro" }]
 dependencies = [
+  "numpy>=2,<3",
   "openpyxl>=3.1,<4",
   "PyMuPDF>=1.26,<2",
   "xlrd>=2.0.2,<3",

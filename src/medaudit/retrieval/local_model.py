@@ -7,8 +7,6 @@ from collections.abc import Sequence
 from pathlib import Path
 from typing import Any
 
-from medaudit.evaluation.private_bm25 import write_private_report
-
 MODEL_ID = "intfloat/multilingual-e5-base"
 MODEL_REVISION = "d128750597153bb5987e10b1c3493a34e5a4502a"
 
@@ -52,11 +50,21 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
+def write_model_manifest(manifest: dict[str, Any], output: Path) -> None:
+    if not output.name.endswith(".local.json"):
+        raise ValueError("model manifest output must end with .local.json")
+    output.parent.mkdir(parents=True, exist_ok=True)
+    rendered = json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True)
+    temporary = output.with_name(f".{output.name}.tmp")
+    temporary.write_text(rendered + "\n", encoding="utf-8")
+    temporary.replace(output)
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     try:
         manifest = prepare_model(args.cache, allow_download=args.download)
-        write_private_report(manifest, args.manifest)
+        write_model_manifest(manifest, args.manifest)
     except (
         ImportError,
         KeyError,

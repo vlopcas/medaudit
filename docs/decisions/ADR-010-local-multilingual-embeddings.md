@@ -24,6 +24,11 @@ Um serviço Docker com rede, sem montagem de `data/`, baixa e verifica o modelo
 em `models/`. Outro serviço monta esse cache como somente leitura e funciona
 sem rede. O diretório de modelos e seu manifesto local são ignorados pelo Git.
 
+A imagem semântica possui Dockerfile próprio: a camada grande de PyTorch e
+Sentence Transformers é instalada antes da cópia do código. Mudanças comuns no
+projeto reutilizam essa camada. O índice denso trabalha com matrizes `float32`
+normalizadas e similaridade por produto interno, equivalente ao cosseno.
+
 ## Consequências
 
 - documentos privados nunca são necessários durante o download;

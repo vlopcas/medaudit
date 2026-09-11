@@ -19,10 +19,10 @@ services:
         mypy --cache-dir=/tmp/mypy src tests
 
   embedding-model-download:
+    image: medaudit-semantic:local
     build:
       context: .
-      args:
-        MEDAUDIT_EXTRAS: semantic
+      dockerfile: Dockerfile.semantic
     user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
     gpus: all
     environment:
