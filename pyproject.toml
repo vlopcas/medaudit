@@ -39,6 +39,7 @@ medaudit-finalize-eval = "medaudit.evaluation.finalize:main"
 medaudit-audit-temporal-eval = "medaudit.evaluation.temporal_audit:main"
 medaudit-run-temporal-baseline = "medaudit.evaluation.temporal_baseline:main"
 medaudit-diagnose-baseline = "medaudit.evaluation.diagnostics:main"
+medaudit-analyze-confidence = "medaudit.evaluation.confidence_analysis:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/medaudit"]

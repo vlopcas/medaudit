@@ -106,6 +106,13 @@ mostrar esses detalhes no terminal:
 docker compose run --rm diagnose-baseline
 ```
 
+Para medir sinais de confiança interpretáveis sem definir prematuramente uma
+regra de abstention:
+
+```bash
+docker compose run --rm analyze-confidence
+```
+
 Os documentos são montados como somente leitura e o relatório privado é salvo
 em `artifacts/`. A execução dos containers não possui acesso à rede e os
 relatórios não armazenam texto extraído.

@@ -185,3 +185,18 @@ services:
       - /artifacts/rag-evaluation-review.local.json
       - --output
       - /artifacts/baseline-diagnostics.local.json
+
+  analyze-confidence:
+    extends: profile
+    command:
+      - medaudit-analyze-confidence
+      - --snapshots
+      - /artifacts/temporal-baseline/snapshots
+      - --golden-sets
+      - /artifacts/golden-sets
+      - --review
+      - /artifacts/rag-evaluation-review.local.json
+      - --output
+      - /artifacts/confidence-analysis.local.json
+      - --top-k
+      - "${TOP_K:-5}"

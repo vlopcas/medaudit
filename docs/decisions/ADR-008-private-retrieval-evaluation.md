@@ -48,6 +48,11 @@ O diagnóstico cruza resultados e metadados revisados somente em relatório
 privado. O terminal limita-se às quantidades de zero hit, recall parcial e
 abstention incorreta.
 
+Antes de definir uma política de abstention, medir isoladamente score máximo,
+margem normalizada, cobertura da consulta, cobertura de termos raros e
+concentração por documento. Pesos e limiares não serão escolhidos no conjunto
+completo usado para reportar a baseline.
+
 ## Como validar
 
 - testar relevância por documento e por chunk;
