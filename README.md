@@ -179,6 +179,15 @@ docker compose run --rm materialize-embedding-cache
 O comando executa sem rede, lê o modelo e os snapshots em modo somente leitura
 e grava em `artifacts/` apenas IDs, hashes e vetores privados reutilizáveis.
 
+Compare BM25, recuperação densa e RRF somente na calibração com:
+
+```bash
+docker compose run --rm benchmark-hybrid-calibration
+```
+
+O comando valida o split antes de buscar e não oferece opção para executar a
+partição de avaliação final.
+
 Os documentos são montados como somente leitura e o relatório privado é salvo
 em `artifacts/`. A execução dos containers não possui acesso à rede e os
 relatórios não armazenam texto extraído.

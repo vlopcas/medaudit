@@ -85,6 +85,31 @@ services:
       - --batch-size
       - "${EMBEDDING_BATCH_SIZE:-32}"
 
+  benchmark-hybrid-calibration:
+    extends: materialize-embedding-cache
+    command:
+      - medaudit-benchmark-hybrid-calibration
+      - --snapshots
+      - /artifacts/expanded-snapshots
+      - --golden-sets
+      - /artifacts/golden-sets-expanded
+      - --review
+      - /artifacts/rag-evaluation-review-expanded.local.json
+      - --split
+      - /artifacts/evaluation-split.local.json
+      - --embedding-cache
+      - /artifacts/embeddings/multilingual-e5-base.local.npz
+      - --model-cache
+      - /models/huggingface
+      - --output
+      - /artifacts/hybrid-calibration-benchmark.local.json
+      - --top-k
+      - "${TOP_K:-5}"
+      - --candidate-depth
+      - "${HYBRID_CANDIDATE_DEPTH:-20}"
+      - --rank-constant
+      - "${HYBRID_RANK_CONSTANT:-60}"
+
   profile:
     build:
       context: .

@@ -30,6 +30,10 @@ O desenvolvimento e a escolha de parâmetros usam somente a partição de
 calibração. O holdout já aberto fica registrado como resultado da baseline e
 não será reutilizado para selecionar a busca híbrida.
 
+O primeiro benchmark compara BM25, dense e RRF com pesos iguais, constante 60,
+profundidade de candidatos 20 e `top_k` 5. O comando é deliberadamente restrito
+à calibração e valida o manifesto de split antes de executar qualquer consulta.
+
 ## Consequências
 
 - BM25 continua sendo a baseline transparente;
