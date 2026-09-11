@@ -67,6 +67,12 @@ Materialização do corpus e avaliação são operações separadas: criar snaps
 por data não executa perguntas. Durante calibração, o analisador filtra IDs
 antes da busca e valida o manifesto contra a fila revisada.
 
+A primeira política de confiança usa apenas o score máximo do BM25. O limiar
+deve preservar ao menos 80% dos casos respondíveis na calibração e, satisfeita
+essa restrição, maximizar a abstention de casos sem evidência. Empates favorecem
+maior acurácia balanceada e depois o menor limiar. A política resultante registra
+o hash do relatório de calibração e é congelada antes de abrir o holdout.
+
 ## Como validar
 
 - testar relevância por documento e por chunk;

@@ -272,3 +272,14 @@ services:
       - /artifacts/confidence-calibration.local.json
       - --top-k
       - "${TOP_K:-5}"
+
+  calibrate-confidence-policy:
+    extends: profile
+    command:
+      - medaudit-calibrate-confidence-policy
+      - --confidence
+      - /artifacts/confidence-calibration.local.json
+      - --output
+      - /artifacts/confidence-policy.local.json
+      - --min-answerable-acceptance
+      - "${MIN_ANSWERABLE_ACCEPTANCE:-0.8}"
