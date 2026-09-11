@@ -11,6 +11,7 @@ __pycache__
 .coverage
 htmlcov
 artifacts
+models
 
 # Never copy the private corpus or local derived artifacts into an image.
 data/**

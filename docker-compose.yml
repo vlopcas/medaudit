@@ -18,6 +18,52 @@ services:
         ruff check --no-cache . &&
         mypy --cache-dir=/tmp/mypy src tests
 
+  embedding-model-download:
+    build:
+      context: .
+      args:
+        MEDAUDIT_EXTRAS: semantic
+    user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
+    gpus: all
+    environment:
+      HF_HOME: /models/huggingface
+      HF_HUB_CACHE: /models/huggingface/hub
+      HF_XET_CACHE: /models/huggingface/xet
+      XDG_CACHE_HOME: /models/cache
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    volumes:
+      - type: bind
+        source: ./models
+        target: /models
+    command:
+      - medaudit-prepare-embedding-model
+      - --cache
+      - /models/huggingface
+      - --manifest
+      - /models/multilingual-e5-base.local.json
+      - --download
+
+  embedding-model-check:
+    extends: embedding-model-download
+    network_mode: none
+    read_only: true
+    tmpfs:
+      - /tmp
+    volumes:
+      - type: bind
+        source: ./models
+        target: /models
+        read_only: true
+    command:
+      - medaudit-prepare-embedding-model
+      - --cache
+      - /models/huggingface
+      - --manifest
+      - /tmp/multilingual-e5-base.local.json
+
   profile:
     build:
       context: .

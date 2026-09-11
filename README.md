@@ -158,6 +158,17 @@ docker compose run --rm evaluate-heldout-policy
 
 O avaliador confere o hash da calibração e recusa sobrescrever o resultado.
 
+Para preparar o modelo de embeddings sem montar o corpus privado:
+
+```bash
+mkdir -p models
+docker compose run --rm embedding-model-download
+docker compose run --rm embedding-model-check
+```
+
+O primeiro comando é o único com acesso à rede. O segundo recarrega a revisão
+fixada usando o cache local como somente leitura e sem rede.
+
 Os documentos são montados como somente leitura e o relatório privado é salvo
 em `artifacts/`. A execução dos containers não possui acesso à rede e os
 relatórios não armazenam texto extraído.

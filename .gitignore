@@ -39,5 +39,6 @@ data/**
 
 # Local experiment outputs
 artifacts/
+models/
 *.local.json
 *.local.jsonl

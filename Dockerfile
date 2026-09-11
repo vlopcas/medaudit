@@ -1,5 +1,7 @@
 FROM python:3.12-slim-bookworm
 
+ARG MEDAUDIT_EXTRAS=dev
+
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
@@ -20,7 +22,7 @@ COPY data/README.md ./data/README.md
 COPY data/eval ./data/eval
 COPY data/synthetic_cases ./data/synthetic_cases
 
-RUN python -m pip install '.[dev]'
+RUN python -m pip install ".[${MEDAUDIT_EXTRAS}]"
 
 RUN groupadd --gid 10001 medaudit \
     && useradd --uid 10001 --gid medaudit --no-create-home medaudit \

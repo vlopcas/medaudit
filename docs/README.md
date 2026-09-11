@@ -50,6 +50,8 @@ O prompt para ampliar os casos adversariais está em
 [Prompt de avaliação adversarial](evaluation/notebooklm-adversarial-prompt.md).
 A busca híbrida independente de fornecedor está documentada em
 [ADR-009](decisions/ADR-009-provider-neutral-hybrid-retrieval.md).
+Os embeddings locais estão documentados em
+[ADR-010](decisions/ADR-010-local-multilingual-embeddings.md).
 
 ## Conteúdo permitido
 

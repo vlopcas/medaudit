@@ -76,6 +76,7 @@ em `data/processed/`, que é ignorado pelo Git.
 - [ADR-007: materialização temporal de chunks privados](decisions/ADR-007-temporal-private-chunk-materialization.md)
 - [ADR-008: avaliação privada de retrieval](decisions/ADR-008-private-retrieval-evaluation.md)
 - [ADR-009: busca híbrida independente de fornecedor](decisions/ADR-009-provider-neutral-hybrid-retrieval.md)
+- [ADR-010: embeddings multilíngues locais](decisions/ADR-010-local-multilingual-embeddings.md)
 
 ## Ambiente de execução
 
