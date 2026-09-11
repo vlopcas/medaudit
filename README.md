@@ -149,6 +149,15 @@ A política usa um único limiar interpretável de score, mantém pelo menos 80%
 dos casos respondíveis na calibração e maximiza a abstention dos casos sem
 evidência. A avaliação final não participa dessa escolha.
 
+Depois de congelar código, configuração e política, execute o holdout uma única
+vez:
+
+```bash
+docker compose run --rm evaluate-heldout-policy
+```
+
+O avaliador confere o hash da calibração e recusa sobrescrever o resultado.
+
 Os documentos são montados como somente leitura e o relatório privado é salvo
 em `artifacts/`. A execução dos containers não possui acesso à rede e os
 relatórios não armazenam texto extraído.

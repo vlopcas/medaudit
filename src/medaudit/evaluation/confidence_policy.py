@@ -65,7 +65,7 @@ def calibrate_top_score_policy(
                 key: value for key, value in selected.items() if key != "threshold"
             },
             "candidate_threshold_count": len(candidates),
-            "source_sha256": _canonical_hash(confidence_report),
+            "source_sha256": canonical_hash(confidence_report),
         },
     }
 
@@ -91,7 +91,7 @@ def _evaluate_threshold(
     }
 
 
-def _canonical_hash(payload: dict[str, Any]) -> str:
+def canonical_hash(payload: dict[str, Any]) -> str:
     rendered = json.dumps(
         payload, ensure_ascii=False, sort_keys=True, separators=(",", ":")
     )

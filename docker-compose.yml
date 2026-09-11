@@ -283,3 +283,24 @@ services:
       - /artifacts/confidence-policy.local.json
       - --min-answerable-acceptance
       - "${MIN_ANSWERABLE_ACCEPTANCE:-0.8}"
+
+  evaluate-heldout-policy:
+    extends: profile
+    command:
+      - medaudit-evaluate-heldout-policy
+      - --snapshots
+      - /artifacts/expanded-snapshots
+      - --golden-sets
+      - /artifacts/golden-sets-expanded
+      - --review
+      - /artifacts/rag-evaluation-review-expanded.local.json
+      - --split
+      - /artifacts/evaluation-split.local.json
+      - --policy
+      - /artifacts/confidence-policy.local.json
+      - --calibration
+      - /artifacts/confidence-calibration.local.json
+      - --output
+      - /artifacts/heldout-policy-evaluation.local.json
+      - --top-k
+      - "${TOP_K:-5}"

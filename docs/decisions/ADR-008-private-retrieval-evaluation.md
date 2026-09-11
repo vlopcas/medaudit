@@ -73,6 +73,11 @@ essa restrição, maximizar a abstention de casos sem evidência. Empates favore
 maior acurácia balanceada e depois o menor limiar. A política resultante registra
 o hash do relatório de calibração e é congelada antes de abrir o holdout.
 
+O avaliador final aceita somente uma política congelada ligada pelo hash ao
+relatório de calibração, consulta apenas IDs da partição final e recusa
+sobrescrever um resultado existente. Além da classificação de abstention, mede
+se os casos aceitos recuperaram ao menos uma referência relevante.
+
 ## Como validar
 
 - testar relevância por documento e por chunk;

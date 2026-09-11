@@ -43,6 +43,7 @@ medaudit-analyze-confidence = "medaudit.evaluation.confidence_analysis:main"
 medaudit-split-evaluation = "medaudit.evaluation.split:main"
 medaudit-materialize-eval-snapshots = "medaudit.evaluation.materialize_snapshots:main"
 medaudit-calibrate-confidence-policy = "medaudit.evaluation.confidence_policy:main"
+medaudit-evaluate-heldout-policy = "medaudit.evaluation.heldout_evaluation:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/medaudit"]
