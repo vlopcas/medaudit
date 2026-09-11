@@ -114,6 +114,17 @@ services:
       - --dense-weight
       - "${HYBRID_DENSE_WEIGHT:-1}"
 
+  diagnose-hybrid-calibration:
+    extends: profile
+    command:
+      - medaudit-diagnose-hybrid-calibration
+      - --benchmark
+      - /artifacts/hybrid-calibration-benchmark.local.json
+      - --review
+      - /artifacts/rag-evaluation-review-expanded.local.json
+      - --output
+      - /artifacts/hybrid-calibration-diagnostics.local.json
+
   profile:
     build:
       context: .

@@ -188,6 +188,12 @@ docker compose run --rm benchmark-hybrid-calibration
 O comando valida o split antes de buscar e não oferece opção para executar a
 partição de avaliação final.
 
+Gere o diagnóstico agregado das diferenças contra BM25 com:
+
+```bash
+docker compose run --rm diagnose-hybrid-calibration
+```
+
 Os documentos são montados como somente leitura e o relatório privado é salvo
 em `artifacts/`. A execução dos containers não possui acesso à rede e os
 relatórios não armazenam texto extraído.
