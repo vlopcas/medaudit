@@ -125,6 +125,19 @@ services:
       - --output
       - /artifacts/hybrid-calibration-diagnostics.local.json
 
+  profile-embedding-inputs:
+    extends: materialize-embedding-cache
+    command:
+      - medaudit-profile-embedding-inputs
+      - --snapshots
+      - /artifacts/expanded-snapshots
+      - --model-cache
+      - /models/huggingface
+      - --output
+      - /artifacts/embedding-input-profile.local.json
+      - --batch-size
+      - "${TOKENIZER_BATCH_SIZE:-256}"
+
   profile:
     build:
       context: .

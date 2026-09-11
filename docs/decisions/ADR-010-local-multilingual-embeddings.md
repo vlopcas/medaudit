@@ -33,6 +33,10 @@ Embeddings de chunks são persistidos em um artefato local incremental. A chave
 de modelo ou revisão interrompem o processo em vez de reutilizar vetores
 obsoletos.
 
+Um profiler offline usa o tokenizer real, com prefixo e tokens especiais, para
+medir a distribuição e a taxa de chunks truncados sem registrar texto. Mudanças
+de chunking motivadas por limite de contexto dependem dessa medição.
+
 ## Consequências
 
 - documentos privados nunca são necessários durante o download;

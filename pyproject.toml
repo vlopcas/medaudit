@@ -52,6 +52,7 @@ medaudit-prepare-embedding-model = "medaudit.retrieval.local_model:main"
 medaudit-materialize-embedding-cache = "medaudit.retrieval.embedding_cache:main"
 medaudit-benchmark-hybrid-calibration = "medaudit.evaluation.hybrid_benchmark:main"
 medaudit-diagnose-hybrid-calibration = "medaudit.evaluation.hybrid_diagnostics:main"
+medaudit-profile-embedding-inputs = "medaudit.evaluation.embedding_input_profile:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/medaudit"]

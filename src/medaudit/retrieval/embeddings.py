@@ -45,6 +45,29 @@ class E5Embedder:
         """Encode one query locally using the E5 query prefix."""
         return self._encode([f"query: {text}"], 1)
 
+    def passage_token_lengths(
+        self, texts: list[str], *, batch_size: int = 256
+    ) -> tuple[list[int], int]:
+        """Count untruncated passage tokens using the model's own tokenizer."""
+        if batch_size <= 0:
+            raise ValueError("tokenizer batch size must be positive")
+        model = self._load_model()
+        maximum = int(model.max_seq_length)
+        lengths: list[int] = []
+        for start in range(0, len(texts), batch_size):
+            batch = [f"passage: {text}" for text in texts[start : start + batch_size]]
+            encoded: Any = model.tokenizer(
+                batch,
+                add_special_tokens=True,
+                truncation=False,
+                return_length=True,
+                verbose=False,
+            )
+            lengths.extend(int(length) for length in encoded["length"])
+        if len(lengths) != len(texts):
+            raise ValueError("tokenizer returned an unexpected number of lengths")
+        return lengths, maximum
+
     def _encode(self, texts: list[str], batch_size: int) -> FloatMatrix:
         vectors: Any = self._load_model().encode(
             texts,

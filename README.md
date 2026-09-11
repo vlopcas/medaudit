@@ -194,6 +194,12 @@ Gere o diagnóstico agregado das diferenças contra BM25 com:
 docker compose run --rm diagnose-hybrid-calibration
 ```
 
+Meça o truncamento real dos chunks com o tokenizer fixado do E5:
+
+```bash
+docker compose run --rm profile-embedding-inputs
+```
+
 Os documentos são montados como somente leitura e o relatório privado é salvo
 em `artifacts/`. A execução dos containers não possui acesso à rede e os
 relatórios não armazenam texto extraído.
