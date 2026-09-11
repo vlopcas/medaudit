@@ -102,13 +102,17 @@ services:
       - --model-cache
       - /models/huggingface
       - --output
-      - /artifacts/hybrid-calibration-benchmark.local.json
+      - "/artifacts/${HYBRID_BENCHMARK_OUTPUT:-hybrid-calibration-benchmark.local.json}"
       - --top-k
       - "${TOP_K:-5}"
       - --candidate-depth
       - "${HYBRID_CANDIDATE_DEPTH:-20}"
       - --rank-constant
       - "${HYBRID_RANK_CONSTANT:-60}"
+      - --bm25-weight
+      - "${HYBRID_BM25_WEIGHT:-1}"
+      - --dense-weight
+      - "${HYBRID_DENSE_WEIGHT:-1}"
 
   profile:
     build:

@@ -33,6 +33,8 @@ não será reutilizado para selecionar a busca híbrida.
 O primeiro benchmark compara BM25, dense e RRF com pesos iguais, constante 60,
 profundidade de candidatos 20 e `top_k` 5. O comando é deliberadamente restrito
 à calibração e valida o manifesto de split antes de executar qualquer consulta.
+Pesos e profundidade podem ser variados em experimentos de calibração, desde
+que cada variante seja gravada em artefato local separado.
 
 ## Consequências
 

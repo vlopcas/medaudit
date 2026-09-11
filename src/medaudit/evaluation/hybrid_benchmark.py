@@ -112,6 +112,8 @@ def benchmark_calibration(
     top_k: int,
     candidate_depth: int,
     rank_constant: int,
+    bm25_weight: float,
+    dense_weight: float,
     batch_size: int,
 ) -> dict[str, Any]:
     """Run all retrievers over exactly the calibration partition."""
@@ -151,7 +153,10 @@ def benchmark_calibration(
         bm25 = BM25Index(chunks)
         dense = DenseIndex(chunks, embedder, passage_embeddings=matrix)
         hybrid = ReciprocalRankFusion(
-            [WeightedRetriever(bm25), WeightedRetriever(dense)],
+            [
+                WeightedRetriever(bm25, bm25_weight),
+                WeightedRetriever(dense, dense_weight),
+            ],
             rank_constant=rank_constant,
             candidate_depth=candidate_depth,
         )
@@ -173,8 +178,8 @@ def benchmark_calibration(
             "top_k": top_k,
             "candidate_depth": candidate_depth,
             "rank_constant": rank_constant,
-            "bm25_weight": 1.0,
-            "dense_weight": 1.0,
+            "bm25_weight": bm25_weight,
+            "dense_weight": dense_weight,
         },
         "snapshot_count": snapshot_count,
         "retrievers": {
@@ -196,6 +201,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--top-k", type=int, default=5)
     parser.add_argument("--candidate-depth", type=int, default=20)
     parser.add_argument("--rank-constant", type=int, default=60)
+    parser.add_argument("--bm25-weight", type=float, default=1.0)
+    parser.add_argument("--dense-weight", type=float, default=1.0)
     parser.add_argument("--batch-size", type=int, default=32)
     return parser
 
@@ -215,6 +222,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             top_k=args.top_k,
             candidate_depth=args.candidate_depth,
             rank_constant=args.rank_constant,
+            bm25_weight=args.bm25_weight,
+            dense_weight=args.dense_weight,
             batch_size=args.batch_size,
         )
         write_private_report(report, args.output)
