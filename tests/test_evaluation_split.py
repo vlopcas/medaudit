@@ -58,6 +58,41 @@ class EvaluationSplitTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "do not match"):
             validate_split(manifest, review)
 
+    def test_normalizes_legacy_unanswerable_label_for_stratification(self) -> None:
+        review = reviewed_cases()
+        review["cases"][6]["answerability"] = "candidate_unanswerable"
+
+        manifest = split_reviewed_cases(
+            review, calibration_fraction=0.7, seed="fixed"
+        )
+
+        validate_split(manifest, review)
+        self.assertEqual(manifest["source_case_count"], 10)
+
+    def test_forces_previously_used_cases_into_calibration(self) -> None:
+        review = reviewed_cases()
+        forced = {"case-0", "case-6"}
+
+        manifest = split_reviewed_cases(
+            review,
+            calibration_fraction=0.5,
+            seed="fixed",
+            forced_calibration_ids=forced,
+        )
+
+        self.assertTrue(forced <= set(manifest["partitions"]["calibration"]))
+        self.assertFalse(forced & set(manifest["partitions"]["evaluation"]))
+        self.assertEqual(manifest["forced_calibration_case_count"], 2)
+
+    def test_rejects_unknown_forced_calibration_case(self) -> None:
+        with self.assertRaisesRegex(ValueError, "absent from review"):
+            split_reviewed_cases(
+                reviewed_cases(),
+                calibration_fraction=0.5,
+                seed="fixed",
+                forced_calibration_ids={"unknown"},
+            )
+
     def test_rejects_overlapping_partitions(self) -> None:
         review = reviewed_cases()
         manifest = split_reviewed_cases(

@@ -114,7 +114,9 @@ docker compose run --rm analyze-confidence
 ```
 
 Depois de ampliar e revisar o benchmark, congele a separação determinística
-entre calibração e avaliação final:
+entre calibração e avaliação final. Casos usados em experimentos anteriores
+ficam obrigatoriamente em calibração; somente casos novos podem entrar na
+avaliação final:
 
 ```bash
 docker compose run --rm split-evaluation

@@ -11,9 +11,13 @@ from typing import Any
 
 
 def split_reviewed_cases(
-    review: dict[str, Any], *, calibration_fraction: float, seed: str
+    review: dict[str, Any],
+    *,
+    calibration_fraction: float,
+    seed: str,
+    forced_calibration_ids: set[str] | None = None,
 ) -> dict[str, Any]:
-    """Split approved case IDs while preserving answerability proportions."""
+    """Split approved IDs while keeping prior experiment cases in calibration."""
     if review.get("schema_version") != 1:
         raise ValueError("unsupported review schema")
     if review.get("review_status") != "reviewed":
@@ -32,28 +36,42 @@ def split_reviewed_cases(
         if case_id in case_labels:
             raise ValueError("duplicate reviewed case id")
         answerability = case["answerability"]
-        if answerability not in {"answerable", "insufficient_evidence"}:
+        if answerability not in {
+            "answerable",
+            "candidate_unanswerable",
+            "insufficient_evidence",
+        }:
             raise ValueError("unsupported answerability label")
         case_labels[case_id] = answerability
-        strata[answerability].append(case_id)
+        stratum = "answerable" if answerability == "answerable" else "unanswerable"
+        strata[stratum].append(case_id)
     if len(case_labels) < 2:
         raise ValueError("at least two reviewed cases are required")
 
-    calibration: list[str] = []
+    forced = forced_calibration_ids or set()
+    if forced - set(case_labels):
+        raise ValueError("forced calibration cases are absent from review")
+    calibration: list[str] = sorted(forced)
     evaluation: list[str] = []
     for _label, case_ids in sorted(strata.items()):
-        ranked = sorted(case_ids, key=lambda value: _rank(seed, value))
+        ranked = sorted(
+            (case_id for case_id in case_ids if case_id not in forced),
+            key=lambda value: _rank(seed, value),
+        )
+        if not ranked:
+            continue
         calibration_count = _calibration_count(len(ranked), calibration_fraction)
         calibration.extend(ranked[:calibration_count])
         evaluation.extend(ranked[calibration_count:])
 
     manifest = {
         "schema_version": 1,
-        "strategy": "sha256-answerability-stratified-v1",
+        "strategy": "sha256-answerability-stratified-v2",
         "seed": seed,
         "calibration_fraction": calibration_fraction,
         "source_case_count": len(case_labels),
         "source_fingerprint": _fingerprint(case_labels),
+        "forced_calibration_case_count": len(forced),
         "partitions": {
             "calibration": sorted(calibration),
             "evaluation": sorted(evaluation),
@@ -118,6 +136,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--calibration-fraction", type=float, default=0.7)
     parser.add_argument("--seed", default="medaudit-evaluation-v1")
+    parser.add_argument("--prior-review", type=Path)
     return parser
 
 
@@ -125,10 +144,21 @@ def main(argv: Sequence[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     try:
         review: dict[str, Any] = json.loads(args.review.read_text(encoding="utf-8"))
+        forced_calibration_ids = (
+            {
+                case["candidate_id"]
+                for case in json.loads(
+                    args.prior_review.read_text(encoding="utf-8")
+                )["cases"]
+            }
+            if args.prior_review
+            else set()
+        )
         manifest = split_reviewed_cases(
             review,
             calibration_fraction=args.calibration_fraction,
             seed=args.seed,
+            forced_calibration_ids=forced_calibration_ids,
         )
         write_split(manifest, args.output)
     except (KeyError, TypeError, ValueError, OSError, json.JSONDecodeError) as error:

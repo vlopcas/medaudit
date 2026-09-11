@@ -58,6 +58,11 @@ respondibilidade separa calibração e avaliação final. Todos os experimentos 
 ajustes usam somente calibração. A partição final permanece sem consulta até a
 política e seus limiares serem congelados. O manifesto local registra seed,
 fingerprint e IDs para detectar alterações, omissões e sobreposição.
+Os rótulos locais `candidate_unanswerable` e `insufficient_evidence` pertencem
+ao mesmo estrato não respondível, sem que o manifesto reescreva a fonte.
+Casos presentes em experimentos anteriores são forçados para calibração. A
+divisão estratificada incide somente sobre casos novos, impedindo que resultados
+já observados contaminem a avaliação final.
 
 ## Como validar
 

@@ -231,9 +231,11 @@ services:
       - medaudit-split-evaluation
       - --review
       - /artifacts/rag-evaluation-review-expanded.local.json
+      - --prior-review
+      - /artifacts/rag-evaluation-review.local.json
       - --output
       - /artifacts/evaluation-split.local.json
       - --calibration-fraction
-      - "${CALIBRATION_FRACTION:-0.7}"
+      - "${CALIBRATION_FRACTION:-0.5}"
       - --seed
       - "${EVALUATION_SEED:-medaudit-evaluation-v1}"
