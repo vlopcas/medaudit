@@ -36,6 +36,11 @@ profundidade de candidatos 20 e `top_k` 5. O comando é deliberadamente restrito
 Pesos e profundidade podem ser variados em experimentos de calibração, desde
 que cada variante seja gravada em artefato local separado.
 
+Uma quarta alternativa mantém o BM25 como gerador de candidatos e aplica a
+evidência semântica somente para reordenar esse conjunto. A combinação também
+usa posições, preserva o universo lexical de candidatos e nunca introduz um
+chunk que o BM25 não tenha recuperado.
+
 ## Consequências
 
 - BM25 continua sendo a baseline transparente;

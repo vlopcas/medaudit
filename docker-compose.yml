@@ -123,7 +123,7 @@ services:
     command:
       - medaudit-diagnose-hybrid-calibration
       - --benchmark
-      - /artifacts/hybrid-calibration-benchmark.local.json
+      - "/artifacts/${HYBRID_DIAGNOSTIC_BENCHMARK:-hybrid-calibration-benchmark.local.json}"
       - --review
       - /artifacts/rag-evaluation-review-expanded.local.json
       - --output

@@ -35,6 +35,7 @@ class E5Embedder:
         self.passage_strategy = passage_strategy
         self._window_overlap = window_overlap
         self._model: Any | None = None
+        self._query_cache: dict[str, FloatMatrix] = {}
 
     def _load_model(self) -> Any:
         if self._model is not None:
@@ -61,7 +62,11 @@ class E5Embedder:
 
     def encode_query(self, text: str) -> FloatMatrix:
         """Encode one query locally using the E5 query prefix."""
-        return self._encode([f"query: {text}"], 1)
+        cached = self._query_cache.get(text)
+        if cached is None:
+            cached = self._encode([f"query: {text}"], 1)
+            self._query_cache[text] = cached
+        return cached
 
     def passage_token_lengths(
         self, texts: list[str], *, batch_size: int = 256

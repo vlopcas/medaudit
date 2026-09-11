@@ -27,7 +27,7 @@ def diagnose_hybrid(
     retrievers = benchmark["retrievers"]
     baseline = _answerable_by_id(retrievers["bm25"]["cases"])
     comparisons: dict[str, Any] = {}
-    for name in ("dense", "hybrid_rrf"):
+    for name in sorted(set(retrievers) - {"bm25"}):
         candidate = _answerable_by_id(retrievers[name]["cases"])
         if set(candidate) != set(baseline):
             raise ValueError("retriever answerable cases do not match")

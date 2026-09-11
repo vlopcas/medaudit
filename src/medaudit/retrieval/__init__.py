@@ -7,6 +7,7 @@ from medaudit.retrieval.embedding_cache import EmbeddingCache
 from medaudit.retrieval.embeddings import E5Embedder
 from medaudit.retrieval.fusion import ReciprocalRankFusion, WeightedRetriever
 from medaudit.retrieval.protocol import Retriever
+from medaudit.retrieval.rerank import SemanticCandidateReranker
 
 __all__ = [
     "BM25Index",
@@ -19,5 +20,6 @@ __all__ = [
     "ReciprocalRankFusion",
     "Retriever",
     "SearchResult",
+    "SemanticCandidateReranker",
     "WeightedRetriever",
 ]

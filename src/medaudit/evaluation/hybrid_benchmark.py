@@ -20,6 +20,7 @@ from medaudit.retrieval import (
     EmbeddingCache,
     ReciprocalRankFusion,
     Retriever,
+    SemanticCandidateReranker,
     WeightedRetriever,
 )
 from medaudit.retrieval.local_model import MODEL_ID, MODEL_REVISION
@@ -138,6 +139,7 @@ def benchmark_calibration(
         "bm25": [],
         "dense": [],
         "hybrid_rrf": [],
+        "bm25_semantic_rerank": [],
     }
     seen_ids: set[str] = set()
     snapshot_count = 0
@@ -166,10 +168,21 @@ def benchmark_calibration(
             rank_constant=rank_constant,
             candidate_depth=candidate_depth,
         )
+        reranker = SemanticCandidateReranker(
+            bm25,
+            chunks,
+            matrix,
+            embedder,
+            candidate_depth=candidate_depth,
+            rank_constant=rank_constant,
+            lexical_weight=bm25_weight,
+            semantic_weight=dense_weight,
+        )
         for name, retriever in (
             ("bm25", bm25),
             ("dense", dense),
             ("hybrid_rrf", hybrid),
+            ("bm25_semantic_rerank", reranker),
         ):
             outcomes[name].extend(
                 evaluate_rankings(selected_cases, retriever, top_k=top_k)
