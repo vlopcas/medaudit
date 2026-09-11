@@ -18,12 +18,20 @@ from medaudit.retrieval.local_model import MODEL_ID, MODEL_REVISION
 class EmbeddingCache:
     """Reuse embeddings by chunk identity while detecting stale content."""
 
-    def __init__(self, path: Path, *, model_id: str, model_revision: str) -> None:
+    def __init__(
+        self,
+        path: Path,
+        *,
+        model_id: str,
+        model_revision: str,
+        embedding_strategy: str = "truncate-v1",
+    ) -> None:
         if not path.name.endswith(".local.npz"):
             raise ValueError("embedding cache output must end with .local.npz")
         self._path = path
         self._model_id = model_id
         self._model_revision = model_revision
+        self._embedding_strategy = embedding_strategy
 
     def materialize(
         self,
@@ -79,8 +87,10 @@ class EmbeddingCache:
             if (
                 metadata.get("model_id") != self._model_id
                 or metadata.get("model_revision") != self._model_revision
+                or metadata.get("embedding_strategy", "truncate-v1")
+                != self._embedding_strategy
             ):
-                raise ValueError("embedding cache belongs to a different model")
+                raise ValueError("embedding cache belongs to a different configuration")
             chunk_ids = archive["chunk_ids"]
             text_hashes = archive["text_sha256"]
             embeddings = archive["embeddings"]
@@ -105,6 +115,7 @@ class EmbeddingCache:
             "schema_version": 1,
             "model_id": self._model_id,
             "model_revision": self._model_revision,
+            "embedding_strategy": self._embedding_strategy,
             "embedding_dimension": int(embeddings.shape[1]),
         }
         self._path.parent.mkdir(parents=True, exist_ok=True)
@@ -162,6 +173,11 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--cache", type=Path, required=True)
     parser.add_argument("--model-cache", type=Path, required=True)
     parser.add_argument("--batch-size", type=int, default=32)
+    parser.add_argument(
+        "--passage-strategy",
+        choices=("truncate-v1", "token-window-mean-v1"),
+        default="truncate-v1",
+    )
     return parser
 
 
@@ -171,9 +187,12 @@ def main(argv: Sequence[str] | None = None) -> int:
         from medaudit.retrieval.embeddings import E5Embedder
 
         chunks, snapshot_count = load_unique_snapshot_chunks(args.snapshots)
-        embedder = E5Embedder(args.model_cache)
+        embedder = E5Embedder(args.model_cache, passage_strategy=args.passage_strategy)
         matrix = EmbeddingCache(
-            args.cache, model_id=MODEL_ID, model_revision=MODEL_REVISION
+            args.cache,
+            model_id=MODEL_ID,
+            model_revision=MODEL_REVISION,
+            embedding_strategy=args.passage_strategy,
         ).materialize(chunks, embedder, batch_size=args.batch_size)
     except (
         ImportError,

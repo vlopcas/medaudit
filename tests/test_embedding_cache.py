@@ -78,7 +78,26 @@ class EmbeddingCacheTest(unittest.TestCase):
                 path, model_id="model", model_revision="old"
             ).materialize([Chunk("a", "doc", "alpha")], embedder)
 
-            with self.assertRaisesRegex(ValueError, "different model"):
+            with self.assertRaisesRegex(ValueError, "different configuration"):
                 EmbeddingCache(
                     path, model_id="model", model_revision="new"
+                ).materialize([Chunk("a", "doc", "alpha")], embedder)
+
+    def test_rejects_cache_from_another_embedding_strategy(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "vectors.local.npz"
+            embedder = RecordingEmbedder()
+            EmbeddingCache(
+                path,
+                model_id="model",
+                model_revision="revision",
+                embedding_strategy="truncate-v1",
+            ).materialize([Chunk("a", "doc", "alpha")], embedder)
+
+            with self.assertRaisesRegex(ValueError, "different configuration"):
+                EmbeddingCache(
+                    path,
+                    model_id="model",
+                    model_revision="revision",
+                    embedding_strategy="token-window-mean-v1",
                 ).materialize([Chunk("a", "doc", "alpha")], embedder)

@@ -115,6 +115,7 @@ def benchmark_calibration(
     bm25_weight: float,
     dense_weight: float,
     batch_size: int,
+    passage_strategy: str,
 ) -> dict[str, Any]:
     """Run all retrievers over exactly the calibration partition."""
     if top_k <= 0:
@@ -124,9 +125,14 @@ def benchmark_calibration(
     if not selected_ids:
         raise ValueError("calibration partition is empty")
 
-    embedder = E5Embedder(model_cache_directory)
+    embedder = E5Embedder(
+        model_cache_directory, passage_strategy=passage_strategy
+    )
     cache = EmbeddingCache(
-        embedding_cache_path, model_id=MODEL_ID, model_revision=MODEL_REVISION
+        embedding_cache_path,
+        model_id=MODEL_ID,
+        model_revision=MODEL_REVISION,
+        embedding_strategy=passage_strategy,
     )
     outcomes: dict[str, list[dict[str, Any]]] = {
         "bm25": [],
@@ -180,6 +186,7 @@ def benchmark_calibration(
             "rank_constant": rank_constant,
             "bm25_weight": bm25_weight,
             "dense_weight": dense_weight,
+            "passage_strategy": passage_strategy,
         },
         "snapshot_count": snapshot_count,
         "retrievers": {
@@ -204,6 +211,11 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--bm25-weight", type=float, default=1.0)
     parser.add_argument("--dense-weight", type=float, default=1.0)
     parser.add_argument("--batch-size", type=int, default=32)
+    parser.add_argument(
+        "--passage-strategy",
+        choices=("truncate-v1", "token-window-mean-v1"),
+        default="truncate-v1",
+    )
     return parser
 
 
@@ -225,6 +237,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             bm25_weight=args.bm25_weight,
             dense_weight=args.dense_weight,
             batch_size=args.batch_size,
+            passage_strategy=args.passage_strategy,
         )
         write_private_report(report, args.output)
     except (

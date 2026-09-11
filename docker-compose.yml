@@ -79,11 +79,13 @@ services:
       - --snapshots
       - /artifacts/expanded-snapshots
       - --cache
-      - /artifacts/embeddings/multilingual-e5-base.local.npz
+      - "/artifacts/embeddings/${EMBEDDING_CACHE_NAME:-multilingual-e5-base.local.npz}"
       - --model-cache
       - /models/huggingface
       - --batch-size
       - "${EMBEDDING_BATCH_SIZE:-32}"
+      - --passage-strategy
+      - "${EMBEDDING_PASSAGE_STRATEGY:-truncate-v1}"
 
   benchmark-hybrid-calibration:
     extends: materialize-embedding-cache
@@ -98,7 +100,7 @@ services:
       - --split
       - /artifacts/evaluation-split.local.json
       - --embedding-cache
-      - /artifacts/embeddings/multilingual-e5-base.local.npz
+      - "/artifacts/embeddings/${EMBEDDING_CACHE_NAME:-multilingual-e5-base.local.npz}"
       - --model-cache
       - /models/huggingface
       - --output
@@ -113,6 +115,8 @@ services:
       - "${HYBRID_BM25_WEIGHT:-1}"
       - --dense-weight
       - "${HYBRID_DENSE_WEIGHT:-1}"
+      - --passage-strategy
+      - "${EMBEDDING_PASSAGE_STRATEGY:-truncate-v1}"
 
   diagnose-hybrid-calibration:
     extends: profile

@@ -37,6 +37,12 @@ Um profiler offline usa o tokenizer real, com prefixo e tokens especiais, para
 medir a distribuição e a taxa de chunks truncados sem registrar texto. Mudanças
 de chunking motivadas por limite de contexto dependem dessa medição.
 
+O experimento de mitigação preserva os chunks e a proveniência originais. Apenas
+passagens acima da capacidade são divididas em janelas de tokens com sobreposição
+de 64 tokens; os vetores normalizados das janelas são promediados e normalizados
+novamente. A estratégia integra a identidade do cache, impedindo reutilização
+acidental dos vetores truncados.
+
 ## Consequências
 
 - documentos privados nunca são necessários durante o download;
