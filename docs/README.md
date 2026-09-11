@@ -48,6 +48,8 @@ A avaliação privada de retrieval está documentada em
 [ADR-008](decisions/ADR-008-private-retrieval-evaluation.md).
 O prompt para ampliar os casos adversariais está em
 [Prompt de avaliação adversarial](evaluation/notebooklm-adversarial-prompt.md).
+A busca híbrida independente de fornecedor está documentada em
+[ADR-009](decisions/ADR-009-provider-neutral-hybrid-retrieval.md).
 
 ## Conteúdo permitido
 
