@@ -239,3 +239,36 @@ services:
       - "${CALIBRATION_FRACTION:-0.5}"
       - --seed
       - "${EVALUATION_SEED:-medaudit-evaluation-v1}"
+
+  materialize-expanded-snapshots:
+    extends: profile
+    command:
+      - medaudit-materialize-eval-snapshots
+      - --catalog
+      - /private-data/catalog.local.json
+      - --input
+      - /private-data
+      - --golden-sets
+      - /artifacts/golden-sets-expanded
+      - --output
+      - /artifacts/expanded-snapshots
+      - --enable-ocr
+
+  analyze-calibration-confidence:
+    extends: profile
+    command:
+      - medaudit-analyze-confidence
+      - --snapshots
+      - /artifacts/expanded-snapshots
+      - --golden-sets
+      - /artifacts/golden-sets-expanded
+      - --review
+      - /artifacts/rag-evaluation-review-expanded.local.json
+      - --split
+      - /artifacts/evaluation-split.local.json
+      - --partition
+      - calibration
+      - --output
+      - /artifacts/confidence-calibration.local.json
+      - --top-k
+      - "${TOP_K:-5}"

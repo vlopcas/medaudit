@@ -136,6 +136,14 @@ docker compose run --rm prepare-adversarial-review
 
 Somente os novos casos ficam pendentes no arquivo expandido.
 
+Com o split congelado, materialize os snapshots sem executar consultas e meça
+os sinais exclusivamente na calibração:
+
+```bash
+docker compose run --rm materialize-expanded-snapshots
+docker compose run --rm analyze-calibration-confidence
+```
+
 Os documentos são montados como somente leitura e o relatório privado é salvo
 em `artifacts/`. A execução dos containers não possui acesso à rede e os
 relatórios não armazenam texto extraído.

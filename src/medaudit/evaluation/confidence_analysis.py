@@ -13,7 +13,12 @@ from medaudit.evaluation.private_bm25 import (
     load_private_chunks,
     write_private_report,
 )
-from medaudit.retrieval import BM25Index, ConfidenceAnalyzer
+from medaudit.evaluation.split import validate_split
+from medaudit.retrieval import (
+    BM25Index,
+    ConfidenceAnalyzer,
+    ConfidenceSignals,
+)
 
 SIGNAL_NAMES = (
     "top_score",
@@ -31,27 +36,45 @@ def analyze_temporal_confidence(
     review: dict[str, Any],
     *,
     top_k: int,
+    selected_case_ids: set[str] | None = None,
+    partition: str | None = None,
 ) -> dict[str, Any]:
     """Measure signal distributions without selecting a decision threshold."""
     review_by_id = {case["candidate_id"]: case for case in review["cases"]}
     cases_report: list[dict[str, Any]] = []
+    seen_case_ids: set[str] = set()
     for cases_path in sorted(golden_directory.glob("retrieval-*.local.json")):
         suffix = cases_path.name.removeprefix("retrieval-").removesuffix(
             ".local.json"
         )
-        chunks, chunk_date = load_private_chunks(
-            snapshots_directory / f"chunks-{suffix}.local.jsonl"
-        )
         cases, case_date = load_private_cases(cases_path)
-        if chunk_date != case_date:
-            raise ValueError("snapshot and golden set dates do not match")
-        index = BM25Index(chunks)
-        analyzer = ConfidenceAnalyzer(chunks)
         for case in cases:
+            seen_case_ids.add(case.case_id)
             if case.case_id not in review_by_id:
                 raise ValueError("confidence case is absent from review")
-            results = index.search(case.question, top_k=top_k)
-            signals = asdict(analyzer.analyze(case.question, results))
+        selected_cases = [
+            case
+            for case in cases
+            if selected_case_ids is None or case.case_id in selected_case_ids
+        ]
+        if not selected_cases:
+            continue
+        chunks_path = snapshots_directory / f"chunks-{suffix}.local.jsonl"
+        if chunks_path.stat().st_size:
+            chunks, chunk_date = load_private_chunks(chunks_path)
+            if chunk_date != case_date:
+                raise ValueError("snapshot and golden set dates do not match")
+            index: BM25Index | None = BM25Index(chunks)
+            analyzer: ConfidenceAnalyzer | None = ConfidenceAnalyzer(chunks)
+        else:
+            index = None
+            analyzer = None
+        for case in selected_cases:
+            if index is None or analyzer is None:
+                signals = asdict(ConfidenceSignals(0.0, 0.0, 0.0, None, 0.0, 0))
+            else:
+                results = index.search(case.question, top_k=top_k)
+                signals = asdict(analyzer.analyze(case.question, results))
             reviewed = review_by_id[case.case_id]
             cases_report.append(
                 {
@@ -65,13 +88,17 @@ def analyze_temporal_confidence(
                     "signals": signals,
                 }
             )
-    if len(cases_report) != len(review_by_id):
+    expected_case_ids = selected_case_ids or set(review_by_id)
+    if seen_case_ids != set(review_by_id):
         raise ValueError("confidence analysis and review cases do not match")
+    if {case["case_id"] for case in cases_report} != expected_case_ids:
+        raise ValueError("confidence analysis partition does not match split")
     answerable = [case for case in cases_report if case["answerable"]]
     unanswerable = [case for case in cases_report if not case["answerable"]]
     return {
         "schema_version": 1,
         "top_k": top_k,
+        "partition": partition,
         "case_count": len(cases_report),
         "answerable_case_count": len(answerable),
         "unanswerable_case_count": len(unanswerable),
@@ -134,6 +161,10 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--review", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--top-k", type=int, default=5)
+    parser.add_argument("--split", type=Path)
+    parser.add_argument(
+        "--partition", choices=("calibration", "evaluation")
+    )
     return parser
 
 
@@ -141,11 +172,22 @@ def main(argv: Sequence[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     try:
         review: dict[str, Any] = json.loads(args.review.read_text(encoding="utf-8"))
+        if bool(args.split) != bool(args.partition):
+            raise ValueError("split and partition must be provided together")
+        selected_case_ids: set[str] | None = None
+        if args.split:
+            if args.partition is None:
+                raise ValueError("split partition is required")
+            split: dict[str, Any] = json.loads(args.split.read_text(encoding="utf-8"))
+            validate_split(split, review)
+            selected_case_ids = set(split["partitions"][args.partition])
         report = analyze_temporal_confidence(
             args.snapshots,
             args.golden_sets,
             review,
             top_k=args.top_k,
+            selected_case_ids=selected_case_ids,
+            partition=args.partition,
         )
         write_private_report(report, args.output)
     except (KeyError, TypeError, ValueError, OSError, json.JSONDecodeError) as error:

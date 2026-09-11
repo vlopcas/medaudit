@@ -63,6 +63,9 @@ ao mesmo estrato não respondível, sem que o manifesto reescreva a fonte.
 Casos presentes em experimentos anteriores são forçados para calibração. A
 divisão estratificada incide somente sobre casos novos, impedindo que resultados
 já observados contaminem a avaliação final.
+Materialização do corpus e avaliação são operações separadas: criar snapshots
+por data não executa perguntas. Durante calibração, o analisador filtra IDs
+antes da busca e valida o manifesto contra a fila revisada.
 
 ## Como validar
 

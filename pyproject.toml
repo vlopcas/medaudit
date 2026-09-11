@@ -41,6 +41,7 @@ medaudit-run-temporal-baseline = "medaudit.evaluation.temporal_baseline:main"
 medaudit-diagnose-baseline = "medaudit.evaluation.diagnostics:main"
 medaudit-analyze-confidence = "medaudit.evaluation.confidence_analysis:main"
 medaudit-split-evaluation = "medaudit.evaluation.split:main"
+medaudit-materialize-eval-snapshots = "medaudit.evaluation.materialize_snapshots:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/medaudit"]
