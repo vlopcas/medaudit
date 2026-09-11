@@ -169,6 +169,16 @@ docker compose run --rm embedding-model-check
 O primeiro comando é o único com acesso à rede. O segundo recarrega a revisão
 fixada usando o cache local como somente leitura e sem rede.
 
+Depois de materializar os snapshots temporais, gere ou atualize o cache local
+deduplicado de embeddings com:
+
+```bash
+docker compose run --rm materialize-embedding-cache
+```
+
+O comando executa sem rede, lê o modelo e os snapshots em modo somente leitura
+e grava em `artifacts/` apenas IDs, hashes e vetores privados reutilizáveis.
+
 Os documentos são montados como somente leitura e o relatório privado é salvo
 em `artifacts/`. A execução dos containers não possui acesso à rede e os
 relatórios não armazenam texto extraído.

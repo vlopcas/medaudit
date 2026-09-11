@@ -49,6 +49,7 @@ medaudit-materialize-eval-snapshots = "medaudit.evaluation.materialize_snapshots
 medaudit-calibrate-confidence-policy = "medaudit.evaluation.confidence_policy:main"
 medaudit-evaluate-heldout-policy = "medaudit.evaluation.heldout_evaluation:main"
 medaudit-prepare-embedding-model = "medaudit.retrieval.local_model:main"
+medaudit-materialize-embedding-cache = "medaudit.retrieval.embedding_cache:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/medaudit"]

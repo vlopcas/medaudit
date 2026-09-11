@@ -64,6 +64,27 @@ services:
       - --manifest
       - /tmp/multilingual-e5-base.local.json
 
+  materialize-embedding-cache:
+    extends: embedding-model-check
+    volumes:
+      - type: bind
+        source: ./models
+        target: /models
+        read_only: true
+      - type: bind
+        source: ./artifacts
+        target: /artifacts
+    command:
+      - medaudit-materialize-embedding-cache
+      - --snapshots
+      - /artifacts/expanded-snapshots
+      - --cache
+      - /artifacts/embeddings/multilingual-e5-base.local.npz
+      - --model-cache
+      - /models/huggingface
+      - --batch-size
+      - "${EMBEDDING_BATCH_SIZE:-32}"
+
   profile:
     build:
       context: .

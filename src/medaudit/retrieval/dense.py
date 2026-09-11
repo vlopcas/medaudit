@@ -26,13 +26,18 @@ class DenseIndex:
         embedder: Embedder,
         *,
         batch_size: int = 32,
+        passage_embeddings: FloatMatrix | None = None,
     ) -> None:
         if not chunks:
             raise ValueError("at least one chunk is required")
         if batch_size <= 0:
             raise ValueError("embedding batch size must be positive")
-        matrix = embedder.encode_passages(
-            [chunk.text for chunk in chunks], batch_size=batch_size
+        matrix = (
+            passage_embeddings
+            if passage_embeddings is not None
+            else embedder.encode_passages(
+                [chunk.text for chunk in chunks], batch_size=batch_size
+            )
         )
         self._validate_matrix(matrix, len(chunks))
         self._chunks = chunks

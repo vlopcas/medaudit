@@ -16,16 +16,24 @@ class E5Embedder:
     """Load the pinned E5 model from a local cache and create normalized vectors."""
 
     def __init__(self, cache_directory: Path, *, device: str = "cuda") -> None:
+        self._cache_directory = cache_directory
+        self._device = device
+        self._model: Any | None = None
+
+    def _load_model(self) -> Any:
+        if self._model is not None:
+            return self._model
         module = importlib.import_module("sentence_transformers")
         model_type: Any = module.SentenceTransformer
-        self._model: Any = model_type(
+        self._model = model_type(
             MODEL_ID,
             revision=MODEL_REVISION,
-            cache_folder=str(cache_directory),
+            cache_folder=str(self._cache_directory),
             local_files_only=True,
             trust_remote_code=False,
-            device=device,
+            device=self._device,
         )
+        return self._model
 
     def encode_passages(self, texts: list[str], *, batch_size: int) -> FloatMatrix:
         """Encode private chunks locally using the E5 passage prefix."""
@@ -38,7 +46,7 @@ class E5Embedder:
         return self._encode([f"query: {text}"], 1)
 
     def _encode(self, texts: list[str], batch_size: int) -> FloatMatrix:
-        vectors: Any = self._model.encode(
+        vectors: Any = self._load_model().encode(
             texts,
             batch_size=batch_size,
             normalize_embeddings=True,

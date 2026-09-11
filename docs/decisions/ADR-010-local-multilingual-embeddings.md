@@ -28,6 +28,10 @@ A imagem semântica possui Dockerfile próprio: a camada grande de PyTorch e
 Sentence Transformers é instalada antes da cópia do código. Mudanças comuns no
 projeto reutilizam essa camada. O índice denso trabalha com matrizes `float32`
 normalizadas e similaridade por produto interno, equivalente ao cosseno.
+Embeddings de chunks são persistidos em um artefato local incremental. A chave
+é o ID do chunk, acompanhada do hash do texto; colisões de conteúdo e mudanças
+de modelo ou revisão interrompem o processo em vez de reutilizar vetores
+obsoletos.
 
 ## Consequências
 
