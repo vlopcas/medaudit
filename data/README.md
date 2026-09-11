@@ -128,3 +128,9 @@ Antes de materializar snapshots, execute
 `docker compose run --rm audit-temporal-eval`. Conflitos entre a data do caso e
 a vigência da fonte são detalhados somente no relatório privado
 `artifacts/temporal-eval-conflicts.local.json` e bloqueiam a avaliação.
+
+Para ampliar o benchmark sem perder decisões anteriores, salve os novos casos
+em `data/eval/rag-evaluation-adversarial.local.json` e execute
+`docker compose run --rm prepare-adversarial-review`. A fila combinada será
+gravada em `artifacts/rag-evaluation-review-expanded.local.json`; somente os
+casos recém-importados terão status `pending`.

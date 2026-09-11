@@ -46,6 +46,8 @@ A materialização temporal de chunks está documentada em
 [ADR-007](decisions/ADR-007-temporal-private-chunk-materialization.md).
 A avaliação privada de retrieval está documentada em
 [ADR-008](decisions/ADR-008-private-retrieval-evaluation.md).
+O prompt para ampliar os casos adversariais está em
+[Prompt de avaliação adversarial](evaluation/notebooklm-adversarial-prompt.md).
 
 ## Conteúdo permitido
 

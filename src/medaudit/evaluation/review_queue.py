@@ -14,9 +14,11 @@ from medaudit.catalog.serialization import load_catalog
 
 
 def prepare_review_queue(
-    candidates: dict[str, Any], catalog: Catalog
+    candidates: dict[str, Any],
+    catalog: Catalog,
+    existing_review: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """Map source labels to catalog IDs while keeping every case pending."""
+    """Map new candidates while preserving previously reviewed cases."""
     label_map: dict[str, set[str]] = {}
     for entry in catalog.entries:
         labels = [entry.title or "", *entry.relative_paths]
@@ -26,8 +28,12 @@ def prepare_review_queue(
                 if normalized:
                     label_map.setdefault(normalized, set()).add(entry.document_id)
 
-    review_cases = []
+    review_cases = _existing_cases(existing_review)
+    seen_ids = {case["candidate_id"] for case in review_cases}
     for candidate in candidates["cases"]:
+        if candidate["candidate_id"] in seen_ids:
+            raise ValueError("candidate id already exists in review queue")
+        seen_ids.add(candidate["candidate_id"])
         source_labels = candidate.get("required_source_labels", [])
         mapped_sets = [
             label_map.get(_normalize(label), set()) for label in source_labels
@@ -49,6 +55,18 @@ def prepare_review_queue(
         "review_status": "requires_human_review",
         "cases": review_cases,
     }
+
+
+def _existing_cases(existing_review: dict[str, Any] | None) -> list[dict[str, Any]]:
+    if existing_review is None:
+        return []
+    if existing_review.get("schema_version") != 1:
+        raise ValueError("unsupported existing review schema")
+    cases = existing_review.get("cases", [])
+    identifiers = [case["candidate_id"] for case in cases]
+    if len(identifiers) != len(set(identifiers)):
+        raise ValueError("duplicate case id in existing review")
+    return [dict(case) for case in cases]
 
 
 def _normalize(value: str) -> str:
@@ -76,6 +94,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--candidates", type=Path, required=True)
     parser.add_argument("--catalog", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--existing-review", type=Path)
     return parser
 
 
@@ -85,7 +104,14 @@ def main(argv: Sequence[str] | None = None) -> int:
         candidates: dict[str, Any] = json.loads(
             args.candidates.read_text(encoding="utf-8")
         )
-        queue = prepare_review_queue(candidates, load_catalog(args.catalog))
+        existing_review: dict[str, Any] | None = (
+            json.loads(args.existing_review.read_text(encoding="utf-8"))
+            if args.existing_review
+            else None
+        )
+        queue = prepare_review_queue(
+            candidates, load_catalog(args.catalog), existing_review
+        )
         write_review_queue(queue, args.output)
     except (KeyError, TypeError, ValueError, OSError, json.JSONDecodeError) as error:
         print(json.dumps({"error": type(error).__name__, "succeeded": False}))

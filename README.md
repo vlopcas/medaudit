@@ -113,6 +113,27 @@ regra de abstention:
 docker compose run --rm analyze-confidence
 ```
 
+Depois de ampliar e revisar o benchmark, congele a separação determinística
+entre calibração e avaliação final:
+
+```bash
+docker compose run --rm split-evaluation
+```
+
+O manifesto privado usa apenas IDs e fingerprints. O conjunto `calibration`
+serve para escolher sinais e limiares; o conjunto `evaluation` permanece sem
+consulta até a política estar congelada.
+
+Os candidatos adversariais gerados com o
+[prompt privado](docs/evaluation/notebooklm-adversarial-prompt.md) podem ser
+anexados à revisão existente sem perder as aprovações anteriores:
+
+```bash
+docker compose run --rm prepare-adversarial-review
+```
+
+Somente os novos casos ficam pendentes no arquivo expandido.
+
 Os documentos são montados como somente leitura e o relatório privado é salvo
 em `artifacts/`. A execução dos containers não possui acesso à rede e os
 relatórios não armazenam texto extraído.

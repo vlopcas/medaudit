@@ -135,6 +135,19 @@ services:
       - --output
       - /artifacts/rag-evaluation-review.local.json
 
+  prepare-adversarial-review:
+    extends: profile
+    command:
+      - medaudit-prepare-eval-review
+      - --candidates
+      - /private-data/eval/rag-evaluation-adversarial.local.json
+      - --catalog
+      - /private-data/catalog.local.json
+      - --existing-review
+      - /artifacts/rag-evaluation-review.local.json
+      - --output
+      - /artifacts/rag-evaluation-review-expanded.local.json
+
   finalize-eval:
     extends: profile
     command:
@@ -143,6 +156,17 @@ services:
       - /artifacts/rag-evaluation-review.local.json
       - --output
       - /artifacts/golden-sets
+      - --default-date
+      - "${REFERENCE_DATE:-2026-09-08}"
+
+  finalize-expanded-eval:
+    extends: profile
+    command:
+      - medaudit-finalize-eval
+      - --review
+      - /artifacts/rag-evaluation-review-expanded.local.json
+      - --output
+      - /artifacts/golden-sets-expanded
       - --default-date
       - "${REFERENCE_DATE:-2026-09-08}"
 
@@ -200,3 +224,16 @@ services:
       - /artifacts/confidence-analysis.local.json
       - --top-k
       - "${TOP_K:-5}"
+
+  split-evaluation:
+    extends: profile
+    command:
+      - medaudit-split-evaluation
+      - --review
+      - /artifacts/rag-evaluation-review-expanded.local.json
+      - --output
+      - /artifacts/evaluation-split.local.json
+      - --calibration-fraction
+      - "${CALIBRATION_FRACTION:-0.7}"
+      - --seed
+      - "${EVALUATION_SEED:-medaudit-evaluation-v1}"

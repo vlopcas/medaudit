@@ -59,6 +59,59 @@ class ReviewQueueTest(unittest.TestCase):
 
         self.assertNotIn("private unknown", str(caught.exception))
 
+    def test_preserves_existing_approvals_and_appends_pending_cases(self) -> None:
+        existing = {
+            "schema_version": 1,
+            "review_status": "reviewed",
+            "cases": [
+                {
+                    "candidate_id": "existing-001",
+                    "answerability": "insufficient_evidence",
+                    "review_status": "approved",
+                }
+            ],
+        }
+        candidates = {
+            "cases": [
+                {
+                    "candidate_id": "new-001",
+                    "question": "Synthetic question?",
+                    "answerability": "answerable",
+                    "required_source_labels": ["Synthetic Policy"],
+                }
+            ]
+        }
+
+        queue = prepare_review_queue(candidates, self.catalog, existing)
+
+        self.assertEqual(len(queue["cases"]), 2)
+        self.assertEqual(queue["cases"][0]["review_status"], "approved")
+        self.assertEqual(queue["cases"][1]["review_status"], "pending")
+
+    def test_rejects_candidate_already_in_existing_review(self) -> None:
+        existing = {
+            "schema_version": 1,
+            "cases": [
+                {
+                    "candidate_id": "candidate-001",
+                    "answerability": "answerable",
+                    "review_status": "approved",
+                }
+            ],
+        }
+        candidates = {
+            "cases": [
+                {
+                    "candidate_id": "candidate-001",
+                    "answerability": "answerable",
+                    "required_source_labels": ["Synthetic Policy"],
+                }
+            ]
+        }
+
+        with self.assertRaisesRegex(ValueError, "already exists"):
+            prepare_review_queue(candidates, self.catalog, existing)
+
     def test_output_requires_private_suffix(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             with self.assertRaisesRegex(ValueError, "must end with .local.json"):

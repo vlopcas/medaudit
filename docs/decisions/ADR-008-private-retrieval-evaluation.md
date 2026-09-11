@@ -53,6 +53,12 @@ margem normalizada, cobertura da consulta, cobertura de termos raros e
 concentração por documento. Pesos e limiares não serão escolhidos no conjunto
 completo usado para reportar a baseline.
 
+Após ampliar o benchmark, uma divisão determinística e estratificada por
+respondibilidade separa calibração e avaliação final. Todos os experimentos e
+ajustes usam somente calibração. A partição final permanece sem consulta até a
+política e seus limiares serem congelados. O manifesto local registra seed,
+fingerprint e IDs para detectar alterações, omissões e sobreposição.
+
 ## Como validar
 
 - testar relevância por documento e por chunk;
