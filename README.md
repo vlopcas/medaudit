@@ -6,7 +6,9 @@ aplicados à auditoria documental.
 
 O princípio central é adicionar complexidade somente quando uma avaliação
 reproduzível demonstrar a limitação do baseline atual. O plano completo está em
-[`docs/plano_estudos_llm_rag_graph_agentic.md`](docs/plano_estudos_llm_rag_graph_agentic.md).
+[`docs/plano_estudos_llm_rag_graph_agentic.md`](docs/plano_estudos_llm_rag_graph_agentic.md)
+e o progresso observado está consolidado no
+[`status do plano`](docs/study-progress.md).
 
 > Este software auxilia estudos e análise documental. Ele não substitui
 > auditoria profissional, decisão clínica, regulatória ou de cobertura.
@@ -14,19 +16,28 @@ reproduzível demonstrar a limitação do baseline atual. O plano completo está
 
 ## Estado atual
 
-A fundação da Fase 0 está concluída. O projeto possui um baseline BM25 local e
-os primeiros contratos de parsing e chunking estrutural, todos avaliados com
-dados sintéticos e sem depender de API ou LLM. A ingestão seleciona parsers por
-uma allowlist de tipos de mídia e produz artefatos locais versionados. Consulte a
-[arquitetura atual](docs/architecture.md).
+A fundação e o pipeline documental local estão implementados: inventário,
+catálogo revisado, parsing de texto, PDF e planilhas, OCR explícito, chunking
+estrutural e materialização por vigência. O projeto também possui avaliação
+privada reproduzível, snapshots temporais e uma política congelada de confiança
+para decidir entre recuperar evidências ou se abster.
 
-O pipeline de RAG já possui uma fronteira determinística entre retrieval e
-geração: somente evidências aceitas pela política congelada podem formar um
-prompt, e a resposta estruturada só aceita citações presentes nesse contexto.
-O primeiro adaptador generativo aponta exclusivamente para um servidor
-`llama.cpp` em loopback e usa JSON Schema. O modelo local ainda não é baixado
-nem iniciado pelos serviços atuais, e nenhuma API externa é chamada durante a
-inferência.
+BM25 permanece como baseline principal. Recuperação densa, fusão híbrida e
+reranking semântico foram implementados e comparados na calibração, mas ainda
+não demonstraram ganho suficiente para substituir o baseline. Esses caminhos
+continuam experimentais.
+
+O primeiro RAG condicionado a evidências funciona ponta a ponta com um servidor
+`llama.cpp` local, saída restringida por JSON Schema e validação determinística
+de citações. O modelo fixado foi baixado e executado com aceleração por GPU em
+um ambiente Docker isolado. Embora o contrato estrutural tenha funcionado, o
+modelo completou apenas 3 de 7 respostas no holdout sintético congelado. Por
+isso, geração sobre o corpus privado permanece desabilitada.
+
+A próxima etapa planejada é a **Fase 8 — Query Understanding**. Consulte a
+[arquitetura atual](docs/architecture.md), o
+[status detalhado do plano](docs/study-progress.md) e os
+[resultados dos experimentos](docs/results/README.md).
 
 ## Ambiente de desenvolvimento
 

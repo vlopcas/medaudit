@@ -1,5 +1,10 @@
 # Plano Completo de Estudos e Projeto --- LLM, RAG, GraphRAG e Agentes
 
+> O progresso da implementação é acompanhado separadamente em
+> [Status do plano de estudos](study-progress.md). Este arquivo permanece como
+> roteiro conceitual e não deve ser interpretado como uma lista linear do que já
+> foi concluído.
+
 > Objetivo: sair dos fundamentos e chegar à construção de um sistema
 > robusto de auditoria documental, capaz de consultar documentos,
 > correlacionar regras, acessar dados estruturados, interpretar conteúdo

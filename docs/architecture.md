@@ -23,7 +23,11 @@ Chunk[]
     └── deterministic chunk_id
     ↓ versioned local serialization
 ignored processed artifact
-    ↓ BM25Index
+    ↓ retrieval boundary
+    ├── BM25Index (baseline principal)
+    ├── DenseIndex (experimental)
+    ├── ReciprocalRankFusion (experimental)
+    └── SemanticCandidateReranker (experimental)
 SearchResult[]
     ├──→ evaluation
     │    Hit Rate / Recall / MRR / abstention
@@ -32,10 +36,18 @@ RetrievalDecision
     ├── insufficient_evidence → encerra sem LLM
     └── accepted evidence
           ↓ structured grounded request
-        LLMClient (ainda sem adaptador concreto)
+        LLMClient
+          └── LlamaCppClient → servidor local isolado
           ↓ deterministic response validation
         answer + traceable citations
 ```
+
+Os caminhos denso, híbrido e de reranking existem para comparação controlada.
+Eles não foram promovidos ao caminho principal porque os experimentos de
+calibração ainda não demonstraram ganho suficiente sobre BM25. Da mesma forma,
+o adaptador generativo está operacional, mas permanece restrito a dados
+sintéticos: o modelo atual não atingiu o critério de conteúdo no holdout
+congelado.
 
 Em paralelo, o inventário técnico alimenta um catálogo privado revisado. O hash
 define identidade; metadados semânticos e temporais só se tornam confiáveis
@@ -93,6 +105,13 @@ em `data/processed/`, que é ignorado pelo Git.
 ## Ambiente de execução
 
 Docker Compose é a referência reproduzível. A imagem contém Python e OCR, mas
-não contém o corpus privado. Os serviços executam sem rede, com filesystem raiz
-somente leitura e sem capabilities adicionais. O corpus entra apenas por bind
-mount somente leitura; artefatos locais saem por um mount separado e ignorado.
+não contém o corpus privado. Serviços que processam o corpus executam sem acesso
+à rede, com filesystem raiz somente leitura e sem capabilities adicionais. O
+corpus entra apenas por bind mount somente leitura; artefatos locais saem por um
+mount separado e ignorado.
+
+Os serviços de download de modelos são exceções explícitas: possuem acesso à
+internet, não montam `data/` e gravam somente em `models/`. Durante os benchmarks
+generativos, cliente e servidor comunicam-se por uma rede interna do Docker sem
+publicar a porta do modelo no host; tanto o corpus privado quanto APIs externas
+permanecem fora desse fluxo.
