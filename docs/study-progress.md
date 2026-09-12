@@ -59,6 +59,12 @@ experimento separou bloqueios conservadores do planejamento e alcançou 87,5%
 de rotas corretas, sem bloqueios externos indevidos. A candidata ainda não foi
 promovida porque perdeu dois casos de decomposição multi-documento.
 
+A tentativa seguinte de detectar estrutura multi-documento atingiu 100% no
+desenvolvimento, mas caiu para 62,5% no holdout e gerou 37,5% de falsos
+positivos. Ela foi retirada do analisador principal e preservada apenas como
+experimento. O próximo marco deve restringir planejamento automático aos sinais
+explícitos já sustentados pelas avaliações.
+
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em
 [Arquitetura atual](architecture.md).

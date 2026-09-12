@@ -59,6 +59,7 @@ medaudit-prepare-local-llm = "medaudit.llm.local_model:main"
 medaudit-benchmark-local-llm = "medaudit.evaluation.local_llm_benchmark:main"
 medaudit-evaluate-query-understanding = "medaudit.evaluation.query_understanding:main"
 medaudit-benchmark-local-query-understanding = "medaudit.evaluation.local_query_understanding:main"
+medaudit-evaluate-structural-decomposition = "medaudit.evaluation.structural_decomposition:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/medaudit"]

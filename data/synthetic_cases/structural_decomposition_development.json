@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {"id": "sd-001", "query": "Consolide os documentos alfa e beta.", "requires_decomposition": true},
+    {"id": "sd-002", "query": "Analise a regra sintética alfa com a norma sintética beta.", "requires_decomposition": true},
+    {"id": "sd-003", "query": "Informe o prazo de cada documento.", "requires_decomposition": true},
+    {"id": "sd-004", "query": "Extraia as exceções de ambos.", "requires_decomposition": true},
+    {"id": "sd-005", "query": "Apresente separadamente a condição alfa e a condição beta.", "requires_decomposition": true},
+    {"id": "sd-006", "query": "Qual regra vale em cada versão?", "requires_decomposition": true},
+    {"id": "sd-007", "query": "Use o manual sintético alfa e o manual sintético beta.", "requires_decomposition": true},
+    {"id": "sd-008", "query": "Associe as fontes primeiro e segundo.", "requires_decomposition": true},
+    {"id": "sd-009", "query": "Dê os valores das normas alfa e beta, respectivamente.", "requires_decomposition": true},
+    {"id": "sd-010", "query": "Verifique a regra alfa entre a regra beta.", "requires_decomposition": true},
+    {"id": "sd-011", "query": "Quais documentos mencionam o prazo sintético?", "requires_decomposition": false},
+    {"id": "sd-012", "query": "Liste as regras de cobrança disponíveis.", "requires_decomposition": false},
+    {"id": "sd-013", "query": "Pesquise normas sobre autorização.", "requires_decomposition": false},
+    {"id": "sd-014", "query": "O manual descreve documentos auxiliares?", "requires_decomposition": false},
+    {"id": "sd-015", "query": "Qual fonte explica a regra sintética?", "requires_decomposition": false},
+    {"id": "sd-016", "query": "Encontre versões que contenham este termo.", "requires_decomposition": false},
+    {"id": "sd-017", "query": "Há diferenças registradas neste documento?", "requires_decomposition": false},
+    {"id": "sd-018", "query": "Resuma as normas recuperadas.", "requires_decomposition": false},
+    {"id": "sd-019", "query": "Quantas regras existem no índice?", "requires_decomposition": false},
+    {"id": "sd-020", "query": "O documento cita fontes externas?", "requires_decomposition": false}
+  ]
+}
+

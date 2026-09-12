@@ -11,6 +11,7 @@ from medaudit.query_understanding.routing import (
     ConservativeQueryRouter,
     expected_route,
 )
+from medaudit.query_understanding.structure import requires_structural_decomposition
 
 __all__ = [
     "ConservativeQueryRouter",
@@ -21,5 +22,6 @@ __all__ = [
     "QueryRoute",
     "build_query_analysis_request",
     "expected_route",
+    "requires_structural_decomposition",
     "validate_semantic_response",
 ]

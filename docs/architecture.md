@@ -67,6 +67,10 @@ determinísticas podem bloquear por dependência externa, enquanto decomposiçã
 pode combinar sinais determinísticos e semânticos. Ela ainda não controla o
 pipeline.
 
+Uma heurística estrutural para decomposição também existe como experimento
+isolado. Ela foi rejeitada no holdout e não é chamada pelo analisador nem pelo
+roteador principal.
+
 Em paralelo, o inventário técnico alimenta um catálogo privado revisado. O hash
 define identidade; metadados semânticos e temporais só se tornam confiáveis
 após revisão humana no documento de origem.

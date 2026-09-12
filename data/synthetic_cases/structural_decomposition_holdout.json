@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {"id": "sdh-001", "query": "Considere ambos os manuais sintéticos.", "requires_decomposition": true},
+    {"id": "sdh-002", "query": "Use a regra alfa em conjunto com a norma beta.", "requires_decomposition": true},
+    {"id": "sdh-003", "query": "Informe uma resposta para cada norma.", "requires_decomposition": true},
+    {"id": "sdh-004", "query": "Sintetize as fontes beta e alfa.", "requires_decomposition": true},
+    {"id": "sdh-005", "query": "Trate os documentos primeiro e segundo.", "requires_decomposition": true},
+    {"id": "sdh-006", "query": "Extraia o prazo da norma alfa e da regra beta.", "requires_decomposition": true},
+    {"id": "sdh-007", "query": "Avalie os dois documentos.", "requires_decomposition": true},
+    {"id": "sdh-008", "query": "Mostre a condição de cada uma das versões.", "requires_decomposition": true},
+    {"id": "sdh-009", "query": "Quais manuais estão disponíveis?", "requires_decomposition": false},
+    {"id": "sdh-010", "query": "Pesquise documentos por palavra-chave.", "requires_decomposition": false},
+    {"id": "sdh-011", "query": "A palavra ambos aparece no texto?", "requires_decomposition": false},
+    {"id": "sdh-012", "query": "O manual contém regras sintéticas?", "requires_decomposition": false},
+    {"id": "sdh-013", "query": "Manual e regra são filtros disponíveis?", "requires_decomposition": false},
+    {"id": "sdh-014", "query": "Quantos documentos foram indexados?", "requires_decomposition": false},
+    {"id": "sdh-015", "query": "Localize normas que citam a versão atual.", "requires_decomposition": false},
+    {"id": "sdh-016", "query": "O documento usa a expressão respectivamente?", "requires_decomposition": false}
+  ]
+}

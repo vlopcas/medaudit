@@ -21,3 +21,4 @@ para evitar a exposição indireta do corpus privado.
 - [Resultado 005: holdout sintético de Query Understanding](005-query-understanding-synthetic-holdout.md)
 - [Resultado 006: Query Understanding híbrido com LLM local](006-local-llm-query-understanding-development.md)
 - [Resultado 007: roteamento de consultas em camadas](007-layered-query-routing-development.md)
+- [Resultado 008: decomposição estrutural de consultas](008-structural-decomposition-holdout.md)

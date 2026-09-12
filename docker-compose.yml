@@ -158,6 +158,39 @@ services:
       - --cases
       - /app/data/synthetic_cases/query_understanding_cases.json
 
+  evaluate-structural-decomposition:
+    build:
+      context: .
+    network_mode: none
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    command:
+      - medaudit-evaluate-structural-decomposition
+      - --cases
+      - /app/data/synthetic_cases/structural_decomposition_development.json
+
+  evaluate-structural-decomposition-holdout:
+    extends: evaluate-structural-decomposition
+    user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
+    volumes:
+      - type: bind
+        source: ./artifacts
+        target: /artifacts
+    command:
+      - medaudit-evaluate-structural-decomposition
+      - --cases
+      - /app/data/synthetic_cases/structural_decomposition_holdout.json
+      - --output
+      - /artifacts/structural-decomposition-holdout.local.json
+      - --expected-sha256
+      - b25cdca3d1462af091953ce1c1552e1d7819347029c34d67fea4e5c3b04dc06c
+      - --refuse-overwrite
+
   evaluate-query-understanding-holdout:
     extends: evaluate-query-understanding
     user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"

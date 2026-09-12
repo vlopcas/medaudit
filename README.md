@@ -67,6 +67,16 @@ docker compose stop llm-server
 Ela obteve 56,25% de exact match no desenvolvimento e foi rejeitada antes de
 qualquer holdout ou integração ao RAG.
 
+A heurística estrutural de decomposição pode ser reproduzida no conjunto de
+desenvolvimento com:
+
+```bash
+docker compose run --rm evaluate-structural-decomposition
+```
+
+Seu holdout congelado já foi executado e rejeitou a hipótese com 62,5% de
+acurácia; ela não integra o fluxo principal.
+
 ## Ambiente de desenvolvimento
 
 Requer Python 3.12 ou superior.

@@ -68,8 +68,9 @@ class DeterministicQueryAnalyzer:
             _contains_any(folded, _EXTERNAL_SOURCES)
             and _contains_any(folded, _FRESHNESS_SIGNALS)
         )
-        requires_decomposition = len(reference_dates) > 1 or _contains_any(
-            folded, _DECOMPOSITION_SIGNALS
+        requires_decomposition = (
+            len(reference_dates) > 1
+            or _contains_any(folded, _DECOMPOSITION_SIGNALS)
         )
         intent = _classify_intent(folded, requires_external_data)
         entities = (f"procedure:{procedure}",) if procedure else ()
