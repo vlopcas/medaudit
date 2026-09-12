@@ -23,8 +23,10 @@ uma allowlist de tipos de mídia e produz artefatos locais versionados. Consulte
 O pipeline de RAG já possui uma fronteira determinística entre retrieval e
 geração: somente evidências aceitas pela política congelada podem formar um
 prompt, e a resposta estruturada só aceita citações presentes nesse contexto.
-Ainda não há adaptador de modelo generativo; nenhuma API externa é necessária
-ou chamada por essa implementação.
+O primeiro adaptador generativo aponta exclusivamente para um servidor
+`llama.cpp` em loopback e usa JSON Schema. O modelo local ainda não é baixado
+nem iniciado pelos serviços atuais, e nenhuma API externa é chamada durante a
+inferência.
 
 ## Ambiente de desenvolvimento
 

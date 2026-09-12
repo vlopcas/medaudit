@@ -54,6 +54,8 @@ Os embeddings locais estão documentados em
 [ADR-010](decisions/ADR-010-local-multilingual-embeddings.md).
 A geração condicionada ao gate e a validação de citações estão documentadas em
 [ADR-011](decisions/ADR-011-gated-evidence-first-generation.md).
+A escolha inicial do modelo generativo e seu adaptador local estão em
+[ADR-012](decisions/ADR-012-local-structured-generation.md).
 
 ## Conteúdo permitido
 

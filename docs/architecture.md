@@ -57,7 +57,8 @@ registrando o intervalo de linhas.
 - `retrieval`: índices e resultados de busca;
 - `evaluation`: datasets, métricas e execução de benchmarks;
 - `rag`: gate de abstention, pacote de evidências, prompt e validação de citações;
-- `llm`: contrato independente de fornecedor, ainda sem adaptador concreto;
+- `llm`: contrato independente de fornecedor e adaptador HTTP restrito a um
+  servidor `llama.cpp` local;
 - `ingestion`: inventário, seleção de parser, pipeline local e serialização.
 - `catalog`: identidade, metadados temporais e relações de substituição.
 
@@ -87,6 +88,7 @@ em `data/processed/`, que é ignorado pelo Git.
 - [ADR-009: busca híbrida independente de fornecedor](decisions/ADR-009-provider-neutral-hybrid-retrieval.md)
 - [ADR-010: embeddings multilíngues locais](decisions/ADR-010-local-multilingual-embeddings.md)
 - [ADR-011: geração condicionada a evidências rastreáveis](decisions/ADR-011-gated-evidence-first-generation.md)
+- [ADR-012: geração estruturada com modelo local](decisions/ADR-012-local-structured-generation.md)
 
 ## Ambiente de execução
 
