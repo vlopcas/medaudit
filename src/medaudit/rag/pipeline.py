@@ -6,11 +6,13 @@ from pathlib import Path
 from typing import Any
 
 from medaudit.documents import Chunk
+from medaudit.query_understanding import ExplicitQueryRouter, QueryRoute
 from medaudit.rag.models import (
     Evidence,
     EvidenceLocation,
     RetrievalDecision,
     RetrievalStatus,
+    RoutedRetrievalDecision,
 )
 from medaudit.retrieval import ConfidenceAnalyzer, Retriever
 
@@ -111,4 +113,27 @@ class EvidenceFirstPipeline:
             status=RetrievalStatus.READY,
             signals=signals,
             evidence=evidence,
+        )
+
+
+class RoutedEvidenceFirstPipeline:
+    """Apply the validated explicit route before touching the retriever."""
+
+    def __init__(
+        self,
+        pipeline: EvidenceFirstPipeline,
+        router: ExplicitQueryRouter | None = None,
+    ) -> None:
+        self._pipeline = pipeline
+        self._router = router or ExplicitQueryRouter()
+
+    def retrieve(self, query: str, *, top_k: int = 5) -> RoutedRetrievalDecision:
+        """Retrieve only when the explicit routing policy allows it."""
+        route = self._router.route(query)
+        if route is not QueryRoute.DIRECT_RETRIEVAL:
+            return RoutedRetrievalDecision(query=query, route=route)
+        return RoutedRetrievalDecision(
+            query=query,
+            route=route,
+            retrieval=self._pipeline.retrieve(query, top_k=top_k),
         )

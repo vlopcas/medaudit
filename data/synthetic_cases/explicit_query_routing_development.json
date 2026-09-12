@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "policy": "explicit-routing-v1",
+  "cases": [
+    {"id": "er-001", "query": "Compare a norma sintética alfa com a beta.", "route": "requires_decomposition"},
+    {"id": "er-002", "query": "Qual a diferença entre a versão antiga e a nova?", "route": "requires_decomposition"},
+    {"id": "er-003", "query": "O que mudou entre 2026-01-01 e 2026-07-01?", "route": "requires_decomposition"},
+    {"id": "er-004", "query": "Qual regra valia em 01/02/2026 e também em 03/04/2026?", "route": "requires_decomposition"},
+    {"id": "er-005", "query": "Compare no portal externo o preço atual das opções.", "route": "requires_external_data"},
+    {"id": "er-006", "query": "Consulte na API o estado mais recente do pedido.", "route": "requires_external_data"},
+    {"id": "er-007", "query": "Obtenha dados em tempo real do sistema sintético.", "route": "requires_external_data"},
+    {"id": "er-008", "query": "Audite a cobrança do procedimento 12345678.", "route": "direct_retrieval"},
+    {"id": "er-009", "query": "Qual regra valia em 2026-08-20?", "route": "direct_retrieval"},
+    {"id": "er-010", "query": "O manual contém alguma exceção?", "route": "direct_retrieval"},
+    {"id": "er-011", "query": "Consolide os documentos alfa e beta.", "route": "direct_retrieval"},
+    {"id": "er-012", "query": "Analise conjuntamente as normas sintéticas.", "route": "direct_retrieval"},
+    {"id": "er-013", "query": "Relacione as regras disponíveis.", "route": "direct_retrieval"},
+    {"id": "er-014", "query": "Quais documentos mencionam o prazo?", "route": "direct_retrieval"},
+    {"id": "er-015", "query": "O documento descreve uma API sintética.", "route": "direct_retrieval"},
+    {"id": "er-016", "query": "A palavra hoje aparece no manual?", "route": "direct_retrieval"},
+    {"id": "er-017", "query": "Explique este conceito sintético.", "route": "direct_retrieval"},
+    {"id": "er-018", "query": "Há cobertura para o código 87654321?", "route": "direct_retrieval"}
+  ]
+}

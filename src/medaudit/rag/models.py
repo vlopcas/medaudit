@@ -3,6 +3,7 @@
 from dataclasses import dataclass
 from enum import StrEnum
 
+from medaudit.query_understanding import QueryRoute
 from medaudit.retrieval import ConfidenceSignals
 
 
@@ -46,3 +47,17 @@ class RetrievalDecision:
     def can_generate(self) -> bool:
         """Return whether grounded generation is permitted."""
         return self.status is RetrievalStatus.READY
+
+
+@dataclass(frozen=True, slots=True)
+class RoutedRetrievalDecision:
+    """Pre-retrieval route paired with evidence only for the direct path."""
+
+    query: str
+    route: QueryRoute
+    retrieval: RetrievalDecision | None = None
+
+    def __post_init__(self) -> None:
+        has_retrieval = self.retrieval is not None
+        if (self.route is QueryRoute.DIRECT_RETRIEVAL) != has_retrieval:
+            raise ValueError("only direct retrieval routes can contain evidence")

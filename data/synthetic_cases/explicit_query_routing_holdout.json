@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "policy": "explicit-routing-v1",
+  "cases": [
+    {"id": "erh-001", "query": "Faça uma comparação das regras sintéticas alfa e beta.", "route": "requires_decomposition"},
+    {"id": "erh-002", "query": "Norma sintética alfa versus norma sintética beta.", "route": "requires_decomposition"},
+    {"id": "erh-003", "query": "Descreva as mudanças entre a versão alfa e a beta.", "route": "requires_decomposition"},
+    {"id": "erh-004", "query": "Qual regra valia em 05/01/2026 e em 2026-08-09?", "route": "requires_decomposition"},
+    {"id": "erh-005", "query": "Compare as regras de 01/02/2026 e 03/04/2026.", "route": "requires_decomposition"},
+    {"id": "erh-006", "query": "Consulte o valor atual no portal.", "route": "requires_external_data"},
+    {"id": "erh-007", "query": "Busque na API a situação mais recente.", "route": "requires_external_data"},
+    {"id": "erh-008", "query": "Leia os dados em tempo real do serviço sintético.", "route": "requires_external_data"},
+    {"id": "erh-009", "query": "Qual é a cotação atual do item sintético?", "route": "requires_external_data"},
+    {"id": "erh-010", "query": "Compare o preço atual no sistema externo.", "route": "requires_external_data"},
+    {"id": "erh-011", "query": "Consolide a norma alfa e o manual beta.", "route": "direct_retrieval"},
+    {"id": "erh-012", "query": "O manual explica como funciona a API?", "route": "direct_retrieval"},
+    {"id": "erh-013", "query": "Qual era o preço registrado em 2026-05-10?", "route": "direct_retrieval"},
+    {"id": "erh-014", "query": "Relacione os documentos encontrados.", "route": "direct_retrieval"},
+    {"id": "erh-015", "query": "Há diferença registrada dentro deste documento?", "route": "direct_retrieval"}
+  ]
+}

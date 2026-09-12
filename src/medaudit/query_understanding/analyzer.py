@@ -88,6 +88,11 @@ class DeterministicQueryAnalyzer:
         )
 
 
+def count_explicit_dates(query: str) -> int:
+    """Count supported date mentions while rejecting invalid values."""
+    return len(_extract_dates(query))
+
+
 def _classify_intent(folded: str, requires_external_data: bool) -> QueryIntent:
     if requires_external_data:
         return QueryIntent.EXTERNAL_LOOKUP

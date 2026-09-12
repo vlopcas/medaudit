@@ -77,6 +77,11 @@ docker compose run --rm evaluate-structural-decomposition
 Seu holdout congelado já foi executado e rejeitou a hipótese com 62,5% de
 acurácia; ela não integra o fluxo principal.
 
+O roteamento explícito promovido pode ser avaliado no desenvolvimento com
+`docker compose run --rm evaluate-explicit-query-routing`. Seu holdout
+congelado atingiu 100% em 15 casos. No runtime, somente a rota direta toca no
+retriever; decomposição e dependência externa encerram sem executar ações.
+
 ## Ambiente de desenvolvimento
 
 Requer Python 3.12 ou superior.

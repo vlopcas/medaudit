@@ -174,6 +174,39 @@ services:
       - --cases
       - /app/data/synthetic_cases/structural_decomposition_development.json
 
+  evaluate-explicit-query-routing:
+    build:
+      context: .
+    network_mode: none
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    command:
+      - medaudit-evaluate-explicit-query-routing
+      - --cases
+      - /app/data/synthetic_cases/explicit_query_routing_development.json
+
+  evaluate-explicit-query-routing-holdout:
+    extends: evaluate-explicit-query-routing
+    user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
+    volumes:
+      - type: bind
+        source: ./artifacts
+        target: /artifacts
+    command:
+      - medaudit-evaluate-explicit-query-routing
+      - --cases
+      - /app/data/synthetic_cases/explicit_query_routing_holdout.json
+      - --output
+      - /artifacts/explicit-query-routing-holdout.local.json
+      - --expected-sha256
+      - af76d824e13154270eea06cb7c93c40e570478bacafd5fbce684f0a78513a65a
+      - --refuse-overwrite
+
   evaluate-structural-decomposition-holdout:
     extends: evaluate-structural-decomposition
     user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"

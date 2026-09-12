@@ -7,7 +7,11 @@ no [plano de estudos](plano_estudos_llm_rag_graph_agentic.md).
 
 ```text
 user query
-    ↓ DeterministicQueryAnalyzer (baseline, ainda não integrado ao RAG)
+    ↓ ExplicitQueryRouter
+    ├── requires_external_data → encerra sem ferramenta
+    ├── requires_decomposition → encerra sem retrieval
+    └── direct_retrieval
+          ↓ DeterministicQueryAnalyzer
 QueryAnalysis
     ├── intent
     ├── reference date and conservative entities
@@ -56,16 +60,15 @@ o adaptador generativo está operacional, mas permanece restrito a dados
 sintéticos: o modelo atual não atingiu o critério de conteúdo no holdout
 congelado.
 
-O analisador de consultas é uma fronteira independente e, neste primeiro
-marco, somente mensurada. Seus sinais ainda não reescrevem consultas, criam
-subconsultas, escolhem retrievers nem habilitam ferramentas externas.
+O roteamento explícito é uma fronteira determinística integrada por meio do
+`RoutedEvidenceFirstPipeline`. Somente `direct_retrieval` alcança o pipeline de
+evidências. As outras rotas encerram de forma rastreável e ainda não reescrevem
+consultas, criam subconsultas nem habilitam ferramentas externas.
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no
 desenvolvimento e não pertence ao fluxo principal.
-Uma política de rota também está isolada em experimento: somente regras
-determinísticas podem bloquear por dependência externa, enquanto decomposição
-pode combinar sinais determinísticos e semânticos. Ela ainda não controla o
-pipeline.
+Uma política anterior em camadas combinava sinais determinísticos e semânticos;
+ela permanece apenas como experimento e não controla o pipeline.
 
 Uma heurística estrutural para decomposição também existe como experimento
 isolado. Ela foi rejeitada no holdout e não é chamada pelo analisador nem pelo
@@ -124,6 +127,7 @@ em `data/processed/`, que é ignorado pelo Git.
 - [ADR-011: geração condicionada a evidências rastreáveis](decisions/ADR-011-gated-evidence-first-generation.md)
 - [ADR-012: geração estruturada com modelo local](decisions/ADR-012-local-structured-generation.md)
 - [ADR-013: baseline determinístico de Query Understanding](decisions/ADR-013-deterministic-query-understanding-baseline.md)
+- [ADR-014: roteamento explícito antes do retrieval](decisions/ADR-014-explicit-pre-retrieval-routing.md)
 
 ## Ambiente de execução
 
