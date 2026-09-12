@@ -408,6 +408,30 @@ services:
       - --min-answerable-acceptance
       - "${MIN_ANSWERABLE_ACCEPTANCE:-0.8}"
 
+  calibrate-multisignal-policy:
+    extends: profile
+    command:
+      - medaudit-calibrate-multisignal-policy
+      - --confidence
+      - /artifacts/confidence-calibration.local.json
+      - --output
+      - /artifacts/confidence-policy-multisignal-candidate.local.json
+      - --min-answerable-acceptance
+      - "${MIN_ANSWERABLE_ACCEPTANCE:-0.8}"
+
+  cross-validate-multisignal-policy:
+    extends: profile
+    command:
+      - medaudit-cross-validate-multisignal-policy
+      - --confidence
+      - /artifacts/confidence-calibration.local.json
+      - --output
+      - /artifacts/confidence-policy-multisignal-cv.local.json
+      - --min-answerable-acceptance
+      - "${MIN_ANSWERABLE_ACCEPTANCE:-0.8}"
+      - --fold-count
+      - "${MULTISIGNAL_FOLD_COUNT:-5}"
+
   evaluate-heldout-policy:
     extends: profile
     command:

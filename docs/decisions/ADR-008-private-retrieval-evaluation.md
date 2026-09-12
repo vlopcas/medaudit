@@ -78,6 +78,12 @@ relatório de calibração, consulta apenas IDs da partição final e recusa
 sobrescrever um resultado existente. Além da classificação de abstention, mede
 se os casos aceitos recuperaram ao menos uma referência relevante.
 
+Políticas com até dois sinais podem ser geradas apenas como candidatas. Como o
+espaço de regras é maior, elas precisam passar por validação cruzada
+estratificada dentro da calibração antes de qualquer congelamento. A política
+existente não é substituída automaticamente e o holdout não participa dessa
+seleção.
+
 ## Como validar
 
 - testar relevância por documento e por chunk;

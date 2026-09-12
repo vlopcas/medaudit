@@ -145,6 +145,21 @@ docker compose run --rm analyze-calibration-confidence
 docker compose run --rm calibrate-confidence-policy
 ```
 
+Compare uma política candidata conservadora de até dois sinais com:
+
+```bash
+docker compose run --rm calibrate-multisignal-policy
+```
+
+Esse comando grava uma candidata separada e nunca substitui automaticamente a
+política congelada.
+
+Estime a estabilidade da candidata sem consultar o holdout:
+
+```bash
+docker compose run --rm cross-validate-multisignal-policy
+```
+
 A política usa um único limiar interpretável de score, mantém pelo menos 80%
 dos casos respondíveis na calibração e maximiza a abstention dos casos sem
 evidência. A avaliação final não participa dessa escolha.
