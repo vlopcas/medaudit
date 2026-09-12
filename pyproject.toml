@@ -55,6 +55,8 @@ medaudit-diagnose-hybrid-calibration = "medaudit.evaluation.hybrid_diagnostics:m
 medaudit-profile-embedding-inputs = "medaudit.evaluation.embedding_input_profile:main"
 medaudit-calibrate-multisignal-policy = "medaudit.evaluation.multisignal_policy:main"
 medaudit-cross-validate-multisignal-policy = "medaudit.evaluation.multisignal_cross_validation:main"
+medaudit-prepare-local-llm = "medaudit.llm.local_model:main"
+medaudit-benchmark-local-llm = "medaudit.evaluation.local_llm_benchmark:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/medaudit"]

@@ -1,4 +1,106 @@
 services:
+  local-llm-download:
+    build:
+      context: .
+    user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    volumes:
+      - type: bind
+        source: ./models
+        target: /models
+    command:
+      - medaudit-prepare-local-llm
+      - --models
+      - /models/qwen3-4b
+      - --manifest
+      - /models/qwen3-4b.local.json
+      - --download
+
+  local-llm-check:
+    extends: local-llm-download
+    network_mode: none
+    read_only: true
+    tmpfs:
+      - /tmp
+    volumes:
+      - type: bind
+        source: ./models
+        target: /models
+        read_only: true
+    command:
+      - medaudit-prepare-local-llm
+      - --models
+      - /models/qwen3-4b
+      - --manifest
+      - /tmp/qwen3-4b.local.json
+
+  llm-server:
+    image: ghcr.io/ggml-org/llama.cpp:server-cuda12-b10335@sha256:dd0c408a4c3285f7809323ac17f85e70ef756bf67a3a30d4eed6805a8c1df16b
+    gpus: all
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    networks:
+      - llm-internal
+    volumes:
+      - type: bind
+        source: ./models
+        target: /models
+        read_only: true
+    command:
+      - --model
+      - /models/qwen3-4b/Qwen3-4B-Q4_K_M.gguf
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8080"
+      - --ctx-size
+      - "8192"
+      - --n-gpu-layers
+      - "99"
+      - --parallel
+      - "1"
+      - --flash-attn
+      - "on"
+      - --no-ui
+
+  benchmark-local-llm:
+    build:
+      context: .
+    user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
+    depends_on:
+      - llm-server
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    networks:
+      - llm-internal
+    volumes:
+      - type: bind
+        source: ./artifacts
+        target: /artifacts
+    command:
+      - medaudit-benchmark-local-llm
+      - --corpus
+      - /app/data/synthetic_cases/corpus.json
+      - --cases
+      - /app/data/eval/bm25_cases.json
+      - --output
+      - /artifacts/local-llm-synthetic-benchmark.local.json
+      - --threshold
+      - "${LOCAL_LLM_SYNTHETIC_THRESHOLD:-3}"
+
   checks:
     build:
       context: .
@@ -452,3 +554,7 @@ services:
       - /artifacts/heldout-policy-evaluation.local.json
       - --top-k
       - "${TOP_K:-5}"
+
+networks:
+  llm-internal:
+    internal: true

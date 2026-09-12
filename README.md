@@ -192,6 +192,26 @@ docker compose run --rm embedding-model-check
 O primeiro comando é o único com acesso à rede. O segundo recarrega a revisão
 fixada usando o cache local como somente leitura e sem rede.
 
+Para baixar e verificar o modelo generativo local sem montar `data/`:
+
+```bash
+docker compose run --rm local-llm-download
+docker compose run --rm local-llm-check
+```
+
+O GGUF fica em `models/`, é ignorado pelo Git e tem revisão e SHA-256 fixados.
+Depois, execute o primeiro RAG generativo somente sobre dados sintéticos:
+
+```bash
+docker compose run --rm benchmark-local-llm
+docker compose stop llm-server
+```
+
+O servidor não publica portas no host, participa apenas de uma rede Docker
+interna e monta `models/` como somente leitura. O benchmark não monta `data/`
+nem persiste respostas; grava somente métricas agregadas em `artifacts/`.
+Consulte o [resultado sintético](docs/results/002-local-llm-synthetic-rag.md).
+
 Depois de materializar os snapshots temporais, gere ou atualize o cache local
 deduplicado de embeddings com:
 

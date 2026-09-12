@@ -13,8 +13,9 @@ from urllib.parse import urlparse
 from medaudit.llm.models import LLMRequest, LLMResponse, Usage
 
 MODEL_ID = "Qwen/Qwen3-4B-GGUF"
-MODEL_REVISION = "3b6d9922d71c6d316a0c9de39a95fbe8594b9a0b"
+MODEL_REVISION = "a9a60d009fa7ff9606305047c2bf77ac25dbec49"
 MODEL_FILE = "Qwen3-4B-Q4_K_M.gguf"
+MODEL_SHA256 = "7485fe6f11af29433bc51cab58009521f205840f5b4ae3a32fa7f92e8534fdf5"
 
 
 class JSONTransport(Protocol):
@@ -61,15 +62,14 @@ class LlamaCppClient:
     model: str = MODEL_FILE
     timeout_seconds: float = 120.0
     transport: JSONTransport = field(default_factory=LoopbackHTTPTransport)
+    allowed_hosts: frozenset[str] = field(
+        default_factory=lambda: frozenset({"127.0.0.1", "localhost", "::1"})
+    )
 
     def __post_init__(self) -> None:
         parsed = urlparse(self.base_url)
-        if parsed.scheme != "http" or parsed.hostname not in {
-            "127.0.0.1",
-            "localhost",
-            "::1",
-        }:
-            raise ValueError("local LLM endpoint must use loopback HTTP")
+        if parsed.scheme != "http" or parsed.hostname not in self.allowed_hosts:
+            raise ValueError("local LLM endpoint must use an explicitly allowed host")
         if parsed.username or parsed.password or parsed.query or parsed.fragment:
             raise ValueError("local LLM endpoint cannot contain credentials or extras")
         if self.timeout_seconds <= 0:

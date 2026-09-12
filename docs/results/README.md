@@ -11,3 +11,8 @@ Cada experimento versionado deve registrar:
 
 Resultados públicos devem usar somente exemplos sintéticos e passar por revisão
 para evitar a exposição indireta do corpus privado.
+
+## Experimentos
+
+- [Resultado 001: baseline BM25 sintético](001-bm25-synthetic-baseline.md)
+- [Resultado 002: RAG sintético com LLM local](002-local-llm-synthetic-rag.md)

@@ -1,11 +1,16 @@
 import asyncio
+import hashlib
 import json
+import tempfile
 import unittest
 from collections.abc import Mapping
+from pathlib import Path
 from typing import Any
+from unittest import mock
 
 from medaudit.llm import LlamaCppClient, LLMRequest
-from medaudit.llm.local_http import MODEL_FILE, MODEL_ID, MODEL_REVISION
+from medaudit.llm.local_http import MODEL_FILE, MODEL_ID, MODEL_REVISION, MODEL_SHA256
+from medaudit.llm.local_model import prepare_local_model
 
 
 class FakeTransport:
@@ -33,12 +38,36 @@ class LlamaCppClientTest(unittest.TestCase):
         self.assertEqual(MODEL_ID, "Qwen/Qwen3-4B-GGUF")
         self.assertEqual(MODEL_FILE, "Qwen3-4B-Q4_K_M.gguf")
         self.assertRegex(MODEL_REVISION, r"^[0-9a-f]{40}$")
+        self.assertRegex(MODEL_SHA256, r"^[0-9a-f]{64}$")
 
     def test_rejects_remote_or_encrypted_endpoint(self) -> None:
         for endpoint in ("https://localhost:8080", "http://example.com:8080"):
             with self.subTest(endpoint=endpoint):
-                with self.assertRaisesRegex(ValueError, "loopback"):
+                with self.assertRaisesRegex(ValueError, "allowed host"):
                     LlamaCppClient(base_url=endpoint)
+
+    def test_allows_explicit_internal_docker_host(self) -> None:
+        client = LlamaCppClient(
+            base_url="http://llm-server:8080",
+            allowed_hosts=frozenset({"llm-server"}),
+        )
+
+        self.assertEqual(client.base_url, "http://llm-server:8080")
+
+    def test_verifies_existing_model_without_network(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            model_directory = Path(directory)
+            model = model_directory / MODEL_FILE
+            model.write_bytes(b"synthetic model")
+            with mock.patch(
+                "medaudit.llm.local_model.MODEL_SHA256",
+                hashlib.sha256(b"synthetic model").hexdigest(),
+            ):
+                manifest = prepare_local_model(
+                    model_directory, allow_download=False
+                )
+
+        self.assertEqual(manifest["filename"], MODEL_FILE)
 
     def test_sends_json_schema_and_parses_response(self) -> None:
         transport = FakeTransport(
