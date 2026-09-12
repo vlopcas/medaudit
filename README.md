@@ -20,6 +20,12 @@ dados sintéticos e sem depender de API ou LLM. A ingestão seleciona parsers po
 uma allowlist de tipos de mídia e produz artefatos locais versionados. Consulte a
 [arquitetura atual](docs/architecture.md).
 
+O pipeline de RAG já possui uma fronteira determinística entre retrieval e
+geração: somente evidências aceitas pela política congelada podem formar um
+prompt, e a resposta estruturada só aceita citações presentes nesse contexto.
+Ainda não há adaptador de modelo generativo; nenhuma API externa é necessária
+ou chamada por essa implementação.
+
 ## Ambiente de desenvolvimento
 
 Requer Python 3.12 ou superior.

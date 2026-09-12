@@ -52,6 +52,8 @@ A busca híbrida independente de fornecedor está documentada em
 [ADR-009](decisions/ADR-009-provider-neutral-hybrid-retrieval.md).
 Os embeddings locais estão documentados em
 [ADR-010](decisions/ADR-010-local-multilingual-embeddings.md).
+A geração condicionada ao gate e a validação de citações estão documentadas em
+[ADR-011](decisions/ADR-011-gated-evidence-first-generation.md).
 
 ## Conteúdo permitido
 
