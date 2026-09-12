@@ -56,6 +56,17 @@ docker compose run --rm evaluate-query-understanding-holdout
 O comando valida o SHA-256 do dataset e recusa sobrescrever o relatório em
 `artifacts/query-understanding-holdout.local.json`.
 
+A variante híbrida que usa o LLM local somente para sinais semânticos pode ser
+reproduzida sobre dados sintéticos com:
+
+```bash
+docker compose run --rm benchmark-local-query-understanding
+docker compose stop llm-server
+```
+
+Ela obteve 56,25% de exact match no desenvolvimento e foi rejeitada antes de
+qualquer holdout ou integração ao RAG.
+
 ## Ambiente de desenvolvimento
 
 Requer Python 3.12 ou superior.

@@ -59,6 +59,9 @@ congelado.
 O analisador de consultas é uma fronteira independente e, neste primeiro
 marco, somente mensurada. Seus sinais ainda não reescrevem consultas, criam
 subconsultas, escolhem retrievers nem habilitam ferramentas externas.
+Uma variante experimental preserva extrações determinísticas e usa o
+`LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no
+desenvolvimento e não pertence ao fluxo principal.
 
 Em paralelo, o inventário técnico alimenta um catálogo privado revisado. O hash
 define identidade; metadados semânticos e temporais só se tornam confiáveis

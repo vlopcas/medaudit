@@ -175,6 +175,15 @@ services:
       - 3dd6b687ff255e36414b33a4e7ecfe0e35ce6aa1b70af96b92da92f65f4e8364
       - --refuse-overwrite
 
+  benchmark-local-query-understanding:
+    extends: benchmark-local-llm
+    command:
+      - medaudit-benchmark-local-query-understanding
+      - --cases
+      - /app/data/synthetic_cases/query_understanding_llm_development.json
+      - --output
+      - /artifacts/local-query-understanding-development.local.json
+
   embedding-model-download:
     image: medaudit-semantic:local
     build:

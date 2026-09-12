@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "id": "qul-001",
+      "query": "Contraste as exigências das normas sintéticas alfa e beta.",
+      "intent": "comparison",
+      "reference_date": null,
+      "procedure": null,
+      "requires_external_data": false,
+      "requires_decomposition": true
+    },
+    {
+      "id": "qul-002",
+      "query": "Mostre a evolução entre a versão sintética antiga e a nova.",
+      "intent": "comparison",
+      "reference_date": null,
+      "procedure": null,
+      "requires_external_data": false,
+      "requires_decomposition": true
+    },
+    {
+      "id": "qul-003",
+      "query": "O que mudou da regra alfa para a regra beta?",
+      "intent": "comparison",
+      "reference_date": null,
+      "procedure": null,
+      "requires_external_data": false,
+      "requires_decomposition": true
+    },
+    {
+      "id": "qul-004",
+      "query": "Audite a cobrança do procedimento sintético 55667788 em 2026-08-20.",
+      "intent": "audit_case",
+      "reference_date": "2026-08-20",
+      "procedure": "55667788",
+      "requires_external_data": false,
+      "requires_decomposition": false
+    },
+    {
+      "id": "qul-005",
+      "query": "Há cobertura para o código sintético 88776655?",
+      "intent": "audit_case",
+      "reference_date": null,
+      "procedure": "88776655",
+      "requires_external_data": false,
+      "requires_decomposition": false
+    },
+    {
+      "id": "qul-006",
+      "query": "Esta glosa sintética é adequada?",
+      "intent": "audit_case",
+      "reference_date": null,
+      "procedure": null,
+      "requires_external_data": false,
+      "requires_decomposition": false
+    },
+    {
+      "id": "qul-007",
+      "query": "O que consta no manual sintético sobre o prazo?",
+      "intent": "document_lookup",
+      "reference_date": null,
+      "procedure": null,
+      "requires_external_data": false,
+      "requires_decomposition": false
+    },
+    {
+      "id": "qul-008",
+      "query": "Qual regra era válida em 14/09/2026?",
+      "intent": "document_lookup",
+      "reference_date": "2026-09-14",
+      "procedure": null,
+      "requires_external_data": false,
+      "requires_decomposition": false
+    },
+    {
+      "id": "qul-009",
+      "query": "Verifique no portal qual valor aparece hoje.",
+      "intent": "external_lookup",
+      "reference_date": null,
+      "procedure": null,
+      "requires_external_data": true,
+      "requires_decomposition": false
+    },
+    {
+      "id": "qul-010",
+      "query": "Consulte na API o estado mais recente do pedido sintético.",
+      "intent": "external_lookup",
+      "reference_date": null,
+      "procedure": null,
+      "requires_external_data": true,
+      "requires_decomposition": false
+    },
+    {
+      "id": "qul-011",
+      "query": "Explique este conceito sintético de forma simples.",
+      "intent": "general",
+      "reference_date": null,
+      "procedure": null,
+      "requires_external_data": false,
+      "requires_decomposition": false
+    },
+    {
+      "id": "qul-012",
+      "query": "Faça um resumo breve do tema apresentado.",
+      "intent": "general",
+      "reference_date": null,
+      "procedure": null,
+      "requires_external_data": false,
+      "requires_decomposition": false
+    },
+    {
+      "id": "qul-013",
+      "query": "Consolide as condições descritas nos documentos alfa e beta.",
+      "intent": "document_lookup",
+      "reference_date": null,
+      "procedure": null,
+      "requires_external_data": false,
+      "requires_decomposition": true
+    },
+    {
+      "id": "qul-014",
+      "query": "Analise conjuntamente as regras sintéticas alfa e beta.",
+      "intent": "document_lookup",
+      "reference_date": null,
+      "procedure": null,
+      "requires_external_data": false,
+      "requires_decomposition": true
+    },
+    {
+      "id": "qul-015",
+      "query": "Qual norma valia em 01/01/2026 e em 2026-07-01?",
+      "intent": "document_lookup",
+      "reference_date": null,
+      "procedure": null,
+      "requires_external_data": false,
+      "requires_decomposition": true
+    },
+    {
+      "id": "qul-016",
+      "query": "Responda separadamente o prazo da regra alfa e a exceção da regra beta.",
+      "intent": "document_lookup",
+      "reference_date": null,
+      "procedure": null,
+      "requires_external_data": false,
+      "requires_decomposition": true
+    }
+  ]
+}
+

@@ -23,7 +23,7 @@ implementação dedicada.
 | 5 | Document parsing e chunking | Parcial | Texto, PDF, XLS/XLSX, OCR por página e chunking estrutural estão implementados; novas estratégias ainda podem ser comparadas. |
 | 6 | Hybrid Retrieval | Experimental, não promovida | BM25, dense e RRF foram comparados; BM25 permanece como baseline principal. |
 | 7 | Reranking | Experimental, não promovida | Reranking semântico restrito aos candidatos foi avaliado sem justificar promoção. |
-| 8 | Query Understanding | Em andamento | O baseline determinístico foi rejeitado para roteamento após 66,7% no holdout; integração, reescrita e decomposição ainda não foram implementadas. |
+| 8 | Query Understanding | Em andamento | O baseline determinístico e a variante semântica local foram rejeitados para roteamento; integração, reescrita e decomposição ainda não foram implementadas. |
 | 9 | Regras estruturadas | Não iniciada | Será tratada depois do ciclo de Query Understanding. |
 | 10 | Temporalidade e versionamento | Parcial, antecipada | Catálogo temporal, relações de substituição, snapshots por data e avaliações temporais já existem. |
 | 11–18 | Grafos, tools, APIs e agentes | Não iniciadas | Permanecem no roteiro futuro. |
@@ -51,6 +51,11 @@ conjunto de desenvolvimento, o baseline determinístico obteve apenas 66,7% no
 holdout sintético congelado e não controla o retriever. O próximo ciclo deve
 formular outra abordagem usando novos casos de desenvolvimento; o holdout já
 aberto não será usado para ajustar regras ou escolher termos.
+
+Uma segunda hipótese manteve datas e códigos determinísticos e delegou três
+campos semânticos ao LLM local. Ela atingiu somente 56,25% no próprio conjunto
+de desenvolvimento e foi rejeitada sem consumir um novo holdout. O próximo
+experimento deve separar bloqueios conservadores do planejamento de consultas.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em
