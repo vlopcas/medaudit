@@ -17,6 +17,8 @@ _EXTERNAL_SIGNALS = (
     "portal externo",
     "sistema externo",
 )
+_EXTERNAL_SOURCES = ("api", "portal", "sistema externo")
+_FRESHNESS_SIGNALS = ("atual", "hoje", "mais recente", "tempo real")
 _COMPARISON_SIGNALS = (
     "compare",
     "comparar",
@@ -63,7 +65,8 @@ class DeterministicQueryAnalyzer:
         procedure = _first_match(_PROCEDURE_CODE, normalized)
         reference_dates = _extract_dates(normalized)
         requires_external_data = _contains_any(folded, _EXTERNAL_SIGNALS) or (
-            "portal" in folded and "hoje" in folded
+            _contains_any(folded, _EXTERNAL_SOURCES)
+            and _contains_any(folded, _FRESHNESS_SIGNALS)
         )
         requires_decomposition = len(reference_dates) > 1 or _contains_any(
             folded, _DECOMPOSITION_SIGNALS

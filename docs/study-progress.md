@@ -55,7 +55,9 @@ aberto não será usado para ajustar regras ou escolher termos.
 Uma segunda hipótese manteve datas e códigos determinísticos e delegou três
 campos semânticos ao LLM local. Ela atingiu somente 56,25% no próprio conjunto
 de desenvolvimento e foi rejeitada sem consumir um novo holdout. O próximo
-experimento deve separar bloqueios conservadores do planejamento de consultas.
+experimento separou bloqueios conservadores do planejamento e alcançou 87,5%
+de rotas corretas, sem bloqueios externos indevidos. A candidata ainda não foi
+promovida porque perdeu dois casos de decomposição multi-documento.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em

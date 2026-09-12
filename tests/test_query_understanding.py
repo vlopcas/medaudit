@@ -39,6 +39,15 @@ class DeterministicQueryAnalyzerTest(unittest.TestCase):
         self.assertEqual(result.intent, QueryIntent.EXTERNAL_LOOKUP)
         self.assertTrue(result.requires_external_data)
 
+    def test_requires_source_and_freshness_for_generic_external_markers(self) -> None:
+        live = self.analyzer.analyze(
+            "Consulte na API o estado mais recente do pedido sintético."
+        )
+        static = self.analyzer.analyze("O manual descreve uma API sintética.")
+
+        self.assertTrue(live.requires_external_data)
+        self.assertFalse(static.requires_external_data)
+
     def test_recognizes_observed_paraphrases(self) -> None:
         comparison = self.analyzer.analyze(
             "Quais mudanças ocorreram da regra sintética A para a B?"

@@ -10,7 +10,12 @@ from typing import Any
 from medaudit.evaluation.local_llm_benchmark import wait_until_ready
 from medaudit.evaluation.query_understanding import load_cases, verify_input
 from medaudit.llm import LlamaCppClient
-from medaudit.query_understanding import LocalLLMQueryAnalyzer
+from medaudit.query_understanding import (
+    ConservativeQueryRouter,
+    LocalLLMQueryAnalyzer,
+    QueryRoute,
+    expected_route,
+)
 
 
 async def run_benchmark(cases_path: Path, *, base_url: str) -> dict[str, Any]:
@@ -21,6 +26,7 @@ async def run_benchmark(cases_path: Path, *, base_url: str) -> dict[str, Any]:
         allowed_hosts=frozenset({"llm-server", "127.0.0.1", "localhost", "::1"}),
     )
     analyzer = LocalLLMQueryAnalyzer(client)
+    router = ConservativeQueryRouter()
     fields = (
         "intent",
         "reference_date",
@@ -31,9 +37,21 @@ async def run_benchmark(cases_path: Path, *, base_url: str) -> dict[str, Any]:
     correct = dict.fromkeys(fields, 0)
     case_results: list[dict[str, Any]] = []
     latencies: list[float] = []
+    route_correct = 0
+    external_false_blocks = 0
+    non_external_cases = 0
 
     for case in cases:
         actual, response = await analyzer.analyze(case.query)
+        actual_route = router.route(case.query, actual)
+        golden_route = expected_route(
+            requires_external_data=case.requires_external_data,
+            requires_decomposition=case.requires_decomposition,
+        )
+        route_correct += actual_route is golden_route
+        if golden_route is not QueryRoute.REQUIRES_EXTERNAL_DATA:
+            non_external_cases += 1
+            external_false_blocks += actual_route is QueryRoute.REQUIRES_EXTERNAL_DATA
         expected = {
             "intent": case.intent,
             "reference_date": case.reference_date,
@@ -54,6 +72,7 @@ async def run_benchmark(cases_path: Path, *, base_url: str) -> dict[str, Any]:
                 "incorrect_fields": [
                     field for field, matched in matches.items() if not matched
                 ],
+                "route_correct": actual_route is golden_route,
             }
         )
         latencies.append(response.latency_ms)
@@ -71,6 +90,12 @@ async def run_benchmark(cases_path: Path, *, base_url: str) -> dict[str, Any]:
                 field: count / len(cases) for field, count in correct.items()
             },
             "mean_generation_latency_ms": sum(latencies) / len(latencies),
+            "route_accuracy": route_correct / len(cases),
+            "external_false_block_rate": (
+                external_false_blocks / non_external_cases
+                if non_external_cases
+                else None
+            ),
         },
         "cases": case_results,
     }
@@ -100,4 +125,3 @@ def main(argv: Sequence[str] | None = None) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

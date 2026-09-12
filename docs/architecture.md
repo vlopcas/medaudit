@@ -62,6 +62,10 @@ subconsultas, escolhem retrievers nem habilitam ferramentas externas.
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no
 desenvolvimento e não pertence ao fluxo principal.
+Uma política de rota também está isolada em experimento: somente regras
+determinísticas podem bloquear por dependência externa, enquanto decomposição
+pode combinar sinais determinísticos e semânticos. Ela ainda não controla o
+pipeline.
 
 Em paralelo, o inventário técnico alimenta um catálogo privado revisado. O hash
 define identidade; metadados semânticos e temporais só se tornam confiáveis

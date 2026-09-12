@@ -15,6 +15,14 @@ class QueryIntent(StrEnum):
     GENERAL = "general"
 
 
+class QueryRoute(StrEnum):
+    """Conservative action selected before retrieval."""
+
+    DIRECT_RETRIEVAL = "direct_retrieval"
+    REQUIRES_DECOMPOSITION = "requires_decomposition"
+    REQUIRES_EXTERNAL_DATA = "requires_external_data"
+
+
 @dataclass(frozen=True, slots=True)
 class QueryAnalysis:
     """Interpretable signals extracted without calling an LLM."""
@@ -28,4 +36,3 @@ class QueryAnalysis:
     plan: str | None
     requires_external_data: bool
     requires_decomposition: bool
-
