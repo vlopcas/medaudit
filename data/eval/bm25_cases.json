@@ -6,43 +6,76 @@
       "id": "exact-code-001",
       "question": "O PX-101 precisa de autorização prévia?",
       "relevant_chunk_ids": ["manual-a-v1-c1"],
-      "category": "exact_lookup"
+      "category": "exact_lookup",
+      "expected": {
+        "status": "answered",
+        "answer": "Sim. O PX-101 exige autorização prévia para atendimento eletivo.",
+        "required_concepts": [["PX-101"], ["autorização prévia"], ["exige", "necessária", "precisa", "sim"]]
+      }
     },
     {
       "id": "exception-001",
       "question": "Qual é a exceção de urgência para o PX-101?",
       "relevant_chunk_ids": ["manual-a-v1-c2"],
-      "category": "exception"
+      "category": "exception",
+      "expected": {
+        "status": "answered",
+        "answer": "Em urgência comprovada, a autorização do PX-101 pode ser regularizada posteriormente.",
+        "required_concepts": [["PX-101"], ["urgência"], ["regularizada posteriormente", "regularização posterior", "posteriormente"]]
+      }
     },
     {
       "id": "quantity-001",
       "question": "Qual a quantidade máxima do exame EX-220?",
       "relevant_chunk_ids": ["tabela-b-v2-c1"],
-      "category": "exact_lookup"
+      "category": "exact_lookup",
+      "expected": {
+        "status": "answered",
+        "answer": "A quantidade máxima do EX-220 é de duas unidades.",
+        "required_concepts": [["EX-220"], ["duas", "2"], ["máxima", "máximo"]]
+      }
     },
     {
       "id": "inclusion-001",
       "question": "A diária DH-300 inclui gases medicinais?",
       "relevant_chunk_ids": ["regra-c-v1-c1"],
-      "category": "factual"
+      "category": "factual",
+      "expected": {
+        "status": "answered",
+        "answer": "Não. A diária DH-300 não inclui gases medicinais.",
+        "required_concepts": [["DH-300"], ["gases medicinais"], ["não inclui", "não estão incluídos", "exclui"]]
+      }
     },
     {
       "id": "classification-001",
       "question": "O TR-450 pode ser urgencializado?",
       "relevant_chunk_ids": ["regra-d-v1-c1"],
-      "category": "exact_lookup"
+      "category": "exact_lookup",
+      "expected": {
+        "status": "answered",
+        "answer": "Não. O TR-450 não pode ser classificado como urgência.",
+        "required_concepts": [["TR-450"], ["urgência"], ["não pode", "vedado", "proibido"]]
+      }
     },
     {
       "id": "deadline-001",
       "question": "Qual é o prazo para contestação de glosa?",
       "relevant_chunk_ids": ["glosa-e-v1-c1"],
-      "category": "factual"
+      "category": "factual",
+      "expected": {
+        "status": "answered",
+        "answer": "O prazo para contestação da glosa é de trinta dias corridos.",
+        "required_concepts": [["contestação", "glosa"], ["trinta", "30"], ["dias corridos"]]
+      }
     },
     {
       "id": "missing-001",
       "question": "Qual regra se aplica ao código inexistente ZQ-999?",
       "relevant_chunk_ids": [],
-      "category": "missing_evidence"
+      "category": "missing_evidence",
+      "expected": {
+        "status": "insufficient_evidence"
+      }
     }
   ]
 }

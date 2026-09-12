@@ -44,3 +44,26 @@ qualidade sobre documentos reais.
 O modelo permanece candidato. O próximo experimento deve acrescentar respostas
 esperadas sintéticas e avaliação determinística de conteúdo antes de autorizar
 o uso do pipeline generativo com o corpus privado.
+
+## Avaliação de conteúdo
+
+Os seis casos respondíveis receberam respostas esperadas e grupos de conceitos
+obrigatórios, com alternativas lexicais explícitas. A comparação normaliza
+caixa, acentos e pontuação, não utiliza outro LLM como juiz e não persiste as
+respostas geradas.
+
+| Variante | Conteúdo completo | Status | Citação relevante | Latência média |
+|---|---:|---:|---:|---:|
+| Prompt inicial, `top_k=3` | 50,0% | 83,3% | 83,3% | 3.084 ms |
+| Prompt inicial, `top_k=1` | 33,3% | 83,3% | 83,3% | 2.880 ms |
+| Prompt explícito e `/no_think`, `top_k=3` | 66,7% | 100% | 100% | 1.159 ms |
+
+A redução isolada do contexto foi rejeitada. Explicitar no prompt o formato que
+o JSON Schema restringe e desativar o raciocínio oculto melhorou formato,
+citações, conteúdo e latência. Mesmo assim, um caso de busca exata e um factual
+continuaram incompletos.
+
+O conjunto possui somente seis perguntas respondíveis e já orientou mudanças
+de prompt. Ajustá-lo novamente seria overfitting. O modelo não está aprovado
+para geração sobre o corpus privado; o próximo gate requer novos casos
+sintéticos mantidos fora desse ciclo de desenvolvimento.

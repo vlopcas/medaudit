@@ -211,6 +211,9 @@ O servidor não publica portas no host, participa apenas de uma rede Docker
 interna e monta `models/` como somente leitura. O benchmark não monta `data/`
 nem persiste respostas; grava somente métricas agregadas em `artifacts/`.
 Consulte o [resultado sintético](docs/results/002-local-llm-synthetic-rag.md).
+O modelo permanece experimental: a avaliação de conteúdo atingiu 66,7% após o
+ajuste do prompt, portanto a geração sobre o corpus privado ainda não está
+habilitada.
 
 Depois de materializar os snapshots temporais, gere ou atualize o cache local
 deduplicado de embeddings com:

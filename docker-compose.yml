@@ -100,6 +100,8 @@ services:
       - /artifacts/local-llm-synthetic-benchmark.local.json
       - --threshold
       - "${LOCAL_LLM_SYNTHETIC_THRESHOLD:-3}"
+      - --top-k
+      - "${LOCAL_LLM_TOP_K:-3}"
 
   checks:
     build:

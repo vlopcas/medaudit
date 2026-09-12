@@ -6,11 +6,13 @@ import json
 import time
 import urllib.error
 import urllib.request
+from collections import defaultdict
 from collections.abc import Sequence
 from pathlib import Path
 from typing import Any
 
 from medaudit.documents import Chunk
+from medaudit.evaluation.content_grade import grade_expected_content
 from medaudit.evaluation.private_bm25 import write_private_report
 from medaudit.llm import LlamaCppClient
 from medaudit.rag import (
@@ -66,21 +68,54 @@ async def run_benchmark(
     valid_outputs = 0
     correct_gates = 0
     relevant_citations = 0
+    correct_statuses = 0
+    correct_answers = 0
+    matched_concepts = 0
+    expected_concepts = 0
+    categories: defaultdict[str, dict[str, int]] = defaultdict(
+        lambda: {
+            "case_count": 0,
+            "gate_correct": 0,
+            "generated": 0,
+            "status_correct": 0,
+            "content_correct": 0,
+            "relevant_citation": 0,
+        }
+    )
     generated = 0
     latencies: list[float] = []
     for case in cases:
         relevant = set(case.get("relevant_chunk_ids", []))
+        expected = case.get("expected")
+        if not isinstance(expected, dict) or expected.get("status") not in {
+            "answered",
+            "insufficient_evidence",
+        }:
+            raise ValueError("synthetic case requires an expected status")
         decision = pipeline.retrieve(case["question"], top_k=top_k)
-        expected_generation = bool(relevant)
+        expected_generation = expected["status"] == "answered"
         correct_gates += decision.can_generate == expected_generation
+        category = categories[str(case["category"])]
+        category["case_count"] += 1
+        category["gate_correct"] += decision.can_generate == expected_generation
         if not decision.can_generate:
             continue
         generated += 1
+        category["generated"] += 1
         response = await client.generate(build_grounded_request(decision))
         answer = validate_grounded_response(response, decision)
         valid_outputs += 1
+        correct_statuses += answer.status == expected["status"]
+        category["status_correct"] += answer.status == expected["status"]
         cited = {citation.chunk_id for citation in answer.citations}
-        relevant_citations += bool(cited.intersection(relevant))
+        citation_correct = bool(cited.intersection(relevant))
+        relevant_citations += citation_correct
+        category["relevant_citation"] += citation_correct
+        grade = grade_expected_content(answer.answer, expected)
+        correct_answers += grade.correct
+        matched_concepts += grade.matched_concept_count
+        expected_concepts += grade.concept_count
+        category["content_correct"] += grade.correct
         latencies.append(response.latency_ms)
     return {
         "schema_version": 1,
@@ -93,9 +128,21 @@ async def run_benchmark(
             "relevant_citation_rate": (
                 relevant_citations / generated if generated else None
             ),
+            "response_status_accuracy": (
+                correct_statuses / generated if generated else None
+            ),
+            "answer_content_accuracy": (
+                correct_answers / generated if generated else None
+            ),
+            "required_concept_recall": (
+                matched_concepts / expected_concepts if expected_concepts else None
+            ),
             "mean_generation_latency_ms": (
                 sum(latencies) / len(latencies) if latencies else None
             ),
+        },
+        "by_category": {
+            name: values for name, values in sorted(categories.items())
         },
     }
 
