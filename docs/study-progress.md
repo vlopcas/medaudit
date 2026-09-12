@@ -23,7 +23,7 @@ implementação dedicada.
 | 5 | Document parsing e chunking | Parcial | Texto, PDF, XLS/XLSX, OCR por página e chunking estrutural estão implementados; novas estratégias ainda podem ser comparadas. |
 | 6 | Hybrid Retrieval | Experimental, não promovida | BM25, dense e RRF foram comparados; BM25 permanece como baseline principal. |
 | 7 | Reranking | Experimental, não promovida | Reranking semântico restrito aos candidatos foi avaliado sem justificar promoção. |
-| 8 | Query Understanding | Próxima fase | Ainda não há módulo dedicado de classificação, reescrita, decomposição ou roteamento de consultas. |
+| 8 | Query Understanding | Em andamento | O baseline determinístico foi rejeitado para roteamento após 66,7% no holdout; integração, reescrita e decomposição ainda não foram implementadas. |
 | 9 | Regras estruturadas | Não iniciada | Será tratada depois do ciclo de Query Understanding. |
 | 10 | Temporalidade e versionamento | Parcial, antecipada | Catálogo temporal, relações de substituição, snapshots por data e avaliações temporais já existem. |
 | 11–18 | Grafos, tools, APIs e agentes | Não iniciadas | Permanecem no roteiro futuro. |
@@ -46,10 +46,11 @@ implementação dedicada.
 
 ## Próximo marco
 
-O próximo ciclo é a **Fase 8 — Query Understanding**. Antes de implementá-la,
-devem ser definidos um contrato pequeno e casos sintéticos para medir pelo
-menos classificação da intenção, normalização da consulta e necessidade de
-decomposição, sem usar o holdout generativo já aberto como conjunto de ajuste.
+A **Fase 8 — Query Understanding** está em andamento. Após chegar a 100% no
+conjunto de desenvolvimento, o baseline determinístico obteve apenas 66,7% no
+holdout sintético congelado e não controla o retriever. O próximo ciclo deve
+formular outra abordagem usando novos casos de desenvolvimento; o holdout já
+aberto não será usado para ajustar regras ou escolher termos.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em

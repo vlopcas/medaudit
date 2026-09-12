@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "id": "qu-001",
+      "query": "Audite a cobrança sintética do procedimento 12345678 em 12/06/2026.",
+      "intent": "audit_case",
+      "reference_date": "2026-06-12",
+      "procedure": "12345678",
+      "requires_external_data": false,
+      "requires_decomposition": false
+    },
+    {
+      "id": "qu-002",
+      "query": "Existe cobertura para o procedimento 87654321?",
+      "intent": "audit_case",
+      "reference_date": null,
+      "procedure": "87654321",
+      "requires_external_data": false,
+      "requires_decomposition": false
+    },
+    {
+      "id": "qu-003",
+      "query": "A glosa deste caso sintético está de acordo com a diretriz?",
+      "intent": "audit_case",
+      "reference_date": null,
+      "procedure": null,
+      "requires_external_data": false,
+      "requires_decomposition": false
+    },
+    {
+      "id": "qu-004",
+      "query": "Compare a norma sintética A com a norma sintética B.",
+      "intent": "comparison",
+      "reference_date": null,
+      "procedure": null,
+      "requires_external_data": false,
+      "requires_decomposition": true
+    },
+    {
+      "id": "qu-005",
+      "query": "Qual a diferença entre a versão antiga e a versão atual?",
+      "intent": "comparison",
+      "reference_date": null,
+      "procedure": null,
+      "requires_external_data": false,
+      "requires_decomposition": true
+    },
+    {
+      "id": "qu-006",
+      "query": "Quais mudanças ocorreram da regra sintética A para a B?",
+      "intent": "comparison",
+      "reference_date": null,
+      "procedure": null,
+      "requires_external_data": false,
+      "requires_decomposition": true
+    },
+    {
+      "id": "qu-007",
+      "query": "O que o manual sintético estabelece sobre autorizações?",
+      "intent": "document_lookup",
+      "reference_date": null,
+      "procedure": null,
+      "requires_external_data": false,
+      "requires_decomposition": false
+    },
+    {
+      "id": "qu-008",
+      "query": "Qual regra estava vigente em 2026-07-01?",
+      "intent": "document_lookup",
+      "reference_date": "2026-07-01",
+      "procedure": null,
+      "requires_external_data": false,
+      "requires_decomposition": false
+    },
+    {
+      "id": "qu-009",
+      "query": "Cruze o documento sintético A com o documento sintético B.",
+      "intent": "document_lookup",
+      "reference_date": null,
+      "procedure": null,
+      "requires_external_data": false,
+      "requires_decomposition": true
+    },
+    {
+      "id": "qu-010",
+      "query": "Consulte o preço atual no portal externo.",
+      "intent": "external_lookup",
+      "reference_date": null,
+      "procedure": null,
+      "requires_external_data": true,
+      "requires_decomposition": false
+    },
+    {
+      "id": "qu-011",
+      "query": "Qual é o valor vigente informado hoje pelo portal?",
+      "intent": "external_lookup",
+      "reference_date": null,
+      "procedure": null,
+      "requires_external_data": true,
+      "requires_decomposition": false
+    },
+    {
+      "id": "qu-012",
+      "query": "Resuma o conceito apresentado.",
+      "intent": "general",
+      "reference_date": null,
+      "procedure": null,
+      "requires_external_data": false,
+      "requires_decomposition": false
+    },
+    {
+      "id": "qu-013",
+      "query": "Explique este termo sintético em linguagem simples.",
+      "intent": "general",
+      "reference_date": null,
+      "procedure": null,
+      "requires_external_data": false,
+      "requires_decomposition": false
+    },
+    {
+      "id": "qu-014",
+      "query": "Qual regra valia em 2026-01-01 e também em 01/07/2026?",
+      "intent": "document_lookup",
+      "reference_date": null,
+      "procedure": null,
+      "requires_external_data": false,
+      "requires_decomposition": true
+    },
+    {
+      "id": "qu-015",
+      "query": "Relacione as exigências de dois documentos sintéticos.",
+      "intent": "document_lookup",
+      "reference_date": null,
+      "procedure": null,
+      "requires_external_data": false,
+      "requires_decomposition": true
+    }
+  ]
+}
+

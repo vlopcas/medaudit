@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "cases": [
+    {
+      "id": "quh-001",
+      "query": "Contraste as exigências da norma sintética alfa e da norma beta.",
+      "intent": "comparison",
+      "reference_date": null,
+      "procedure": null,
+      "requires_external_data": false,
+      "requires_decomposition": true
+    },
+    {
+      "id": "quh-002",
+      "query": "Que alterações existem entre as duas versões sintéticas?",
+      "intent": "comparison",
+      "reference_date": null,
+      "procedure": null,
+      "requires_external_data": false,
+      "requires_decomposition": true
+    },
+    {
+      "id": "quh-003",
+      "query": "Audite o procedimento sintético 11223344 na data de 2026-08-15.",
+      "intent": "audit_case",
+      "reference_date": "2026-08-15",
+      "procedure": "11223344",
+      "requires_external_data": false,
+      "requires_decomposition": false
+    },
+    {
+      "id": "quh-004",
+      "query": "A cobrança sintética está sujeita a glosa?",
+      "intent": "audit_case",
+      "reference_date": null,
+      "procedure": null,
+      "requires_external_data": false,
+      "requires_decomposition": false
+    },
+    {
+      "id": "quh-005",
+      "query": "Consulte a diretriz válida em 03/09/2026.",
+      "intent": "document_lookup",
+      "reference_date": "2026-09-03",
+      "procedure": null,
+      "requires_external_data": false,
+      "requires_decomposition": false
+    },
+    {
+      "id": "quh-006",
+      "query": "O manual contém alguma exceção para este caso sintético?",
+      "intent": "document_lookup",
+      "reference_date": null,
+      "procedure": null,
+      "requires_external_data": false,
+      "requires_decomposition": false
+    },
+    {
+      "id": "quh-007",
+      "query": "Verifique no portal qual valor aparece hoje.",
+      "intent": "external_lookup",
+      "reference_date": null,
+      "procedure": null,
+      "requires_external_data": true,
+      "requires_decomposition": false
+    },
+    {
+      "id": "quh-008",
+      "query": "Obtenha dados em tempo real do sistema sintético.",
+      "intent": "external_lookup",
+      "reference_date": null,
+      "procedure": null,
+      "requires_external_data": true,
+      "requires_decomposition": false
+    },
+    {
+      "id": "quh-009",
+      "query": "Consolide as condições descritas nos dois documentos.",
+      "intent": "document_lookup",
+      "reference_date": null,
+      "procedure": null,
+      "requires_external_data": false,
+      "requires_decomposition": true
+    },
+    {
+      "id": "quh-010",
+      "query": "Analise conjuntamente as regras alfa e beta.",
+      "intent": "document_lookup",
+      "reference_date": null,
+      "procedure": null,
+      "requires_external_data": false,
+      "requires_decomposition": true
+    },
+    {
+      "id": "quh-011",
+      "query": "Explique a expressão sintética apresentada.",
+      "intent": "general",
+      "reference_date": null,
+      "procedure": null,
+      "requires_external_data": false,
+      "requires_decomposition": false
+    },
+    {
+      "id": "quh-012",
+      "query": "Qual regra valia em 01/01/2026 e em 2026-07-01?",
+      "intent": "document_lookup",
+      "reference_date": null,
+      "procedure": null,
+      "requires_external_data": false,
+      "requires_decomposition": true
+    }
+  ]
+}

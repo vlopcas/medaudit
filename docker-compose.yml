@@ -142,6 +142,39 @@ services:
         ruff check --no-cache . &&
         mypy --cache-dir=/tmp/mypy src tests
 
+  evaluate-query-understanding:
+    build:
+      context: .
+    network_mode: none
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    command:
+      - medaudit-evaluate-query-understanding
+      - --cases
+      - /app/data/synthetic_cases/query_understanding_cases.json
+
+  evaluate-query-understanding-holdout:
+    extends: evaluate-query-understanding
+    user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
+    volumes:
+      - type: bind
+        source: ./artifacts
+        target: /artifacts
+    command:
+      - medaudit-evaluate-query-understanding
+      - --cases
+      - /app/data/synthetic_cases/query_understanding_holdout.json
+      - --output
+      - /artifacts/query-understanding-holdout.local.json
+      - --expected-sha256
+      - 3dd6b687ff255e36414b33a4e7ecfe0e35ce6aa1b70af96b92da92f65f4e8364
+      - --refuse-overwrite
+
   embedding-model-download:
     image: medaudit-semantic:local
     build:

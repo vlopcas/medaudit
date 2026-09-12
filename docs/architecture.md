@@ -6,6 +6,13 @@ no [plano de estudos](plano_estudos_llm_rag_graph_agentic.md).
 ## Fluxo documental
 
 ```text
+user query
+    ↓ DeterministicQueryAnalyzer (baseline, ainda não integrado ao RAG)
+QueryAnalysis
+    ├── intent
+    ├── reference date and conservative entities
+    └── external-data and decomposition signals
+
 source bytes
     ↓ ParserRegistry (media type allowlist)
 DocumentParser
@@ -48,6 +55,10 @@ calibração ainda não demonstraram ganho suficiente sobre BM25. Da mesma forma
 o adaptador generativo está operacional, mas permanece restrito a dados
 sintéticos: o modelo atual não atingiu o critério de conteúdo no holdout
 congelado.
+
+O analisador de consultas é uma fronteira independente e, neste primeiro
+marco, somente mensurada. Seus sinais ainda não reescrevem consultas, criam
+subconsultas, escolhem retrievers nem habilitam ferramentas externas.
 
 Em paralelo, o inventário técnico alimenta um catálogo privado revisado. O hash
 define identidade; metadados semânticos e temporais só se tornam confiáveis
@@ -101,6 +112,7 @@ em `data/processed/`, que é ignorado pelo Git.
 - [ADR-010: embeddings multilíngues locais](decisions/ADR-010-local-multilingual-embeddings.md)
 - [ADR-011: geração condicionada a evidências rastreáveis](decisions/ADR-011-gated-evidence-first-generation.md)
 - [ADR-012: geração estruturada com modelo local](decisions/ADR-012-local-structured-generation.md)
+- [ADR-013: baseline determinístico de Query Understanding](decisions/ADR-013-deterministic-query-understanding-baseline.md)
 
 ## Ambiente de execução
 

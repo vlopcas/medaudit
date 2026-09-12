@@ -39,6 +39,23 @@ A próxima etapa planejada é a **Fase 8 — Query Understanding**. Consulte a
 [status detalhado do plano](docs/study-progress.md) e os
 [resultados dos experimentos](docs/results/README.md).
 
+O baseline determinístico inicial dessa fase pode ser avaliado, sem rede e
+somente com perguntas sintéticas, usando:
+
+```bash
+docker compose run --rm evaluate-query-understanding
+```
+
+Depois de ajustar somente as falhas observadas nesse conjunto de
+desenvolvimento, abra uma única vez o holdout sintético congelado com:
+
+```bash
+docker compose run --rm evaluate-query-understanding-holdout
+```
+
+O comando valida o SHA-256 do dataset e recusa sobrescrever o relatório em
+`artifacts/query-understanding-holdout.local.json`.
+
 ## Ambiente de desenvolvimento
 
 Requer Python 3.12 ou superior.

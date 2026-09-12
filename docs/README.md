@@ -59,6 +59,8 @@ A geração condicionada ao gate e a validação de citações estão documentad
 [ADR-011](decisions/ADR-011-gated-evidence-first-generation.md).
 A escolha inicial do modelo generativo e seu adaptador local estão em
 [ADR-012](decisions/ADR-012-local-structured-generation.md).
+O primeiro contrato de Query Understanding está em
+[ADR-013](decisions/ADR-013-deterministic-query-understanding-baseline.md).
 
 ## Conteúdo permitido
 

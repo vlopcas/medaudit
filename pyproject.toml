@@ -57,6 +57,7 @@ medaudit-calibrate-multisignal-policy = "medaudit.evaluation.multisignal_policy:
 medaudit-cross-validate-multisignal-policy = "medaudit.evaluation.multisignal_cross_validation:main"
 medaudit-prepare-local-llm = "medaudit.llm.local_model:main"
 medaudit-benchmark-local-llm = "medaudit.evaluation.local_llm_benchmark:main"
+medaudit-evaluate-query-understanding = "medaudit.evaluation.query_understanding:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/medaudit"]
