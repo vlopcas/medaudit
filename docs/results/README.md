@@ -16,3 +16,4 @@ para evitar a exposição indireta do corpus privado.
 
 - [Resultado 001: baseline BM25 sintético](001-bm25-synthetic-baseline.md)
 - [Resultado 002: RAG sintético com LLM local](002-local-llm-synthetic-rag.md)
+- [Resultado 003: holdout sintético do RAG local](003-local-llm-synthetic-holdout.md)

@@ -1,0 +1,104 @@
+{
+  "schema_version": 1,
+  "notice": "Holdout integralmente sintético; não utilizar para ajuste de prompt ou parâmetros.",
+  "cases": [
+    {
+      "id": "holdout-exact-001",
+      "question": "O AB-710 eletivo exige encaminhamento prévio?",
+      "relevant_chunk_ids": ["holdout-referral-v1-c1"],
+      "category": "exact_lookup",
+      "expected": {
+        "status": "answered",
+        "answer": "Sim. O AB-710 eletivo exige encaminhamento emitido antes da realização.",
+        "required_concepts": [["AB-710"], ["encaminhamento"], ["antes", "prévio"]]
+      }
+    },
+    {
+      "id": "holdout-exception-001",
+      "question": "Qual é a exceção de emergência para o encaminhamento do AB-710?",
+      "relevant_chunk_ids": ["holdout-referral-v1-c2"],
+      "category": "exception",
+      "expected": {
+        "status": "answered",
+        "answer": "Em emergência documentada, o encaminhamento pode ser apresentado até cinco dias úteis depois do atendimento.",
+        "required_concepts": [["emergência"], ["cinco", "5"], ["dias úteis"], ["após", "depois", "posteriormente"]]
+      }
+    },
+    {
+      "id": "holdout-quantity-001",
+      "question": "Quantas unidades do LM-404 são admitidas e em qual período?",
+      "relevant_chunk_ids": ["holdout-limit-v3-c1"],
+      "category": "quantity",
+      "expected": {
+        "status": "answered",
+        "answer": "São admitidas no máximo três unidades em noventa dias.",
+        "required_concepts": [["três", "3"], ["noventa", "90"], ["dias"]]
+      }
+    },
+    {
+      "id": "holdout-negation-001",
+      "question": "A diária DS-500 cobre uma dieta especial solicitada separadamente?",
+      "relevant_chunk_ids": ["holdout-daily-v2-c2"],
+      "category": "negation",
+      "expected": {
+        "status": "answered",
+        "answer": "Não. Dietas especiais solicitadas separadamente não estão incluídas na DS-500.",
+        "required_concepts": [["DS-500"], ["dieta especial", "dietas especiais"], ["não inclui", "não estão incluídas", "não cobre"]]
+      }
+    },
+    {
+      "id": "holdout-deadline-001",
+      "question": "A partir de qual evento começa o prazo de análise do reembolso e quantos dias ele dura?",
+      "relevant_chunk_ids": ["holdout-refund-v1-c1"],
+      "category": "factual",
+      "expected": {
+        "status": "answered",
+        "answer": "O prazo é de vinte dias úteis contados do protocolo completo.",
+        "required_concepts": [["vinte", "20"], ["dias úteis"], ["protocolo completo"]]
+      }
+    },
+    {
+      "id": "holdout-temporal-001",
+      "question": "Qual é o limite do ZX-800 especificamente na versão 2 da tabela?",
+      "relevant_chunk_ids": ["holdout-table-v2-c1"],
+      "category": "versioned_lookup",
+      "expected": {
+        "status": "answered",
+        "answer": "Na versão 2, o ZX-800 possui limite de duas unidades.",
+        "required_concepts": [["versão 2"], ["ZX-800"], ["duas", "2"]]
+      }
+    },
+    {
+      "id": "holdout-multidoc-001",
+      "question": "O pacote PC-900 inclui implantes especiais? Justifique usando as regras de composição e materiais.",
+      "relevant_chunk_ids": ["holdout-package-v1-c1", "holdout-material-v1-c1"],
+      "category": "multi_document",
+      "expected": {
+        "status": "answered",
+        "answer": "Não. O pacote inclui materiais descartáveis comuns, mas implantes especiais são cobrados separadamente.",
+        "required_concepts": [["PC-900"], ["materiais descartáveis comuns"], ["implantes especiais"], ["separadamente", "não integram", "não inclui"]]
+      }
+    },
+    {
+      "id": "holdout-missing-001",
+      "question": "Qual é a multa percentual aplicada ao AB-710?",
+      "relevant_chunk_ids": [],
+      "category": "missing_evidence",
+      "expected": {"status": "insufficient_evidence"}
+    },
+    {
+      "id": "holdout-missing-002",
+      "question": "Existe idade mínima para utilizar o LM-404?",
+      "relevant_chunk_ids": [],
+      "category": "missing_evidence",
+      "expected": {"status": "insufficient_evidence"}
+    },
+    {
+      "id": "holdout-missing-003",
+      "question": "Qual documento permite analisar o mérito da CT-600 sem comprovante?",
+      "relevant_chunk_ids": [],
+      "category": "missing_evidence",
+      "expected": {"status": "insufficient_evidence"}
+    }
+  ]
+}

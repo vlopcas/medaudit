@@ -103,6 +103,26 @@ services:
       - --top-k
       - "${LOCAL_LLM_TOP_K:-3}"
 
+  evaluate-local-llm-holdout:
+    extends: benchmark-local-llm
+    command:
+      - medaudit-benchmark-local-llm
+      - --corpus
+      - /app/data/synthetic_cases/llm_holdout_corpus.json
+      - --cases
+      - /app/data/eval/llm_holdout_cases.json
+      - --output
+      - /artifacts/local-llm-synthetic-holdout.local.json
+      - --threshold
+      - "3"
+      - --top-k
+      - "3"
+      - --expected-corpus-sha256
+      - e0ca652b222069618b267d9b4013065fe393bb1f4625950743d3d2b037b8cbad
+      - --expected-cases-sha256
+      - 06266437cda90e7dc4757eef8115c0f29dba6e2394a9f5d725f863048798fd04
+      - --refuse-overwrite
+
   checks:
     build:
       context: .

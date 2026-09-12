@@ -2,6 +2,7 @@
 
 import argparse
 import asyncio
+import hashlib
 import json
 import time
 import urllib.error
@@ -32,6 +33,14 @@ def _load_synthetic(
     if corpus.get("schema_version") != 1 or cases.get("schema_version") != 1:
         raise ValueError("unsupported synthetic benchmark schema")
     return [Chunk(**item) for item in corpus["chunks"]], cases["cases"]
+
+
+def verify_input(path: Path, expected_sha256: str | None) -> str:
+    """Hash a synthetic input and optionally enforce its frozen fingerprint."""
+    digest = hashlib.sha256(path.read_bytes()).hexdigest()
+    if expected_sha256 is not None and digest != expected_sha256:
+        raise ValueError("synthetic benchmark input fingerprint mismatch")
+    return digest
 
 
 def wait_until_ready(base_url: str, *, timeout_seconds: float) -> None:
@@ -72,6 +81,9 @@ async def run_benchmark(
     correct_answers = 0
     matched_concepts = 0
     expected_concepts = 0
+    citation_precision_sum = 0.0
+    citation_recall_sum = 0.0
+    grounded_generation_count = 0
     categories: defaultdict[str, dict[str, int]] = defaultdict(
         lambda: {
             "case_count": 0,
@@ -111,11 +123,17 @@ async def run_benchmark(
         citation_correct = bool(cited.intersection(relevant))
         relevant_citations += citation_correct
         category["relevant_citation"] += citation_correct
-        grade = grade_expected_content(answer.answer, expected)
-        correct_answers += grade.correct
-        matched_concepts += grade.matched_concept_count
-        expected_concepts += grade.concept_count
-        category["content_correct"] += grade.correct
+        if expected_generation:
+            grounded_generation_count += 1
+            citation_precision_sum += (
+                len(cited.intersection(relevant)) / len(cited) if cited else 0.0
+            )
+            citation_recall_sum += len(cited.intersection(relevant)) / len(relevant)
+            grade = grade_expected_content(answer.answer, expected)
+            correct_answers += grade.correct
+            matched_concepts += grade.matched_concept_count
+            expected_concepts += grade.concept_count
+            category["content_correct"] += grade.correct
         latencies.append(response.latency_ms)
     return {
         "schema_version": 1,
@@ -127,6 +145,16 @@ async def run_benchmark(
             "structured_output_rate": valid_outputs / generated if generated else None,
             "relevant_citation_rate": (
                 relevant_citations / generated if generated else None
+            ),
+            "citation_precision": (
+                citation_precision_sum / grounded_generation_count
+                if grounded_generation_count
+                else None
+            ),
+            "citation_recall": (
+                citation_recall_sum / grounded_generation_count
+                if grounded_generation_count
+                else None
             ),
             "response_status_accuracy": (
                 correct_statuses / generated if generated else None
@@ -156,12 +184,19 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--threshold", type=float, default=3.0)
     parser.add_argument("--top-k", type=int, default=3)
     parser.add_argument("--startup-timeout", type=float, default=180)
+    parser.add_argument("--expected-corpus-sha256")
+    parser.add_argument("--expected-cases-sha256")
+    parser.add_argument("--refuse-overwrite", action="store_true")
     return parser
 
 
 def main(argv: Sequence[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     try:
+        if args.refuse_overwrite and args.output.exists():
+            raise FileExistsError("benchmark output already exists")
+        corpus_sha256 = verify_input(args.corpus, args.expected_corpus_sha256)
+        cases_sha256 = verify_input(args.cases, args.expected_cases_sha256)
         chunks, cases = _load_synthetic(args.corpus, args.cases)
         wait_until_ready(args.base_url, timeout_seconds=args.startup_timeout)
         report = asyncio.run(
@@ -173,6 +208,10 @@ def main(argv: Sequence[str] | None = None) -> int:
                 top_k=args.top_k,
             )
         )
+        report["input_fingerprints"] = {
+            "corpus_sha256": corpus_sha256,
+            "cases_sha256": cases_sha256,
+        }
         write_private_report(report, args.output)
     except (
         OSError,

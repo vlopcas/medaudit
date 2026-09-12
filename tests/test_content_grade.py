@@ -1,6 +1,9 @@
+import tempfile
 import unittest
+from pathlib import Path
 
 from medaudit.evaluation.content_grade import grade_expected_content, normalize_answer
+from medaudit.evaluation.local_llm_benchmark import verify_input
 
 
 class ContentGradeTest(unittest.TestCase):
@@ -32,3 +35,11 @@ class ContentGradeTest(unittest.TestCase):
     def test_rejects_empty_concept_configuration(self) -> None:
         with self.assertRaisesRegex(ValueError, "concept groups"):
             grade_expected_content("Synthetic answer", {"required_concepts": []})
+
+    def test_verifies_frozen_benchmark_fingerprint(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "synthetic.json"
+            path.write_text("synthetic", encoding="utf-8")
+
+            with self.assertRaisesRegex(ValueError, "fingerprint mismatch"):
+                verify_input(path, "0" * 64)

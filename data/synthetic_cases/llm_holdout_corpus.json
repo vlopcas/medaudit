@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "notice": "Conteúdo integralmente sintético, criado exclusivamente para holdout local.",
+  "chunks": [
+    {
+      "chunk_id": "holdout-referral-v1-c1",
+      "document_id": "holdout-referral-v1",
+      "text": "O atendimento eletivo AB-710 requer encaminhamento emitido antes da realização.",
+      "page": 4,
+      "section": "Encaminhamento"
+    },
+    {
+      "chunk_id": "holdout-referral-v1-c2",
+      "document_id": "holdout-referral-v1",
+      "text": "Em emergência documentada, o encaminhamento do AB-710 pode ser apresentado em até cinco dias úteis após o atendimento.",
+      "page": 5,
+      "section": "Emergência"
+    },
+    {
+      "chunk_id": "holdout-limit-v3-c1",
+      "document_id": "holdout-limit-v3",
+      "text": "O item LM-404 admite no máximo três unidades dentro de um período de noventa dias.",
+      "page": 8,
+      "section": "Limites"
+    },
+    {
+      "chunk_id": "holdout-daily-v2-c1",
+      "document_id": "holdout-daily-v2",
+      "text": "A diária sintética DS-500 inclui acomodação, roupa de cama e alimentação padrão.",
+      "page": 2,
+      "section": "Inclusões"
+    },
+    {
+      "chunk_id": "holdout-daily-v2-c2",
+      "document_id": "holdout-daily-v2",
+      "text": "Dietas especiais solicitadas separadamente não estão incluídas na diária DS-500.",
+      "page": 3,
+      "section": "Exclusões"
+    },
+    {
+      "chunk_id": "holdout-refund-v1-c1",
+      "document_id": "holdout-refund-v1",
+      "text": "O pedido de reembolso deve ser analisado em até vinte dias úteis contados do protocolo completo.",
+      "page": 12,
+      "section": "Prazo"
+    },
+    {
+      "chunk_id": "holdout-table-v1-c1",
+      "document_id": "holdout-table-v1",
+      "text": "Na versão 1 da tabela sintética, o código ZX-800 possuía limite de quatro unidades.",
+      "page": 1,
+      "section": "Versão anterior"
+    },
+    {
+      "chunk_id": "holdout-table-v2-c1",
+      "document_id": "holdout-table-v2",
+      "text": "Na versão 2 da tabela sintética, o limite do código ZX-800 foi alterado para duas unidades.",
+      "page": 1,
+      "section": "Versão atual"
+    },
+    {
+      "chunk_id": "holdout-package-v1-c1",
+      "document_id": "holdout-package-v1",
+      "text": "O pacote cirúrgico PC-900 inclui sala, equipe de apoio e materiais descartáveis comuns.",
+      "page": 6,
+      "section": "Composição"
+    },
+    {
+      "chunk_id": "holdout-material-v1-c1",
+      "document_id": "holdout-material-v1",
+      "text": "Implantes especiais são cobrados separadamente e não integram o pacote PC-900.",
+      "page": 9,
+      "section": "Materiais especiais"
+    },
+    {
+      "chunk_id": "holdout-contest-v1-c1",
+      "document_id": "holdout-contest-v1",
+      "text": "A contestação CT-600 enviada sem comprovante deve retornar para complementação, sem análise de mérito.",
+      "page": 14,
+      "section": "Documentação"
+    }
+  ]
+}

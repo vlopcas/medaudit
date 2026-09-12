@@ -215,6 +215,12 @@ O modelo permanece experimental: a avaliação de conteúdo atingiu 66,7% após 
 ajuste do prompt, portanto a geração sobre o corpus privado ainda não está
 habilitada.
 
+O holdout sintético congelado pode ser aberto uma única vez com
+`docker compose run --rm evaluate-local-llm-holdout`. Ele já foi executado para
+a configuração atual e recusará sobrescrever o relatório local. O resultado
+de generalização foi insuficiente, com 3 de 7 respostas completas; consulte o
+[Resultado 003](docs/results/003-local-llm-synthetic-holdout.md).
+
 Depois de materializar os snapshots temporais, gere ou atualize o cache local
 deduplicado de embeddings com:
 
