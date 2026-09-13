@@ -99,6 +99,11 @@ citações. O agrupador atingiu 100% em quatro casos e sete grupos no holdout e 
 incluído automaticamente quando o executor opt-in está configurado. O pacote
 ainda não chama o modelo generativo.
 
+O contrato de síntese decomposta exige afirmações atômicas com citações ligadas
+ao grupo correto. Seu validador adversarial atingiu 100% em oito casos de
+holdout. O contrato ainda não está conectado ao modelo local; essa qualidade
+será avaliada separadamente.
+
 ## Ambiente de desenvolvimento
 
 Requer Python 3.12 ou superior.

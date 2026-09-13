@@ -89,11 +89,12 @@ Evidência parcial continua visível para auditoria, mas bloqueia geração. O
 pacote foi integrado ao caminho opt-in; o próximo marco é definir e avaliar o
 contrato de síntese comparativa grounded.
 
-O primeiro contrato dessa síntese já constrói requests agrupados e valida
+O contrato dessa síntese constrói requests agrupados e valida
 afirmações atômicas com suporte por `step_id`. Citações de outro grupo, omissão
-de um lado e pacotes parciais são rejeitados deterministicamente. Ele permanece
-experimental até passar por um benchmark adversarial separado e ainda não
-chama o modelo local.
+de um lado e pacotes parciais são rejeitados deterministicamente. Ele atingiu
+100% em 12 casos de desenvolvimento e oito casos de holdout, mas ainda não
+chama o modelo local. O próximo marco é medir conformidade estrutural e
+qualidade factual do modelo nessa tarefa antes de qualquer integração.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em

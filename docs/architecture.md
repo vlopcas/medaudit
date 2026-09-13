@@ -86,11 +86,12 @@ pacote só libera uma futura síntese quando todos os passos estiverem `ready`.
 Quando o executor opt-in está configurado, esse pacote integra automaticamente
 a decisão roteada. Ele ainda não dispara síntese.
 
-Um contrato experimental de síntese decomposta transforma somente pacotes
+Um contrato provider-neutral validado de síntese decomposta transforma pacotes
 completos em requests estruturados. A resposta é modelada como afirmações
 atômicas, cada uma com suportes que vinculam `step_id` a citações daquele mesmo
 grupo. O validador rejeita citações cruzadas e respostas que omitam qualquer
-grupo. O contrato ainda não está conectado ao cliente LLM.
+grupo. O contrato ainda não está conectado ao cliente LLM porque qualidade de
+conteúdo precisa de avaliação separada.
 
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no
@@ -159,6 +160,7 @@ em `data/processed/`, que é ignorado pelo Git.
 - [ADR-015: planos determinísticos de decomposição](decisions/ADR-015-deterministic-decomposition-plans.md)
 - [ADR-016: execução opt-in de planos de decomposição](decisions/ADR-016-opt-in-decomposition-execution.md)
 - [ADR-017: pacotes de evidências preservam o escopo dos passos](decisions/ADR-017-step-scoped-evidence-bundles.md)
+- [ADR-018: geração decomposta usa afirmações com suporte por passo](decisions/ADR-018-claim-scoped-decomposed-generation.md)
 
 ## Ambiente de execução
 

@@ -69,6 +69,8 @@ A execução opt-in dos passos está em
 [ADR-016](decisions/ADR-016-opt-in-decomposition-execution.md).
 Os pacotes de evidências separados por passo estão em
 [ADR-017](decisions/ADR-017-step-scoped-evidence-bundles.md).
+O contrato de afirmações com suporte por passo está em
+[ADR-018](decisions/ADR-018-claim-scoped-decomposed-generation.md).
 
 ## Conteúdo permitido
 

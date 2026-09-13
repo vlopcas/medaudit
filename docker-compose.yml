@@ -293,6 +293,39 @@ services:
       - 7266046a3475bd142b51f9ee6375c0159e5cd71eba32eadf6ee5a7dcbdde3a63
       - --refuse-overwrite
 
+  evaluate-decomposed-grounding:
+    build:
+      context: .
+    network_mode: none
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    command:
+      - medaudit-evaluate-decomposed-grounding
+      - --dataset
+      - /app/data/synthetic_cases/decomposed_grounding_development.json
+
+  evaluate-decomposed-grounding-holdout:
+    extends: evaluate-decomposed-grounding
+    user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
+    volumes:
+      - type: bind
+        source: ./artifacts
+        target: /artifacts
+    command:
+      - medaudit-evaluate-decomposed-grounding
+      - --dataset
+      - /app/data/synthetic_cases/decomposed_grounding_holdout.json
+      - --output
+      - /artifacts/decomposed-grounding-holdout.local.json
+      - --expected-sha256
+      - 96fdb58b2d3ad989dd77c930414103b69988dfee4ee5eb99fad8dc065db80353
+      - --refuse-overwrite
+
   evaluate-explicit-query-routing-holdout:
     extends: evaluate-explicit-query-routing
     user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"

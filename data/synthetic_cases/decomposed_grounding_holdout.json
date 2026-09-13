@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "policy": "decomposed-grounding-validation-v1",
+  "notice": "Conteúdo integralmente sintético, sem reprodução de documentos reais.",
+  "query": "Compare a fonte cobre com a fonte zinco.",
+  "evidence_groups": [
+    {"step_id": "comparison-1", "scope": "fonte cobre", "evidence": [{"evidence_id": "cobre-c1", "document_id": "cobre-doc"}]},
+    {"step_id": "comparison-2", "scope": "fonte zinco", "evidence": [{"evidence_id": "zinco-c1", "document_id": "zinco-doc"}]}
+  ],
+  "cases": [
+    {
+      "id": "ground-hold-001", "expected": {"valid": true, "category": "valid_answer"},
+      "response": {"status": "answered", "claims": [{"text": "A comparação sintética usa as duas fontes.", "supports": [{"step_id": "comparison-1", "evidence_ids": ["cobre-c1"]}, {"step_id": "comparison-2", "evidence_ids": ["zinco-c1"]}]}]}
+    },
+    {
+      "id": "ground-hold-002", "expected": {"valid": true, "category": "valid_abstention"},
+      "response": {"status": "insufficient_evidence", "claims": []}
+    },
+    {
+      "id": "ground-hold-003", "expected": {"valid": false, "category": "claims_wrong_type", "error": "decomposed response claims must be a list"},
+      "response": {"status": "answered", "claims": "não é lista"}
+    },
+    {
+      "id": "ground-hold-004", "expected": {"valid": false, "category": "claim_wrong_type", "error": "each decomposed claim must be an object"},
+      "response": {"status": "answered", "claims": ["não é objeto"]}
+    },
+    {
+      "id": "ground-hold-005", "expected": {"valid": false, "category": "empty_claim_text", "error": "each decomposed claim requires text"},
+      "response": {"status": "answered", "claims": [{"text": " ", "supports": [{"step_id": "comparison-1", "evidence_ids": ["cobre-c1"]}]}]}
+    },
+    {
+      "id": "ground-hold-006", "expected": {"valid": false, "category": "support_wrong_type", "error": "claim support must be an object"},
+      "response": {"status": "answered", "claims": [{"text": "Suporte inválido.", "supports": ["não é objeto"]}]}
+    },
+    {
+      "id": "ground-hold-007", "expected": {"valid": false, "category": "empty_evidence_ids", "error": "claim support requires evidence_ids"},
+      "response": {"status": "answered", "claims": [{"text": "Sem citação.", "supports": [{"step_id": "comparison-1", "evidence_ids": []}]}]}
+    },
+    {
+      "id": "ground-hold-008", "expected": {"valid": false, "category": "missing_group", "error": "answered response must cite every evidence group"},
+      "response": {"status": "answered", "claims": [{"text": "Somente cobre.", "supports": [{"step_id": "comparison-1", "evidence_ids": ["cobre-c1"]}]}]}
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "policy": "decomposed-grounding-validation-v1",
+  "notice": "Conteúdo integralmente sintético, sem reprodução de documentos reais.",
+  "query": "Compare a regra alfa com a regra beta.",
+  "evidence_groups": [
+    {"step_id": "comparison-1", "scope": "regra alfa", "evidence": [{"evidence_id": "alpha-c1", "document_id": "alpha-doc"}]},
+    {"step_id": "comparison-2", "scope": "regra beta", "evidence": [{"evidence_id": "beta-c1", "document_id": "beta-doc"}]}
+  ],
+  "cases": [
+    {
+      "id": "ground-dev-001", "expected": {"valid": true, "category": "valid_answer"},
+      "response": {"status": "answered", "claims": [
+        {"text": "Alfa possui regra sintética.", "supports": [{"step_id": "comparison-1", "evidence_ids": ["alpha-c1"]}]},
+        {"text": "Beta possui regra sintética.", "supports": [{"step_id": "comparison-2", "evidence_ids": ["beta-c1"]}]}
+      ]}
+    },
+    {
+      "id": "ground-dev-002", "expected": {"valid": true, "category": "valid_cross_group_claim"},
+      "response": {"status": "answered", "claims": [{"text": "As regras diferem sinteticamente.", "supports": [{"step_id": "comparison-1", "evidence_ids": ["alpha-c1"]}, {"step_id": "comparison-2", "evidence_ids": ["beta-c1"]}]}]}
+    },
+    {
+      "id": "ground-dev-003", "expected": {"valid": true, "category": "valid_abstention"},
+      "response": {"status": "insufficient_evidence", "claims": []}
+    },
+    {
+      "id": "ground-dev-004", "expected": {"valid": false, "category": "cross_group_citation", "error": "claim cites evidence outside its step"},
+      "response": {"status": "answered", "claims": [{"text": "Citação trocada.", "supports": [{"step_id": "comparison-1", "evidence_ids": ["beta-c1"]}]}]}
+    },
+    {
+      "id": "ground-dev-005", "expected": {"valid": false, "category": "missing_group", "error": "answered response must cite every evidence group"},
+      "response": {"status": "answered", "claims": [{"text": "Somente alfa.", "supports": [{"step_id": "comparison-1", "evidence_ids": ["alpha-c1"]}]}]}
+    },
+    {
+      "id": "ground-dev-006", "expected": {"valid": false, "category": "unknown_step", "error": "claim support references an unknown step"},
+      "response": {"status": "answered", "claims": [{"text": "Passo inventado.", "supports": [{"step_id": "comparison-9", "evidence_ids": ["alpha-c1"]}]}]}
+    },
+    {
+      "id": "ground-dev-007", "expected": {"valid": false, "category": "empty_claims", "error": "answered decomposed response requires claims"},
+      "response": {"status": "answered", "claims": []}
+    },
+    {
+      "id": "ground-dev-008", "expected": {"valid": false, "category": "claim_without_support", "error": "each decomposed claim requires supports"},
+      "response": {"status": "answered", "claims": [{"text": "Sem suporte.", "supports": []}]}
+    },
+    {
+      "id": "ground-dev-009", "expected": {"valid": false, "category": "duplicate_step_support", "error": "claim contains duplicate step supports"},
+      "response": {"status": "answered", "claims": [{"text": "Suporte repetido.", "supports": [{"step_id": "comparison-1", "evidence_ids": ["alpha-c1"]}, {"step_id": "comparison-1", "evidence_ids": ["alpha-c1"]}, {"step_id": "comparison-2", "evidence_ids": ["beta-c1"]}]}]}
+    },
+    {
+      "id": "ground-dev-010", "expected": {"valid": false, "category": "duplicate_citation", "error": "claim support contains duplicate citations"},
+      "response": {"status": "answered", "claims": [{"text": "Citação repetida.", "supports": [{"step_id": "comparison-1", "evidence_ids": ["alpha-c1", "alpha-c1"]}]}]}
+    },
+    {
+      "id": "ground-dev-011", "expected": {"valid": false, "category": "invalid_abstention", "error": "insufficient evidence response must have no claims"},
+      "response": {"status": "insufficient_evidence", "claims": [{"text": "Não deveria existir.", "supports": []}]}
+    },
+    {
+      "id": "ground-dev-012", "expected": {"valid": false, "category": "unsupported_status", "error": "unsupported decomposed response status"},
+      "response": {"status": "partial", "claims": []}
+    }
+  ]
+}
