@@ -223,6 +223,43 @@ services:
       - 1393d8387c7460de8210b9cfb584f22bd5560484a9eab264ea17fd2665a69303
       - --refuse-overwrite
 
+  benchmark-decomposition-execution:
+    build:
+      context: .
+    network_mode: none
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    command:
+      - medaudit-benchmark-decomposition-execution
+      - --dataset
+      - /app/data/synthetic_cases/decomposition_execution_development.json
+
+  benchmark-decomposition-execution-holdout:
+    extends: benchmark-decomposition-execution
+    user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
+    volumes:
+      - type: bind
+        source: ./artifacts
+        target: /artifacts
+    command:
+      - medaudit-benchmark-decomposition-execution
+      - --dataset
+      - /app/data/synthetic_cases/decomposition_execution_holdout.json
+      - --top-k
+      - "1"
+      - --threshold
+      - "0.1"
+      - --output
+      - /artifacts/decomposition-execution-holdout.local.json
+      - --expected-sha256
+      - db4effc3b23a28cebb6d9cea6137a5b2589a9674e902279ee155c811a22395c9
+      - --refuse-overwrite
+
   evaluate-explicit-query-routing-holdout:
     extends: evaluate-explicit-query-routing
     user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"

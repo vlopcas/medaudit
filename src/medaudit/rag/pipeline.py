@@ -11,6 +11,7 @@ from medaudit.query_understanding import (
     ExplicitQueryRouter,
     QueryRoute,
 )
+from medaudit.rag.decomposition import DeterministicDecompositionExecutor
 from medaudit.rag.models import (
     Evidence,
     EvidenceLocation,
@@ -128,19 +129,27 @@ class RoutedEvidenceFirstPipeline:
         pipeline: EvidenceFirstPipeline,
         router: ExplicitQueryRouter | None = None,
         planner: DeterministicQueryPlanner | None = None,
+        decomposition_executor: DeterministicDecompositionExecutor | None = None,
     ) -> None:
         self._pipeline = pipeline
         self._router = router or ExplicitQueryRouter()
         self._planner = planner or DeterministicQueryPlanner()
+        self._decomposition_executor = decomposition_executor
 
     def retrieve(self, query: str, *, top_k: int = 5) -> RoutedRetrievalDecision:
         """Retrieve only when the explicit routing policy allows it."""
         route = self._router.route(query)
         if route is QueryRoute.REQUIRES_DECOMPOSITION:
+            plan = self._planner.plan(query)
             return RoutedRetrievalDecision(
                 query=query,
                 route=route,
-                plan=self._planner.plan(query),
+                plan=plan,
+                execution=(
+                    self._decomposition_executor.execute(plan, top_k=top_k)
+                    if self._decomposition_executor is not None
+                    else None
+                ),
             )
         if route is QueryRoute.REQUIRES_EXTERNAL_DATA:
             return RoutedRetrievalDecision(query=query, route=route)

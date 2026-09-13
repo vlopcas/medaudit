@@ -110,6 +110,7 @@ class RoutedRetrievalDecision:
     route: QueryRoute
     retrieval: RetrievalDecision | None = None
     plan: QueryPlan | None = None
+    execution: DecompositionExecution | None = None
 
     def __post_init__(self) -> None:
         has_retrieval = self.retrieval is not None
@@ -118,3 +119,10 @@ class RoutedRetrievalDecision:
         has_plan = self.plan is not None
         if (self.route is QueryRoute.REQUIRES_DECOMPOSITION) != has_plan:
             raise ValueError("only decomposition routes require a query plan")
+        if self.execution is not None:
+            if self.route is not QueryRoute.REQUIRES_DECOMPOSITION:
+                raise ValueError("only decomposition routes can contain execution")
+            if self.execution.plan != self.plan:
+                raise ValueError(
+                    "decomposition execution must belong to the route plan"
+                )

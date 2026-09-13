@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "policy": "decomposition-execution-v1",
+  "notice": "Conteúdo integralmente sintético, sem reprodução de documentos reais.",
+  "comparison_chunks": [
+    {"chunk_id": "cmp-safira-c1", "document_id": "cmp-safira", "text": "Safira exige autorização antecipada para o evento sintético."},
+    {"chunk_id": "cmp-rubi-c1", "document_id": "cmp-rubi", "text": "Rubi permite regularização posterior do evento sintético."},
+    {"chunk_id": "cmp-norte-c1", "document_id": "cmp-norte", "text": "Política norte estabelece limite fictício de três unidades."},
+    {"chunk_id": "cmp-sul-c1", "document_id": "cmp-sul", "text": "Política sul estabelece limite fictício de cinco unidades."},
+    {"chunk_id": "cmp-bronze-c1", "document_id": "cmp-bronze", "text": "Diretriz bronze inclui acomodação no pacote educacional."},
+    {"chunk_id": "cmp-prata-c1", "document_id": "cmp-prata", "text": "Diretriz prata exclui acomodação do pacote educacional."},
+    {"chunk_id": "cmp-basico-c1", "document_id": "cmp-basico", "text": "Plano básico usa prazo sintético de dez dias."},
+    {"chunk_id": "cmp-ampliado-c1", "document_id": "cmp-ampliado", "text": "Plano ampliado usa prazo sintético de vinte dias."}
+  ],
+  "temporal_snapshots": [
+    {
+      "reference_date": "2025-01-01",
+      "chunks": [
+        {"chunk_id": "tmp-lunar-2025-c1", "document_id": "tmp-lunar-2025", "text": "Protocolo lunar exige registro sintético prévio."},
+        {"chunk_id": "tmp-solar-2025-c1", "document_id": "tmp-solar-2025", "text": "Regra solar aceita duas unidades fictícias."},
+        {"chunk_id": "tmp-orbita-2025-c1", "document_id": "tmp-orbita-2025", "text": "Norma órbita usa o marcador educacional antigo."}
+      ]
+    },
+    {
+      "reference_date": "2026-01-01",
+      "chunks": [
+        {"chunk_id": "tmp-lunar-2026-c1", "document_id": "tmp-lunar-2026", "text": "Protocolo lunar dispensa registro sintético prévio."},
+        {"chunk_id": "tmp-solar-2026-c1", "document_id": "tmp-solar-2026", "text": "Regra solar aceita quatro unidades fictícias."},
+        {"chunk_id": "tmp-orbita-2026-c1", "document_id": "tmp-orbita-2026", "text": "Norma órbita usa o marcador educacional intermediário."}
+      ]
+    },
+    {
+      "reference_date": "2027-01-01",
+      "chunks": [
+        {"chunk_id": "tmp-lunar-2027-c1", "document_id": "tmp-lunar-2027", "text": "Protocolo lunar exige justificativa sintética posterior."},
+        {"chunk_id": "tmp-solar-2027-c1", "document_id": "tmp-solar-2027", "text": "Regra solar aceita seis unidades fictícias."},
+        {"chunk_id": "tmp-orbita-2027-c1", "document_id": "tmp-orbita-2027", "text": "Norma órbita usa o marcador educacional novo."}
+      ]
+    }
+  ],
+  "cases": [
+    {"id": "exec-dev-001", "query": "Compare Safira com Rubi.", "status": "ready", "document_ids": ["cmp-safira", "cmp-rubi"]},
+    {"id": "exec-dev-002", "query": "Comparar política norte com política sul.", "status": "ready", "document_ids": ["cmp-norte", "cmp-sul"]},
+    {"id": "exec-dev-003", "query": "Qual é a diferença entre diretriz bronze e diretriz prata?", "status": "ready", "document_ids": ["cmp-bronze", "cmp-prata"]},
+    {"id": "exec-dev-004", "query": "Plano básico versus plano ampliado.", "status": "ready", "document_ids": ["cmp-basico", "cmp-ampliado"]},
+    {"id": "exec-dev-005", "query": "Compare Safira com elemento inexistente.", "status": "insufficient_evidence", "document_ids": ["cmp-safira", null]},
+    {"id": "exec-dev-006", "query": "Faça uma comparação dos pacotes.", "status": "needs_clarification", "document_ids": []},
+    {"id": "exec-dev-007", "query": "Quais mudanças devem ser avaliadas?", "status": "needs_clarification", "document_ids": []},
+    {"id": "exec-dev-008", "query": "Compare protocolo lunar em 2025-01-01 e 2026-01-01.", "status": "ready", "document_ids": ["tmp-lunar-2025", "tmp-lunar-2026"]},
+    {"id": "exec-dev-009", "query": "Verifique regra solar em 01/01/2026 e 01/01/2027.", "status": "ready", "document_ids": ["tmp-solar-2026", "tmp-solar-2027"]},
+    {"id": "exec-dev-010", "query": "Avalie norma órbita em 2025-01-01, 2026-01-01 e 2027-01-01.", "status": "ready", "document_ids": ["tmp-orbita-2025", "tmp-orbita-2026", "tmp-orbita-2027"]},
+    {"id": "exec-dev-011", "query": "Compare item inexistente em 2025-01-01 e 2027-01-01.", "status": "insufficient_evidence", "document_ids": [null, null]},
+    {"id": "exec-dev-012", "query": "Compare protocolo lunar em 2025-01-01, 2026-01-01 e 2027-01-01.", "status": "ready", "document_ids": ["tmp-lunar-2025", "tmp-lunar-2026", "tmp-lunar-2027"]}
+  ]
+}

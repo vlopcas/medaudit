@@ -23,7 +23,7 @@ implementação dedicada.
 | 5 | Document parsing e chunking | Parcial | Texto, PDF, XLS/XLSX, OCR por página e chunking estrutural estão implementados; novas estratégias ainda podem ser comparadas. |
 | 6 | Hybrid Retrieval | Experimental, não promovida | BM25, dense e RRF foram comparados; BM25 permanece como baseline principal. |
 | 7 | Reranking | Experimental, não promovida | Reranking semântico restrito aos candidatos foi avaliado sem justificar promoção. |
-| 8 | Query Understanding | Parcial | Roteamento explícito e planos determinísticos foram validados; execução dos passos e reescrita semântica ainda não foram implementadas. |
+| 8 | Query Understanding | Parcial | Roteamento, planejamento e execução opt-in por passo foram validados; combinação de evidências e reescrita semântica ainda não foram implementadas. |
 | 9 | Regras estruturadas | Não iniciada | Será tratada depois do ciclo de Query Understanding. |
 | 10 | Temporalidade e versionamento | Parcial, antecipada | Catálogo temporal, relações de substituição, snapshots por data e avaliações temporais já existem. |
 | 11–18 | Grafos, tools, APIs e agentes | Não iniciadas | Permanecem no roteiro futuro. |
@@ -77,11 +77,11 @@ pede esclarecimento. Os passos estão integrados à decisão roteada, mas ainda
 não são executados. O próximo marco é avaliar a recuperação de cada passo e a
 combinação de evidências antes de autorizar síntese comparativa.
 
-O contrato experimental de execução por passo já preserva snapshots temporais,
-escopos comparativos e abstention agregada, mas foi validado apenas por testes
-unitários sintéticos. O próximo experimento deve medir recuperação correta por
-passo e isolamento temporal; ele não será integrado ao runtime antes dessa
-avaliação.
+O executor subsequente atingiu 100% em 12 casos de desenvolvimento e 10 casos
+de holdout, incluindo 17 acertos de documento por passo e nove acertos
+temporais. Ele foi integrado de forma opt-in: sem resolvedor explícito de
+snapshots, o runtime não executa o plano. O próximo marco é definir e avaliar a
+combinação determinística das evidências antes de qualquer síntese generativa.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em

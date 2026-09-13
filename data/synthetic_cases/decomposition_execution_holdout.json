@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "policy": "decomposition-execution-v1",
+  "notice": "Conteúdo integralmente sintético, sem reprodução de documentos reais.",
+  "comparison_chunks": [
+    {"chunk_id": "hold-ambar-c1", "document_id": "hold-ambar", "text": "Âmbar requer marcador fictício amarelo."},
+    {"chunk_id": "hold-cedro-c1", "document_id": "hold-cedro", "text": "Cedro requer marcador fictício marrom."},
+    {"chunk_id": "hold-leste-c1", "document_id": "hold-leste", "text": "Tabela leste adota faixa educacional curta."},
+    {"chunk_id": "hold-oeste-c1", "document_id": "hold-oeste", "text": "Tabela oeste adota faixa educacional longa."},
+    {"chunk_id": "hold-simples-c1", "document_id": "hold-simples", "text": "Modalidade simples contém um requisito sintético."},
+    {"chunk_id": "hold-composta-c1", "document_id": "hold-composta", "text": "Modalidade composta contém três requisitos sintéticos."}
+  ],
+  "temporal_snapshots": [
+    {
+      "reference_date": "2024-06-30",
+      "chunks": [
+        {"chunk_id": "hold-cometa-2024-c1", "document_id": "hold-cometa-2024", "text": "Protocolo cometa usa indicador fictício sete."},
+        {"chunk_id": "hold-nevoa-2024-c1", "document_id": "hold-nevoa-2024", "text": "Regra névoa permite uma ocorrência educacional."}
+      ]
+    },
+    {
+      "reference_date": "2026-06-30",
+      "chunks": [
+        {"chunk_id": "hold-cometa-2026-c1", "document_id": "hold-cometa-2026", "text": "Protocolo cometa usa indicador fictício oito."},
+        {"chunk_id": "hold-nevoa-2026-c1", "document_id": "hold-nevoa-2026", "text": "Regra névoa permite duas ocorrências educacionais."}
+      ]
+    },
+    {
+      "reference_date": "2028-06-30",
+      "chunks": [
+        {"chunk_id": "hold-cometa-2028-c1", "document_id": "hold-cometa-2028", "text": "Protocolo cometa usa indicador fictício nove."},
+        {"chunk_id": "hold-nevoa-2028-c1", "document_id": "hold-nevoa-2028", "text": "Regra névoa permite três ocorrências educacionais."}
+      ]
+    }
+  ],
+  "cases": [
+    {"id": "exec-hold-001", "query": "Compare Âmbar com Cedro!", "status": "ready", "document_ids": ["hold-ambar", "hold-cedro"]},
+    {"id": "exec-hold-002", "query": "Qual e a diferenca entre tabela leste e tabela oeste?", "status": "ready", "document_ids": ["hold-leste", "hold-oeste"]},
+    {"id": "exec-hold-003", "query": "Modalidade simples versus modalidade composta", "status": "ready", "document_ids": ["hold-simples", "hold-composta"]},
+    {"id": "exec-hold-004", "query": "Comparar Cedro com referência ausente.", "status": "insufficient_evidence", "document_ids": ["hold-cedro", null]},
+    {"id": "exec-hold-005", "query": "Apresente uma comparação dos cenários.", "status": "needs_clarification", "document_ids": []},
+    {"id": "exec-hold-006", "query": "Compare protocolo cometa em 2024-06-30 e 2026-06-30.", "status": "ready", "document_ids": ["hold-cometa-2024", "hold-cometa-2026"]},
+    {"id": "exec-hold-007", "query": "Avalie regra névoa em 30/06/2026 e 30/06/2028.", "status": "ready", "document_ids": ["hold-nevoa-2026", "hold-nevoa-2028"]},
+    {"id": "exec-hold-008", "query": "Verifique protocolo cometa em 2024-06-30, 2026-06-30 e 2028-06-30.", "status": "ready", "document_ids": ["hold-cometa-2024", "hold-cometa-2026", "hold-cometa-2028"]},
+    {"id": "exec-hold-009", "query": "Compare conceito inexistente em 2024-06-30 e 2028-06-30.", "status": "insufficient_evidence", "document_ids": [null, null]},
+    {"id": "exec-hold-010", "query": "Quais mudanças são importantes?", "status": "needs_clarification", "document_ids": []}
+  ]
+}

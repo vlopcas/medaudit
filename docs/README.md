@@ -65,6 +65,8 @@ O roteamento determinístico anterior ao retrieval está em
 [ADR-014](decisions/ADR-014-explicit-pre-retrieval-routing.md).
 Os planos determinísticos para a rota de decomposição estão em
 [ADR-015](decisions/ADR-015-deterministic-decomposition-plans.md).
+A execução opt-in dos passos está em
+[ADR-016](decisions/ADR-016-opt-in-decomposition-execution.md).
 
 ## Conteúdo permitido
 

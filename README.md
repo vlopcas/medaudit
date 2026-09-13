@@ -85,8 +85,14 @@ esclarecimento; dependência externa encerra sem executar ações.
 
 O planejamento de decomposição pode ser reproduzido no desenvolvimento com
 `docker compose run --rm evaluate-query-planning`. Seu holdout sintético
-congelado atingiu 100% em 12 casos; os passos planejados ainda não executam
-buscas nem síntese.
+congelado atingiu 100% em 12 casos; por padrão, os passos planejados não
+executam buscas nem síntese.
+
+O executor opt-in dos passos pode ser avaliado com
+`docker compose run --rm benchmark-decomposition-execution`. Seu holdout
+congelado atingiu 100% em 10 casos e 17 passos. A execução temporal exige um
+resolvedor explícito de snapshots e ainda não combina evidências nem gera uma
+resposta comparativa.
 
 ## Ambiente de desenvolvimento
 

@@ -71,13 +71,13 @@ múltiplas datas ou comparações sintaticamente separáveis; casos ambíguos pe
 esclarecimento. Esses passos ainda não são executados e nenhuma rota habilita
 ferramentas externas.
 
-Um `DeterministicDecompositionExecutor` experimental já consegue executar os
+Um `DeterministicDecompositionExecutor` consegue executar os
 passos preservando suas fronteiras: comparações usam um pipeline de evidências
 por escopo e consultas temporais recebem um pipeline resolvido para cada data.
 Se qualquer passo se abstiver, a execução inteira fica como
-`insufficient_evidence`. O componente ainda não está ligado ao fluxo roteado e
-não combina evidências nem gera respostas; sua promoção depende de benchmark
-sintético dedicado.
+`insufficient_evidence`. O componente é uma dependência opt-in do fluxo roteado:
+sem executor explicitamente configurado, a decisão continua contendo somente o
+plano. Ele não combina evidências nem gera respostas.
 
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no
@@ -144,6 +144,7 @@ em `data/processed/`, que é ignorado pelo Git.
 - [ADR-013: baseline determinístico de Query Understanding](decisions/ADR-013-deterministic-query-understanding-baseline.md)
 - [ADR-014: roteamento explícito antes do retrieval](decisions/ADR-014-explicit-pre-retrieval-routing.md)
 - [ADR-015: planos determinísticos de decomposição](decisions/ADR-015-deterministic-decomposition-plans.md)
+- [ADR-016: execução opt-in de planos de decomposição](decisions/ADR-016-opt-in-decomposition-execution.md)
 
 ## Ambiente de execução
 

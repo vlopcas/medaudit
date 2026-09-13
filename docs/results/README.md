@@ -24,3 +24,4 @@ para evitar a exposição indireta do corpus privado.
 - [Resultado 008: decomposição estrutural de consultas](008-structural-decomposition-holdout.md)
 - [Resultado 009: holdout do roteamento explícito](009-explicit-query-routing-holdout.md)
 - [Resultado 010: holdout do planejamento determinístico](010-deterministic-query-planning-holdout.md)
+- [Resultado 011: holdout da execução de decomposição](011-decomposition-execution-holdout.md)

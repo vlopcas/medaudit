@@ -3,6 +3,7 @@ import unittest
 from medaudit.documents import Chunk
 from medaudit.query_understanding import QueryRoute
 from medaudit.rag import (
+    DeterministicDecompositionExecutor,
     EvidenceFirstPipeline,
     FrozenTopScorePolicy,
     RoutedEvidenceFirstPipeline,
@@ -13,12 +14,12 @@ from medaudit.retrieval import BM25Index
 class RoutedEvidenceFirstPipelineTest(unittest.TestCase):
     def setUp(self) -> None:
         chunks = [Chunk("chunk-a", "document-a", "synthetic rule alpha")]
-        evidence_pipeline = EvidenceFirstPipeline(
+        self.evidence_pipeline = EvidenceFirstPipeline(
             chunks=chunks,
             retriever=BM25Index(chunks),
             policy=FrozenTopScorePolicy(threshold=0.1),
         )
-        self.pipeline = RoutedEvidenceFirstPipeline(evidence_pipeline)
+        self.pipeline = RoutedEvidenceFirstPipeline(self.evidence_pipeline)
 
     def test_direct_route_contains_retrieval_decision(self) -> None:
         decision = self.pipeline.retrieve("Qual é a regra alpha?")
@@ -32,6 +33,7 @@ class RoutedEvidenceFirstPipelineTest(unittest.TestCase):
         self.assertEqual(decision.route, QueryRoute.REQUIRES_DECOMPOSITION)
         self.assertIsNone(decision.retrieval)
         self.assertIsNotNone(decision.plan)
+        self.assertIsNone(decision.execution)
         assert decision.plan is not None
         self.assertEqual(len(decision.plan.steps), 2)
 
@@ -52,3 +54,20 @@ class RoutedEvidenceFirstPipelineTest(unittest.TestCase):
         self.assertEqual(decision.route, QueryRoute.REQUIRES_EXTERNAL_DATA)
         self.assertIsNone(decision.retrieval)
         self.assertIsNone(decision.plan)
+        self.assertIsNone(decision.execution)
+
+    def test_explicitly_configured_executor_runs_decomposition(self) -> None:
+        executor = DeterministicDecompositionExecutor(
+            comparison_pipeline=self.evidence_pipeline,
+            temporal_pipeline_for=lambda _: self.evidence_pipeline,
+        )
+        pipeline = RoutedEvidenceFirstPipeline(
+            self.evidence_pipeline,
+            decomposition_executor=executor,
+        )
+
+        decision = pipeline.retrieve("Compare regra alpha com regra alpha.")
+
+        self.assertIsNotNone(decision.execution)
+        assert decision.execution is not None
+        self.assertEqual(decision.execution.status, "ready")
