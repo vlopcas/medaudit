@@ -4,16 +4,18 @@ import argparse
 import asyncio
 import hashlib
 import json
+import time
 from collections import defaultdict
 from collections.abc import Sequence
+from dataclasses import replace
 from datetime import date
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
 from medaudit.evaluation.content_grade import grade_expected_content
 from medaudit.evaluation.local_llm_benchmark import verify_input, wait_until_ready
 from medaudit.evaluation.private_bm25 import write_private_report
-from medaudit.llm import LlamaCppClient, LLMClient
+from medaudit.llm import LlamaCppClient, LLMClient, LLMRequest
 from medaudit.query_understanding import (
     QueryPlan,
     QueryPlanStatus,
@@ -37,6 +39,22 @@ from medaudit.retrieval import ConfidenceSignals
 
 _NOTICE = "Conteúdo integralmente sintético, sem reprodução de documentos reais."
 _SIGNALS = ConfidenceSignals(1.0, 1.0, 1.0, 1.0, 1.0, 1)
+PromptPolicy = Literal["baseline", "answer-when-supported-v1"]
+
+
+def apply_prompt_policy(request: LLMRequest, policy: PromptPolicy) -> LLMRequest:
+    """Apply one isolated decision-policy change without touching input/schema."""
+    if policy == "baseline":
+        return request
+    if policy != "answer-when-supported-v1":
+        raise ValueError("unsupported decomposed grounding prompt policy")
+    decision_instruction = (
+        " When the supplied evidence directly contains every fact requested, "
+        "you must return answered. Use insufficient_evidence only when at least "
+        "one requested fact is absent. Multiple evidence groups alone are never "
+        "a reason to abstain."
+    )
+    return replace(request, instruction=request.instruction + decision_instruction)
 
 
 def load_dataset(path: Path) -> list[dict[str, Any]]:
@@ -123,7 +141,11 @@ def build_bundle(case: dict[str, Any]) -> DecompositionEvidenceBundle:
 
 
 async def run_benchmark(
-    cases: list[dict[str, Any]], *, client: LLMClient, repetitions: int = 1
+    cases: list[dict[str, Any]],
+    *,
+    client: LLMClient,
+    repetitions: int = 1,
+    prompt_policy: PromptPolicy = "baseline",
 ) -> dict[str, Any]:
     """Measure local generation without retaining questions or model text."""
     if repetitions < 1:
@@ -131,7 +153,8 @@ async def run_benchmark(
     structured = grounded = status_correct = content_correct = 0
     grounded_answered = 0
     matched_concepts = expected_concepts = 0
-    latencies: list[float] = []
+    successful_latencies: list[float] = []
+    attempt_latencies: list[float] = []
     outcomes: list[dict[str, Any]] = []
     categories: defaultdict[str, dict[str, int]] = defaultdict(
         lambda: {
@@ -155,6 +178,9 @@ async def run_benchmark(
                 raise ValueError("answered cases require expected concepts")
             expected_concepts += len(concepts) * repetitions
         bundle = build_bundle(case)
+        request = apply_prompt_policy(
+            build_decomposed_grounded_request(bundle), prompt_policy
+        )
         category = categories[str(case["category"])]
         category["case_count"] += 1
         category["attempt_count"] += repetitions
@@ -165,10 +191,9 @@ async def run_benchmark(
         for _ in range(repetitions):
             response = None
             content_ok = False
+            attempt_started = time.perf_counter()
             try:
-                response = await client.generate(
-                    build_decomposed_grounded_request(bundle)
-                )
+                response = await client.generate(request)
                 structured += 1
                 fingerprints.append(
                     hashlib.sha256(
@@ -202,8 +227,12 @@ async def run_benchmark(
                 fingerprints.append("invalid")
                 observed_statuses.append("invalid")
                 observed_content.append(False)
+            finally:
+                attempt_latencies.append(
+                    (time.perf_counter() - attempt_started) * 1000
+                )
             if response is not None:
-                latencies.append(response.latency_ms)
+                successful_latencies.append(response.latency_ms)
         exact_case_stable = len(set(fingerprints)) == 1
         status_case_stable = len(set(observed_statuses)) == 1
         content_case_stable = len(set(observed_content)) == 1
@@ -229,6 +258,7 @@ async def run_benchmark(
     return {
         "schema_version": 1,
         "dataset": "wholly_synthetic",
+        "prompt_policy": prompt_policy,
         "case_count": len(cases),
         "repetitions_per_case": repetitions,
         "attempt_count": attempt_count,
@@ -242,9 +272,13 @@ async def run_benchmark(
             "required_concept_recall": (
                 matched_concepts / expected_concepts if expected_concepts else None
             ),
-            "mean_generation_latency_ms": (
-                sum(latencies) / len(latencies) if latencies else None
+            "mean_successful_generation_latency_ms": (
+                sum(successful_latencies) / len(successful_latencies)
+                if successful_latencies
+                else None
             ),
+            "mean_attempt_latency_ms": sum(attempt_latencies) / attempt_count,
+            "max_attempt_latency_ms": max(attempt_latencies),
             "exact_response_stability_rate": exact_stable / len(cases),
             "status_stability_rate": status_stable / len(cases),
             "content_correctness_stability_rate": content_stable / len(cases),
@@ -261,6 +295,11 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--base-url", default="http://llm-server:8080")
     parser.add_argument("--startup-timeout", type=float, default=180)
     parser.add_argument("--repetitions", type=int, default=1)
+    parser.add_argument(
+        "--prompt-policy",
+        choices=("baseline", "answer-when-supported-v1"),
+        default="baseline",
+    )
     parser.add_argument("--expected-sha256")
     parser.add_argument("--refuse-overwrite", action="store_true")
     return parser
@@ -281,7 +320,12 @@ def main(argv: Sequence[str] | None = None) -> int:
             ),
         )
         report = asyncio.run(
-            run_benchmark(cases, client=client, repetitions=args.repetitions)
+            run_benchmark(
+                cases,
+                client=client,
+                repetitions=args.repetitions,
+                prompt_policy=args.prompt_policy,
+            )
         )
         report["input_sha256"] = fingerprint
         write_private_report(report, args.output)

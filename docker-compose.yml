@@ -337,6 +337,19 @@ services:
       - --repetitions
       - "3"
 
+  benchmark-local-decomposed-grounding-prompt:
+    extends: benchmark-local-decomposed-grounding
+    command:
+      - medaudit-benchmark-local-decomposed-grounding
+      - --dataset
+      - /app/data/synthetic_cases/local_decomposed_grounding_development.json
+      - --output
+      - /artifacts/local-decomposed-grounding-prompt-v1.local.json
+      - --repetitions
+      - "3"
+      - --prompt-policy
+      - answer-when-supported-v1
+
   evaluate-explicit-query-routing-holdout:
     extends: evaluate-explicit-query-routing
     user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"

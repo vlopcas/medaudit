@@ -1,7 +1,10 @@
 import asyncio
 import unittest
 
-from medaudit.evaluation.local_decomposed_grounding import run_benchmark
+from medaudit.evaluation.local_decomposed_grounding import (
+    apply_prompt_policy,
+    run_benchmark,
+)
 from medaudit.llm import LLMRequest, LLMResponse, Usage
 
 
@@ -15,6 +18,20 @@ class _FakeClient:
 
 
 class LocalDecomposedGroundingBenchmarkTest(unittest.TestCase):
+    def test_candidate_policy_changes_only_the_instruction(self) -> None:
+        request = LLMRequest(
+            instruction="baseline",
+            input_text="synthetic input",
+            response_schema={"type": "object"},
+        )
+
+        candidate = apply_prompt_policy(request, "answer-when-supported-v1")
+
+        self.assertNotEqual(candidate.instruction, request.instruction)
+        self.assertEqual(candidate.input_text, request.input_text)
+        self.assertEqual(candidate.response_schema, request.response_schema)
+        self.assertEqual(candidate.temperature, request.temperature)
+
     def test_reports_aggregate_safe_generation_metrics(self) -> None:
         cases = [
             {

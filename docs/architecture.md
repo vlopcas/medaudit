@@ -94,7 +94,10 @@ grupo. Um benchmark isolado conecta esse contrato ao cliente LLM somente sobre
 evidências sintéticas; o modelo local respondeu corretamente apenas um dos
 quatro casos respondíveis na observação inicial. O protocolo repetido confirmou
 abstention excessiva e isolou variação de status em um dos cinco casos. Essa
-conexão não integra o runtime nem foi promovida para holdout.
+conexão não integra o runtime nem foi promovida para holdout. Uma variante que
+explicita quando responder removeu a abstention em uma rodada, mas outra rodada
+atingiu o limite de contexto e falhou após cerca de 119 segundos. Ela permanece
+somente no benchmark até receber e validar um limite de saída.
 
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no

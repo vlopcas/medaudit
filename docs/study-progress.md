@@ -99,8 +99,12 @@ somente um dos quatro casos respondíveis e mostrou variação entre execuções
 Três repetições por caso confirmaram 100% de estrutura, somente 33,3% de status
 correto, 16,7% de conteúdo correto e estabilidade exata em quatro dos cinco
 casos. A integração e o holdout permanecem bloqueados; o próximo marco é testar
-uma única alteração na instrução de decisão entre resposta e abstention,
-mantendo todo o restante fixo.
+uma única alteração controlada. A variante que explicita a decisão entre
+resposta e abstention atingiu 100% em 15 tentativas numa rodada, mas uma rodada
+anterior teve uma saída inválida de aproximadamente 119 segundos ao alcançar o
+limite de contexto. A melhora de qualidade é candidata, não promovida. O próximo
+marco é limitar somente a quantidade de tokens de saída e repetir o
+desenvolvimento antes de abrir o holdout.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em

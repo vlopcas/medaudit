@@ -105,9 +105,13 @@ holdout. No benchmark de desenvolvimento com o `Qwen3-4B Q4_K_M`, o modelo
 respeitou a estrutura, mas respondeu corretamente apenas um dos quatro casos
 respondíveis. Em três repetições por caso, apenas 33,3% dos status ficaram
 corretos e um caso variou entre resposta e abstention; por isso a síntese
-decomposta continua fora do runtime e não foi avaliada em holdout. O experimento
-pode ser reproduzido com
-`docker compose run --rm benchmark-local-decomposed-grounding`.
+decomposta continua fora do runtime e não foi avaliada em holdout. Uma política
+de prompt explícita alcançou uma rodada perfeita de 15 tentativas, mas outra
+rodada teve uma geração inválida de aproximadamente 119 segundos. A candidata
+permanece experimental até que um limite de saída elimine essa cauda. Os dois
+protocolos podem ser reproduzidos com
+`docker compose run --rm benchmark-local-decomposed-grounding` e
+`docker compose run --rm benchmark-local-decomposed-grounding-prompt`.
 
 ## Ambiente de desenvolvimento
 

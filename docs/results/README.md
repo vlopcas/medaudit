@@ -29,3 +29,4 @@ para evitar a exposição indireta do corpus privado.
 - [Resultado 013: holdout da validação grounded decomposta](013-decomposed-grounding-validation-holdout.md)
 - [Resultado 014: síntese decomposta com LLM local](014-local-decomposed-grounding-development.md)
 - [Resultado 015: repetibilidade da síntese decomposta](015-local-decomposed-grounding-repeatability.md)
+- [Resultado 016: política explícita de resposta](016-explicit-answer-policy-development.md)
