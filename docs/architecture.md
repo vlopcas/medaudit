@@ -79,6 +79,13 @@ Se qualquer passo se abstiver, a execução inteira fica como
 sem executor explicitamente configurado, a decisão continua contendo somente o
 plano. Ele não combina evidências nem gera respostas.
 
+Um estágio experimental posterior agrupa as evidências executadas sem apagar
+as fronteiras dos passos. Cada grupo conserva o passo, seu escopo ou data e as
+citações ordenadas originais. Evidência parcial permanece auditável, mas o
+pacote só libera uma futura síntese quando todos os passos estiverem `ready`.
+Esse agrupamento ainda não integra automaticamente o pipeline roteado e aguarda
+benchmark próprio.
+
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no
 desenvolvimento e não pertence ao fluxo principal.

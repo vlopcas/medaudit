@@ -103,6 +103,38 @@ class DecompositionExecution:
 
 
 @dataclass(frozen=True, slots=True)
+class StepEvidenceGroup:
+    """Evidence retained under the identity and context of its planned step."""
+
+    step: QueryPlanStep
+    evidence: tuple[Evidence, ...]
+
+
+@dataclass(frozen=True, slots=True)
+class DecompositionEvidenceBundle:
+    """Ordered evidence groups that never erase decomposition boundaries."""
+
+    execution: DecompositionExecution
+    groups: tuple[StepEvidenceGroup, ...] = ()
+
+    def __post_init__(self) -> None:
+        if len(self.groups) != len(self.execution.steps):
+            raise ValueError("every executed step must have one evidence group")
+        for group, executed in zip(
+            self.groups, self.execution.steps, strict=True
+        ):
+            if group.step != executed.step:
+                raise ValueError("evidence group order must match executed steps")
+            if group.evidence != executed.retrieval.evidence:
+                raise ValueError("evidence groups must preserve retrieved evidence")
+
+    @property
+    def can_generate(self) -> bool:
+        """Allow later synthesis only when every step has accepted evidence."""
+        return self.execution.status is DecompositionExecutionStatus.READY
+
+
+@dataclass(frozen=True, slots=True)
 class RoutedRetrievalDecision:
     """Pre-retrieval route paired with evidence or a non-executed plan."""
 

@@ -83,6 +83,11 @@ temporais. Ele foi integrado de forma opt-in: sem resolvedor explícito de
 snapshots, o runtime não executa o plano. O próximo marco é definir e avaliar a
 combinação determinística das evidências antes de qualquer síntese generativa.
 
+O contrato inicial de agrupamento já preserva ordem, contexto temporal ou
+comparativo e citações por passo. Evidência parcial continua visível para
+auditoria, mas bloqueia geração. O componente permanece experimental até uma
+avaliação dedicada de preservação de provenance e bloqueios.
+
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em
 [Arquitetura atual](architecture.md).
