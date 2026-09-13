@@ -90,7 +90,12 @@ class DeterministicQueryAnalyzer:
 
 def count_explicit_dates(query: str) -> int:
     """Count supported date mentions while rejecting invalid values."""
-    return len(_extract_dates(query))
+    return len(extract_explicit_dates(query))
+
+
+def extract_explicit_dates(query: str) -> tuple[date, ...]:
+    """Return supported date mentions in source order."""
+    return _extract_dates(query)
 
 
 def _classify_intent(folded: str, requires_external_data: bool) -> QueryIntent:

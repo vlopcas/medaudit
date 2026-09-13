@@ -34,7 +34,7 @@ um ambiente Docker isolado. Embora o contrato estrutural tenha funcionado, o
 modelo completou apenas 3 de 7 respostas no holdout sintético congelado. Por
 isso, geração sobre o corpus privado permanece desabilitada.
 
-A próxima etapa planejada é a **Fase 8 — Query Understanding**. Consulte a
+A etapa atual é a **Fase 8 — Query Understanding**. Consulte a
 [arquitetura atual](docs/architecture.md), o
 [status detalhado do plano](docs/study-progress.md) e os
 [resultados dos experimentos](docs/results/README.md).
@@ -80,7 +80,13 @@ acurácia; ela não integra o fluxo principal.
 O roteamento explícito promovido pode ser avaliado no desenvolvimento com
 `docker compose run --rm evaluate-explicit-query-routing`. Seu holdout
 congelado atingiu 100% em 15 casos. No runtime, somente a rota direta toca no
-retriever; decomposição e dependência externa encerram sem executar ações.
+retriever. A decomposição produz apenas um plano determinístico ou um pedido de
+esclarecimento; dependência externa encerra sem executar ações.
+
+O planejamento de decomposição pode ser reproduzido no desenvolvimento com
+`docker compose run --rm evaluate-query-planning`. Seu holdout sintético
+congelado atingiu 100% em 12 casos; os passos planejados ainda não executam
+buscas nem síntese.
 
 ## Ambiente de desenvolvimento
 

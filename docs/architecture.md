@@ -9,7 +9,11 @@ no [plano de estudos](plano_estudos_llm_rag_graph_agentic.md).
 user query
     ↓ ExplicitQueryRouter
     ├── requires_external_data → encerra sem ferramenta
-    ├── requires_decomposition → encerra sem retrieval
+    ├── requires_decomposition
+    │     ↓ DeterministicQueryPlanner
+    │     ├── temporal_snapshots → passos não executados
+    │     ├── comparison_scopes → passos não executados
+    │     └── needs_clarification → encerra sem passos
     └── direct_retrieval
           ↓ DeterministicQueryAnalyzer
 QueryAnalysis
@@ -62,8 +66,10 @@ congelado.
 
 O roteamento explícito é uma fronteira determinística integrada por meio do
 `RoutedEvidenceFirstPipeline`. Somente `direct_retrieval` alcança o pipeline de
-evidências. As outras rotas encerram de forma rastreável e ainda não reescrevem
-consultas, criam subconsultas nem habilitam ferramentas externas.
+evidências. A rota de decomposição agora contém um plano determinístico para
+múltiplas datas ou comparações sintaticamente separáveis; casos ambíguos pedem
+esclarecimento. Esses passos ainda não são executados e nenhuma rota habilita
+ferramentas externas.
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no
 desenvolvimento e não pertence ao fluxo principal.
@@ -128,6 +134,7 @@ em `data/processed/`, que é ignorado pelo Git.
 - [ADR-012: geração estruturada com modelo local](decisions/ADR-012-local-structured-generation.md)
 - [ADR-013: baseline determinístico de Query Understanding](decisions/ADR-013-deterministic-query-understanding-baseline.md)
 - [ADR-014: roteamento explícito antes do retrieval](decisions/ADR-014-explicit-pre-retrieval-routing.md)
+- [ADR-015: planos determinísticos de decomposição](decisions/ADR-015-deterministic-decomposition-plans.md)
 
 ## Ambiente de execução
 

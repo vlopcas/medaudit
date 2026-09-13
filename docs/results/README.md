@@ -23,3 +23,4 @@ para evitar a exposição indireta do corpus privado.
 - [Resultado 007: roteamento de consultas em camadas](007-layered-query-routing-development.md)
 - [Resultado 008: decomposição estrutural de consultas](008-structural-decomposition-holdout.md)
 - [Resultado 009: holdout do roteamento explícito](009-explicit-query-routing-holdout.md)
+- [Resultado 010: holdout do planejamento determinístico](010-deterministic-query-planning-holdout.md)

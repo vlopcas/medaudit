@@ -23,7 +23,7 @@ implementação dedicada.
 | 5 | Document parsing e chunking | Parcial | Texto, PDF, XLS/XLSX, OCR por página e chunking estrutural estão implementados; novas estratégias ainda podem ser comparadas. |
 | 6 | Hybrid Retrieval | Experimental, não promovida | BM25, dense e RRF foram comparados; BM25 permanece como baseline principal. |
 | 7 | Reranking | Experimental, não promovida | Reranking semântico restrito aos candidatos foi avaliado sem justificar promoção. |
-| 8 | Query Understanding | Parcial | O roteamento explícito foi validado e integrado antes do retrieval; execução de decomposição e reescrita ainda não foram implementadas. |
+| 8 | Query Understanding | Parcial | Roteamento explícito e planos determinísticos foram validados; execução dos passos e reescrita semântica ainda não foram implementadas. |
 | 9 | Regras estruturadas | Não iniciada | Será tratada depois do ciclo de Query Understanding. |
 | 10 | Temporalidade e versionamento | Parcial, antecipada | Catálogo temporal, relações de substituição, snapshots por data e avaliações temporais já existem. |
 | 11–18 | Grafos, tools, APIs e agentes | Não iniciadas | Permanecem no roteiro futuro. |
@@ -68,8 +68,14 @@ explícitos já sustentados pelas avaliações.
 A política restrita seguinte atingiu 100% em 18 casos de desenvolvimento e 15
 casos de holdout. Ela foi promovida antes do retrieval: somente comparação
 explícita, múltiplas datas e dependência externa recebem rotas especiais. As
-demais formulações seguem diretamente para busca. O próximo marco é executar a
-rota de decomposição sem ampliar os critérios que a acionam.
+demais formulações seguem diretamente para busca.
+
+O planejador determinístico subsequente atingiu 100% em 12 casos de
+desenvolvimento e 12 casos de holdout. Ele materializa passos temporais ou dois
+escopos comparáveis somente quando a estrutura é inequívoca; caso contrário,
+pede esclarecimento. Os passos estão integrados à decisão roteada, mas ainda
+não são executados. O próximo marco é avaliar a recuperação de cada passo e a
+combinação de evidências antes de autorizar síntese comparativa.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em

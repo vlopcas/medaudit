@@ -35,7 +35,9 @@ cobertura geral da linguagem natural.
 - nenhuma indicação do LLM pode habilitar acesso externo;
 - comparação e múltiplas datas não são tratadas incorretamente como consulta
   simples;
-- executar decomposição e integrar ferramentas continuam trabalhos futuros.
+- o planejamento posterior da decomposição é definido pela
+  [ADR-015](ADR-015-deterministic-decomposition-plans.md); executar os passos e
+  integrar ferramentas continuam trabalhos futuros.
 
 ## Como validar
 

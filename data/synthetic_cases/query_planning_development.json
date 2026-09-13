@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "policy": "deterministic-query-planning-v1",
+  "cases": [
+    {
+      "id": "plan-dev-001",
+      "query": "O que mudou entre 2026-01-01 e 2026-07-01?",
+      "status": "ready",
+      "strategy": "temporal_snapshots",
+      "step_count": 2,
+      "reference_dates": ["2026-01-01", "2026-07-01"]
+    },
+    {
+      "id": "plan-dev-002",
+      "query": "Compare as regras em 01/03/2026, 01/05/2026 e 01/07/2026.",
+      "status": "ready",
+      "strategy": "temporal_snapshots",
+      "step_count": 3,
+      "reference_dates": ["2026-03-01", "2026-05-01", "2026-07-01"]
+    },
+    {
+      "id": "plan-dev-003",
+      "query": "Verifique a regra alfa em 2025-12-31 e em 01/01/2026.",
+      "status": "ready",
+      "strategy": "temporal_snapshots",
+      "step_count": 2,
+      "reference_dates": ["2025-12-31", "2026-01-01"]
+    },
+    {
+      "id": "plan-dev-004",
+      "query": "Compare a regra alfa com a regra beta.",
+      "status": "ready",
+      "strategy": "comparison_scopes",
+      "step_count": 2,
+      "scopes": ["a regra alfa", "a regra beta"]
+    },
+    {
+      "id": "plan-dev-005",
+      "query": "Comparar manual sintético A com manual sintético B",
+      "status": "ready",
+      "strategy": "comparison_scopes",
+      "step_count": 2,
+      "scopes": ["manual sintético A", "manual sintético B"]
+    },
+    {
+      "id": "plan-dev-006",
+      "query": "Qual é a diferença entre a diretriz azul e a diretriz verde?",
+      "status": "ready",
+      "strategy": "comparison_scopes",
+      "step_count": 2,
+      "scopes": ["a diretriz azul", "a diretriz verde"]
+    },
+    {
+      "id": "plan-dev-007",
+      "query": "Diferença entre política norte e política sul.",
+      "status": "ready",
+      "strategy": "comparison_scopes",
+      "step_count": 2,
+      "scopes": ["política norte", "política sul"]
+    },
+    {
+      "id": "plan-dev-008",
+      "query": "Norma antiga versus norma nova.",
+      "status": "ready",
+      "strategy": "comparison_scopes",
+      "step_count": 2,
+      "scopes": ["Norma antiga", "norma nova"]
+    },
+    {
+      "id": "plan-dev-009",
+      "query": "Faça uma comparação das regras alfa e beta.",
+      "status": "needs_clarification",
+      "step_count": 0
+    },
+    {
+      "id": "plan-dev-010",
+      "query": "Quais mudanças ocorreram na norma sintética?",
+      "status": "needs_clarification",
+      "step_count": 0
+    },
+    {
+      "id": "plan-dev-011",
+      "query": "Compare os documentos disponíveis.",
+      "status": "needs_clarification",
+      "step_count": 0
+    },
+    {
+      "id": "plan-dev-012",
+      "query": "Qual a comparação aplicável à cobrança sintética?",
+      "status": "needs_clarification",
+      "step_count": 0
+    }
+  ]
+}

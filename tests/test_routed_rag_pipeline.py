@@ -31,6 +31,18 @@ class RoutedEvidenceFirstPipelineTest(unittest.TestCase):
 
         self.assertEqual(decision.route, QueryRoute.REQUIRES_DECOMPOSITION)
         self.assertIsNone(decision.retrieval)
+        self.assertIsNotNone(decision.plan)
+        assert decision.plan is not None
+        self.assertEqual(len(decision.plan.steps), 2)
+
+    def test_ambiguous_comparison_returns_clarification_plan(self) -> None:
+        decision = self.pipeline.retrieve("Faça uma comparação geral.")
+
+        self.assertEqual(decision.route, QueryRoute.REQUIRES_DECOMPOSITION)
+        self.assertIsNone(decision.retrieval)
+        self.assertIsNotNone(decision.plan)
+        assert decision.plan is not None
+        self.assertEqual(decision.plan.status, "needs_clarification")
 
     def test_external_dependency_stops_before_retrieval(self) -> None:
         decision = self.pipeline.retrieve(
@@ -39,3 +51,4 @@ class RoutedEvidenceFirstPipelineTest(unittest.TestCase):
 
         self.assertEqual(decision.route, QueryRoute.REQUIRES_EXTERNAL_DATA)
         self.assertIsNone(decision.retrieval)
+        self.assertIsNone(decision.plan)

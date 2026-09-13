@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "policy": "deterministic-query-planning-v1",
+  "cases": [
+    {
+      "id": "plan-holdout-001",
+      "query": "Avalie a diretriz em 2024-02-29 e 2025-02-28.",
+      "status": "ready",
+      "strategy": "temporal_snapshots",
+      "step_count": 2,
+      "reference_dates": ["2024-02-29", "2025-02-28"]
+    },
+    {
+      "id": "plan-holdout-002",
+      "query": "Mostre a regra em 31/12/2025 e depois em 2026-01-01",
+      "status": "ready",
+      "strategy": "temporal_snapshots",
+      "step_count": 2,
+      "reference_dates": ["2025-12-31", "2026-01-01"]
+    },
+    {
+      "id": "plan-holdout-003",
+      "query": "Considere 01/01/2024, 01/01/2025 e 01/01/2026 para a mesma norma.",
+      "status": "ready",
+      "strategy": "temporal_snapshots",
+      "step_count": 3,
+      "reference_dates": ["2024-01-01", "2025-01-01", "2026-01-01"]
+    },
+    {
+      "id": "plan-holdout-004",
+      "query": "COMPARE o protocolo laranja com o protocolo violeta!",
+      "status": "ready",
+      "strategy": "comparison_scopes",
+      "step_count": 2,
+      "scopes": ["o protocolo laranja", "o protocolo violeta"]
+    },
+    {
+      "id": "plan-holdout-005",
+      "query": "Comparar categoria um com categoria dois?",
+      "status": "ready",
+      "strategy": "comparison_scopes",
+      "step_count": 2,
+      "scopes": ["categoria um", "categoria dois"]
+    },
+    {
+      "id": "plan-holdout-006",
+      "query": "Qual e a diferenca entre condição básica e condição especial?",
+      "status": "ready",
+      "strategy": "comparison_scopes",
+      "step_count": 2,
+      "scopes": ["condição básica", "condição especial"]
+    },
+    {
+      "id": "plan-holdout-007",
+      "query": "Tabela primária versus tabela secundária",
+      "status": "ready",
+      "strategy": "comparison_scopes",
+      "step_count": 2,
+      "scopes": ["Tabela primária", "tabela secundária"]
+    },
+    {
+      "id": "plan-holdout-008",
+      "query": "Faça a comparação pertinente aos dois cenários.",
+      "status": "needs_clarification",
+      "step_count": 0
+    },
+    {
+      "id": "plan-holdout-009",
+      "query": "Quais foram as mudanças?",
+      "status": "needs_clarification",
+      "step_count": 0
+    },
+    {
+      "id": "plan-holdout-010",
+      "query": "Compare com o padrão anterior.",
+      "status": "needs_clarification",
+      "step_count": 0
+    },
+    {
+      "id": "plan-holdout-011",
+      "query": "Existe diferença entre as opções disponíveis?",
+      "status": "needs_clarification",
+      "step_count": 0
+    },
+    {
+      "id": "plan-holdout-012",
+      "query": "Apresente uma comparação resumida.",
+      "status": "needs_clarification",
+      "step_count": 0
+    }
+  ]
+}

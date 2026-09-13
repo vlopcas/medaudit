@@ -6,7 +6,11 @@ from pathlib import Path
 from typing import Any
 
 from medaudit.documents import Chunk
-from medaudit.query_understanding import ExplicitQueryRouter, QueryRoute
+from medaudit.query_understanding import (
+    DeterministicQueryPlanner,
+    ExplicitQueryRouter,
+    QueryRoute,
+)
 from medaudit.rag.models import (
     Evidence,
     EvidenceLocation,
@@ -123,14 +127,22 @@ class RoutedEvidenceFirstPipeline:
         self,
         pipeline: EvidenceFirstPipeline,
         router: ExplicitQueryRouter | None = None,
+        planner: DeterministicQueryPlanner | None = None,
     ) -> None:
         self._pipeline = pipeline
         self._router = router or ExplicitQueryRouter()
+        self._planner = planner or DeterministicQueryPlanner()
 
     def retrieve(self, query: str, *, top_k: int = 5) -> RoutedRetrievalDecision:
         """Retrieve only when the explicit routing policy allows it."""
         route = self._router.route(query)
-        if route is not QueryRoute.DIRECT_RETRIEVAL:
+        if route is QueryRoute.REQUIRES_DECOMPOSITION:
+            return RoutedRetrievalDecision(
+                query=query,
+                route=route,
+                plan=self._planner.plan(query),
+            )
+        if route is QueryRoute.REQUIRES_EXTERNAL_DATA:
             return RoutedRetrievalDecision(query=query, route=route)
         return RoutedRetrievalDecision(
             query=query,

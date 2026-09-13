@@ -190,6 +190,39 @@ services:
       - --cases
       - /app/data/synthetic_cases/explicit_query_routing_development.json
 
+  evaluate-query-planning:
+    build:
+      context: .
+    network_mode: none
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    command:
+      - medaudit-evaluate-query-planning
+      - --cases
+      - /app/data/synthetic_cases/query_planning_development.json
+
+  evaluate-query-planning-holdout:
+    extends: evaluate-query-planning
+    user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
+    volumes:
+      - type: bind
+        source: ./artifacts
+        target: /artifacts
+    command:
+      - medaudit-evaluate-query-planning
+      - --cases
+      - /app/data/synthetic_cases/query_planning_holdout.json
+      - --output
+      - /artifacts/query-planning-holdout.local.json
+      - --expected-sha256
+      - 1393d8387c7460de8210b9cfb584f22bd5560484a9eab264ea17fd2665a69303
+      - --refuse-overwrite
+
   evaluate-explicit-query-routing-holdout:
     extends: evaluate-explicit-query-routing
     user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"

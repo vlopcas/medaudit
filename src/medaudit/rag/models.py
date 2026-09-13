@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 from enum import StrEnum
 
-from medaudit.query_understanding import QueryRoute
+from medaudit.query_understanding import QueryPlan, QueryRoute
 from medaudit.retrieval import ConfidenceSignals
 
 
@@ -51,13 +51,17 @@ class RetrievalDecision:
 
 @dataclass(frozen=True, slots=True)
 class RoutedRetrievalDecision:
-    """Pre-retrieval route paired with evidence only for the direct path."""
+    """Pre-retrieval route paired with evidence or a non-executed plan."""
 
     query: str
     route: QueryRoute
     retrieval: RetrievalDecision | None = None
+    plan: QueryPlan | None = None
 
     def __post_init__(self) -> None:
         has_retrieval = self.retrieval is not None
         if (self.route is QueryRoute.DIRECT_RETRIEVAL) != has_retrieval:
             raise ValueError("only direct retrieval routes can contain evidence")
+        has_plan = self.plan is not None
+        if (self.route is QueryRoute.REQUIRES_DECOMPOSITION) != has_plan:
+            raise ValueError("only decomposition routes require a query plan")

@@ -63,6 +63,8 @@ O primeiro contrato de Query Understanding está em
 [ADR-013](decisions/ADR-013-deterministic-query-understanding-baseline.md).
 O roteamento determinístico anterior ao retrieval está em
 [ADR-014](decisions/ADR-014-explicit-pre-retrieval-routing.md).
+Os planos determinísticos para a rota de decomposição estão em
+[ADR-015](decisions/ADR-015-deterministic-decomposition-plans.md).
 
 ## Conteúdo permitido
 
