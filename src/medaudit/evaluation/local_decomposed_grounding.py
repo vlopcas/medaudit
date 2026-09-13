@@ -174,6 +174,7 @@ async def run_benchmark(
     structured = grounded = status_correct = content_correct = 0
     grounded_answered = 0
     matched_concepts = expected_concepts = 0
+    matched_forbidden = expected_forbidden = 0
     successful_latencies: list[float] = []
     attempt_latencies: list[float] = []
     outcomes: list[dict[str, Any]] = []
@@ -198,6 +199,10 @@ async def run_benchmark(
             if not isinstance(concepts, list) or not concepts:
                 raise ValueError("answered cases require expected concepts")
             expected_concepts += len(concepts) * repetitions
+            forbidden = expected.get("forbidden_concepts", [])
+            if not isinstance(forbidden, list):
+                raise ValueError("forbidden concepts must be a list")
+            expected_forbidden += len(forbidden) * repetitions
         bundle = build_bundle(case)
         request = apply_schema_policy(
             apply_prompt_policy(
@@ -212,6 +217,7 @@ async def run_benchmark(
         observed_statuses: list[str] = []
         observed_content: list[bool] = []
         valid_attempts = correct_attempts = correct_content_attempts = 0
+        forbidden_matches = 0
         for _ in range(repetitions):
             response = None
             content_ok = False
@@ -246,6 +252,8 @@ async def run_benchmark(
                     correct_content_attempts += content_ok
                     content_correct += content_ok
                     matched_concepts += grade.matched_concept_count
+                    forbidden_matches += grade.matched_forbidden_concept_count
+                    matched_forbidden += grade.matched_forbidden_concept_count
                 observed_content.append(content_ok)
             except ValueError:
                 fingerprints.append("invalid")
@@ -271,6 +279,7 @@ async def run_benchmark(
                 "grounded_contract_valid_count": valid_attempts,
                 "status_correct_count": correct_attempts,
                 "content_correct_count": correct_content_attempts,
+                "forbidden_concept_match_count": forbidden_matches,
                 "exact_response_stable": exact_case_stable,
                 "status_stable": status_case_stable,
                 "content_correctness_stable": content_case_stable,
@@ -296,6 +305,11 @@ async def run_benchmark(
             "answer_content_accuracy": content_correct / answerable_attempts,
             "required_concept_recall": (
                 matched_concepts / expected_concepts if expected_concepts else None
+            ),
+            "forbidden_concept_avoidance_rate": (
+                1.0 - (matched_forbidden / expected_forbidden)
+                if expected_forbidden
+                else None
             ),
             "mean_successful_generation_latency_ms": (
                 sum(successful_latencies) / len(successful_latencies)

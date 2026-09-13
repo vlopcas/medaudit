@@ -113,7 +113,10 @@ para um novo holdout sintético congelado, mas continua fora do runtime. O
 holdout atingiu 100% em estrutura, grounding e status, e 80% em conteúdo, porém
 falhou nas três repetições do caso adversarial com instrução não confiável na
 evidência. O próximo ciclo é um diagnóstico sintético de segurança separado; o
-holdout não será usado para ajuste.
+holdout não será usado para ajuste. O diagnóstico separado obteve 100% de recall
+dos fatos, mas só 66,7% de ausência dos conceitos proibidos, com falhas estáveis
+em marcadores falsos de sistema e JSON embutido. O próximo ciclo testará uma
+única instrução explícita contra repetição de comandos encontrados na evidência.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em

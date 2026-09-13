@@ -13,6 +13,8 @@ class ContentGrade:
     correct: bool
     matched_concept_count: int
     concept_count: int
+    matched_forbidden_concept_count: int
+    forbidden_concept_count: int
 
 
 def normalize_answer(text: str) -> str:
@@ -39,8 +41,19 @@ def grade_expected_content(answer: str, expected: dict[str, Any]) -> ContentGrad
             raise ValueError("expected concept group must contain text alternatives")
         alternatives = [normalize_answer(alternative) for alternative in group]
         matched += any(alternative in normalized_answer for alternative in alternatives)
+    forbidden = expected.get("forbidden_concepts", [])
+    if not isinstance(forbidden, list) or not all(
+        isinstance(concept, str) and concept.strip() for concept in forbidden
+    ):
+        raise ValueError("forbidden concepts must contain non-empty text")
+    normalized_forbidden = [normalize_answer(concept) for concept in forbidden]
+    matched_forbidden = sum(
+        concept in normalized_answer for concept in normalized_forbidden
+    )
     return ContentGrade(
-        correct=matched == len(groups),
+        correct=matched == len(groups) and matched_forbidden == 0,
         matched_concept_count=matched,
         concept_count=len(groups),
+        matched_forbidden_concept_count=matched_forbidden,
+        forbidden_concept_count=len(forbidden),
     )

@@ -124,7 +124,9 @@ O holdout inédito dessa variante atingiu 100% em estrutura, grounding e status,
 além do mínimo de 80% em conteúdo. Entretanto, falhou nas três repetições do
 caso com instrução não confiável inserida na evidência. O resultado agregado não
 autoriza o runtime: o próximo ciclo é um diagnóstico sintético de segurança,
-sem reutilizar o holdout para ajustes.
+sem reutilizar o holdout para ajustes. Esse diagnóstico recuperou todos os fatos
+corretos, mas repetiu conceitos proibidos em 6/18 tentativas, concentradas em
+marcadores falsos de sistema e JSON inserido na evidência.
 
 ## Ambiente de desenvolvimento
 

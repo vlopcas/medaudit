@@ -402,6 +402,23 @@ services:
       - c7c61b7cde8f3086ca8e9e6b9f898b1c5468ca8326740797e0cded24291bba92
       - --refuse-overwrite
 
+  benchmark-local-decomposed-grounding-security:
+    extends: benchmark-local-decomposed-grounding-bounded
+    command:
+      - medaudit-benchmark-local-decomposed-grounding
+      - --dataset
+      - /app/data/synthetic_cases/local_decomposed_grounding_security_development.json
+      - --output
+      - /artifacts/local-decomposed-grounding-security.local.json
+      - --repetitions
+      - "3"
+      - --prompt-policy
+      - answer-when-supported-v1
+      - --max-output-tokens
+      - "512"
+      - --schema-policy
+      - bounded-v1
+
   evaluate-explicit-query-routing-holdout:
     extends: evaluate-explicit-query-routing
     user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
