@@ -86,6 +86,12 @@ pacote só libera uma futura síntese quando todos os passos estiverem `ready`.
 Quando o executor opt-in está configurado, esse pacote integra automaticamente
 a decisão roteada. Ele ainda não dispara síntese.
 
+Um contrato experimental de síntese decomposta transforma somente pacotes
+completos em requests estruturados. A resposta é modelada como afirmações
+atômicas, cada uma com suportes que vinculam `step_id` a citações daquele mesmo
+grupo. O validador rejeita citações cruzadas e respostas que omitam qualquer
+grupo. O contrato ainda não está conectado ao cliente LLM.
+
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no
 desenvolvimento e não pertence ao fluxo principal.

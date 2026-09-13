@@ -19,10 +19,22 @@ from medaudit.rag.pipeline import (
     FrozenTopScorePolicy,
     RoutedEvidenceFirstPipeline,
 )
-from medaudit.rag.prompt import build_grounded_request
-from medaudit.rag.validation import GroundedAnswer, validate_grounded_response
+from medaudit.rag.prompt import (
+    build_decomposed_grounded_request,
+    build_grounded_request,
+)
+from medaudit.rag.validation import (
+    ClaimSupport,
+    DecomposedGroundedAnswer,
+    GroundedAnswer,
+    GroundedClaim,
+    validate_decomposed_grounded_response,
+    validate_grounded_response,
+)
 
 __all__ = [
+    "ClaimSupport",
+    "DecomposedGroundedAnswer",
     "DecompositionEvidenceBundle",
     "DecompositionExecution",
     "DecompositionExecutionStatus",
@@ -33,12 +45,15 @@ __all__ = [
     "ExecutedQueryStep",
     "FrozenTopScorePolicy",
     "GroundedAnswer",
+    "GroundedClaim",
     "RetrievalDecision",
     "RetrievalStatus",
     "RoutedEvidenceFirstPipeline",
     "RoutedRetrievalDecision",
     "StepEvidenceGroup",
+    "build_decomposed_grounded_request",
     "build_grounded_request",
     "group_decomposition_evidence",
+    "validate_decomposed_grounded_response",
     "validate_grounded_response",
 ]
