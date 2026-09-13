@@ -41,8 +41,8 @@ estrutura, provenance e status.
 
 O próximo experimento deve manter o limite e restringir a própria estrutura do
 schema — quantidade de claims, suportes, citações e tamanho do texto — para que
-a gramática não permita expansão descontrolada. Essa será a única nova variável
-antes de repetir o desenvolvimento.
+a gramática não permita expansão descontrolada. Seus resultados estão no
+[Resultado 018](018-bounded-generation-schema-development.md).
 
 ## Reprodução
 

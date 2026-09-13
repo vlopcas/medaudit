@@ -3,6 +3,7 @@ import unittest
 
 from medaudit.evaluation.local_decomposed_grounding import (
     apply_prompt_policy,
+    apply_schema_policy,
     run_benchmark,
 )
 from medaudit.llm import LLMRequest, LLMResponse, Usage
@@ -31,6 +32,46 @@ class LocalDecomposedGroundingBenchmarkTest(unittest.TestCase):
         self.assertEqual(candidate.input_text, request.input_text)
         self.assertEqual(candidate.response_schema, request.response_schema)
         self.assertEqual(candidate.temperature, request.temperature)
+
+    def test_bounded_schema_changes_only_generation_shape(self) -> None:
+        request = LLMRequest(
+            instruction="baseline",
+            input_text="synthetic input",
+            response_schema={
+                "properties": {
+                    "claims": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "text": {"type": "string"},
+                                "supports": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "evidence_ids": {"type": "array"}
+                                        }
+                                    },
+                                },
+                            }
+                        },
+                    }
+                }
+            },
+        )
+
+        candidate = apply_schema_policy(request, "bounded-v1")
+
+        claims = candidate.response_schema["properties"]["claims"]
+        self.assertEqual(claims["maxItems"], 4)
+        self.assertEqual(
+            claims["items"]["properties"]["text"]["maxLength"], 240
+        )
+        self.assertEqual(
+            claims["items"]["properties"]["supports"]["maxItems"], 4
+        )
+        self.assertNotIn("maxItems", request.response_schema["properties"]["claims"])
+        self.assertEqual(candidate.instruction, request.instruction)
+        self.assertEqual(candidate.input_text, request.input_text)
 
     def test_reports_aggregate_safe_generation_metrics(self) -> None:
         cases = [

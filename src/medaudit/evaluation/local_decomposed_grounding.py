@@ -2,6 +2,7 @@
 
 import argparse
 import asyncio
+import copy
 import hashlib
 import json
 import time
@@ -40,6 +41,7 @@ from medaudit.retrieval import ConfidenceSignals
 _NOTICE = "Conteúdo integralmente sintético, sem reprodução de documentos reais."
 _SIGNALS = ConfidenceSignals(1.0, 1.0, 1.0, 1.0, 1.0, 1)
 PromptPolicy = Literal["baseline", "answer-when-supported-v1"]
+SchemaPolicy = Literal["baseline", "bounded-v1"]
 
 
 def apply_prompt_policy(request: LLMRequest, policy: PromptPolicy) -> LLMRequest:
@@ -55,6 +57,24 @@ def apply_prompt_policy(request: LLMRequest, policy: PromptPolicy) -> LLMRequest
         "a reason to abstain."
     )
     return replace(request, instruction=request.instruction + decision_instruction)
+
+
+def apply_schema_policy(request: LLMRequest, policy: SchemaPolicy) -> LLMRequest:
+    """Bound generation shape without changing prompt or benchmark input."""
+    if policy == "baseline":
+        return request
+    if policy != "bounded-v1":
+        raise ValueError("unsupported decomposed grounding schema policy")
+    schema = copy.deepcopy(request.response_schema)
+    claims = schema["properties"]["claims"]
+    claims["maxItems"] = 4
+    claim = claims["items"]
+    claim["properties"]["text"]["maxLength"] = 240
+    supports = claim["properties"]["supports"]
+    supports["maxItems"] = 4
+    evidence_ids = supports["items"]["properties"]["evidence_ids"]
+    evidence_ids["maxItems"] = 4
+    return replace(request, response_schema=schema)
 
 
 def load_dataset(path: Path) -> list[dict[str, Any]]:
@@ -146,6 +166,7 @@ async def run_benchmark(
     client: LLMClient,
     repetitions: int = 1,
     prompt_policy: PromptPolicy = "baseline",
+    schema_policy: SchemaPolicy = "baseline",
 ) -> dict[str, Any]:
     """Measure local generation without retaining questions or model text."""
     if repetitions < 1:
@@ -178,8 +199,11 @@ async def run_benchmark(
                 raise ValueError("answered cases require expected concepts")
             expected_concepts += len(concepts) * repetitions
         bundle = build_bundle(case)
-        request = apply_prompt_policy(
-            build_decomposed_grounded_request(bundle), prompt_policy
+        request = apply_schema_policy(
+            apply_prompt_policy(
+                build_decomposed_grounded_request(bundle), prompt_policy
+            ),
+            schema_policy,
         )
         category = categories[str(case["category"])]
         category["case_count"] += 1
@@ -259,6 +283,7 @@ async def run_benchmark(
         "schema_version": 1,
         "dataset": "wholly_synthetic",
         "prompt_policy": prompt_policy,
+        "schema_policy": schema_policy,
         "case_count": len(cases),
         "repetitions_per_case": repetitions,
         "attempt_count": attempt_count,
@@ -301,6 +326,11 @@ def build_parser() -> argparse.ArgumentParser:
         choices=("baseline", "answer-when-supported-v1"),
         default="baseline",
     )
+    parser.add_argument(
+        "--schema-policy",
+        choices=("baseline", "bounded-v1"),
+        default="baseline",
+    )
     parser.add_argument("--expected-sha256")
     parser.add_argument("--refuse-overwrite", action="store_true")
     return parser
@@ -327,6 +357,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                 client=client,
                 repetitions=args.repetitions,
                 prompt_policy=args.prompt_policy,
+                schema_policy=args.schema_policy,
             )
         )
         report["input_sha256"] = fingerprint

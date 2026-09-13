@@ -99,8 +99,10 @@ explicita quando responder removeu a abstention em uma rodada, mas outra rodada
 atingiu o limite de contexto e falhou após cerca de 119 segundos. Ela permanece
 somente no benchmark. Um limite opcional de 512 tokens no adaptador reduziu essa
 cauda para menos de sete segundos, mas ainda produziu uma tentativa truncada em
-30. O próximo experimento restringirá também a forma do schema antes de qualquer
-promoção.
+30. O schema experimental limitado eliminou truncamentos em duas rodadas e
+atingiu 30/30 respostas válidas e corretas. A configuração permanece fora do
+runtime e está autorizada somente a avançar para um novo holdout sintético
+congelado.
 
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no

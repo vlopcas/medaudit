@@ -106,7 +106,10 @@ limite de contexto. A melhora de qualidade é candidata, não promovida. O próx
 marco limitou a saída a 512 tokens: a pior latência caiu de aproximadamente 119
 para 6,88 segundos, mas uma das 30 tentativas ainda foi truncada e inválida. O
 holdout continua fechado. O próximo ciclo restringirá somente a forma do JSON
-para impedir expansão descontrolada e repetirá o desenvolvimento.
+para impedir expansão descontrolada e repetirá o desenvolvimento. O schema
+limitado seguinte atingiu 30/30 tentativas estruturadas, grounded e corretas em
+duas rodadas, com pior latência de 4,71 segundos. A configuração está elegível
+para um novo holdout sintético congelado, mas continua fora do runtime.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em

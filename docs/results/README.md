@@ -31,3 +31,4 @@ para evitar a exposição indireta do corpus privado.
 - [Resultado 015: repetibilidade da síntese decomposta](015-local-decomposed-grounding-repeatability.md)
 - [Resultado 016: política explícita de resposta](016-explicit-answer-policy-development.md)
 - [Resultado 017: limite de saída da síntese local](017-local-output-token-limit.md)
+- [Resultado 018: schema limitado da síntese local](018-bounded-generation-schema-development.md)

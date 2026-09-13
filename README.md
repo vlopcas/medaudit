@@ -110,11 +110,15 @@ de prompt explícita alcançou uma rodada perfeita de 15 tentativas, mas outra
 rodada teve uma geração inválida de aproximadamente 119 segundos. A candidata
 permanece experimental. Um limite de 512 tokens reduziu a pior latência para
 6,88 segundos, mas ainda houve uma tentativa truncada e inválida em 30. O
-próximo gate restringirá a forma do JSON para impedir a expansão. Os protocolos
-podem ser reproduzidos com
+schema limitado seguinte atingiu 30/30 tentativas válidas, grounded e corretas
+em duas rodadas; a configuração agora está elegível somente para um novo
+holdout sintético congelado, não para o runtime. Os protocolos podem ser
+reproduzidos com
 `docker compose run --rm benchmark-local-decomposed-grounding` e
 `docker compose run --rm benchmark-local-decomposed-grounding-prompt`; a versão
 limitada usa `docker compose run --rm benchmark-local-decomposed-grounding-capped`.
+A variante com schema limitado usa
+`docker compose run --rm benchmark-local-decomposed-grounding-bounded`.
 
 ## Ambiente de desenvolvimento
 
