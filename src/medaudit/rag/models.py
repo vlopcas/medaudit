@@ -3,7 +3,12 @@
 from dataclasses import dataclass
 from enum import StrEnum
 
-from medaudit.query_understanding import QueryPlan, QueryRoute
+from medaudit.query_understanding import (
+    QueryPlan,
+    QueryPlanStatus,
+    QueryPlanStep,
+    QueryRoute,
+)
 from medaudit.retrieval import ConfidenceSignals
 
 
@@ -12,6 +17,14 @@ class RetrievalStatus(StrEnum):
 
     READY = "ready"
     INSUFFICIENT_EVIDENCE = "insufficient_evidence"
+
+
+class DecompositionExecutionStatus(StrEnum):
+    """Aggregate outcome of executing a deterministic query plan."""
+
+    READY = "ready"
+    INSUFFICIENT_EVIDENCE = "insufficient_evidence"
+    NEEDS_CLARIFICATION = "needs_clarification"
 
 
 @dataclass(frozen=True, slots=True)
@@ -47,6 +60,46 @@ class RetrievalDecision:
     def can_generate(self) -> bool:
         """Return whether grounded generation is permitted."""
         return self.status is RetrievalStatus.READY
+
+
+@dataclass(frozen=True, slots=True)
+class ExecutedQueryStep:
+    """A planned step paired with its independent retrieval decision."""
+
+    step: QueryPlanStep
+    retrieval: RetrievalDecision
+
+
+@dataclass(frozen=True, slots=True)
+class DecompositionExecution:
+    """Non-generative execution result that preserves step boundaries."""
+
+    plan: QueryPlan
+    status: DecompositionExecutionStatus
+    steps: tuple[ExecutedQueryStep, ...] = ()
+
+    def __post_init__(self) -> None:
+        is_clarification = (
+            self.status is DecompositionExecutionStatus.NEEDS_CLARIFICATION
+        )
+        plan_needs_clarification = (
+            self.plan.status is QueryPlanStatus.NEEDS_CLARIFICATION
+        )
+        if is_clarification != plan_needs_clarification:
+            raise ValueError("execution and plan clarification status must agree")
+        if is_clarification != (not self.steps):
+            raise ValueError("only clarification executions can omit step results")
+        if self.steps and len(self.steps) != len(self.plan.steps):
+            raise ValueError("every planned step must have one retrieval result")
+        if self.steps:
+            all_ready = all(
+                item.retrieval.status is RetrievalStatus.READY
+                for item in self.steps
+            )
+            if (
+                self.status is DecompositionExecutionStatus.READY
+            ) != all_ready:
+                raise ValueError("aggregate status must reflect every step result")
 
 
 @dataclass(frozen=True, slots=True)

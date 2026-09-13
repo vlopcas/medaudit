@@ -70,6 +70,15 @@ evidências. A rota de decomposição agora contém um plano determinístico par
 múltiplas datas ou comparações sintaticamente separáveis; casos ambíguos pedem
 esclarecimento. Esses passos ainda não são executados e nenhuma rota habilita
 ferramentas externas.
+
+Um `DeterministicDecompositionExecutor` experimental já consegue executar os
+passos preservando suas fronteiras: comparações usam um pipeline de evidências
+por escopo e consultas temporais recebem um pipeline resolvido para cada data.
+Se qualquer passo se abstiver, a execução inteira fica como
+`insufficient_evidence`. O componente ainda não está ligado ao fluxo roteado e
+não combina evidências nem gera respostas; sua promoção depende de benchmark
+sintético dedicado.
+
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no
 desenvolvimento e não pertence ao fluxo principal.

@@ -77,6 +77,12 @@ pede esclarecimento. Os passos estão integrados à decisão roteada, mas ainda
 não são executados. O próximo marco é avaliar a recuperação de cada passo e a
 combinação de evidências antes de autorizar síntese comparativa.
 
+O contrato experimental de execução por passo já preserva snapshots temporais,
+escopos comparativos e abstention agregada, mas foi validado apenas por testes
+unitários sintéticos. O próximo experimento deve medir recuperação correta por
+passo e isolamento temporal; ele não será integrado ao runtime antes dessa
+avaliação.
+
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em
 [Arquitetura atual](architecture.md).

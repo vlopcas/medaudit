@@ -1,8 +1,12 @@
 """Evidence-first retrieval-augmented generation boundaries."""
 
+from medaudit.rag.decomposition import DeterministicDecompositionExecutor
 from medaudit.rag.models import (
+    DecompositionExecution,
+    DecompositionExecutionStatus,
     Evidence,
     EvidenceLocation,
+    ExecutedQueryStep,
     RetrievalDecision,
     RetrievalStatus,
     RoutedRetrievalDecision,
@@ -16,9 +20,13 @@ from medaudit.rag.prompt import build_grounded_request
 from medaudit.rag.validation import GroundedAnswer, validate_grounded_response
 
 __all__ = [
+    "DecompositionExecution",
+    "DecompositionExecutionStatus",
+    "DeterministicDecompositionExecutor",
     "Evidence",
     "EvidenceFirstPipeline",
     "EvidenceLocation",
+    "ExecutedQueryStep",
     "FrozenTopScorePolicy",
     "GroundedAnswer",
     "RetrievalDecision",
