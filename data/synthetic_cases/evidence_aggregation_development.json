@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "policy": "decomposition-evidence-aggregation-v1",
+  "notice": "Conteúdo integralmente sintético, sem reprodução de documentos reais.",
+  "cases": [
+    {
+      "id": "aggregate-dev-001",
+      "query": "Compare alfa com beta.",
+      "plan_status": "ready",
+      "execution_status": "ready",
+      "strategy": "comparison_scopes",
+      "steps": [
+        {"step_id": "comparison-1", "query": "alfa", "scope": "alfa", "retrieval_status": "ready", "evidence": [{"chunk_id": "alpha-c1", "document_id": "alpha-doc", "rank": 1}, {"chunk_id": "alpha-c2", "document_id": "alpha-doc", "rank": 2}]},
+        {"step_id": "comparison-2", "query": "beta", "scope": "beta", "retrieval_status": "ready", "evidence": [{"chunk_id": "beta-c1", "document_id": "beta-doc", "rank": 1}]}
+      ],
+      "expected": {"can_generate": true, "groups": [
+        {"step_id": "comparison-1", "reference_date": null, "scope": "alfa", "citations": [{"chunk_id": "alpha-c1", "document_id": "alpha-doc", "rank": 1}, {"chunk_id": "alpha-c2", "document_id": "alpha-doc", "rank": 2}]},
+        {"step_id": "comparison-2", "reference_date": null, "scope": "beta", "citations": [{"chunk_id": "beta-c1", "document_id": "beta-doc", "rank": 1}]}
+      ]}
+    },
+    {
+      "id": "aggregate-dev-002",
+      "query": "Compare gama com ausente.",
+      "plan_status": "ready",
+      "execution_status": "insufficient_evidence",
+      "strategy": "comparison_scopes",
+      "steps": [
+        {"step_id": "comparison-1", "query": "gama", "scope": "gama", "retrieval_status": "ready", "evidence": [{"chunk_id": "gama-c1", "document_id": "gama-doc", "rank": 1}]},
+        {"step_id": "comparison-2", "query": "ausente", "scope": "ausente", "retrieval_status": "insufficient_evidence", "evidence": []}
+      ],
+      "expected": {"can_generate": false, "groups": [
+        {"step_id": "comparison-1", "reference_date": null, "scope": "gama", "citations": [{"chunk_id": "gama-c1", "document_id": "gama-doc", "rank": 1}]},
+        {"step_id": "comparison-2", "reference_date": null, "scope": "ausente", "citations": []}
+      ]}
+    },
+    {
+      "id": "aggregate-dev-003",
+      "query": "Compare regra em duas datas.",
+      "plan_status": "ready",
+      "execution_status": "ready",
+      "strategy": "temporal_snapshots",
+      "steps": [
+        {"step_id": "temporal-1", "query": "regra", "reference_date": "2025-01-01", "retrieval_status": "ready", "evidence": [{"chunk_id": "rule-2025-c1", "document_id": "rule-2025", "rank": 1}]},
+        {"step_id": "temporal-2", "query": "regra", "reference_date": "2026-01-01", "retrieval_status": "ready", "evidence": [{"chunk_id": "rule-2026-c1", "document_id": "rule-2026", "rank": 1}]}
+      ],
+      "expected": {"can_generate": true, "groups": [
+        {"step_id": "temporal-1", "reference_date": "2025-01-01", "scope": null, "citations": [{"chunk_id": "rule-2025-c1", "document_id": "rule-2025", "rank": 1}]},
+        {"step_id": "temporal-2", "reference_date": "2026-01-01", "scope": null, "citations": [{"chunk_id": "rule-2026-c1", "document_id": "rule-2026", "rank": 1}]}
+      ]}
+    },
+    {
+      "id": "aggregate-dev-004",
+      "query": "Compare norma em três datas.",
+      "plan_status": "ready",
+      "execution_status": "insufficient_evidence",
+      "strategy": "temporal_snapshots",
+      "steps": [
+        {"step_id": "temporal-1", "query": "norma", "reference_date": "2024-06-01", "retrieval_status": "ready", "evidence": [{"chunk_id": "norm-2024-c1", "document_id": "norm-2024", "rank": 1}]},
+        {"step_id": "temporal-2", "query": "norma", "reference_date": "2025-06-01", "retrieval_status": "insufficient_evidence", "evidence": []},
+        {"step_id": "temporal-3", "query": "norma", "reference_date": "2026-06-01", "retrieval_status": "ready", "evidence": [{"chunk_id": "norm-2026-c1", "document_id": "norm-2026", "rank": 1}]}
+      ],
+      "expected": {"can_generate": false, "groups": [
+        {"step_id": "temporal-1", "reference_date": "2024-06-01", "scope": null, "citations": [{"chunk_id": "norm-2024-c1", "document_id": "norm-2024", "rank": 1}]},
+        {"step_id": "temporal-2", "reference_date": "2025-06-01", "scope": null, "citations": []},
+        {"step_id": "temporal-3", "reference_date": "2026-06-01", "scope": null, "citations": [{"chunk_id": "norm-2026-c1", "document_id": "norm-2026", "rank": 1}]}
+      ]}
+    },
+    {
+      "id": "aggregate-dev-005",
+      "query": "Comparação ambígua.",
+      "plan_status": "needs_clarification",
+      "execution_status": "needs_clarification",
+      "strategy": null,
+      "steps": [],
+      "expected": {"can_generate": false, "groups": []}
+    },
+    {
+      "id": "aggregate-dev-006",
+      "query": "Compare alfa com alfa.",
+      "plan_status": "ready",
+      "execution_status": "ready",
+      "strategy": "comparison_scopes",
+      "steps": [
+        {"step_id": "comparison-1", "query": "alfa", "scope": "alfa", "retrieval_status": "ready", "evidence": [{"chunk_id": "shared-c1", "document_id": "shared-doc", "rank": 1}]},
+        {"step_id": "comparison-2", "query": "alfa", "scope": "alfa", "retrieval_status": "ready", "evidence": [{"chunk_id": "shared-c1", "document_id": "shared-doc", "rank": 1}]}
+      ],
+      "expected": {"can_generate": true, "groups": [
+        {"step_id": "comparison-1", "reference_date": null, "scope": "alfa", "citations": [{"chunk_id": "shared-c1", "document_id": "shared-doc", "rank": 1}]},
+        {"step_id": "comparison-2", "reference_date": null, "scope": "alfa", "citations": [{"chunk_id": "shared-c1", "document_id": "shared-doc", "rank": 1}]}
+      ]}
+    }
+  ]
+}

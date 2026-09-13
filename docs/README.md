@@ -67,6 +67,8 @@ Os planos determinísticos para a rota de decomposição estão em
 [ADR-015](decisions/ADR-015-deterministic-decomposition-plans.md).
 A execução opt-in dos passos está em
 [ADR-016](decisions/ADR-016-opt-in-decomposition-execution.md).
+Os pacotes de evidências separados por passo estão em
+[ADR-017](decisions/ADR-017-step-scoped-evidence-bundles.md).
 
 ## Conteúdo permitido
 

@@ -79,12 +79,12 @@ Se qualquer passo se abstiver, a execução inteira fica como
 sem executor explicitamente configurado, a decisão continua contendo somente o
 plano. Ele não combina evidências nem gera respostas.
 
-Um estágio experimental posterior agrupa as evidências executadas sem apagar
+Um estágio posterior agrupa as evidências executadas sem apagar
 as fronteiras dos passos. Cada grupo conserva o passo, seu escopo ou data e as
 citações ordenadas originais. Evidência parcial permanece auditável, mas o
 pacote só libera uma futura síntese quando todos os passos estiverem `ready`.
-Esse agrupamento ainda não integra automaticamente o pipeline roteado e aguarda
-benchmark próprio.
+Quando o executor opt-in está configurado, esse pacote integra automaticamente
+a decisão roteada. Ele ainda não dispara síntese.
 
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no
@@ -152,6 +152,7 @@ em `data/processed/`, que é ignorado pelo Git.
 - [ADR-014: roteamento explícito antes do retrieval](decisions/ADR-014-explicit-pre-retrieval-routing.md)
 - [ADR-015: planos determinísticos de decomposição](decisions/ADR-015-deterministic-decomposition-plans.md)
 - [ADR-016: execução opt-in de planos de decomposição](decisions/ADR-016-opt-in-decomposition-execution.md)
+- [ADR-017: pacotes de evidências preservam o escopo dos passos](decisions/ADR-017-step-scoped-evidence-bundles.md)
 
 ## Ambiente de execução
 

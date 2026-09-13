@@ -63,6 +63,7 @@ medaudit-evaluate-structural-decomposition = "medaudit.evaluation.structural_dec
 medaudit-evaluate-explicit-query-routing = "medaudit.evaluation.explicit_query_routing:main"
 medaudit-evaluate-query-planning = "medaudit.evaluation.query_planning:main"
 medaudit-benchmark-decomposition-execution = "medaudit.evaluation.decomposition_execution:main"
+medaudit-evaluate-evidence-aggregation = "medaudit.evaluation.evidence_aggregation:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/medaudit"]

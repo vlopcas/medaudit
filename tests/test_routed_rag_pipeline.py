@@ -34,6 +34,7 @@ class RoutedEvidenceFirstPipelineTest(unittest.TestCase):
         self.assertIsNone(decision.retrieval)
         self.assertIsNotNone(decision.plan)
         self.assertIsNone(decision.execution)
+        self.assertIsNone(decision.evidence_bundle)
         assert decision.plan is not None
         self.assertEqual(len(decision.plan.steps), 2)
 
@@ -55,6 +56,7 @@ class RoutedEvidenceFirstPipelineTest(unittest.TestCase):
         self.assertIsNone(decision.retrieval)
         self.assertIsNone(decision.plan)
         self.assertIsNone(decision.execution)
+        self.assertIsNone(decision.evidence_bundle)
 
     def test_explicitly_configured_executor_runs_decomposition(self) -> None:
         executor = DeterministicDecompositionExecutor(
@@ -69,5 +71,8 @@ class RoutedEvidenceFirstPipelineTest(unittest.TestCase):
         decision = pipeline.retrieve("Compare regra alpha com regra alpha.")
 
         self.assertIsNotNone(decision.execution)
+        self.assertIsNotNone(decision.evidence_bundle)
         assert decision.execution is not None
         self.assertEqual(decision.execution.status, "ready")
+        assert decision.evidence_bundle is not None
+        self.assertTrue(decision.evidence_bundle.can_generate)

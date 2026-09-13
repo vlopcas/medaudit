@@ -83,10 +83,11 @@ temporais. Ele foi integrado de forma opt-in: sem resolvedor explícito de
 snapshots, o runtime não executa o plano. O próximo marco é definir e avaliar a
 combinação determinística das evidências antes de qualquer síntese generativa.
 
-O contrato inicial de agrupamento já preserva ordem, contexto temporal ou
-comparativo e citações por passo. Evidência parcial continua visível para
-auditoria, mas bloqueia geração. O componente permanece experimental até uma
-avaliação dedicada de preservação de provenance e bloqueios.
+O agrupamento subsequente atingiu 100% em seis casos de desenvolvimento e quatro
+casos de holdout, preservando contexto e citações nos sete grupos inéditos.
+Evidência parcial continua visível para auditoria, mas bloqueia geração. O
+pacote foi integrado ao caminho opt-in; o próximo marco é definir e avaliar o
+contrato de síntese comparativa grounded.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em

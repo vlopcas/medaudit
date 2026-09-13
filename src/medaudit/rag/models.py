@@ -143,6 +143,7 @@ class RoutedRetrievalDecision:
     retrieval: RetrievalDecision | None = None
     plan: QueryPlan | None = None
     execution: DecompositionExecution | None = None
+    evidence_bundle: DecompositionEvidenceBundle | None = None
 
     def __post_init__(self) -> None:
         has_retrieval = self.retrieval is not None
@@ -158,3 +159,8 @@ class RoutedRetrievalDecision:
                 raise ValueError(
                     "decomposition execution must belong to the route plan"
                 )
+        if self.evidence_bundle is not None:
+            if self.execution is None:
+                raise ValueError("evidence bundle requires decomposition execution")
+            if self.evidence_bundle.execution != self.execution:
+                raise ValueError("evidence bundle must belong to route execution")

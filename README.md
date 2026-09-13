@@ -94,6 +94,11 @@ congelado atingiu 100% em 10 casos e 17 passos. A execução temporal exige um
 resolvedor explícito de snapshots e ainda não combina evidências nem gera uma
 resposta comparativa.
 
+As evidências executadas são agrupadas por passo sem perder escopo, data ou
+citações. O agrupador atingiu 100% em quatro casos e sete grupos no holdout e é
+incluído automaticamente quando o executor opt-in está configurado. O pacote
+ainda não chama o modelo generativo.
+
 ## Ambiente de desenvolvimento
 
 Requer Python 3.12 ou superior.

@@ -260,6 +260,39 @@ services:
       - db4effc3b23a28cebb6d9cea6137a5b2589a9674e902279ee155c811a22395c9
       - --refuse-overwrite
 
+  evaluate-evidence-aggregation:
+    build:
+      context: .
+    network_mode: none
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    command:
+      - medaudit-evaluate-evidence-aggregation
+      - --cases
+      - /app/data/synthetic_cases/evidence_aggregation_development.json
+
+  evaluate-evidence-aggregation-holdout:
+    extends: evaluate-evidence-aggregation
+    user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
+    volumes:
+      - type: bind
+        source: ./artifacts
+        target: /artifacts
+    command:
+      - medaudit-evaluate-evidence-aggregation
+      - --cases
+      - /app/data/synthetic_cases/evidence_aggregation_holdout.json
+      - --output
+      - /artifacts/evidence-aggregation-holdout.local.json
+      - --expected-sha256
+      - 7266046a3475bd142b51f9ee6375c0159e5cd71eba32eadf6ee5a7dcbdde3a63
+      - --refuse-overwrite
+
   evaluate-explicit-query-routing-holdout:
     extends: evaluate-explicit-query-routing
     user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"

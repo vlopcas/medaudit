@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "policy": "decomposition-evidence-aggregation-v1",
+  "notice": "Conteúdo integralmente sintético, sem reprodução de documentos reais.",
+  "cases": [
+    {
+      "id": "aggregate-hold-001", "query": "Compare cobre com estanho.", "plan_status": "ready", "execution_status": "ready", "strategy": "comparison_scopes",
+      "steps": [
+        {"step_id": "comparison-1", "query": "cobre", "scope": "cobre", "retrieval_status": "ready", "evidence": [{"chunk_id": "copper-c1", "document_id": "copper-doc", "rank": 1}, {"chunk_id": "copper-c2", "document_id": "copper-extra", "rank": 2}]},
+        {"step_id": "comparison-2", "query": "estanho", "scope": "estanho", "retrieval_status": "ready", "evidence": [{"chunk_id": "tin-c1", "document_id": "tin-doc", "rank": 1}, {"chunk_id": "tin-c2", "document_id": "tin-extra", "rank": 2}]}
+      ],
+      "expected": {"can_generate": true, "groups": [
+        {"step_id": "comparison-1", "reference_date": null, "scope": "cobre", "citations": [{"chunk_id": "copper-c1", "document_id": "copper-doc", "rank": 1}, {"chunk_id": "copper-c2", "document_id": "copper-extra", "rank": 2}]},
+        {"step_id": "comparison-2", "reference_date": null, "scope": "estanho", "citations": [{"chunk_id": "tin-c1", "document_id": "tin-doc", "rank": 1}, {"chunk_id": "tin-c2", "document_id": "tin-extra", "rank": 2}]}
+      ]}
+    },
+    {
+      "id": "aggregate-hold-002", "query": "Compare protocolo em três datas.", "plan_status": "ready", "execution_status": "insufficient_evidence", "strategy": "temporal_snapshots",
+      "steps": [
+        {"step_id": "temporal-1", "query": "protocolo", "reference_date": "2023-12-31", "retrieval_status": "ready", "evidence": [{"chunk_id": "proto-old-c1", "document_id": "proto-old", "rank": 1}]},
+        {"step_id": "temporal-2", "query": "protocolo", "reference_date": "2024-12-31", "retrieval_status": "insufficient_evidence", "evidence": []},
+        {"step_id": "temporal-3", "query": "protocolo", "reference_date": "2025-12-31", "retrieval_status": "ready", "evidence": [{"chunk_id": "proto-new-c1", "document_id": "proto-new", "rank": 1}]}
+      ],
+      "expected": {"can_generate": false, "groups": [
+        {"step_id": "temporal-1", "reference_date": "2023-12-31", "scope": null, "citations": [{"chunk_id": "proto-old-c1", "document_id": "proto-old", "rank": 1}]},
+        {"step_id": "temporal-2", "reference_date": "2024-12-31", "scope": null, "citations": []},
+        {"step_id": "temporal-3", "reference_date": "2025-12-31", "scope": null, "citations": [{"chunk_id": "proto-new-c1", "document_id": "proto-new", "rank": 1}]}
+      ]}
+    },
+    {
+      "id": "aggregate-hold-003", "query": "Comparação sem lados.", "plan_status": "needs_clarification", "execution_status": "needs_clarification", "strategy": null, "steps": [],
+      "expected": {"can_generate": false, "groups": []}
+    },
+    {
+      "id": "aggregate-hold-004", "query": "Compare fonte comum com fonte comum.", "plan_status": "ready", "execution_status": "ready", "strategy": "comparison_scopes",
+      "steps": [
+        {"step_id": "comparison-1", "query": "fonte comum", "scope": "fonte comum", "retrieval_status": "ready", "evidence": [{"chunk_id": "common-c1", "document_id": "common-doc", "rank": 1}]},
+        {"step_id": "comparison-2", "query": "fonte comum", "scope": "fonte comum", "retrieval_status": "ready", "evidence": [{"chunk_id": "common-c1", "document_id": "common-doc", "rank": 1}]}
+      ],
+      "expected": {"can_generate": true, "groups": [
+        {"step_id": "comparison-1", "reference_date": null, "scope": "fonte comum", "citations": [{"chunk_id": "common-c1", "document_id": "common-doc", "rank": 1}]},
+        {"step_id": "comparison-2", "reference_date": null, "scope": "fonte comum", "citations": [{"chunk_id": "common-c1", "document_id": "common-doc", "rank": 1}]}
+      ]}
+    }
+  ]
+}

@@ -11,6 +11,7 @@ from medaudit.query_understanding import (
     ExplicitQueryRouter,
     QueryRoute,
 )
+from medaudit.rag.aggregation import group_decomposition_evidence
 from medaudit.rag.decomposition import DeterministicDecompositionExecutor
 from medaudit.rag.models import (
     Evidence,
@@ -141,13 +142,19 @@ class RoutedEvidenceFirstPipeline:
         route = self._router.route(query)
         if route is QueryRoute.REQUIRES_DECOMPOSITION:
             plan = self._planner.plan(query)
+            execution = (
+                self._decomposition_executor.execute(plan, top_k=top_k)
+                if self._decomposition_executor is not None
+                else None
+            )
             return RoutedRetrievalDecision(
                 query=query,
                 route=route,
                 plan=plan,
-                execution=(
-                    self._decomposition_executor.execute(plan, top_k=top_k)
-                    if self._decomposition_executor is not None
+                execution=execution,
+                evidence_bundle=(
+                    group_decomposition_evidence(execution)
+                    if execution is not None
                     else None
                 ),
             )
