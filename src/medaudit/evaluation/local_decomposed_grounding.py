@@ -1,0 +1,251 @@
+"""Benchmark local synthesis over wholly synthetic grouped evidence."""
+
+import argparse
+import asyncio
+import json
+from collections import defaultdict
+from collections.abc import Sequence
+from datetime import date
+from pathlib import Path
+from typing import Any
+
+from medaudit.evaluation.content_grade import grade_expected_content
+from medaudit.evaluation.local_llm_benchmark import verify_input, wait_until_ready
+from medaudit.evaluation.private_bm25 import write_private_report
+from medaudit.llm import LlamaCppClient, LLMClient
+from medaudit.query_understanding import (
+    QueryPlan,
+    QueryPlanStatus,
+    QueryPlanStep,
+    QueryPlanStrategy,
+)
+from medaudit.rag import (
+    DecompositionEvidenceBundle,
+    DecompositionExecution,
+    DecompositionExecutionStatus,
+    Evidence,
+    EvidenceLocation,
+    ExecutedQueryStep,
+    RetrievalDecision,
+    RetrievalStatus,
+    build_decomposed_grounded_request,
+    group_decomposition_evidence,
+    validate_decomposed_grounded_response,
+)
+from medaudit.retrieval import ConfidenceSignals
+
+_NOTICE = "Conteúdo integralmente sintético, sem reprodução de documentos reais."
+_SIGNALS = ConfidenceSignals(1.0, 1.0, 1.0, 1.0, 1.0, 1)
+
+
+def load_dataset(path: Path) -> list[dict[str, Any]]:
+    """Load only the explicit synthetic benchmark schema."""
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    if (
+        payload.get("schema_version") != 1
+        or payload.get("policy") != "local-decomposed-grounding-benchmark-v1"
+        or payload.get("notice") != _NOTICE
+    ):
+        raise ValueError("unsupported local decomposed grounding schema")
+    cases = payload.get("cases")
+    if not isinstance(cases, list) or not cases:
+        raise ValueError("local decomposed grounding cases are required")
+    identifiers = [case.get("id") for case in cases if isinstance(case, dict)]
+    if len(identifiers) != len(cases) or len(identifiers) != len(set(identifiers)):
+        raise ValueError("case ids must be present and unique")
+    return cases
+
+
+def build_bundle(case: dict[str, Any]) -> DecompositionEvidenceBundle:
+    """Construct a complete provider-neutral bundle from one synthetic case."""
+    raw_groups = case.get("evidence_groups")
+    if not isinstance(raw_groups, list) or len(raw_groups) < 2:
+        raise ValueError("each case requires at least two evidence groups")
+    is_temporal = all(group.get("reference_date") for group in raw_groups)
+    if any(group.get("reference_date") for group in raw_groups) != is_temporal:
+        raise ValueError("a case cannot mix temporal and scoped evidence groups")
+    steps = tuple(
+        QueryPlanStep(
+            step_id=group["step_id"],
+            query=case["question"] if is_temporal else group["scope"],
+            scope=None if is_temporal else group["scope"],
+            reference_date=(
+                date.fromisoformat(group["reference_date"])
+                if is_temporal
+                else None
+            ),
+        )
+        for group in raw_groups
+    )
+    plan = QueryPlan(
+        original_query=case["question"],
+        status=QueryPlanStatus.READY,
+        strategy=(
+            QueryPlanStrategy.TEMPORAL_SNAPSHOTS
+            if is_temporal
+            else QueryPlanStrategy.COMPARISON_SCOPES
+        ),
+        steps=steps,
+    )
+    executed = tuple(
+        ExecutedQueryStep(
+            step=step,
+            retrieval=RetrievalDecision(
+                query=step.query,
+                status=RetrievalStatus.READY,
+                signals=_SIGNALS,
+                evidence=tuple(
+                    Evidence(
+                        location=EvidenceLocation(
+                            chunk_id=item["evidence_id"],
+                            document_id=item["document_id"],
+                            rank=index,
+                            score=1.0,
+                            page=None,
+                            section=None,
+                        ),
+                        text=item["text"],
+                    )
+                    for index, item in enumerate(group["evidence"], start=1)
+                ),
+            ),
+        )
+        for step, group in zip(steps, raw_groups, strict=True)
+    )
+    return group_decomposition_evidence(
+        DecompositionExecution(
+            plan=plan,
+            status=DecompositionExecutionStatus.READY,
+            steps=executed,
+        )
+    )
+
+
+async def run_benchmark(
+    cases: list[dict[str, Any]], *, client: LLMClient
+) -> dict[str, Any]:
+    """Measure local generation without retaining questions or model text."""
+    structured = grounded = status_correct = content_correct = 0
+    grounded_answered = 0
+    matched_concepts = expected_concepts = 0
+    latencies: list[float] = []
+    outcomes: list[dict[str, Any]] = []
+    categories: defaultdict[str, dict[str, int]] = defaultdict(
+        lambda: {"case_count": 0, "grounded_contract_valid": 0, "status_correct": 0}
+    )
+    for case in cases:
+        expected = case.get("expected")
+        if not isinstance(expected, dict) or expected.get("status") not in {
+            "answered",
+            "insufficient_evidence",
+        }:
+            raise ValueError("each case requires a supported expected status")
+        if expected["status"] == "answered":
+            concepts = expected.get("required_concepts")
+            if not isinstance(concepts, list) or not concepts:
+                raise ValueError("answered cases require expected concepts")
+            expected_concepts += len(concepts)
+        bundle = build_bundle(case)
+        category = categories[str(case["category"])]
+        category["case_count"] += 1
+        response = None
+        valid = actual_status = content_ok = False
+        try:
+            response = await client.generate(build_decomposed_grounded_request(bundle))
+            structured += 1
+            answer = validate_decomposed_grounded_response(response, bundle)
+            valid = True
+            grounded += 1
+            actual_status = answer.status == expected["status"]
+            status_correct += actual_status
+            category["grounded_contract_valid"] += 1
+            category["status_correct"] += actual_status
+            if answer.status == "answered" and expected["status"] == "answered":
+                grounded_answered += 1
+                grade = grade_expected_content(
+                    " ".join(claim.text for claim in answer.claims), expected
+                )
+                content_ok = grade.correct
+                content_correct += content_ok
+                matched_concepts += grade.matched_concept_count
+        except ValueError:
+            pass
+        if response is not None:
+            latencies.append(response.latency_ms)
+        outcomes.append(
+            {
+                "case_id": case["id"],
+                "category": case["category"],
+                "structured_output": response is not None,
+                "grounded_contract_valid": valid,
+                "status_correct": actual_status,
+                "content_correct": content_ok,
+            }
+        )
+    answerable = sum(case["expected"]["status"] == "answered" for case in cases)
+    return {
+        "schema_version": 1,
+        "dataset": "wholly_synthetic",
+        "case_count": len(cases),
+        "metrics": {
+            "structured_output_rate": structured / len(cases),
+            "grounded_contract_rate": grounded / len(cases),
+            "authorized_citation_rate": 1.0 if grounded_answered else None,
+            "complete_group_coverage_rate": 1.0 if grounded_answered else None,
+            "response_status_accuracy": status_correct / len(cases),
+            "answer_content_accuracy": content_correct / answerable,
+            "required_concept_recall": (
+                matched_concepts / expected_concepts if expected_concepts else None
+            ),
+            "mean_generation_latency_ms": (
+                sum(latencies) / len(latencies) if latencies else None
+            ),
+        },
+        "by_category": dict(sorted(categories.items())),
+        "cases": outcomes,
+    }
+
+
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--dataset", type=Path, required=True)
+    parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--base-url", default="http://llm-server:8080")
+    parser.add_argument("--startup-timeout", type=float, default=180)
+    parser.add_argument("--expected-sha256")
+    parser.add_argument("--refuse-overwrite", action="store_true")
+    return parser
+
+
+def main(argv: Sequence[str] | None = None) -> int:
+    args = build_parser().parse_args(argv)
+    try:
+        if args.refuse_overwrite and args.output.exists():
+            raise FileExistsError("benchmark output already exists")
+        fingerprint = verify_input(args.dataset, args.expected_sha256)
+        cases = load_dataset(args.dataset)
+        wait_until_ready(args.base_url, timeout_seconds=args.startup_timeout)
+        client = LlamaCppClient(
+            base_url=args.base_url,
+            allowed_hosts=frozenset(
+                {"llm-server", "127.0.0.1", "localhost", "::1"}
+            ),
+        )
+        report = asyncio.run(run_benchmark(cases, client=client))
+        report["input_sha256"] = fingerprint
+        write_private_report(report, args.output)
+    except (
+        OSError,
+        TimeoutError,
+        TypeError,
+        ValueError,
+        json.JSONDecodeError,
+    ) as error:
+        print(json.dumps({"error": type(error).__name__, "succeeded": False}))
+        return 2
+    print(json.dumps({**report, "succeeded": True}, sort_keys=True))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "policy": "local-decomposed-grounding-benchmark-v1",
+  "notice": "Conteúdo integralmente sintético, sem reprodução de documentos reais.",
+  "cases": [
+    {
+      "id": "local-ground-dev-001",
+      "category": "comparison",
+      "question": "Compare o prazo e o canal das regras Alfa e Beta.",
+      "evidence_groups": [
+        {"step_id": "alpha", "scope": "regra Alfa", "evidence": [{"evidence_id": "alpha-c1", "document_id": "alpha-doc", "text": "A regra Alfa define prazo de 10 dias e envio pelo portal azul."}]},
+        {"step_id": "beta", "scope": "regra Beta", "evidence": [{"evidence_id": "beta-c1", "document_id": "beta-doc", "text": "A regra Beta define prazo de 20 dias e envio pelo portal verde."}]}
+      ],
+      "expected": {"status": "answered", "required_concepts": [["10 dias"], ["portal azul"], ["20 dias"], ["portal verde"]]}
+    },
+    {
+      "id": "local-ground-dev-002",
+      "category": "temporal",
+      "question": "O que mudou no limite da política Gama entre janeiro e julho de 2030?",
+      "evidence_groups": [
+        {"step_id": "gama-old", "scope": "política Gama", "reference_date": "2030-01-15", "evidence": [{"evidence_id": "gama-old-c1", "document_id": "gama-old-doc", "text": "Em janeiro de 2030, a política Gama estabelecia limite sintético de 40 unidades."}]},
+        {"step_id": "gama-new", "scope": "política Gama", "reference_date": "2030-07-15", "evidence": [{"evidence_id": "gama-new-c1", "document_id": "gama-new-doc", "text": "Em julho de 2030, a política Gama passou a estabelecer limite sintético de 55 unidades."}]}
+      ],
+      "expected": {"status": "answered", "required_concepts": [["40 unidades"], ["55 unidades"]]}
+    },
+    {
+      "id": "local-ground-dev-003",
+      "category": "cross_document",
+      "question": "Qual código e qual janela de envio se aplicam ao item Ômega?",
+      "evidence_groups": [
+        {"step_id": "catalog", "scope": "catálogo Ômega", "evidence": [{"evidence_id": "omega-code-c1", "document_id": "omega-catalog", "text": "O item sintético Ômega possui o código OM-204."}]},
+        {"step_id": "operations", "scope": "operação Ômega", "evidence": [{"evidence_id": "omega-window-c1", "document_id": "omega-operations", "text": "O envio do item Ômega ocorre somente entre 8h e 12h."}]}
+      ],
+      "expected": {"status": "answered", "required_concepts": [["OM-204"], ["8h e 12h", "8 h e 12 h"]]}
+    },
+    {
+      "id": "local-ground-dev-004",
+      "category": "multi_evidence_step",
+      "question": "Resuma a condição, a exceção e a taxa da regra Delta.",
+      "evidence_groups": [
+        {"step_id": "delta-rule", "scope": "regra Delta", "evidence": [{"evidence_id": "delta-condition-c1", "document_id": "delta-doc", "text": "A regra Delta aceita solicitações com selo laranja."}, {"evidence_id": "delta-exception-c2", "document_id": "delta-doc", "text": "A exceção sintética dispensa o selo quando houver marcador lunar."}]},
+        {"step_id": "delta-rate", "scope": "taxa Delta", "evidence": [{"evidence_id": "delta-rate-c1", "document_id": "delta-rate-doc", "text": "A taxa sintética da regra Delta é de 7 créditos."}]}
+      ],
+      "expected": {"status": "answered", "required_concepts": [["selo laranja"], ["marcador lunar"], ["7 créditos", "7 creditos"]]}
+    },
+    {
+      "id": "local-ground-dev-005",
+      "category": "insufficient_evidence",
+      "question": "Qual é a cor do selo da regra Zeta?",
+      "evidence_groups": [
+        {"step_id": "zeta-rule", "scope": "regra Zeta", "evidence": [{"evidence_id": "zeta-c1", "document_id": "zeta-doc", "text": "A regra Zeta possui vigência sintética a partir de abril de 2031."}]},
+        {"step_id": "zeta-channel", "scope": "canal Zeta", "evidence": [{"evidence_id": "zeta-c2", "document_id": "zeta-channel-doc", "text": "A regra Zeta deve ser enviada pelo canal solar."}]}
+      ],
+      "expected": {"status": "insufficient_evidence"}
+    }
+  ]
+}

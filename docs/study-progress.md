@@ -93,8 +93,12 @@ O contrato dessa síntese constrói requests agrupados e valida
 afirmações atômicas com suporte por `step_id`. Citações de outro grupo, omissão
 de um lado e pacotes parciais são rejeitados deterministicamente. Ele atingiu
 100% em 12 casos de desenvolvimento e oito casos de holdout, mas ainda não
-chama o modelo local. O próximo marco é medir conformidade estrutural e
-qualidade factual do modelo nessa tarefa antes de qualquer integração.
+chamava o modelo local. O benchmark de desenvolvimento seguinte mostrou 100%
+de conformidade estrutural, mas o `Qwen3-4B Q4_K_M` respondeu corretamente
+somente um dos quatro casos respondíveis e mostrou variação entre execuções.
+A integração e o holdout permanecem bloqueados; o próximo marco é medir
+repetibilidade e diagnosticar a abstention excessiva antes de uma alteração
+controlada de prompt.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em

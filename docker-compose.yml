@@ -326,6 +326,15 @@ services:
       - 96fdb58b2d3ad989dd77c930414103b69988dfee4ee5eb99fad8dc065db80353
       - --refuse-overwrite
 
+  benchmark-local-decomposed-grounding:
+    extends: benchmark-local-llm
+    command:
+      - medaudit-benchmark-local-decomposed-grounding
+      - --dataset
+      - /app/data/synthetic_cases/local_decomposed_grounding_development.json
+      - --output
+      - /artifacts/local-decomposed-grounding-development.local.json
+
   evaluate-explicit-query-routing-holdout:
     extends: evaluate-explicit-query-routing
     user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"

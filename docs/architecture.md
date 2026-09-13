@@ -90,8 +90,10 @@ Um contrato provider-neutral validado de síntese decomposta transforma pacotes
 completos em requests estruturados. A resposta é modelada como afirmações
 atômicas, cada uma com suportes que vinculam `step_id` a citações daquele mesmo
 grupo. O validador rejeita citações cruzadas e respostas que omitam qualquer
-grupo. O contrato ainda não está conectado ao cliente LLM porque qualidade de
-conteúdo precisa de avaliação separada.
+grupo. Um benchmark isolado conecta esse contrato ao cliente LLM somente sobre
+evidências sintéticas; o modelo local respondeu corretamente apenas um dos
+quatro casos respondíveis e variou entre execuções. Essa conexão não integra o
+runtime nem foi promovida para holdout.
 
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no
