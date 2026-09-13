@@ -96,9 +96,11 @@ de um lado e pacotes parciais são rejeitados deterministicamente. Ele atingiu
 chamava o modelo local. O benchmark de desenvolvimento seguinte mostrou 100%
 de conformidade estrutural, mas o `Qwen3-4B Q4_K_M` respondeu corretamente
 somente um dos quatro casos respondíveis e mostrou variação entre execuções.
-A integração e o holdout permanecem bloqueados; o próximo marco é medir
-repetibilidade e diagnosticar a abstention excessiva antes de uma alteração
-controlada de prompt.
+Três repetições por caso confirmaram 100% de estrutura, somente 33,3% de status
+correto, 16,7% de conteúdo correto e estabilidade exata em quatro dos cinco
+casos. A integração e o holdout permanecem bloqueados; o próximo marco é testar
+uma única alteração na instrução de decisão entre resposta e abstention,
+mantendo todo o restante fixo.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em

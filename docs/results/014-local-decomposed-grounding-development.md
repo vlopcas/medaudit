@@ -52,6 +52,6 @@ conteúdo correto nos casos respondíveis.
 
 ## Reprodução
 
-```bash
-docker compose run --rm benchmark-local-decomposed-grounding
-```
+Esta foi a observação inicial de uma repetição por caso. O serviço Docker agora
+executa o protocolo de três repetições documentado no
+[Resultado 015](015-local-decomposed-grounding-repeatability.md).

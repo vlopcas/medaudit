@@ -77,6 +77,7 @@ class LocalDecomposedGroundingBenchmarkTest(unittest.TestCase):
 
         self.assertEqual(report["metrics"]["grounded_contract_rate"], 1.0)
         self.assertEqual(report["metrics"]["answer_content_accuracy"], 1.0)
+        self.assertEqual(report["metrics"]["exact_response_stability_rate"], 1.0)
         self.assertNotIn("private-shaped", str(report))
 
     def test_invalid_grounding_is_counted_without_aborting(self) -> None:
@@ -125,6 +126,80 @@ class LocalDecomposedGroundingBenchmarkTest(unittest.TestCase):
 
         self.assertEqual(report["metrics"]["structured_output_rate"], 1.0)
         self.assertEqual(report["metrics"]["grounded_contract_rate"], 0.0)
+
+    def test_detects_variation_across_repetitions(self) -> None:
+        case = {
+            "id": "repeat-case",
+            "category": "comparison",
+            "question": "Compare.",
+            "evidence_groups": [
+                {
+                    "step_id": "one",
+                    "scope": "one",
+                    "evidence": [
+                        {
+                            "evidence_id": "one-c1",
+                            "document_id": "one-doc",
+                            "text": "One is amber.",
+                        }
+                    ],
+                },
+                {
+                    "step_id": "two",
+                    "scope": "two",
+                    "evidence": [
+                        {
+                            "evidence_id": "two-c1",
+                            "document_id": "two-doc",
+                            "text": "Two is blue.",
+                        }
+                    ],
+                },
+            ],
+            "expected": {
+                "status": "answered",
+                "required_concepts": [["amber"], ["blue"]],
+            },
+        }
+        answered = LLMResponse(
+            data={
+                "status": "answered",
+                "claims": [
+                    {
+                        "text": "Amber and blue.",
+                        "supports": [
+                            {"step_id": "one", "evidence_ids": ["one-c1"]},
+                            {"step_id": "two", "evidence_ids": ["two-c1"]},
+                        ],
+                    }
+                ],
+            },
+            model="synthetic",
+            latency_ms=1,
+            usage=Usage(1, 1),
+        )
+        abstained = LLMResponse(
+            data={"status": "insufficient_evidence", "claims": []},
+            model="synthetic",
+            latency_ms=1,
+            usage=Usage(1, 1),
+        )
+
+        report = asyncio.run(
+            run_benchmark(
+                [case],
+                client=_FakeClient([answered, abstained, answered]),
+                repetitions=3,
+            )
+        )
+
+        self.assertEqual(report["attempt_count"], 3)
+        self.assertEqual(report["metrics"]["response_status_accuracy"], 2 / 3)
+        self.assertEqual(report["metrics"]["exact_response_stability_rate"], 0.0)
+        self.assertEqual(report["metrics"]["status_stability_rate"], 0.0)
+        self.assertEqual(
+            report["metrics"]["content_correctness_stability_rate"], 0.0
+        )
 
 
 if __name__ == "__main__":

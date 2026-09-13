@@ -2,6 +2,7 @@
 
 import argparse
 import asyncio
+import hashlib
 import json
 from collections import defaultdict
 from collections.abc import Sequence
@@ -122,17 +123,25 @@ def build_bundle(case: dict[str, Any]) -> DecompositionEvidenceBundle:
 
 
 async def run_benchmark(
-    cases: list[dict[str, Any]], *, client: LLMClient
+    cases: list[dict[str, Any]], *, client: LLMClient, repetitions: int = 1
 ) -> dict[str, Any]:
     """Measure local generation without retaining questions or model text."""
+    if repetitions < 1:
+        raise ValueError("benchmark repetitions must be positive")
     structured = grounded = status_correct = content_correct = 0
     grounded_answered = 0
     matched_concepts = expected_concepts = 0
     latencies: list[float] = []
     outcomes: list[dict[str, Any]] = []
     categories: defaultdict[str, dict[str, int]] = defaultdict(
-        lambda: {"case_count": 0, "grounded_contract_valid": 0, "status_correct": 0}
+        lambda: {
+            "case_count": 0,
+            "attempt_count": 0,
+            "grounded_contract_valid": 0,
+            "status_correct": 0,
+        }
     )
+    exact_stable = status_stable = content_stable = 0
     for case in cases:
         expected = case.get("expected")
         if not isinstance(expected, dict) or expected.get("status") not in {
@@ -144,62 +153,101 @@ async def run_benchmark(
             concepts = expected.get("required_concepts")
             if not isinstance(concepts, list) or not concepts:
                 raise ValueError("answered cases require expected concepts")
-            expected_concepts += len(concepts)
+            expected_concepts += len(concepts) * repetitions
         bundle = build_bundle(case)
         category = categories[str(case["category"])]
         category["case_count"] += 1
-        response = None
-        valid = actual_status = content_ok = False
-        try:
-            response = await client.generate(build_decomposed_grounded_request(bundle))
-            structured += 1
-            answer = validate_decomposed_grounded_response(response, bundle)
-            valid = True
-            grounded += 1
-            actual_status = answer.status == expected["status"]
-            status_correct += actual_status
-            category["grounded_contract_valid"] += 1
-            category["status_correct"] += actual_status
-            if answer.status == "answered" and expected["status"] == "answered":
-                grounded_answered += 1
-                grade = grade_expected_content(
-                    " ".join(claim.text for claim in answer.claims), expected
+        category["attempt_count"] += repetitions
+        fingerprints: list[str] = []
+        observed_statuses: list[str] = []
+        observed_content: list[bool] = []
+        valid_attempts = correct_attempts = correct_content_attempts = 0
+        for _ in range(repetitions):
+            response = None
+            content_ok = False
+            try:
+                response = await client.generate(
+                    build_decomposed_grounded_request(bundle)
                 )
-                content_ok = grade.correct
-                content_correct += content_ok
-                matched_concepts += grade.matched_concept_count
-        except ValueError:
-            pass
-        if response is not None:
-            latencies.append(response.latency_ms)
+                structured += 1
+                fingerprints.append(
+                    hashlib.sha256(
+                        json.dumps(
+                            response.data,
+                            ensure_ascii=False,
+                            sort_keys=True,
+                        ).encode()
+                    ).hexdigest()
+                )
+                answer = validate_decomposed_grounded_response(response, bundle)
+                valid_attempts += 1
+                grounded += 1
+                observed_statuses.append(answer.status)
+                actual_status = answer.status == expected["status"]
+                correct_attempts += actual_status
+                status_correct += actual_status
+                category["grounded_contract_valid"] += 1
+                category["status_correct"] += actual_status
+                if answer.status == "answered" and expected["status"] == "answered":
+                    grounded_answered += 1
+                    grade = grade_expected_content(
+                        " ".join(claim.text for claim in answer.claims), expected
+                    )
+                    content_ok = grade.correct
+                    correct_content_attempts += content_ok
+                    content_correct += content_ok
+                    matched_concepts += grade.matched_concept_count
+                observed_content.append(content_ok)
+            except ValueError:
+                fingerprints.append("invalid")
+                observed_statuses.append("invalid")
+                observed_content.append(False)
+            if response is not None:
+                latencies.append(response.latency_ms)
+        exact_case_stable = len(set(fingerprints)) == 1
+        status_case_stable = len(set(observed_statuses)) == 1
+        content_case_stable = len(set(observed_content)) == 1
+        exact_stable += exact_case_stable
+        status_stable += status_case_stable
+        content_stable += content_case_stable
         outcomes.append(
             {
                 "case_id": case["id"],
                 "category": case["category"],
-                "structured_output": response is not None,
-                "grounded_contract_valid": valid,
-                "status_correct": actual_status,
-                "content_correct": content_ok,
+                "attempt_count": repetitions,
+                "grounded_contract_valid_count": valid_attempts,
+                "status_correct_count": correct_attempts,
+                "content_correct_count": correct_content_attempts,
+                "exact_response_stable": exact_case_stable,
+                "status_stable": status_case_stable,
+                "content_correctness_stable": content_case_stable,
             }
         )
     answerable = sum(case["expected"]["status"] == "answered" for case in cases)
+    attempt_count = len(cases) * repetitions
+    answerable_attempts = answerable * repetitions
     return {
         "schema_version": 1,
         "dataset": "wholly_synthetic",
         "case_count": len(cases),
+        "repetitions_per_case": repetitions,
+        "attempt_count": attempt_count,
         "metrics": {
-            "structured_output_rate": structured / len(cases),
-            "grounded_contract_rate": grounded / len(cases),
+            "structured_output_rate": structured / attempt_count,
+            "grounded_contract_rate": grounded / attempt_count,
             "authorized_citation_rate": 1.0 if grounded_answered else None,
             "complete_group_coverage_rate": 1.0 if grounded_answered else None,
-            "response_status_accuracy": status_correct / len(cases),
-            "answer_content_accuracy": content_correct / answerable,
+            "response_status_accuracy": status_correct / attempt_count,
+            "answer_content_accuracy": content_correct / answerable_attempts,
             "required_concept_recall": (
                 matched_concepts / expected_concepts if expected_concepts else None
             ),
             "mean_generation_latency_ms": (
                 sum(latencies) / len(latencies) if latencies else None
             ),
+            "exact_response_stability_rate": exact_stable / len(cases),
+            "status_stability_rate": status_stable / len(cases),
+            "content_correctness_stability_rate": content_stable / len(cases),
         },
         "by_category": dict(sorted(categories.items())),
         "cases": outcomes,
@@ -212,6 +260,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--base-url", default="http://llm-server:8080")
     parser.add_argument("--startup-timeout", type=float, default=180)
+    parser.add_argument("--repetitions", type=int, default=1)
     parser.add_argument("--expected-sha256")
     parser.add_argument("--refuse-overwrite", action="store_true")
     return parser
@@ -231,7 +280,9 @@ def main(argv: Sequence[str] | None = None) -> int:
                 {"llm-server", "127.0.0.1", "localhost", "::1"}
             ),
         )
-        report = asyncio.run(run_benchmark(cases, client=client))
+        report = asyncio.run(
+            run_benchmark(cases, client=client, repetitions=args.repetitions)
+        )
         report["input_sha256"] = fingerprint
         write_private_report(report, args.output)
     except (

@@ -334,6 +334,8 @@ services:
       - /app/data/synthetic_cases/local_decomposed_grounding_development.json
       - --output
       - /artifacts/local-decomposed-grounding-development.local.json
+      - --repetitions
+      - "3"
 
   evaluate-explicit-query-routing-holdout:
     extends: evaluate-explicit-query-routing

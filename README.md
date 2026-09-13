@@ -103,8 +103,10 @@ O contrato de síntese decomposta exige afirmações atômicas com citações li
 ao grupo correto. Seu validador adversarial atingiu 100% em oito casos de
 holdout. No benchmark de desenvolvimento com o `Qwen3-4B Q4_K_M`, o modelo
 respeitou a estrutura, mas respondeu corretamente apenas um dos quatro casos
-respondíveis; por isso a síntese decomposta continua fora do runtime e não foi
-avaliada em holdout. O experimento pode ser reproduzido com
+respondíveis. Em três repetições por caso, apenas 33,3% dos status ficaram
+corretos e um caso variou entre resposta e abstention; por isso a síntese
+decomposta continua fora do runtime e não foi avaliada em holdout. O experimento
+pode ser reproduzido com
 `docker compose run --rm benchmark-local-decomposed-grounding`.
 
 ## Ambiente de desenvolvimento

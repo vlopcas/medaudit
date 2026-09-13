@@ -28,3 +28,4 @@ para evitar a exposição indireta do corpus privado.
 - [Resultado 012: holdout do agrupamento de evidências](012-evidence-aggregation-holdout.md)
 - [Resultado 013: holdout da validação grounded decomposta](013-decomposed-grounding-validation-holdout.md)
 - [Resultado 014: síntese decomposta com LLM local](014-local-decomposed-grounding-development.md)
+- [Resultado 015: repetibilidade da síntese decomposta](015-local-decomposed-grounding-repeatability.md)
