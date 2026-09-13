@@ -54,6 +54,10 @@ class LlamaCppClientTest(unittest.TestCase):
 
         self.assertEqual(client.base_url, "http://llm-server:8080")
 
+    def test_rejects_non_positive_output_limit(self) -> None:
+        with self.assertRaisesRegex(ValueError, "output tokens"):
+            LlamaCppClient(max_output_tokens=0)
+
     def test_verifies_existing_model_without_network(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             model_directory = Path(directory)
@@ -90,7 +94,7 @@ class LlamaCppClientTest(unittest.TestCase):
                 "usage": {"prompt_tokens": 12, "completion_tokens": 8},
             }
         )
-        client = LlamaCppClient(transport=transport)
+        client = LlamaCppClient(transport=transport, max_output_tokens=512)
 
         response = asyncio.run(client.generate(request()))
 
@@ -98,6 +102,7 @@ class LlamaCppClientTest(unittest.TestCase):
         self.assertEqual(url, "http://127.0.0.1:8080/v1/chat/completions")
         self.assertEqual(payload["response_format"]["type"], "json_schema")
         self.assertFalse(payload["stream"])
+        self.assertEqual(payload["max_tokens"], 512)
         self.assertEqual(timeout, 120)
         self.assertEqual(response.data["status"], "answered")
         self.assertEqual(response.usage.input_tokens, 12)

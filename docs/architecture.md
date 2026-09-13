@@ -97,7 +97,10 @@ abstention excessiva e isolou variação de status em um dos cinco casos. Essa
 conexão não integra o runtime nem foi promovida para holdout. Uma variante que
 explicita quando responder removeu a abstention em uma rodada, mas outra rodada
 atingiu o limite de contexto e falhou após cerca de 119 segundos. Ela permanece
-somente no benchmark até receber e validar um limite de saída.
+somente no benchmark. Um limite opcional de 512 tokens no adaptador reduziu essa
+cauda para menos de sete segundos, mas ainda produziu uma tentativa truncada em
+30. O próximo experimento restringirá também a forma do schema antes de qualquer
+promoção.
 
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no

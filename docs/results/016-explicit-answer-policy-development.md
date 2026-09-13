@@ -54,10 +54,9 @@ abstention no melhor resultado, mas não é promovida para o contrato principal,
 holdout ou runtime. O critério de qualidade foi atingido em uma rodada e violado
 na outra.
 
-O próximo experimento deve manter essa política e acrescentar somente um limite
-explícito e pequeno de tokens de saída no adaptador local. Depois, novas rodadas
-de desenvolvimento deverão demonstrar que a falha longa foi eliminada antes de
-consumir um holdout.
+O experimento seguinte manteve essa política e acrescentou somente um limite
+explícito de tokens de saída. Seus resultados estão no
+[Resultado 017](017-local-output-token-limit.md).
 
 ## Reprodução
 

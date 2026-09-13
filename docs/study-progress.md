@@ -103,8 +103,10 @@ uma única alteração controlada. A variante que explicita a decisão entre
 resposta e abstention atingiu 100% em 15 tentativas numa rodada, mas uma rodada
 anterior teve uma saída inválida de aproximadamente 119 segundos ao alcançar o
 limite de contexto. A melhora de qualidade é candidata, não promovida. O próximo
-marco é limitar somente a quantidade de tokens de saída e repetir o
-desenvolvimento antes de abrir o holdout.
+marco limitou a saída a 512 tokens: a pior latência caiu de aproximadamente 119
+para 6,88 segundos, mas uma das 30 tentativas ainda foi truncada e inválida. O
+holdout continua fechado. O próximo ciclo restringirá somente a forma do JSON
+para impedir expansão descontrolada e repetirá o desenvolvimento.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em

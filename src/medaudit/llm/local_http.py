@@ -61,6 +61,7 @@ class LlamaCppClient:
     base_url: str = "http://127.0.0.1:8080"
     model: str = MODEL_FILE
     timeout_seconds: float = 120.0
+    max_output_tokens: int | None = None
     transport: JSONTransport = field(default_factory=LoopbackHTTPTransport)
     allowed_hosts: frozenset[str] = field(
         default_factory=lambda: frozenset({"127.0.0.1", "localhost", "::1"})
@@ -74,6 +75,8 @@ class LlamaCppClient:
             raise ValueError("local LLM endpoint cannot contain credentials or extras")
         if self.timeout_seconds <= 0:
             raise ValueError("LLM timeout must be positive")
+        if self.max_output_tokens is not None and self.max_output_tokens <= 0:
+            raise ValueError("LLM max output tokens must be positive")
 
     async def generate(self, request: LLMRequest) -> LLMResponse:
         """Generate constrained JSON without logging prompt or response content."""
@@ -94,6 +97,8 @@ class LlamaCppClient:
                 },
             },
         }
+        if self.max_output_tokens is not None:
+            payload["max_tokens"] = self.max_output_tokens
         started = time.perf_counter()
         response, headers = await self.transport.post(
             f"{self.base_url.rstrip('/')}/v1/chat/completions",

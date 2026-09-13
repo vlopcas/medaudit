@@ -295,6 +295,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--base-url", default="http://llm-server:8080")
     parser.add_argument("--startup-timeout", type=float, default=180)
     parser.add_argument("--repetitions", type=int, default=1)
+    parser.add_argument("--max-output-tokens", type=int)
     parser.add_argument(
         "--prompt-policy",
         choices=("baseline", "answer-when-supported-v1"),
@@ -315,6 +316,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         wait_until_ready(args.base_url, timeout_seconds=args.startup_timeout)
         client = LlamaCppClient(
             base_url=args.base_url,
+            max_output_tokens=args.max_output_tokens,
             allowed_hosts=frozenset(
                 {"llm-server", "127.0.0.1", "localhost", "::1"}
             ),
@@ -328,6 +330,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             )
         )
         report["input_sha256"] = fingerprint
+        report["max_output_tokens"] = args.max_output_tokens
         write_private_report(report, args.output)
     except (
         OSError,
