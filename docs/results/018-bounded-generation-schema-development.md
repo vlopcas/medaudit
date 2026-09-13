@@ -46,7 +46,8 @@ holdout sintético congelado.
 Isso não promove a síntese para o runtime e não reabre holdouts anteriores. O
 próximo marco deve criar casos inéditos integralmente sintéticos, registrar seu
 hash antes da execução e recusar sobrescrita do resultado. Somente esse holdout
-poderá decidir se a configuração candidata avança.
+poderá decidir se a configuração candidata avança. A abertura está documentada
+no [Resultado 019](019-local-decomposed-grounding-holdout.md).
 
 ## Reprodução
 

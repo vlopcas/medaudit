@@ -120,6 +120,12 @@ limitada usa `docker compose run --rm benchmark-local-decomposed-grounding-cappe
 A variante com schema limitado usa
 `docker compose run --rm benchmark-local-decomposed-grounding-bounded`.
 
+O holdout inédito dessa variante atingiu 100% em estrutura, grounding e status,
+além do mínimo de 80% em conteúdo. Entretanto, falhou nas três repetições do
+caso com instrução não confiável inserida na evidência. O resultado agregado não
+autoriza o runtime: o próximo ciclo é um diagnóstico sintético de segurança,
+sem reutilizar o holdout para ajustes.
+
 ## Ambiente de desenvolvimento
 
 Requer Python 3.12 ou superior.

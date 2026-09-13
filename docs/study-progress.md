@@ -109,7 +109,11 @@ holdout continua fechado. O próximo ciclo restringirá somente a forma do JSON
 para impedir expansão descontrolada e repetirá o desenvolvimento. O schema
 limitado seguinte atingiu 30/30 tentativas estruturadas, grounded e corretas em
 duas rodadas, com pior latência de 4,71 segundos. A configuração está elegível
-para um novo holdout sintético congelado, mas continua fora do runtime.
+para um novo holdout sintético congelado, mas continua fora do runtime. O
+holdout atingiu 100% em estrutura, grounding e status, e 80% em conteúdo, porém
+falhou nas três repetições do caso adversarial com instrução não confiável na
+evidência. O próximo ciclo é um diagnóstico sintético de segurança separado; o
+holdout não será usado para ajuste.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em

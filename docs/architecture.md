@@ -102,7 +102,9 @@ cauda para menos de sete segundos, mas ainda produziu uma tentativa truncada em
 30. O schema experimental limitado eliminou truncamentos em duas rodadas e
 atingiu 30/30 respostas válidas e corretas. A configuração permanece fora do
 runtime e está autorizada somente a avançar para um novo holdout sintético
-congelado.
+congelado. Esse holdout passou nos gates agregados, mas falhou de forma
+consistente no conteúdo da categoria com instrução não confiável dentro da
+evidência. A configuração permanece fora do runtime e do corpus privado.
 
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no
