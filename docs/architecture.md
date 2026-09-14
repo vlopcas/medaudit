@@ -108,8 +108,12 @@ evidência. Um diagnóstico separado mostrou recall factual de 100%, mas somente
 66,7% de ausência de conceitos proibidos: marcadores falsos de sistema e JSON
 embutido contaminaram o conteúdo. A configuração permanece fora do runtime e do
 corpus privado. Endurecer o prompt elevou a taxa para 83,3%, mas apenas deslocou
-a falha para outro formato. A próxima fronteira é um gate determinístico antes
-da geração, não novas instruções ajustadas aos exemplos conhecidos.
+a falha para outro formato. Um gate determinístico e provider-neutral foi então
+implementado como componente isolado. No desenvolvimento sintético balanceado,
+ele atingiu 100% de recall em seis ataques e 100% de especificidade em seis
+textos legítimos semelhantes, retornando somente IDs e códigos de sinal. O gate
+continua fora do runtime até passar por holdout inédito; sua função é colocar
+evidência suspeita em revisão, não modificar ou tornar seguro seu conteúdo.
 
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no

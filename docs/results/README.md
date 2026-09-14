@@ -35,3 +35,4 @@ para evitar a exposição indireta do corpus privado.
 - [Resultado 019: holdout da síntese decomposta local](019-local-decomposed-grounding-holdout.md)
 - [Resultado 020: diagnóstico de instruções não confiáveis](020-untrusted-evidence-instruction-diagnostics.md)
 - [Resultado 021: endurecimento do prompt contra instruções](021-security-hardened-prompt-development.md)
+- [Resultado 022: gate determinístico de segurança da evidência](022-deterministic-evidence-safety-gate-development.md)

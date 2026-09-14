@@ -129,7 +129,11 @@ corretos, mas repetiu conceitos proibidos em 6/18 tentativas, concentradas em
 marcadores falsos de sistema e JSON inserido na evidência. Um prompt endurecido
 elevou a taxa para 83,3%, porém deslocou a falha para overrides em inglês. Essa
 abordagem foi rejeitada; o próximo passo é um gate determinístico de evidência
-suspeita com revisão explícita.
+suspeita com revisão explícita. O gate isolado atingiu 100% de recall em seis
+ataques e 100% de especificidade em seis textos legítimos semelhantes no
+desenvolvimento sintético. Ele emite somente IDs e códigos de sinal e permanece
+fora do runtime até passar por holdout inédito; detecções devem levar à revisão,
+não à alteração silenciosa da evidência.
 
 ## Ambiente de desenvolvimento
 

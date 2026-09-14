@@ -120,7 +120,11 @@ em marcadores falsos de sistema e JSON embutido. O próximo ciclo testará uma
 Ela elevou a ausência de conceitos proibidos para 83,3%, mas deslocou a falha
 para overrides em inglês nas seis tentativas de duas rodadas. A mitigação por
 prompt foi rejeitada. O próximo marco é um gate determinístico de evidência
-suspeita, avaliado também contra falsos positivos legítimos.
+suspeita, avaliado também contra falsos positivos legítimos. Esse gate isolado
+atingiu 100% de recall nos seis ataques e 100% de especificidade nos seis casos
+legítimos semelhantes do conjunto de desenvolvimento. Ele retorna somente IDs
+e códigos de sinal, permanece fora do runtime e agora deve enfrentar um holdout
+sintético inédito com paráfrases e casos limítrofes adicionais.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em

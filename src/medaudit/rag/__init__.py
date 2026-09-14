@@ -2,6 +2,13 @@
 
 from medaudit.rag.aggregation import group_decomposition_evidence
 from medaudit.rag.decomposition import DeterministicDecompositionExecutor
+from medaudit.rag.evidence_safety import (
+    EvidenceSafetyAssessment,
+    EvidenceSafetyFinding,
+    EvidenceSafetySignal,
+    assess_decomposed_evidence,
+    inspect_evidence_text,
+)
 from medaudit.rag.models import (
     DecompositionEvidenceBundle,
     DecompositionExecution,
@@ -42,6 +49,9 @@ __all__ = [
     "Evidence",
     "EvidenceFirstPipeline",
     "EvidenceLocation",
+    "EvidenceSafetyAssessment",
+    "EvidenceSafetyFinding",
+    "EvidenceSafetySignal",
     "ExecutedQueryStep",
     "FrozenTopScorePolicy",
     "GroundedAnswer",
@@ -51,9 +61,11 @@ __all__ = [
     "RoutedEvidenceFirstPipeline",
     "RoutedRetrievalDecision",
     "StepEvidenceGroup",
+    "assess_decomposed_evidence",
     "build_decomposed_grounded_request",
     "build_grounded_request",
     "group_decomposition_evidence",
+    "inspect_evidence_text",
     "validate_decomposed_grounded_response",
     "validate_grounded_response",
 ]
