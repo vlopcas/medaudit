@@ -1,9 +1,10 @@
 # Status do plano de estudos
 
 Esta página registra o progresso observado no
-[plano de estudos](plano_estudos_llm_rag_graph_agentic.md). O plano continua
-sendo o roteiro conceitual; este documento informa o que foi implementado e
-validado no repositório.
+[roadmap canônico](roadmap.md). O
+[plano de estudos detalhado](plano_estudos_llm_rag_graph_agentic.md) conserva o
+conteúdo curricular; este documento informa o que foi implementado e validado
+no repositório.
 
 Os status não significam que um tema deixou de ser estudado. **Concluída**
 indica que o critério atual para avançar foi atendido; **parcial** indica uma

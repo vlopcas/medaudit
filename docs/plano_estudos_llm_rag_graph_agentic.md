@@ -5,6 +5,10 @@
 > roteiro conceitual e não deve ser interpretado como uma lista linear do que já
 > foi concluído.
 
+> A ordem vigente, os módulos complementares e os critérios consolidados estão
+> no [Roadmap canônico](roadmap.md). Em caso de divergência de sequência, o
+> roadmap prevalece; este documento conserva o detalhamento curricular.
+
 > Objetivo: sair dos fundamentos e chegar à construção de um sistema
 > robusto de auditoria documental, capaz de consultar documentos,
 > correlacionar regras, acessar dados estruturados, interpretar conteúdo

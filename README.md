@@ -6,8 +6,9 @@ aplicados à auditoria documental.
 
 O princípio central é adicionar complexidade somente quando uma avaliação
 reproduzível demonstrar a limitação do baseline atual. O plano completo está em
-[`docs/plano_estudos_llm_rag_graph_agentic.md`](docs/plano_estudos_llm_rag_graph_agentic.md)
-e o progresso observado está consolidado no
+[roadmap canônico](docs/roadmap.md), o currículo detalhado permanece no
+[plano de estudos](docs/plano_estudos_llm_rag_graph_agentic.md) e o progresso
+observado está consolidado no
 [`status do plano`](docs/study-progress.md).
 
 > Este software auxilia estudos e análise documental. Ele não substitui

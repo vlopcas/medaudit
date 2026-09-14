@@ -22,6 +22,7 @@ mover um documento, atualize também todos os links que apontam para ele.
 ```text
 docs/
 ├── README.md       entrada e convenções do vault
+├── roadmap.md      ordem canônica de evolução
 ├── architecture.md arquitetura vigente do sistema
 ├── study-progress.md progresso observado no plano de estudos
 ├── decisions/      Architecture Decision Records (ADRs)
@@ -29,9 +30,9 @@ docs/
 └── assets/         imagens e anexos públicos da documentação
 ```
 
-O plano principal está em
-[Plano de estudos](plano_estudos_llm_rag_graph_agentic.md), e a correspondência
-entre o roteiro e o que já foi validado está no
+O roteiro vigente está no [Roadmap canônico](roadmap.md), o conteúdo curricular
+amplo permanece no [Plano de estudos](plano_estudos_llm_rag_graph_agentic.md) e
+a correspondência entre o roteiro e o que já foi validado está no
 [Status do plano](study-progress.md). A primeira decisão
 arquitetural está em
 [ADR-001](decisions/ADR-001-private-data-governance.md).
