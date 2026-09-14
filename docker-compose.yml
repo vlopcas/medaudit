@@ -452,6 +452,23 @@ services:
       - --cases
       - /app/data/synthetic_cases/evidence_safety_development.json
 
+  evaluate-evidence-safety-holdout:
+    extends: evaluate-evidence-safety
+    user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
+    volumes:
+      - type: bind
+        source: ./artifacts
+        target: /artifacts
+    command:
+      - medaudit-evaluate-evidence-safety
+      - --cases
+      - /app/data/synthetic_cases/evidence_safety_holdout.json
+      - --expected-sha256
+      - d69bb54b57988bcdab03941779487a6a309fee18166e057641dff4a22919027a
+      - --output
+      - /artifacts/evidence-safety-holdout.local.json
+      - --refuse-overwrite
+
   evaluate-explicit-query-routing-holdout:
     extends: evaluate-explicit-query-routing
     user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"

@@ -80,10 +80,14 @@ def evaluate(cases: list[dict[str, Any]]) -> dict[str, Any]:
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--cases", type=Path, required=True)
+    parser.add_argument("--expected-sha256")
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--refuse-overwrite", action="store_true")
     args = parser.parse_args(argv)
+    if args.output and args.refuse_overwrite and args.output.exists():
+        raise FileExistsError(f"refusing to overwrite existing report: {args.output}")
     report = evaluate(load_cases(args.cases))
-    report["input_sha256"] = verify_input(args.cases, None)
+    report["input_sha256"] = verify_input(args.cases, args.expected_sha256)
     rendered = json.dumps(report, ensure_ascii=False, indent=2) + "\n"
     if args.output:
         args.output.parent.mkdir(parents=True, exist_ok=True)
