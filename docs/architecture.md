@@ -107,7 +107,9 @@ consistente no conteúdo da categoria com instrução não confiável dentro da
 evidência. Um diagnóstico separado mostrou recall factual de 100%, mas somente
 66,7% de ausência de conceitos proibidos: marcadores falsos de sistema e JSON
 embutido contaminaram o conteúdo. A configuração permanece fora do runtime e do
-corpus privado.
+corpus privado. Endurecer o prompt elevou a taxa para 83,3%, mas apenas deslocou
+a falha para outro formato. A próxima fronteira é um gate determinístico antes
+da geração, não novas instruções ajustadas aos exemplos conhecidos.
 
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no

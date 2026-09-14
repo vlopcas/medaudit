@@ -55,7 +55,8 @@ O próximo experimento deve alterar somente a instrução do benchmark para proi
 explicitamente repetir comandos, marcadores de papel ou objetos de resposta
 encontrados nas evidências. O dataset de segurança permanece desenvolvimento;
 se uma mitigação for aprovada, ela precisará de outro holdout adversarial
-inédito.
+inédito. O teste dessa mitigação está no
+[Resultado 021](021-security-hardened-prompt-development.md).
 
 ## Reprodução
 

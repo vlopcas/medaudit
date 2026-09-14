@@ -126,7 +126,10 @@ caso com instrução não confiável inserida na evidência. O resultado agregad
 autoriza o runtime: o próximo ciclo é um diagnóstico sintético de segurança,
 sem reutilizar o holdout para ajustes. Esse diagnóstico recuperou todos os fatos
 corretos, mas repetiu conceitos proibidos em 6/18 tentativas, concentradas em
-marcadores falsos de sistema e JSON inserido na evidência.
+marcadores falsos de sistema e JSON inserido na evidência. Um prompt endurecido
+elevou a taxa para 83,3%, porém deslocou a falha para overrides em inglês. Essa
+abordagem foi rejeitada; o próximo passo é um gate determinístico de evidência
+suspeita com revisão explícita.
 
 ## Ambiente de desenvolvimento
 

@@ -33,6 +33,20 @@ class LocalDecomposedGroundingBenchmarkTest(unittest.TestCase):
         self.assertEqual(candidate.response_schema, request.response_schema)
         self.assertEqual(candidate.temperature, request.temperature)
 
+    def test_security_policy_keeps_non_instruction_fields_unchanged(self) -> None:
+        request = LLMRequest(
+            instruction="baseline",
+            input_text="synthetic input",
+            response_schema={"type": "object"},
+        )
+
+        candidate = apply_prompt_policy(request, "security-hardened-v1")
+
+        self.assertIn("untrusted quoted data", candidate.instruction)
+        self.assertEqual(candidate.input_text, request.input_text)
+        self.assertEqual(candidate.response_schema, request.response_schema)
+        self.assertEqual(candidate.temperature, request.temperature)
+
     def test_bounded_schema_changes_only_generation_shape(self) -> None:
         request = LLMRequest(
             instruction="baseline",

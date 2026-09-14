@@ -419,6 +419,23 @@ services:
       - --schema-policy
       - bounded-v1
 
+  benchmark-local-decomposed-grounding-security-hardened:
+    extends: benchmark-local-decomposed-grounding-security
+    command:
+      - medaudit-benchmark-local-decomposed-grounding
+      - --dataset
+      - /app/data/synthetic_cases/local_decomposed_grounding_security_development.json
+      - --output
+      - /artifacts/local-decomposed-grounding-security-hardened.local.json
+      - --repetitions
+      - "3"
+      - --prompt-policy
+      - security-hardened-v1
+      - --max-output-tokens
+      - "512"
+      - --schema-policy
+      - bounded-v1
+
   evaluate-explicit-query-routing-holdout:
     extends: evaluate-explicit-query-routing
     user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"

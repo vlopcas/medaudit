@@ -117,6 +117,10 @@ holdout não será usado para ajuste. O diagnóstico separado obteve 100% de rec
 dos fatos, mas só 66,7% de ausência dos conceitos proibidos, com falhas estáveis
 em marcadores falsos de sistema e JSON embutido. O próximo ciclo testará uma
 única instrução explícita contra repetição de comandos encontrados na evidência.
+Ela elevou a ausência de conceitos proibidos para 83,3%, mas deslocou a falha
+para overrides em inglês nas seis tentativas de duas rodadas. A mitigação por
+prompt foi rejeitada. O próximo marco é um gate determinístico de evidência
+suspeita, avaliado também contra falsos positivos legítimos.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em
