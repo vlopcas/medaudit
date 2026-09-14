@@ -113,7 +113,11 @@ implementado como componente isolado. No desenvolvimento sintético balanceado,
 ele atingiu 100% de recall em seis ataques e 100% de especificidade em seis
 textos legítimos semelhantes, retornando somente IDs e códigos de sinal. O gate
 continua fora do runtime até passar por holdout inédito; sua função é colocar
-evidência suspeita em revisão, não modificar ou tornar seguro seu conteúdo.
+evidência suspeita em revisão, não modificar ou tornar seguro seu conteúdo. No
+holdout inédito, porém, seu recall de ataques caiu para 50% e sua especificidade
+para 87,5%. O gate foi rejeitado para integração e permanece apenas como
+experimento; enumerar expressões regulares não constitui uma fronteira de
+segurança generalizável.
 
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no

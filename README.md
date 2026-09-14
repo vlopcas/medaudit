@@ -133,7 +133,10 @@ suspeita com revisão explícita. O gate isolado atingiu 100% de recall em seis
 ataques e 100% de especificidade em seis textos legítimos semelhantes no
 desenvolvimento sintético. Ele emite somente IDs e códigos de sinal e permanece
 fora do runtime até passar por holdout inédito; detecções devem levar à revisão,
-não à alteração silenciosa da evidência.
+não à alteração silenciosa da evidência. Esse holdout reduziu o recall de
+ataques para 50% e a especificidade para 87,5%, portanto o gate foi rejeitado
+para integração. O experimento mostra que enumerar padrões conhecidos não é uma
+fronteira de segurança generalizável.
 
 ## Ambiente de desenvolvimento
 

@@ -36,3 +36,4 @@ para evitar a exposição indireta do corpus privado.
 - [Resultado 020: diagnóstico de instruções não confiáveis](020-untrusted-evidence-instruction-diagnostics.md)
 - [Resultado 021: endurecimento do prompt contra instruções](021-security-hardened-prompt-development.md)
 - [Resultado 022: gate determinístico de segurança da evidência](022-deterministic-evidence-safety-gate-development.md)
+- [Resultado 023: holdout do gate determinístico de segurança](023-deterministic-evidence-safety-gate-holdout.md)

@@ -124,7 +124,11 @@ suspeita, avaliado também contra falsos positivos legítimos. Esse gate isolado
 atingiu 100% de recall nos seis ataques e 100% de especificidade nos seis casos
 legítimos semelhantes do conjunto de desenvolvimento. Ele retorna somente IDs
 e códigos de sinal, permanece fora do runtime e agora deve enfrentar um holdout
-sintético inédito com paráfrases e casos limítrofes adicionais.
+sintético inédito com paráfrases e casos limítrofes adicionais. Nesse holdout,
+o recall caiu para 50%, a especificidade para 87,5% e a acurácia de quarentena
+para 68,75%. A integração foi rejeitada. O conjunto congelado não será usado
+para ajustar expressões; uma nova candidata deverá partir de defesa em
+profundidade e enfrentar outro holdout inédito.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em
