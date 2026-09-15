@@ -21,14 +21,17 @@ from medaudit.rag import (
 from medaudit.retrieval import BM25Index
 
 _NOTICE = "Conteúdo integralmente sintético, sem reprodução de documentos reais."
-_POLICY = "routed-compiled-integration-development-v1"
+_DEVELOPMENT_POLICY = "routed-compiled-integration-development-v1"
+_HOLDOUT_POLICY = "routed-compiled-integration-holdout-v1"
 
 
-def load_dataset(path: Path) -> list[dict[str, Any]]:
+def load_dataset(
+    path: Path, *, expected_policy: str = _DEVELOPMENT_POLICY
+) -> list[dict[str, Any]]:
     payload = json.loads(path.read_text(encoding="utf-8"))
     if (
         payload.get("schema_version") != 1
-        or payload.get("policy") != _POLICY
+        or payload.get("policy") != expected_policy
         or payload.get("notice") != _NOTICE
     ):
         raise ValueError("unsupported routed compiled integration dataset schema")
@@ -72,7 +75,9 @@ def _pipeline(case: dict[str, Any]) -> RoutedEvidenceFirstPipeline:
     )
 
 
-def evaluate(cases: list[dict[str, Any]]) -> dict[str, Any]:
+def evaluate(
+    cases: list[dict[str, Any]], *, policy: str = _DEVELOPMENT_POLICY
+) -> dict[str, Any]:
     if not cases:
         raise ValueError("routed compiled integration cases are required")
     outcomes: list[dict[str, Any]] = []
@@ -116,7 +121,7 @@ def evaluate(cases: list[dict[str, Any]]) -> dict[str, Any]:
         )
     return {
         "schema_version": 1,
-        "policy": _POLICY,
+        "policy": policy,
         "case_count": len(outcomes),
         "metrics": {
             "exact_match": sum(item["correct"] for item in outcomes) / len(outcomes),
@@ -138,11 +143,28 @@ def evaluate(cases: list[dict[str, Any]]) -> dict[str, Any]:
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dataset", type=Path, required=True)
+    parser.add_argument(
+        "--dataset-policy",
+        choices=(_DEVELOPMENT_POLICY, _HOLDOUT_POLICY),
+        default=_DEVELOPMENT_POLICY,
+    )
     parser.add_argument("--expected-sha256")
+    parser.add_argument("--output", type=Path)
+    parser.add_argument("--refuse-overwrite", action="store_true")
     args = parser.parse_args(argv)
-    report = evaluate(load_dataset(args.dataset))
+    if args.output and args.refuse_overwrite and args.output.exists():
+        raise FileExistsError(f"refusing to overwrite existing report: {args.output}")
+    report = evaluate(
+        load_dataset(args.dataset, expected_policy=args.dataset_policy),
+        policy=args.dataset_policy,
+    )
     report["input_sha256"] = verify_input(args.dataset, args.expected_sha256)
-    print(json.dumps(report, ensure_ascii=False, indent=2))
+    rendered = json.dumps(report, ensure_ascii=False, indent=2) + "\n"
+    if args.output:
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        args.output.write_text(rendered, encoding="utf-8")
+    else:
+        print(rendered, end="")
     return 0
 
 
