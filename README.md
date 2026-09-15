@@ -193,8 +193,12 @@ ou sem executor não produzem preparação, e nenhuma chamada de modelo foi
 adicionada.
 Na avaliação integrada de desenvolvimento, os sete fluxos atingiram 100% em
 correspondência e segurança de emissão. Apenas a decomposição suficiente com
-gateway experimental produziu request. O próximo gate é um holdout integrado
-antes de qualquer avanço da síntese.
+gateway experimental produziu request. No holdout integrado, a segurança de
+emissão permaneceu em 100%, mas a correspondência caiu para 83,3% (5/6): uma
+consulta inédita que combinava origem externa e atualidade foi roteada como
+recuperação direta. A candidata integrada não foi promovida. O próximo ciclo
+deve corrigir essa classe de falso negativo em desenvolvimento e, se aprovada,
+enfrentar outro holdout inédito antes de qualquer avanço da síntese.
 
 ## Ambiente de desenvolvimento
 

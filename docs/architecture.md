@@ -192,7 +192,11 @@ original e todas as demais rotas permanecem inalterados.
 A avaliação integrada atingiu 7/7 em correspondência e presença segura de
 request, cobrindo rotas direta e externa, ausência de executor, modo
 desabilitado, preparação válida, evidência insuficiente e revisão. A unidade
-continua experimental até enfrentar holdout inédito.
+continua experimental. No holdout inédito, preservou 6/6 na segurança de
+emissão, porém atingiu apenas 5/6 na correspondência: uma dependência externa
+formulada pela composição de origem e atualidade seguiu para recuperação
+direta. A promoção foi rejeitada; o holdout permanece congelado e a correção
+deve ocorrer em desenvolvimento separado antes de nova avaliação inédita.
 
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no
@@ -224,7 +228,8 @@ registrando o intervalo de linhas.
 - `retrieval`: índices e resultados de busca;
 - `evaluation`: datasets, métricas e execução de benchmarks;
 - `rag`: gate de abstention, pacote de evidências, prompt e validação de citações;
-  inclui também o compilador de contexto isolado e ainda não integrado;
+  inclui também compilação selada e gateway integrado somente por caminho
+  experimental e opt-in;
 - `llm`: contrato independente de fornecedor e adaptador HTTP restrito a um
   servidor `llama.cpp` local;
 - `ingestion`: inventário, seleção de parser, pipeline local e serialização.

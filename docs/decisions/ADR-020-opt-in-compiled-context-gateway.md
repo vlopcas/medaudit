@@ -63,3 +63,9 @@ distintas; nenhuma resposta generativa é produzida.
 A avaliação integrada em desenvolvimento atingiu 7/7 em correspondência e
 segurança de emissão de request. Isso autoriza somente um holdout da unidade
 roteador-gateway; a conexão permanece experimental e sem cliente de LLM.
+
+O holdout integrado posterior manteve 6/6 na segurança de emissão, mas atingiu
+5/6 na correspondência exata. Uma formulação inédita de dependência externa foi
+classificada como recuperação direta. Portanto, a unidade integrada não foi
+promovida. O holdout permanece congelado; qualquer nova candidata deve ser
+desenvolvida em dados separados e enfrentar outro holdout inédito.

@@ -198,8 +198,12 @@ API de recuperação existente. Testes cobrem padrão desabilitado, ativação
 experimental, rota direta e decomposição sem executor. O próximo marco é
 avaliar a integração roteador-gateway como unidade antes de qualquer síntese.
 Essa avaliação atingiu 100% nos sete fluxos e na segurança de emissão de
-request. O próximo marco é congelar um holdout integrado com casos inéditos;
-nenhum modelo foi liberado.
+request. O holdout integrado posterior preservou 100% na segurança de emissão,
+mas obteve 83,3% (5/6) de correspondência: uma consulta que combinava origem
+externa e atualidade foi classificada como recuperação direta. A candidata não
+foi promovida. O próximo marco é desenvolver uma regra composicional para essa
+classe de dependência externa em dados sintéticos separados e só então, se os
+gates passarem, congelar outro holdout inédito. Nenhum modelo foi liberado.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em
