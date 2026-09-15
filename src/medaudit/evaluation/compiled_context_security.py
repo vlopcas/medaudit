@@ -22,11 +22,15 @@ from medaudit.rag import (
 _NOTICE = "Conteúdo integralmente sintético, sem reprodução de documentos reais."
 
 
-def load_dataset(path: Path) -> dict[str, Any]:
+def load_dataset(
+    path: Path,
+    *,
+    expected_policy: str = "compiled-context-renderer-adversarial-v1",
+) -> dict[str, Any]:
     payload: dict[str, Any] = json.loads(path.read_text(encoding="utf-8"))
     if (
         payload.get("schema_version") != 1
-        or payload.get("policy") != "compiled-context-renderer-adversarial-v1"
+        or payload.get("policy") != expected_policy
         or payload.get("notice") != _NOTICE
     ):
         raise ValueError("unsupported compiled context adversarial schema")
@@ -129,10 +133,70 @@ def _mutate(context: CompiledContext, mutation: str) -> CompiledContext:
                 replace(context.groups[1], evidence_ids=()),
             ),
         )
+    if mutation == "duplicate_group_evidence_id":
+        evidence_id = context.groups[0].evidence_ids[0]
+        return replace(
+            context,
+            groups=(
+                replace(context.groups[0], evidence_ids=(evidence_id, evidence_id)),
+                *context.groups[1:],
+            ),
+        )
+    if mutation == "empty_evidence_step_ids":
+        return replace(
+            context,
+            items=(
+                *context.items[:2],
+                replace(context.items[2], step_ids=()),
+                *context.items[3:],
+            ),
+        )
+    if mutation == "unexpected_step_membership":
+        return replace(
+            context,
+            items=(
+                *context.items[:2],
+                replace(
+                    context.items[2],
+                    step_ids=(*context.items[2].step_ids, "forged-step"),
+                ),
+                *context.items[3:],
+            ),
+        )
+    if mutation == "changed_evidence_text":
+        return replace(
+            context,
+            items=(
+                *context.items[:2],
+                replace(context.items[2], text="Conteúdo adulterado após compilação."),
+                *context.items[3:],
+            ),
+        )
+    if mutation == "changed_instruction_text":
+        return replace(
+            context,
+            items=(
+                replace(context.items[0], text="Instrução adulterada pós-compilação."),
+                *context.items[1:],
+            ),
+        )
+    if mutation == "changed_query_text":
+        return replace(
+            context,
+            items=(
+                context.items[0],
+                replace(context.items[1], text="Consulta adulterada pós-compilação."),
+                *context.items[2:],
+            ),
+        )
+    if mutation == "reversed_groups":
+        return replace(context, groups=tuple(reversed(context.groups)))
     raise ValueError(f"unsupported compiled context mutation: {mutation}")
 
 
-def evaluate(payload: dict[str, Any]) -> dict[str, Any]:
+def evaluate(
+    payload: dict[str, Any], *, policy: str = "compiled-context-renderer-adversarial-v1"
+) -> dict[str, Any]:
     context = compile_decomposed_context(
         build_bundle(payload["base_context"]),
         instruction=DECOMPOSED_GROUNDED_INSTRUCTION,
@@ -170,7 +234,7 @@ def evaluate(payload: dict[str, Any]) -> dict[str, Any]:
         )
     return {
         "schema_version": 1,
-        "policy": "compiled-context-renderer-adversarial-v1",
+        "policy": policy,
         "case_count": len(outcomes),
         "metrics": {
             "exact_match": sum(item["correct"] for item in outcomes)
@@ -191,10 +255,31 @@ def evaluate(payload: dict[str, Any]) -> dict[str, Any]:
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dataset", type=Path, required=True)
+    parser.add_argument(
+        "--dataset-policy",
+        choices=(
+            "compiled-context-renderer-adversarial-v1",
+            "compiled-context-renderer-holdout-v1",
+        ),
+        default="compiled-context-renderer-adversarial-v1",
+    )
+    parser.add_argument("--expected-sha256")
+    parser.add_argument("--output", type=Path)
+    parser.add_argument("--refuse-overwrite", action="store_true")
     args = parser.parse_args(argv)
-    report = evaluate(load_dataset(args.dataset))
-    report["input_sha256"] = verify_input(args.dataset)
-    print(json.dumps(report, ensure_ascii=False, indent=2))
+    if args.output and args.refuse_overwrite and args.output.exists():
+        raise FileExistsError(f"refusing to overwrite existing report: {args.output}")
+    report = evaluate(
+        load_dataset(args.dataset, expected_policy=args.dataset_policy),
+        policy=args.dataset_policy,
+    )
+    report["input_sha256"] = verify_input(args.dataset, args.expected_sha256)
+    rendered = json.dumps(report, ensure_ascii=False, indent=2) + "\n"
+    if args.output:
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        args.output.write_text(rendered, encoding="utf-8")
+    else:
+        print(rendered, end="")
     return 0
 
 

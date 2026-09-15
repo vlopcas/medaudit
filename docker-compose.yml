@@ -520,6 +520,25 @@ services:
       - --dataset
       - /app/data/synthetic_cases/compiled_context_renderer_adversarial_development.json
 
+  evaluate-compiled-context-security-holdout:
+    extends: evaluate-compiled-context-security
+    user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
+    volumes:
+      - type: bind
+        source: ./artifacts
+        target: /artifacts
+    command:
+      - medaudit-evaluate-compiled-context-security
+      - --dataset
+      - /app/data/synthetic_cases/compiled_context_renderer_holdout.json
+      - --dataset-policy
+      - compiled-context-renderer-holdout-v1
+      - --expected-sha256
+      - babe42a32fb9b82d88ce7766f4c8d602ea6dba4837c8360338a98b28b022120f
+      - --output
+      - /artifacts/compiled-context-renderer-holdout.local.json
+      - --refuse-overwrite
+
   evaluate-explicit-query-routing-holdout:
     extends: evaluate-explicit-query-routing
     user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"

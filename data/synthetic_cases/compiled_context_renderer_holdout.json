@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "policy": "compiled-context-renderer-holdout-v1",
+  "notice": "Conteúdo integralmente sintético, sem reprodução de documentos reais.",
+  "base_context": {
+    "question": "Compare cobre e prata.",
+    "evidence_groups": [
+      {"step_id": "cobre", "scope": "cobre", "evidence": [
+        {"evidence_id": "cobre-c1", "document_id": "cobre-doc", "text": "Cobre possui o primeiro fato sintético."},
+        {"evidence_id": "cobre-c2", "document_id": "cobre-doc", "text": "Cobre possui o segundo fato sintético."}
+      ]},
+      {"step_id": "prata", "scope": "prata", "evidence": [
+        {"evidence_id": "prata-c1", "document_id": "prata-doc", "text": "Prata possui o terceiro fato sintético."}
+      ]}
+    ]
+  },
+  "cases": [
+    {"id": "renderer-holdout-001", "category": "valid_control", "mutation": "none", "expected": {"accepted": true}},
+    {"id": "renderer-holdout-002", "category": "group_cardinality", "mutation": "duplicate_group_evidence_id", "expected": {"accepted": false, "error": "compiled group evidence ids must be unique"}},
+    {"id": "renderer-holdout-003", "category": "provenance_membership", "mutation": "empty_evidence_step_ids", "expected": {"accepted": false, "error": "compiled group has invalid step-scoped evidence"}},
+    {"id": "renderer-holdout-004", "category": "provenance_membership", "mutation": "unexpected_step_membership", "expected": {"accepted": false, "error": "compiled evidence has unexpected step membership"}},
+    {"id": "renderer-holdout-005", "category": "content_integrity", "mutation": "changed_evidence_text", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "renderer-holdout-006", "category": "content_integrity", "mutation": "changed_instruction_text", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "renderer-holdout-007", "category": "content_integrity", "mutation": "changed_query_text", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "renderer-holdout-008", "category": "group_order", "mutation": "reversed_groups", "expected": {"accepted": false, "error": "compiled context group order mismatch"}}
+  ]
+}
