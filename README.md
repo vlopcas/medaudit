@@ -139,6 +139,12 @@ ataques para 50% e a especificidade para 87,5%, portanto o gate foi rejeitado
 para integração. O experimento mostra que enumerar padrões conhecidos não é uma
 fronteira de segurança generalizável.
 
+O próximo componente de Context Engineering já possui um contrato isolado e
+provider-neutral. Ele separa instrução, consulta e evidências, aplica orçamento,
+preserva provenance e bloqueia geração parcial ou dependente de itens em
+revisão. Ainda não renderiza prompts nem integra o runtime; primeiro será
+avaliado em datasets sintéticos próprios.
+
 ## Ambiente de desenvolvimento
 
 Requer Python 3.12 ou superior.

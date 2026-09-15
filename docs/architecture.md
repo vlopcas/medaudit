@@ -119,6 +119,14 @@ para 87,5%. O gate foi rejeitado para integração e permanece apenas como
 experimento; enumerar expressões regulares não constitui uma fronteira de
 segurança generalizável.
 
+Um compilador de contexto provider-neutral existe como componente isolado e
+ainda não participa do runtime. Ele mantém instrução, consulta e evidências em
+itens tipados, aplica um orçamento determinístico, conserva provenance por
+passo e registra exclusões sem duplicar o texto rejeitado. Evidências continuam
+marcadas como dados não confiáveis; somente a instrução pertence ao plano de
+controle. Orçamento que elimine um passo, identidade conflitante ou ID marcado
+para revisão bloqueiam geração antes de qualquer renderização para um provider.
+
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no
 desenvolvimento e não pertence ao fluxo principal.
@@ -149,6 +157,7 @@ registrando o intervalo de linhas.
 - `retrieval`: índices e resultados de busca;
 - `evaluation`: datasets, métricas e execução de benchmarks;
 - `rag`: gate de abstention, pacote de evidências, prompt e validação de citações;
+  inclui também o compilador de contexto isolado e ainda não integrado;
 - `llm`: contrato independente de fornecedor e adaptador HTTP restrito a um
   servidor `llama.cpp` local;
 - `ingestion`: inventário, seleção de parser, pipeline local e serialização.
@@ -187,6 +196,7 @@ em `data/processed/`, que é ignorado pelo Git.
 - [ADR-016: execução opt-in de planos de decomposição](decisions/ADR-016-opt-in-decomposition-execution.md)
 - [ADR-017: pacotes de evidências preservam o escopo dos passos](decisions/ADR-017-step-scoped-evidence-bundles.md)
 - [ADR-018: geração decomposta usa afirmações com suporte por passo](decisions/ADR-018-claim-scoped-decomposed-generation.md)
+- [ADR-019: compilação de contexto é uma fronteira explícita](decisions/ADR-019-explicit-context-compilation-boundary.md)
 
 ## Ambiente de execução
 

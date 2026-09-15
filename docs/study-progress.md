@@ -129,7 +129,12 @@ sintético inédito com paráfrases e casos limítrofes adicionais. Nesse holdou
 o recall caiu para 50%, a especificidade para 87,5% e a acurácia de quarentena
 para 68,75%. A integração foi rejeitada. O conjunto congelado não será usado
 para ajustar expressões; uma nova candidata deverá partir de defesa em
-profundidade e enfrentar outro holdout inédito.
+profundidade e enfrentar outro holdout inédito. O primeiro componente dessa
+nova arquitetura é um compilador de contexto isolado: instrução, consulta e
+evidências têm tipos e níveis de confiança distintos; orçamento, deduplicação,
+provenance, conflito de identidade e revisão produzem decisões explícitas antes
+de qualquer modelo. O próximo marco é avaliar esse contrato em um dataset
+sintético de desenvolvimento, ainda sem integrá-lo ao runtime.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em

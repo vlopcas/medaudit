@@ -1,6 +1,18 @@
 """Evidence-first retrieval-augmented generation boundaries."""
 
 from medaudit.rag.aggregation import group_decomposition_evidence
+from medaudit.rag.context import (
+    CompiledContext,
+    ContextExclusion,
+    ContextExclusionReason,
+    ContextItem,
+    ContextItemKind,
+    ContextStatus,
+    ContextTrust,
+    TokenEstimator,
+    Utf8ByteTokenEstimator,
+    compile_decomposed_context,
+)
 from medaudit.rag.decomposition import DeterministicDecompositionExecutor
 from medaudit.rag.evidence_safety import (
     EvidenceSafetyAssessment,
@@ -41,6 +53,13 @@ from medaudit.rag.validation import (
 
 __all__ = [
     "ClaimSupport",
+    "CompiledContext",
+    "ContextExclusion",
+    "ContextExclusionReason",
+    "ContextItem",
+    "ContextItemKind",
+    "ContextStatus",
+    "ContextTrust",
     "DecomposedGroundedAnswer",
     "DecompositionEvidenceBundle",
     "DecompositionExecution",
@@ -61,9 +80,12 @@ __all__ = [
     "RoutedEvidenceFirstPipeline",
     "RoutedRetrievalDecision",
     "StepEvidenceGroup",
+    "TokenEstimator",
+    "Utf8ByteTokenEstimator",
     "assess_decomposed_evidence",
     "build_decomposed_grounded_request",
     "build_grounded_request",
+    "compile_decomposed_context",
     "group_decomposition_evidence",
     "inspect_evidence_text",
     "validate_decomposed_grounded_response",

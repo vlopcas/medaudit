@@ -72,6 +72,8 @@ Os pacotes de evidências separados por passo estão em
 [ADR-017](decisions/ADR-017-step-scoped-evidence-bundles.md).
 O contrato de afirmações com suporte por passo está em
 [ADR-018](decisions/ADR-018-claim-scoped-decomposed-generation.md).
+A fronteira explícita de compilação de contexto está em
+[ADR-019](decisions/ADR-019-explicit-context-compilation-boundary.md).
 
 ## Conteúdo permitido
 
