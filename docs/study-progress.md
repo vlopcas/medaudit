@@ -165,7 +165,12 @@ adversarial sintético de desenvolvimento; runtime, modelo e corpus privado
 continuam fora de escopo. Esse desenvolvimento atingiu 100% nos 21 casos e em
 todas as onze categorias, recusando as vinte mutações e aceitando o controle.
 A candidata está autorizada somente a enfrentar um novo holdout sintético
-congelado; nenhuma integração ao runtime foi liberada.
+congelado; nenhuma integração ao runtime foi liberada. A primeira tentativa
+recusou 9/9 alterações efetivas, porém três dos doze casos rotulados como
+mutações eram no-ops causados pelo adaptador do benchmark. O resultado foi
+classificado como inconclusivo. O próximo marco é adicionar uma pré-condição
+que rejeite mutações nulas, preservar os campos sob teste e só então congelar
+outro holdout; o conjunto comprometido não será ajustado nem reexecutado.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em

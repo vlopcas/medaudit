@@ -155,7 +155,11 @@ bidirecional entre grupos e memberships continuam sendo validadas como regras
 semânticas. O digest não é autenticação contra execução de código e a candidata
 ainda não foi promovida nem integrada ao runtime. No desenvolvimento sintético,
 ela acertou 21/21 casos e recusou 20/20 mutações. O próximo limite é um novo
-holdout estrutural congelado, não a ativação do caminho padrão.
+holdout estrutural congelado, não a ativação do caminho padrão. A primeira
+tentativa desse holdout ficou inconclusiva: nove mutações efetivas foram
+recusadas, mas três transformações eram no-ops porque o adaptador não preservava
+os campos desafiados. A arquitetura não foi promovida; o harness deve validar
+que cada mutação realmente altera o objeto antes de uma nova avaliação.
 
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no

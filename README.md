@@ -165,6 +165,10 @@ precisa passar por desenvolvimento adversarial e por um novo holdout. O
 desenvolvimento adversarial seguinte atingiu 100% nos 21 casos: o controle foi
 aceito e as vinte mutações foram recusadas em todas as categorias. Isso autoriza
 somente a criação de um novo holdout congelado; não autoriza o runtime.
+O holdout posterior recusou todas as nove mutações que efetivamente alteraram o
+contexto, mas três casos eram no-ops produzidos pelo adaptador do benchmark. O
+resultado é inconclusivo, não uma aprovação: o próximo avaliador deve recusar
+mutações nulas antes de congelarmos outro holdout.
 
 ## Ambiente de desenvolvimento
 
