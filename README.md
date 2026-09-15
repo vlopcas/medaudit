@@ -154,6 +154,10 @@ budget, confiança, IDs e vínculos por passo; ele ainda não controla o runtime
 No desenvolvimento adversarial, aceitou o controle íntegro e recusou 12/12
 mutações inseguras. A fronteira ainda precisa passar por holdout estrutural
 inédito antes de qualquer ativação.
+Esse holdout reprovou o renderer com apenas 25% de correspondência exata e
+28,57% de rejeição das mutações inseguras. Alterações pós-compilação de conteúdo
+e topologia não foram detectadas; a integração permanece bloqueada até existir
+uma representação canônica selada e novamente avaliada.
 
 ## Ambiente de desenvolvimento
 

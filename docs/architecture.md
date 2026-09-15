@@ -144,7 +144,11 @@ habilitada.
 Uma avaliação adversarial separada aceitou o controle íntegro e recusou as doze
 mutações de status, budget, identidade, confiança e provenance, atingindo 13/13
 casos. A fronteira está autorizada apenas a avançar para holdout estrutural
-inédito e continua opt-in.
+inédito e continua opt-in. Nesse holdout, porém, a correspondência exata caiu
+para 25% e somente 2/7 mutações inseguras foram recusadas. Alterações de conteúdo
+pós-compilação, membership adicional e inversão de grupos atravessaram a
+fronteira. O renderer foi rejeitado para runtime; a próxima candidata deve usar
+representação canônica selada e invariantes completas de topologia.
 
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no

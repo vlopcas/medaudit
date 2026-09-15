@@ -151,6 +151,11 @@ Essa avaliação adversarial atingiu 100% nos 13 casos: o controle íntegro foi
 aceito e as doze mutações inseguras foram recusadas. O próximo marco é congelar
 um holdout estrutural inédito; compilador, renderer e modelo continuam fora do
 caminho padrão e do corpus privado.
+O holdout estrutural seguinte reprovou essa fronteira: apenas 25% de
+correspondência exata e 28,57% de rejeição das sete mutações inseguras.
+Alterações pós-compilação em conteúdo, membership adicional e ordem de grupos
+foram aceitas. O renderer não será ativado. O próximo ciclo deve formular um
+contexto canônico selado por digest e só depois enfrentar outro holdout.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em

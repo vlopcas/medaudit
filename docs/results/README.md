@@ -40,3 +40,4 @@ para evitar a exposição indireta do corpus privado.
 - [Resultado 024: compilação de contexto em desenvolvimento](024-context-compilation-development.md)
 - [Resultado 025: holdout da compilação de contexto](025-context-compilation-holdout.md)
 - [Resultado 026: renderer de contexto em desenvolvimento adversarial](026-compiled-context-renderer-adversarial-development.md)
+- [Resultado 027: holdout do renderer de contexto compilado](027-compiled-context-renderer-holdout.md)
