@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "policy": "context-compilation-holdout-v1",
+  "notice": "Conteúdo integralmente sintético, sem reprodução de documentos reais.",
+  "cases": [
+    {
+      "id": "context-holdout-001", "category": "exact_budget", "question": "Compare cobre e prata.", "instruction": "Use apenas suporte rastreável.", "token_budget": 20,
+      "evidence_groups": [
+        {"step_id": "cobre", "scope": "cobre", "evidence": [{"evidence_id": "cobre-c1", "document_id": "cobre-doc", "text": "Cobre admite o cenário inteiramente sintético."}]},
+        {"step_id": "prata", "scope": "prata", "evidence": [{"evidence_id": "prata-c1", "document_id": "prata-doc", "text": "Prata rejeita o cenário inteiramente sintético."}]}
+      ],
+      "expected": {"status": "ready", "included_evidence_ids": ["cobre-c1", "prata-c1"], "evidence_steps": {"cobre-c1": ["cobre"], "prata-c1": ["prata"]}, "exclusion_reasons": []}
+    },
+    {
+      "id": "context-holdout-002", "category": "multiple_per_step", "question": "Compare norte e sul.", "instruction": "Use somente evidências sintéticas.", "token_budget": 40,
+      "evidence_groups": [
+        {"step_id": "norte", "scope": "norte", "evidence": [{"evidence_id": "norte-c1", "document_id": "norte-doc", "text": "Norte contém o primeiro fato."}, {"evidence_id": "norte-c2", "document_id": "norte-doc", "text": "Norte contém o segundo fato."}]},
+        {"step_id": "sul", "scope": "sul", "evidence": [{"evidence_id": "sul-c1", "document_id": "sul-doc", "text": "Sul contém o terceiro fato."}]}
+      ],
+      "expected": {"status": "ready", "included_evidence_ids": ["norte-c1", "norte-c2", "sul-c1"], "evidence_steps": {"norte-c1": ["norte"], "norte-c2": ["norte"], "sul-c1": ["sul"]}, "exclusion_reasons": []}
+    },
+    {
+      "id": "context-holdout-003", "category": "reversed_shared_identity", "question": "Compare leste e oeste.", "instruction": "Responda com suporte rastreável.", "token_budget": 30,
+      "evidence_groups": [
+        {"step_id": "oeste", "scope": "oeste", "evidence": [{"evidence_id": "shared-z1", "document_id": "shared-doc", "text": "A regra compartilhada é sintética."}]},
+        {"step_id": "leste", "scope": "leste", "evidence": [{"evidence_id": "shared-z1", "document_id": "shared-doc", "text": "A regra compartilhada é sintética."}]}
+      ],
+      "expected": {"status": "ready", "included_evidence_ids": ["shared-z1"], "evidence_steps": {"shared-z1": ["oeste", "leste"]}, "exclusion_reasons": ["duplicate"]}
+    },
+    {
+      "id": "context-holdout-004", "category": "conflicting_identity", "question": "Compare âmbar e azul.", "instruction": "Responda com suporte rastreável.", "token_budget": 30,
+      "evidence_groups": [
+        {"step_id": "ambar", "scope": "âmbar", "evidence": [{"evidence_id": "collision-c1", "document_id": "shared-doc", "text": "A versão âmbar permite o caso."}]},
+        {"step_id": "azul", "scope": "azul", "evidence": [{"evidence_id": "collision-c1", "document_id": "shared-doc", "text": "A versão azul proíbe o caso."}]}
+      ],
+      "expected": {"status": "needs_review", "included_evidence_ids": [], "evidence_steps": {}, "exclusion_reasons": ["conflicting_identity"]}
+    },
+    {
+      "id": "context-holdout-005", "category": "review_precedence", "question": "Compare um e dois.", "instruction": "Use apenas suporte.", "token_budget": 9, "review_evidence_ids": ["dois-c1"],
+      "evidence_groups": [
+        {"step_id": "um", "scope": "um", "evidence": [{"evidence_id": "um-c1", "document_id": "um-doc", "text": "Um possui evidência sintética extensa."}]},
+        {"step_id": "dois", "scope": "dois", "evidence": [{"evidence_id": "dois-c1", "document_id": "dois-doc", "text": "Dois exige revisão humana explícita."}]}
+      ],
+      "expected": {"status": "needs_review", "included_evidence_ids": [], "evidence_steps": {}, "exclusion_reasons": ["review_required"]}
+    },
+    {
+      "id": "context-holdout-006", "category": "multiple_review", "question": "Compare verde e violeta.", "instruction": "Use apenas suporte rastreável.", "token_budget": 30, "review_evidence_ids": ["verde-c1", "violeta-c1"],
+      "evidence_groups": [
+        {"step_id": "verde", "scope": "verde", "evidence": [{"evidence_id": "verde-c1", "document_id": "verde-doc", "text": "Verde aguarda revisão sintética."}]},
+        {"step_id": "violeta", "scope": "violeta", "evidence": [{"evidence_id": "violeta-c1", "document_id": "violeta-doc", "text": "Violeta aguarda revisão sintética."}]}
+      ],
+      "expected": {"status": "needs_review", "included_evidence_ids": [], "evidence_steps": {}, "exclusion_reasons": ["review_required", "review_required"]}
+    },
+    {
+      "id": "context-holdout-007", "category": "duplicate_within_step", "question": "Compare círculo e quadrado.", "instruction": "Use somente suporte.", "token_budget": 30,
+      "evidence_groups": [
+        {"step_id": "circulo", "scope": "círculo", "evidence": [{"evidence_id": "circulo-c1", "document_id": "circulo-doc", "text": "Círculo possui um fato sintético."}, {"evidence_id": "circulo-c1", "document_id": "circulo-doc", "text": "Círculo possui um fato sintético."}]},
+        {"step_id": "quadrado", "scope": "quadrado", "evidence": [{"evidence_id": "quadrado-c1", "document_id": "quadrado-doc", "text": "Quadrado possui outro fato sintético."}]}
+      ],
+      "expected": {"status": "ready", "included_evidence_ids": ["circulo-c1", "quadrado-c1"], "evidence_steps": {"circulo-c1": ["circulo"], "quadrado-c1": ["quadrado"]}, "exclusion_reasons": ["duplicate"]}
+    },
+    {
+      "id": "context-holdout-008", "category": "insufficient_precedence", "question": "Compare presente e ausente.", "instruction": "Use somente suporte.", "token_budget": 30, "bundle_ready": false, "review_evidence_ids": ["placeholder-c1"],
+      "evidence_groups": [
+        {"step_id": "presente", "scope": "presente", "evidence": [{"evidence_id": "presente-c1", "document_id": "presente-doc", "text": "Presente possui suporte sintético."}]},
+        {"step_id": "ausente", "scope": "ausente", "evidence": [{"evidence_id": "placeholder-c1", "document_id": "placeholder-doc", "text": "Este placeholder será removido."}]}
+      ],
+      "expected": {"status": "insufficient_evidence", "included_evidence_ids": [], "evidence_steps": {}, "exclusion_reasons": []}
+    }
+  ]
+}
