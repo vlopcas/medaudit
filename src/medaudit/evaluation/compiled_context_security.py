@@ -428,6 +428,92 @@ def _mutate(context: CompiledContext, mutation: str) -> CompiledContext:
         )
     if mutation == "truncated_integrity_digest":
         return replace(context, integrity_sha256=context.integrity_sha256[:-1])
+    if mutation == "swapped_evidence_pages":
+        item_left = context.items[2]
+        item_right = context.items[3]
+        return replace(
+            context,
+            items=(
+                *context.items[:2],
+                replace(item_left, page=item_right.page),
+                replace(item_right, page=item_left.page),
+                *context.items[4:],
+            ),
+        )
+    if mutation == "swapped_evidence_sections":
+        item_left = context.items[2]
+        item_right = context.items[3]
+        return replace(
+            context,
+            items=(
+                *context.items[:2],
+                replace(item_left, section=item_right.section),
+                replace(item_right, section=item_left.section),
+                *context.items[4:],
+            ),
+        )
+    if mutation == "scope_trailing_whitespace":
+        return replace(
+            context,
+            groups=(
+                replace(context.groups[0], scope=f"{context.groups[0].scope} "),
+                *context.groups[1:],
+            ),
+        )
+    if mutation == "unicode_normalized_evidence":
+        return replace(
+            context,
+            items=(
+                *context.items[:2],
+                replace(context.items[2], text=normalize("NFD", context.items[2].text)),
+                *context.items[3:],
+            ),
+        )
+    if mutation == "reversed_shared_step_ids":
+        shared_index = next(
+            index for index, item in enumerate(context.items) if len(item.step_ids) > 1
+        )
+        return replace(
+            context,
+            items=tuple(
+                replace(item, step_ids=tuple(reversed(item.step_ids)))
+                if index == shared_index
+                else item
+                for index, item in enumerate(context.items)
+            ),
+        )
+    if mutation == "removed_item_and_references":
+        removed_id = context.items[-1].item_id
+        return replace(
+            context,
+            items=context.items[:-1],
+            groups=tuple(
+                replace(
+                    group,
+                    evidence_ids=tuple(
+                        item_id
+                        for item_id in group.evidence_ids
+                        if item_id != removed_id
+                    ),
+                )
+                for group in context.groups
+            ),
+        )
+    if mutation == "balanced_budget_change":
+        return replace(
+            context,
+            token_budget=context.token_budget + 1,
+            estimated_tokens=context.estimated_tokens + 1,
+        )
+    if mutation == "query_step_membership":
+        return replace(
+            context,
+            items=(
+                context.items[0],
+                replace(context.items[1], step_ids=(context.groups[0].step_id,)),
+                *context.items[2:],
+            ),
+        )
     raise ValueError(f"unsupported compiled context mutation: {mutation}")
 
 
@@ -503,6 +589,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             "sealed-context-renderer-development-v1",
             "sealed-context-renderer-holdout-v1",
             "sealed-context-harness-development-v1",
+            "sealed-context-renderer-holdout-v2",
         ),
         default="compiled-context-renderer-adversarial-v1",
     )

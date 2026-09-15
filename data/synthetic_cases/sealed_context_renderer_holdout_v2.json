@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "policy": "sealed-context-renderer-holdout-v2",
+  "notice": "Conteúdo integralmente sintético, sem reprodução de documentos reais.",
+  "base_context": {
+    "question": "Compare ágata e safira no cenário integralmente sintético.",
+    "evidence_groups": [
+      {
+        "step_id": "agata",
+        "scope": "escopo sintético de ágata",
+        "evidence": [
+          {"evidence_id": "shared-c1", "document_id": "shared-doc", "page": 51, "section": "Regra compartilhada", "text": "Evidência compartilhada contém informação sintética útil."},
+          {"evidence_id": "agata-c1", "document_id": "agata-doc", "page": 52, "section": "Ágata exclusiva", "text": "Ágata contém informação sintética exclusiva."}
+        ]
+      },
+      {
+        "step_id": "safira",
+        "scope": "escopo sintético de safira",
+        "evidence": [
+          {"evidence_id": "shared-c1", "document_id": "shared-doc", "page": 51, "section": "Regra compartilhada", "text": "Evidência compartilhada contém informação sintética útil."},
+          {"evidence_id": "safira-c1", "document_id": "safira-doc", "page": 61, "section": "Safira exclusiva", "text": "Safira contém informação sintética exclusiva."}
+        ]
+      }
+    ]
+  },
+  "cases": [
+    {"id": "sealed-v2-001", "category": "valid_control", "mutation": "none", "expected": {"accepted": true}},
+    {"id": "sealed-v2-002", "category": "provenance_association", "mutation": "swapped_evidence_pages", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "sealed-v2-003", "category": "provenance_association", "mutation": "swapped_evidence_sections", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "sealed-v2-004", "category": "canonical_scope", "mutation": "scope_trailing_whitespace", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "sealed-v2-005", "category": "canonical_text", "mutation": "unicode_normalized_evidence", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "sealed-v2-006", "category": "shared_membership_order", "mutation": "reversed_shared_step_ids", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "sealed-v2-007", "category": "coordinated_inventory", "mutation": "removed_item_and_references", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "sealed-v2-008", "category": "coordinated_budget", "mutation": "balanced_budget_change", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "sealed-v2-009", "category": "control_membership", "mutation": "query_step_membership", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "sealed-v2-010", "category": "coordinated_identity", "mutation": "consistent_evidence_id_rewrite", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "sealed-v2-011", "category": "combined_order", "mutation": "composite_group_reorder", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}}
+  ]
+}
