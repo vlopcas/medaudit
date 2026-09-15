@@ -38,3 +38,4 @@ para evitar a exposição indireta do corpus privado.
 - [Resultado 022: gate determinístico de segurança da evidência](022-deterministic-evidence-safety-gate-development.md)
 - [Resultado 023: holdout do gate determinístico de segurança](023-deterministic-evidence-safety-gate-holdout.md)
 - [Resultado 024: compilação de contexto em desenvolvimento](024-context-compilation-development.md)
+- [Resultado 025: holdout da compilação de contexto](025-context-compilation-holdout.md)

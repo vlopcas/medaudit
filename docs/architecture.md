@@ -129,7 +129,10 @@ para revisão bloqueiam geração antes de qualquer renderização para um provi
 No conjunto sintético de desenvolvimento, o contrato atingiu 100% nos seis
 casos de seleção, budget, revisão, deduplicação e evidência insuficiente. Isso o
 autoriza somente a enfrentar um holdout inédito; a integração continua
-bloqueada.
+bloqueada. O holdout posterior atingiu 100% nos oito casos inéditos, incluindo
+budgets limítrofes, colisões e precedência de recusas. O contrato está aprovado
+para uma integração opt-in à síntese decomposta; o modelo local e o corpus
+privado continuam bloqueados.
 
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no

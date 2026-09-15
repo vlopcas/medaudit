@@ -138,7 +138,10 @@ sintético de desenvolvimento, ainda sem integrá-lo ao runtime. A avaliação
 atingiu 100% nos seis casos e em todas as categorias, incluindo seleção exata,
 provenance, exclusões e confiança estrutural. O próximo marco é congelar um
 holdout inédito com budgets limítrofes, conflitos e combinações de políticas;
-o runtime permanece inalterado.
+o runtime permanece inalterado. Esse holdout atingiu 100% nos oito casos e em
+todas as categorias. O contrato pode agora ganhar um renderer opt-in para
+`LLMRequest`, com equivalência estrutural testada e geração condicionada a
+`can_generate`; isso não promove o modelo local nem libera o corpus privado.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em

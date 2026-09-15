@@ -146,7 +146,9 @@ revisão. Ainda não renderiza prompts nem integra o runtime; primeiro será
 avaliado em datasets sintéticos próprios. O desenvolvimento inicial atingiu
 100% em seis casos de seleção, budget, revisão, deduplicação e evidência
 insuficiente; a candidata agora está autorizada somente a enfrentar um holdout
-inédito.
+inédito. O holdout posterior atingiu 100% em oito casos limítrofes. O contrato
+está autorizado a ganhar uma integração opt-in com a síntese decomposta, mas o
+modelo local e o corpus privado permanecem bloqueados.
 
 ## Ambiente de desenvolvimento
 
