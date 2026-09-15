@@ -3,6 +3,9 @@ import unittest
 from medaudit.documents import Chunk
 from medaudit.query_understanding import QueryRoute
 from medaudit.rag import (
+    CompiledContextGateway,
+    CompiledRequestMode,
+    CompiledRequestStatus,
     DeterministicDecompositionExecutor,
     EvidenceFirstPipeline,
     FrozenTopScorePolicy,
@@ -76,3 +79,66 @@ class RoutedEvidenceFirstPipelineTest(unittest.TestCase):
         self.assertEqual(decision.execution.status, "ready")
         assert decision.evidence_bundle is not None
         self.assertTrue(decision.evidence_bundle.can_generate)
+
+    def test_default_gateway_remains_disabled_after_decomposition(self) -> None:
+        executor = DeterministicDecompositionExecutor(
+            comparison_pipeline=self.evidence_pipeline,
+            temporal_pipeline_for=lambda _: self.evidence_pipeline,
+        )
+        pipeline = RoutedEvidenceFirstPipeline(
+            self.evidence_pipeline,
+            decomposition_executor=executor,
+        )
+
+        result = pipeline.retrieve_with_compiled_request(
+            "Compare regra alpha com regra alpha."
+        )
+
+        self.assertIsNotNone(result.compiled_request)
+        assert result.compiled_request is not None
+        self.assertFalse(result.compiled_request.is_prepared)
+        self.assertEqual(
+            result.compiled_request.telemetry.status,
+            CompiledRequestStatus.DISABLED,
+        )
+
+    def test_experimental_gateway_prepares_decomposed_request(self) -> None:
+        executor = DeterministicDecompositionExecutor(
+            comparison_pipeline=self.evidence_pipeline,
+            temporal_pipeline_for=lambda _: self.evidence_pipeline,
+        )
+        pipeline = RoutedEvidenceFirstPipeline(
+            self.evidence_pipeline,
+            decomposition_executor=executor,
+            compiled_context_gateway=CompiledContextGateway(
+                mode=CompiledRequestMode.EXPERIMENTAL,
+                token_budget=10_000,
+            ),
+        )
+
+        result = pipeline.retrieve_with_compiled_request(
+            "Compare regra alpha com regra alpha."
+        )
+
+        self.assertIsNotNone(result.compiled_request)
+        assert result.compiled_request is not None
+        self.assertTrue(result.compiled_request.is_prepared)
+        self.assertIsNotNone(result.compiled_request.request)
+
+    def test_non_decomposition_route_does_not_touch_gateway(self) -> None:
+        result = self.pipeline.retrieve_with_compiled_request(
+            "Qual é a regra alpha?"
+        )
+
+        self.assertEqual(result.retrieval.route, QueryRoute.DIRECT_RETRIEVAL)
+        self.assertIsNone(result.compiled_request)
+
+    def test_decomposition_without_executor_has_no_preparation(self) -> None:
+        result = self.pipeline.retrieve_with_compiled_request(
+            "Compare a regra alpha com a beta."
+        )
+
+        self.assertEqual(
+            result.retrieval.route, QueryRoute.REQUIRES_DECOMPOSITION
+        )
+        self.assertIsNone(result.compiled_request)

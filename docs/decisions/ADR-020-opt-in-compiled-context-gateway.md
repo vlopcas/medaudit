@@ -53,3 +53,9 @@ O desenvolvimento atingiu 5/5 e o holdout congelado posterior também atingiu
 5/5, ambos com 100% na correspondência entre status e presença de request. O
 gateway está, portanto, autorizado a ser uma dependência opcional do roteador;
 o modo padrão continua `disabled` e esta decisão não inclui chamada de modelo.
+
+A conexão usa o método separado `retrieve_with_compiled_request`. Ele preserva
+`retrieve` sem mudanças e só chama o gateway quando uma rota de decomposição
+possui execução e bundle. Rotas diretas, externas ou sem executor não atravessam
+essa fronteira. O resultado composto mantém decisão de retrieval e preparação
+distintas; nenhuma resposta generativa é produzida.

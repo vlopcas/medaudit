@@ -186,7 +186,11 @@ segurança de emissão: somente o caso preparado recebeu request. O próximo gat
 é um holdout próprio antes de qualquer conexão ao roteador. Esse holdout atingiu
 5/5 em correspondência e segurança de emissão, incluindo bundle incompleto,
 revisões e evidência compartilhada. O gateway está autorizado a ser injetado no
-roteador como dependência opcional, ainda desabilitada por padrão.
+roteador como dependência opcional, ainda desabilitada por padrão. A conexão
+agora existe em `retrieve_with_compiled_request`, sem alterar `retrieve`: somente
+uma decomposição executada com bundle chega ao gateway. Rotas diretas, externas
+ou sem executor não produzem preparação, e nenhuma chamada de modelo foi
+adicionada.
 
 ## Ambiente de desenvolvimento
 

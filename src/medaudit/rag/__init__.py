@@ -45,6 +45,7 @@ from medaudit.rag.models import (
 from medaudit.rag.pipeline import (
     EvidenceFirstPipeline,
     FrozenTopScorePolicy,
+    RoutedCompiledRequestResult,
     RoutedEvidenceFirstPipeline,
 )
 from medaudit.rag.prompt import (
@@ -95,6 +96,7 @@ __all__ = [
     "GroundedClaim",
     "RetrievalDecision",
     "RetrievalStatus",
+    "RoutedCompiledRequestResult",
     "RoutedEvidenceFirstPipeline",
     "RoutedRetrievalDecision",
     "StepEvidenceGroup",

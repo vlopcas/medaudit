@@ -193,6 +193,10 @@ inédito do gateway; o roteador permanece inalterado. O holdout atingiu 100% nos
 cinco casos e na segurança de emissão. O próximo marco é injetar o gateway como
 dependência opcional do roteador, sem mudar o padrão desabilitado e sem chamar
 modelo.
+Essa injeção foi implementada por um método composto separado, preservando a
+API de recuperação existente. Testes cobrem padrão desabilitado, ativação
+experimental, rota direta e decomposição sem executor. O próximo marco é
+avaliar a integração roteador-gateway como unidade antes de qualquer síntese.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em

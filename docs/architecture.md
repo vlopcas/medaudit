@@ -184,6 +184,11 @@ fora do roteador até passar por holdout inédito. O holdout posterior atingiu
 5/5 nas duas métricas, incluindo curto-circuito desabilitado, bundle incompleto,
 revisões e deduplicação compartilhada. Isso autoriza somente a injeção opcional
 do gateway no roteador, mantendo o padrão desabilitado e sem chamada de modelo.
+O roteador agora oferece `retrieve_with_compiled_request` como operação
+separada. Ela reutiliza `retrieve` e só encaminha um bundle de decomposição já
+executado ao gateway injetado. Sem bundle, retorna apenas a decisão roteada; com
+o gateway padrão, retorna telemetria `disabled` e nenhum request. O método
+original e todas as demais rotas permanecem inalterados.
 
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no

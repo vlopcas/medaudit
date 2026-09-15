@@ -1,6 +1,7 @@
 """Deterministic retrieval gate for evidence-first RAG."""
 
 import json
+from collections.abc import Collection
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -13,6 +14,7 @@ from medaudit.query_understanding import (
 )
 from medaudit.rag.aggregation import group_decomposition_evidence
 from medaudit.rag.decomposition import DeterministicDecompositionExecutor
+from medaudit.rag.integration import CompiledContextGateway, CompiledRequestResult
 from medaudit.rag.models import (
     Evidence,
     EvidenceLocation,
@@ -122,6 +124,14 @@ class EvidenceFirstPipeline:
         )
 
 
+@dataclass(frozen=True, slots=True)
+class RoutedCompiledRequestResult:
+    """Route result plus optional preparation for a decomposed request."""
+
+    retrieval: RoutedRetrievalDecision
+    compiled_request: CompiledRequestResult | None = None
+
+
 class RoutedEvidenceFirstPipeline:
     """Apply the validated explicit route before touching the retriever."""
 
@@ -131,11 +141,15 @@ class RoutedEvidenceFirstPipeline:
         router: ExplicitQueryRouter | None = None,
         planner: DeterministicQueryPlanner | None = None,
         decomposition_executor: DeterministicDecompositionExecutor | None = None,
+        compiled_context_gateway: CompiledContextGateway | None = None,
     ) -> None:
         self._pipeline = pipeline
         self._router = router or ExplicitQueryRouter()
         self._planner = planner or DeterministicQueryPlanner()
         self._decomposition_executor = decomposition_executor
+        self._compiled_context_gateway = (
+            compiled_context_gateway or CompiledContextGateway()
+        )
 
     def retrieve(self, query: str, *, top_k: int = 5) -> RoutedRetrievalDecision:
         """Retrieve only when the explicit routing policy allows it."""
@@ -164,4 +178,24 @@ class RoutedEvidenceFirstPipeline:
             query=query,
             route=route,
             retrieval=self._pipeline.retrieve(query, top_k=top_k),
+        )
+
+    def retrieve_with_compiled_request(
+        self,
+        query: str,
+        *,
+        top_k: int = 5,
+        reviewed_evidence_ids: Collection[str] = (),
+    ) -> RoutedCompiledRequestResult:
+        """Prepare an opt-in request only for an executed decomposition route."""
+        retrieval = self.retrieve(query, top_k=top_k)
+        bundle = retrieval.evidence_bundle
+        if bundle is None:
+            return RoutedCompiledRequestResult(retrieval=retrieval)
+        return RoutedCompiledRequestResult(
+            retrieval=retrieval,
+            compiled_request=self._compiled_context_gateway.prepare(
+                bundle,
+                reviewed_evidence_ids=reviewed_evidence_ids,
+            ),
         )
