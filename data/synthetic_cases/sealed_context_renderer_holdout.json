@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "policy": "sealed-context-renderer-holdout-v1",
+  "notice": "Conteúdo integralmente sintético, sem reprodução de documentos reais.",
+  "base_context": {
+    "question": "Compare ônix e âmbar no cenário sintético.",
+    "evidence_groups": [
+      {
+        "step_id": "onix",
+        "scope": "regra sintética de ônix",
+        "reference_date": "2031-02-03",
+        "evidence": [
+          {"evidence_id": "onix-c1", "document_id": "onix-doc-a", "page": 11, "section": "Ônix primário", "text": "Ônix apresenta o primeiro fato sintético."},
+          {"evidence_id": "onix-c2", "document_id": "onix-doc-b", "page": 12, "section": "Ônix secundário", "text": "Ônix apresenta o segundo fato sintético."}
+        ]
+      },
+      {
+        "step_id": "ambar",
+        "scope": "regra sintética de âmbar",
+        "reference_date": "2032-04-05",
+        "evidence": [
+          {"evidence_id": "ambar-c1", "document_id": "ambar-doc", "page": 21, "section": "Âmbar", "text": "Âmbar apresenta o terceiro fato sintético."}
+        ]
+      }
+    ]
+  },
+  "cases": [
+    {"id": "sealed-holdout-001", "category": "valid_control", "mutation": "none", "expected": {"accepted": true}},
+    {"id": "sealed-holdout-002", "category": "coordinated_identity", "mutation": "consistent_evidence_id_rewrite", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "sealed-holdout-003", "category": "association", "mutation": "swapped_evidence_payloads", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "sealed-holdout-004", "category": "association", "mutation": "swapped_document_ids", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "sealed-holdout-005", "category": "canonical_text", "mutation": "unicode_normalized_query", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "sealed-holdout-006", "category": "nullable_provenance", "mutation": "cleared_evidence_page", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "sealed-holdout-007", "category": "nullable_provenance", "mutation": "cleared_evidence_section", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "sealed-holdout-008", "category": "temporal_metadata", "mutation": "removed_group_reference_date", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "sealed-holdout-009", "category": "group_association", "mutation": "swapped_group_scopes", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "sealed-holdout-010", "category": "coordinated_topology", "mutation": "coordinated_step_rename", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "sealed-holdout-011", "category": "global_order", "mutation": "rotated_items", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "sealed-holdout-012", "category": "global_order", "mutation": "composite_group_reorder", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "sealed-holdout-013", "category": "seal_shape", "mutation": "truncated_integrity_digest", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}}
+  ]
+}

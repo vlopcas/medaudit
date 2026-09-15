@@ -8,6 +8,7 @@ from dataclasses import replace
 from datetime import date
 from pathlib import Path
 from typing import Any
+from unicodedata import normalize
 
 from medaudit.evaluation.local_decomposed_grounding import build_bundle
 from medaudit.evaluation.query_understanding import verify_input
@@ -284,6 +285,141 @@ def _mutate(context: CompiledContext, mutation: str) -> CompiledContext:
                 ),
             ),
         )
+    if mutation == "consistent_evidence_id_rewrite":
+        original_id = context.items[2].item_id
+        replacement_id = "rewritten-evidence-id"
+        return replace(
+            context,
+            items=(
+                *context.items[:2],
+                replace(context.items[2], item_id=replacement_id),
+                *context.items[3:],
+            ),
+            groups=tuple(
+                replace(
+                    group,
+                    evidence_ids=tuple(
+                        replacement_id if item_id == original_id else item_id
+                        for item_id in group.evidence_ids
+                    ),
+                )
+                for group in context.groups
+            ),
+        )
+    if mutation == "swapped_evidence_payloads":
+        left = context.items[2]
+        right = context.items[3]
+        return replace(
+            context,
+            items=(
+                *context.items[:2],
+                replace(
+                    left,
+                    text=right.text,
+                    document_id=right.document_id,
+                    page=right.page,
+                    section=right.section,
+                ),
+                replace(
+                    right,
+                    text=left.text,
+                    document_id=left.document_id,
+                    page=left.page,
+                    section=left.section,
+                ),
+                *context.items[4:],
+            ),
+        )
+    if mutation == "swapped_document_ids":
+        left = context.items[2]
+        right = context.items[-1]
+        return replace(
+            context,
+            items=(
+                *context.items[:2],
+                replace(left, document_id=right.document_id),
+                *context.items[3:-1],
+                replace(right, document_id=left.document_id),
+            ),
+        )
+    if mutation == "unicode_normalized_query":
+        return replace(
+            context,
+            items=(
+                context.items[0],
+                replace(context.items[1], text=normalize("NFD", context.items[1].text)),
+                *context.items[2:],
+            ),
+        )
+    if mutation == "cleared_evidence_page":
+        return replace(
+            context,
+            items=(
+                *context.items[:2],
+                replace(context.items[2], page=None),
+                *context.items[3:],
+            ),
+        )
+    if mutation == "cleared_evidence_section":
+        return replace(
+            context,
+            items=(
+                *context.items[:2],
+                replace(context.items[2], section=None),
+                *context.items[3:],
+            ),
+        )
+    if mutation == "removed_group_reference_date":
+        return replace(
+            context,
+            groups=(
+                replace(context.groups[0], reference_date=None),
+                *context.groups[1:],
+            ),
+        )
+    if mutation == "swapped_group_scopes":
+        group_left = context.groups[0]
+        group_right = context.groups[1]
+        return replace(
+            context,
+            groups=(
+                replace(group_left, scope=group_right.scope),
+                replace(group_right, scope=group_left.scope),
+                *context.groups[2:],
+            ),
+        )
+    if mutation == "coordinated_step_rename":
+        original_step = context.groups[0].step_id
+        replacement_step = "renamed-step"
+        return replace(
+            context,
+            items=tuple(
+                replace(
+                    item,
+                    step_ids=tuple(
+                        replacement_step if step_id == original_step else step_id
+                        for step_id in item.step_ids
+                    ),
+                )
+                for item in context.items
+            ),
+            groups=(
+                replace(context.groups[0], step_id=replacement_step),
+                *context.groups[1:],
+            ),
+        )
+    if mutation == "rotated_items":
+        return replace(context, items=(*context.items[1:], context.items[0]))
+    if mutation == "composite_group_reorder":
+        return replace(
+            context,
+            groups=tuple(
+                replace(group, evidence_ids=tuple(reversed(group.evidence_ids)))
+                for group in reversed(context.groups)
+            ),
+        )
+    if mutation == "truncated_integrity_digest":
+        return replace(context, integrity_sha256=context.integrity_sha256[:-1])
     raise ValueError(f"unsupported compiled context mutation: {mutation}")
 
 
@@ -354,6 +490,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             "compiled-context-renderer-adversarial-v1",
             "compiled-context-renderer-holdout-v1",
             "sealed-context-renderer-development-v1",
+            "sealed-context-renderer-holdout-v1",
         ),
         default="compiled-context-renderer-adversarial-v1",
     )

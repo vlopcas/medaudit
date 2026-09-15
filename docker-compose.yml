@@ -548,6 +548,25 @@ services:
       - --dataset-policy
       - sealed-context-renderer-development-v1
 
+  evaluate-sealed-context-security-holdout:
+    extends: evaluate-compiled-context-security
+    user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
+    volumes:
+      - type: bind
+        source: ./artifacts
+        target: /artifacts
+    command:
+      - medaudit-evaluate-compiled-context-security
+      - --dataset
+      - /app/data/synthetic_cases/sealed_context_renderer_holdout.json
+      - --dataset-policy
+      - sealed-context-renderer-holdout-v1
+      - --expected-sha256
+      - f59a80abe57cd802c5f1656dc9c998399daf4bfb66d5bdc14b74e5c9e8aaf412
+      - --output
+      - /artifacts/sealed-context-renderer-holdout.local.json
+      - --refuse-overwrite
+
   evaluate-explicit-query-routing-holdout:
     extends: evaluate-explicit-query-routing
     user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
