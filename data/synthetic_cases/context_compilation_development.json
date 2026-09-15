@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "policy": "context-compilation-development-v1",
+  "notice": "Conteúdo integralmente sintético, sem reprodução de documentos reais.",
+  "cases": [
+    {
+      "id": "context-dev-001", "category": "ready", "question": "Compare alfa e beta.", "instruction": "Responda somente com suporte.", "token_budget": 30,
+      "evidence_groups": [
+        {"step_id": "alfa", "scope": "alfa", "evidence": [{"evidence_id": "alfa-c1", "document_id": "alfa-doc", "text": "Alfa permite o evento sintético."}]},
+        {"step_id": "beta", "scope": "beta", "evidence": [{"evidence_id": "beta-c1", "document_id": "beta-doc", "text": "Beta proíbe o evento sintético."}]}
+      ],
+      "expected": {"status": "ready", "included_evidence_ids": ["alfa-c1", "beta-c1"], "evidence_steps": {"alfa-c1": ["alfa"], "beta-c1": ["beta"]}, "exclusion_reasons": []}
+    },
+    {
+      "id": "context-dev-002", "category": "control_budget", "question": "Compare alfa e beta.", "instruction": "Responda somente com suporte.", "token_budget": 3,
+      "evidence_groups": [
+        {"step_id": "alfa", "scope": "alfa", "evidence": [{"evidence_id": "alfa-c1", "document_id": "alfa-doc", "text": "Alfa permite o evento sintético."}]},
+        {"step_id": "beta", "scope": "beta", "evidence": [{"evidence_id": "beta-c1", "document_id": "beta-doc", "text": "Beta proíbe o evento sintético."}]}
+      ],
+      "expected": {"status": "budget_exceeded", "included_evidence_ids": [], "evidence_steps": {}, "exclusion_reasons": ["token_budget", "token_budget"]}
+    },
+    {
+      "id": "context-dev-003", "category": "evidence_budget", "question": "Compare alfa e beta.", "instruction": "Responda com suporte.", "token_budget": 12,
+      "evidence_groups": [
+        {"step_id": "alfa", "scope": "alfa", "evidence": [{"evidence_id": "alfa-c1", "document_id": "alfa-doc", "text": "Alfa permite o evento sintético."}]},
+        {"step_id": "beta", "scope": "beta", "evidence": [{"evidence_id": "beta-c1", "document_id": "beta-doc", "text": "Beta proíbe o evento sintético."}]}
+      ],
+      "expected": {"status": "budget_exceeded", "included_evidence_ids": ["alfa-c1"], "evidence_steps": {"alfa-c1": ["alfa"]}, "exclusion_reasons": ["token_budget"]}
+    },
+    {
+      "id": "context-dev-004", "category": "review", "question": "Compare alfa e beta.", "instruction": "Responda somente com suporte.", "token_budget": 30, "review_evidence_ids": ["beta-c1"],
+      "evidence_groups": [
+        {"step_id": "alfa", "scope": "alfa", "evidence": [{"evidence_id": "alfa-c1", "document_id": "alfa-doc", "text": "Alfa permite o evento sintético."}]},
+        {"step_id": "beta", "scope": "beta", "evidence": [{"evidence_id": "beta-c1", "document_id": "beta-doc", "text": "Beta exige revisão humana."}]}
+      ],
+      "expected": {"status": "needs_review", "included_evidence_ids": [], "evidence_steps": {}, "exclusion_reasons": ["review_required"]}
+    },
+    {
+      "id": "context-dev-005", "category": "deduplication", "question": "Compare alfa e alfa.", "instruction": "Responda somente com suporte.", "token_budget": 30,
+      "evidence_groups": [
+        {"step_id": "alfa-1", "scope": "alfa", "evidence": [{"evidence_id": "shared-c1", "document_id": "shared-doc", "text": "Alfa possui uma regra sintética."}]},
+        {"step_id": "alfa-2", "scope": "alfa", "evidence": [{"evidence_id": "shared-c1", "document_id": "shared-doc", "text": "Alfa possui uma regra sintética."}]}
+      ],
+      "expected": {"status": "ready", "included_evidence_ids": ["shared-c1"], "evidence_steps": {"shared-c1": ["alfa-1", "alfa-2"]}, "exclusion_reasons": ["duplicate"]}
+    },
+    {
+      "id": "context-dev-006", "category": "insufficient_evidence", "question": "Compare alfa e ausente.", "instruction": "Responda somente com suporte.", "token_budget": 30, "bundle_ready": false,
+      "evidence_groups": [
+        {"step_id": "alfa", "scope": "alfa", "evidence": [{"evidence_id": "alfa-c1", "document_id": "alfa-doc", "text": "Alfa permite o evento sintético."}]},
+        {"step_id": "ausente", "scope": "ausente", "evidence": [{"evidence_id": "placeholder-c1", "document_id": "placeholder-doc", "text": "Placeholder sintético removido antes da compilação."}]}
+      ],
+      "expected": {"status": "insufficient_evidence", "included_evidence_ids": [], "evidence_steps": {}, "exclusion_reasons": []}
+    }
+  ]
+}

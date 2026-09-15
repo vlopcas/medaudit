@@ -126,6 +126,10 @@ passo e registra exclusões sem duplicar o texto rejeitado. Evidências continua
 marcadas como dados não confiáveis; somente a instrução pertence ao plano de
 controle. Orçamento que elimine um passo, identidade conflitante ou ID marcado
 para revisão bloqueiam geração antes de qualquer renderização para um provider.
+No conjunto sintético de desenvolvimento, o contrato atingiu 100% nos seis
+casos de seleção, budget, revisão, deduplicação e evidência insuficiente. Isso o
+autoriza somente a enfrentar um holdout inédito; a integração continua
+bloqueada.
 
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no

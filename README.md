@@ -143,7 +143,10 @@ O próximo componente de Context Engineering já possui um contrato isolado e
 provider-neutral. Ele separa instrução, consulta e evidências, aplica orçamento,
 preserva provenance e bloqueia geração parcial ou dependente de itens em
 revisão. Ainda não renderiza prompts nem integra o runtime; primeiro será
-avaliado em datasets sintéticos próprios.
+avaliado em datasets sintéticos próprios. O desenvolvimento inicial atingiu
+100% em seis casos de seleção, budget, revisão, deduplicação e evidência
+insuficiente; a candidata agora está autorizada somente a enfrentar um holdout
+inédito.
 
 ## Ambiente de desenvolvimento
 

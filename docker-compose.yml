@@ -469,6 +469,22 @@ services:
       - /artifacts/evidence-safety-holdout.local.json
       - --refuse-overwrite
 
+  evaluate-context-compilation:
+    build:
+      context: .
+    network_mode: none
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    command:
+      - medaudit-evaluate-context-compilation
+      - --dataset
+      - /app/data/synthetic_cases/context_compilation_development.json
+
   evaluate-explicit-query-routing-holdout:
     extends: evaluate-explicit-query-routing
     user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"

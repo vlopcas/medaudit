@@ -37,3 +37,4 @@ para evitar a exposição indireta do corpus privado.
 - [Resultado 021: endurecimento do prompt contra instruções](021-security-hardened-prompt-development.md)
 - [Resultado 022: gate determinístico de segurança da evidência](022-deterministic-evidence-safety-gate-development.md)
 - [Resultado 023: holdout do gate determinístico de segurança](023-deterministic-evidence-safety-gate-holdout.md)
+- [Resultado 024: compilação de contexto em desenvolvimento](024-context-compilation-development.md)
