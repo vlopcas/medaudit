@@ -189,7 +189,10 @@ próximo marco é avaliar essa fronteira de integração antes de conectá-la ao
 roteador principal. O desenvolvimento atingiu 100% nos cinco casos e na
 segurança de emissão do request: desabilitado, budget, revisão e erro do
 compilador não produziram request. O próximo marco é um holdout sintético
-inédito do gateway; o roteador permanece inalterado.
+inédito do gateway; o roteador permanece inalterado. O holdout atingiu 100% nos
+cinco casos e na segurança de emissão. O próximo marco é injetar o gateway como
+dependência opcional do roteador, sem mudar o padrão desabilitado e sem chamar
+modelo.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em

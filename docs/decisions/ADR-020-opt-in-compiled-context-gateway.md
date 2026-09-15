@@ -48,3 +48,8 @@ com payloads sensíveis.
 - verificar que a telemetria não contém texto nem identificadores;
 - manter qualquer chamada de modelo fora deste componente;
 - avaliar o gateway antes de conectá-lo ao roteador principal.
+
+O desenvolvimento atingiu 5/5 e o holdout congelado posterior também atingiu
+5/5, ambos com 100% na correspondência entre status e presença de request. O
+gateway está, portanto, autorizado a ser uma dependência opcional do roteador;
+o modo padrão continua `disabled` e esta decisão não inclui chamada de modelo.

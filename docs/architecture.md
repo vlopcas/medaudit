@@ -180,7 +180,10 @@ estado, contagens, tokens, budget e duração; o componente não possui cliente 
 LLM e ainda não é chamado pelo `RoutedEvidenceFirstPipeline`.
 Em desenvolvimento sintético, o gateway atingiu 5/5 tanto na correspondência
 esperada quanto na regra request-presente-se-e-somente-se-`prepared`. Ele segue
-fora do roteador até passar por holdout inédito.
+fora do roteador até passar por holdout inédito. O holdout posterior atingiu
+5/5 nas duas métricas, incluindo curto-circuito desabilitado, bundle incompleto,
+revisões e deduplicação compartilhada. Isso autoriza somente a injeção opcional
+do gateway no roteador, mantendo o padrão desabilitado e sem chamada de modelo.
 
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no

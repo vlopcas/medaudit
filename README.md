@@ -183,7 +183,10 @@ telemetria contém apenas estados, códigos, contagens, tokens e duração. O ga
 não possui cliente de modelo e ainda não está conectado ao roteador principal.
 No desenvolvimento sintético, ele atingiu 5/5 em correspondência exata e
 segurança de emissão: somente o caso preparado recebeu request. O próximo gate
-é um holdout próprio antes de qualquer conexão ao roteador.
+é um holdout próprio antes de qualquer conexão ao roteador. Esse holdout atingiu
+5/5 em correspondência e segurança de emissão, incluindo bundle incompleto,
+revisões e evidência compartilhada. O gateway está autorizado a ser injetado no
+roteador como dependência opcional, ainda desabilitada por padrão.
 
 ## Ambiente de desenvolvimento
 
