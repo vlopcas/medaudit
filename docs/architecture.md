@@ -141,6 +141,10 @@ cada evidência aos passos. Testes comprovam equivalência exata com o construto
 anterior e recusam contextos bloqueados ou adulterados. O caminho padrão do
 runtime ainda não usa esse renderer e nenhuma chamada adicional de LLM foi
 habilitada.
+Uma avaliação adversarial separada aceitou o controle íntegro e recusou as doze
+mutações de status, budget, identidade, confiança e provenance, atingindo 13/13
+casos. A fronteira está autorizada apenas a avançar para holdout estrutural
+inédito e continua opt-in.
 
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no

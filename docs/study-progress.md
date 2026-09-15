@@ -147,6 +147,10 @@ anterior quando o contexto está completo. Budget inconsistente, confiança
 adulterada, grupo vazio ou referência ausente são recusados. O próximo marco é
 avaliar essa fronteira de integração em casos sintéticos adversariais antes de
 qualquer adoção pelo runtime.
+Essa avaliação adversarial atingiu 100% nos 13 casos: o controle íntegro foi
+aceito e as doze mutações inseguras foram recusadas. O próximo marco é congelar
+um holdout estrutural inédito; compilador, renderer e modelo continuam fora do
+caminho padrão e do corpus privado.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em

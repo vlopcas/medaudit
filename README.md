@@ -151,6 +151,9 @@ está autorizado a ganhar uma integração opt-in com a síntese decomposta, mas
 modelo local e o corpus privado permanecem bloqueados. O renderer opt-in agora
 produz o mesmo `LLMRequest` anterior somente para contextos `ready` e revalida
 budget, confiança, IDs e vínculos por passo; ele ainda não controla o runtime.
+No desenvolvimento adversarial, aceitou o controle íntegro e recusou 12/12
+mutações inseguras. A fronteira ainda precisa passar por holdout estrutural
+inédito antes de qualquer ativação.
 
 ## Ambiente de desenvolvimento
 

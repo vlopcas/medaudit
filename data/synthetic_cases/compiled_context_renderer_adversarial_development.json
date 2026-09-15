@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "policy": "compiled-context-renderer-adversarial-v1",
+  "notice": "Conteúdo integralmente sintético, sem reprodução de documentos reais.",
+  "base_context": {
+    "question": "Compare alfa e beta.",
+    "evidence_groups": [
+      {"step_id": "alfa", "scope": "alfa", "evidence": [
+        {"evidence_id": "alfa-c1", "document_id": "alfa-doc", "text": "Alfa possui o primeiro fato sintético."},
+        {"evidence_id": "alfa-c2", "document_id": "alfa-doc", "text": "Alfa possui o segundo fato sintético."}
+      ]},
+      {"step_id": "beta", "scope": "beta", "evidence": [
+        {"evidence_id": "beta-c1", "document_id": "beta-doc", "text": "Beta possui o terceiro fato sintético."}
+      ]}
+    ]
+  },
+  "cases": [
+    {"id": "renderer-adv-001", "category": "valid_control", "mutation": "none", "expected": {"accepted": true}},
+    {"id": "renderer-adv-002", "category": "status", "mutation": "non_ready_status", "expected": {"accepted": false, "error": "compiled grounded generation requires ready context"}},
+    {"id": "renderer-adv-003", "category": "budget", "mutation": "budget_overflow", "expected": {"accepted": false, "error": "compiled context has an invalid token budget"}},
+    {"id": "renderer-adv-004", "category": "budget", "mutation": "accounting_mismatch", "expected": {"accepted": false, "error": "compiled context has an invalid token budget"}},
+    {"id": "renderer-adv-005", "category": "identity", "mutation": "duplicate_item_id", "expected": {"accepted": false, "error": "compiled context item ids must be unique"}},
+    {"id": "renderer-adv-006", "category": "identity", "mutation": "duplicate_group_id", "expected": {"accepted": false, "error": "compiled context group ids must be unique"}},
+    {"id": "renderer-adv-007", "category": "trust", "mutation": "untrusted_instruction", "expected": {"accepted": false, "error": "compiled instruction must be trusted control"}},
+    {"id": "renderer-adv-008", "category": "trust", "mutation": "trusted_query", "expected": {"accepted": false, "error": "query and evidence must remain untrusted data"}},
+    {"id": "renderer-adv-009", "category": "trust", "mutation": "trusted_evidence", "expected": {"accepted": false, "error": "query and evidence must remain untrusted data"}},
+    {"id": "renderer-adv-010", "category": "provenance", "mutation": "missing_evidence_reference", "expected": {"accepted": false, "error": "compiled group references missing evidence"}},
+    {"id": "renderer-adv-011", "category": "provenance", "mutation": "wrong_step_binding", "expected": {"accepted": false, "error": "compiled group has invalid step-scoped evidence"}},
+    {"id": "renderer-adv-012", "category": "provenance", "mutation": "unreferenced_evidence", "expected": {"accepted": false, "error": "compiled context contains unreferenced evidence"}},
+    {"id": "renderer-adv-013", "category": "provenance", "mutation": "empty_group", "expected": {"accepted": false, "error": "compiled group has invalid step-scoped evidence"}}
+  ]
+}
