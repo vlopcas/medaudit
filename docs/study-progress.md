@@ -203,7 +203,11 @@ mas obteve 83,3% (5/6) de correspondência: uma consulta que combinava origem
 externa e atualidade foi classificada como recuperação direta. A candidata não
 foi promovida. O próximo marco é desenvolver uma regra composicional para essa
 classe de dependência externa em dados sintéticos separados e só então, se os
-gates passarem, congelar outro holdout inédito. Nenhum modelo foi liberado.
+gates passarem, congelar outro holdout inédito. A candidata composicional
+posterior atingiu 100% nos dez fluxos e na segurança de emissão, distinguindo
+consulta externa atual de menções documentais estáticas. O próximo marco é
+congelar um novo holdout com formulações e controles inéditos. Nenhum modelo foi
+liberado.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em

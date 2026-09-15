@@ -69,3 +69,9 @@ O holdout integrado posterior manteve 6/6 na segurança de emissão, mas atingiu
 classificada como recuperação direta. Portanto, a unidade integrada não foi
 promovida. O holdout permanece congelado; qualquer nova candidata deve ser
 desenvolvida em dados separados e enfrentar outro holdout inédito.
+
+No ciclo de desenvolvimento separado, marcadores externos genéricos passaram a
+exigir conjuntamente ação de consulta, origem externa e atualidade. A candidata
+atingiu 10/10 em correspondência e segurança de emissão, inclusive diante de
+menções documentais estáticas. Isso autoriza apenas um novo holdout sintético;
+não altera o resultado nem os dados do holdout anterior.

@@ -197,8 +197,11 @@ gateway experimental produziu request. No holdout integrado, a segurança de
 emissão permaneceu em 100%, mas a correspondência caiu para 83,3% (5/6): uma
 consulta inédita que combinava origem externa e atualidade foi roteada como
 recuperação direta. A candidata integrada não foi promovida. O próximo ciclo
-deve corrigir essa classe de falso negativo em desenvolvimento e, se aprovada,
-enfrentar outro holdout inédito antes de qualquer avanço da síntese.
+passou a exigir, para marcadores genéricos, a composição entre ação de consulta,
+origem externa e atualidade. Em desenvolvimento, essa candidata atingiu 10/10
+em correspondência e segurança de emissão, incluindo controles documentais
+estáticos. Ela está autorizada somente a enfrentar outro holdout inédito antes
+de qualquer avanço da síntese.
 
 ## Ambiente de desenvolvimento
 

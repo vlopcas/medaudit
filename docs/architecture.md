@@ -196,7 +196,11 @@ continua experimental. No holdout inédito, preservou 6/6 na segurança de
 emissão, porém atingiu apenas 5/6 na correspondência: uma dependência externa
 formulada pela composição de origem e atualidade seguiu para recuperação
 direta. A promoção foi rejeitada; o holdout permanece congelado e a correção
-deve ocorrer em desenvolvimento separado antes de nova avaliação inédita.
+deve ocorrer em desenvolvimento separado antes de nova avaliação inédita. A
+nova candidata trata formulações genéricas como dependência externa somente
+quando ação de consulta, origem externa e atualidade aparecem juntas. Ela
+atingiu 10/10 no desenvolvimento integrado, com controles negativos para
+menções documentais, e ainda precisa de outro holdout inédito.
 
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no

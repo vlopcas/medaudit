@@ -49,3 +49,4 @@ para evitar a exposição indireta do corpus privado.
 - [Resultado 033: holdout do gateway de contexto compilado](033-compiled-context-gateway-holdout.md)
 - [Resultado 034: integração roteador-gateway em desenvolvimento](034-routed-compiled-integration-development.md)
 - [Resultado 035: holdout da integração roteador-gateway](035-routed-compiled-integration-holdout.md)
+- [Resultado 036: composição de dependência externa em desenvolvimento](036-external-dependency-composition-development.md)
