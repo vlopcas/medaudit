@@ -134,6 +134,14 @@ budgets limítrofes, colisões e precedência de recusas. O contrato está aprov
 para uma integração opt-in à síntese decomposta; o modelo local e o corpus
 privado continuam bloqueados.
 
+Um renderer opt-in transforma apenas um `CompiledContext` em estado `ready` no
+mesmo `LLMRequest` decomposto já validado. Antes da renderização, ele revalida o
+budget contabilizado, unicidade dos IDs, fronteiras de confiança e vínculos de
+cada evidência aos passos. Testes comprovam equivalência exata com o construtor
+anterior e recusam contextos bloqueados ou adulterados. O caminho padrão do
+runtime ainda não usa esse renderer e nenhuma chamada adicional de LLM foi
+habilitada.
+
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no
 desenvolvimento e não pertence ao fluxo principal.

@@ -1,6 +1,7 @@
 """Provider-neutral deterministic context compilation."""
 
 from dataclasses import dataclass, replace
+from datetime import date
 from enum import StrEnum
 from typing import Protocol
 
@@ -81,6 +82,16 @@ class ContextItem:
 
 
 @dataclass(frozen=True, slots=True)
+class CompiledContextGroup:
+    """Content-free step metadata used to render selected evidence safely."""
+
+    step_id: str
+    scope: str | None
+    reference_date: date | None
+    evidence_ids: tuple[str, ...]
+
+
+@dataclass(frozen=True, slots=True)
 class ContextExclusion:
     """Content-free audit record for an item not included in context."""
 
@@ -96,6 +107,7 @@ class CompiledContext:
     token_budget: int
     estimated_tokens: int
     items: tuple[ContextItem, ...] = ()
+    groups: tuple[CompiledContextGroup, ...] = ()
     exclusions: tuple[ContextExclusion, ...] = ()
 
     @property
@@ -245,10 +257,29 @@ def compile_decomposed_context(
         if selected_steps == required_steps
         else ContextStatus.BUDGET_EXCEEDED
     )
+    groups: tuple[CompiledContextGroup, ...] = ()
+    if status is ContextStatus.READY:
+        evidence_items = [
+            item for item in selected if item.kind is ContextItemKind.EVIDENCE
+        ]
+        groups = tuple(
+            CompiledContextGroup(
+                step_id=group.step.step_id,
+                scope=group.step.scope,
+                reference_date=group.step.reference_date,
+                evidence_ids=tuple(
+                    item.item_id
+                    for item in evidence_items
+                    if group.step.step_id in item.step_ids
+                ),
+            )
+            for group in bundle.groups
+        )
     return CompiledContext(
         status=status,
         token_budget=token_budget,
         estimated_tokens=used_tokens,
         items=tuple(selected),
+        groups=groups,
         exclusions=tuple(exclusions),
     )

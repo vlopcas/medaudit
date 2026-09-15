@@ -29,7 +29,10 @@ Adotar a terceira opção como componente inicialmente isolado. O compilador:
 - produz estados `ready`, `insufficient_evidence`, `budget_exceeded` ou
   `needs_review` antes de qualquer chamada de modelo.
 
-O componente não integra o runtime nem renderiza um prompt nesta decisão.
+Um renderer opt-in pode converter somente contextos `ready` no `LLMRequest`
+decomposto. Ele revalida budget, inventário, confiança, IDs e vínculos por passo
+antes de produzir o payload. O runtime continua sem adotar esse caminho por
+padrão.
 
 ## Consequências
 
@@ -42,6 +45,10 @@ A estimativa padrão por bytes é determinística, não exata. Um adaptador futu
 poderá usar o tokenizer do modelo sem alterar o contrato. A política de seleção
 inicial também é deliberadamente simples e deverá ser comparada antes de ganhar
 compressão, reranking ou outras heurísticas.
+
+O renderer foi comparado ao construtor de request anterior e produziu o mesmo
+contrato, payload e schema para um pacote sem exclusões. Contextos bloqueados ou
+adulterados falham antes de qualquer chamada de modelo.
 
 ## Como validar
 

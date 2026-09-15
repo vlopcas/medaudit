@@ -3,6 +3,7 @@
 from medaudit.rag.aggregation import group_decomposition_evidence
 from medaudit.rag.context import (
     CompiledContext,
+    CompiledContextGroup,
     ContextExclusion,
     ContextExclusionReason,
     ContextItem,
@@ -39,6 +40,8 @@ from medaudit.rag.pipeline import (
     RoutedEvidenceFirstPipeline,
 )
 from medaudit.rag.prompt import (
+    DECOMPOSED_GROUNDED_INSTRUCTION,
+    build_compiled_decomposed_grounded_request,
     build_decomposed_grounded_request,
     build_grounded_request,
 )
@@ -52,8 +55,10 @@ from medaudit.rag.validation import (
 )
 
 __all__ = [
+    "DECOMPOSED_GROUNDED_INSTRUCTION",
     "ClaimSupport",
     "CompiledContext",
+    "CompiledContextGroup",
     "ContextExclusion",
     "ContextExclusionReason",
     "ContextItem",
@@ -83,6 +88,7 @@ __all__ = [
     "TokenEstimator",
     "Utf8ByteTokenEstimator",
     "assess_decomposed_evidence",
+    "build_compiled_decomposed_grounded_request",
     "build_decomposed_grounded_request",
     "build_grounded_request",
     "compile_decomposed_context",

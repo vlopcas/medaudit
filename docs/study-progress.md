@@ -141,7 +141,12 @@ holdout inédito com budgets limítrofes, conflitos e combinações de política
 o runtime permanece inalterado. Esse holdout atingiu 100% nos oito casos e em
 todas as categorias. O contrato pode agora ganhar um renderer opt-in para
 `LLMRequest`, com equivalência estrutural testada e geração condicionada a
-`can_generate`; isso não promove o modelo local nem libera o corpus privado.
+`can_generate`; isso não promove o modelo local nem libera o corpus privado. O
+renderer opt-in foi implementado e produz request idêntico ao construtor
+anterior quando o contexto está completo. Budget inconsistente, confiança
+adulterada, grupo vazio ou referência ausente são recusados. O próximo marco é
+avaliar essa fronteira de integração em casos sintéticos adversariais antes de
+qualquer adoção pelo runtime.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em
