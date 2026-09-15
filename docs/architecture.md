@@ -178,6 +178,9 @@ Seu modo padrão `disabled` não compila nem produz request. O modo
 retornam sem request e com códigos genéricos. A telemetria registra apenas
 estado, contagens, tokens, budget e duração; o componente não possui cliente de
 LLM e ainda não é chamado pelo `RoutedEvidenceFirstPipeline`.
+Em desenvolvimento sintético, o gateway atingiu 5/5 tanto na correspondência
+esperada quanto na regra request-presente-se-e-somente-se-`prepared`. Ele segue
+fora do roteador até passar por holdout inédito.
 
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no

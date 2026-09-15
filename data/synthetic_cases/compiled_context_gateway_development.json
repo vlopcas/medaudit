@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "policy": "compiled-context-gateway-development-v1",
+  "notice": "Conteúdo integralmente sintético, sem reprodução de documentos reais.",
+  "cases": [
+    {
+      "id": "gateway-dev-001",
+      "category": "disabled",
+      "mode": "disabled",
+      "token_budget": 100,
+      "question": "Compare alfa confidencial e beta confidencial.",
+      "evidence_groups": [
+        {"step_id": "alfa", "scope": "alfa", "evidence": [{"evidence_id": "alfa-c1", "document_id": "alfa-doc", "text": "SEGREDO_SINTETICO alfa."}]},
+        {"step_id": "beta", "scope": "beta", "evidence": [{"evidence_id": "beta-c1", "document_id": "beta-doc", "text": "SEGREDO_SINTETICO beta."}]}
+      ],
+      "expected": {"status": "disabled", "context_status": null, "failure_code": "integration_disabled", "request_present": false, "item_count": 0, "group_count": 0, "exclusion_count": 0}
+    },
+    {
+      "id": "gateway-dev-002",
+      "category": "prepared",
+      "mode": "experimental",
+      "token_budget": 100,
+      "question": "Compare alfa confidencial e beta confidencial.",
+      "evidence_groups": [
+        {"step_id": "alfa", "scope": "alfa", "evidence": [{"evidence_id": "alfa-c1", "document_id": "alfa-doc", "text": "SEGREDO_SINTETICO alfa."}]},
+        {"step_id": "beta", "scope": "beta", "evidence": [{"evidence_id": "beta-c1", "document_id": "beta-doc", "text": "SEGREDO_SINTETICO beta."}]}
+      ],
+      "expected": {"status": "prepared", "context_status": "ready", "failure_code": null, "request_present": true, "item_count": 4, "group_count": 2, "exclusion_count": 0}
+    },
+    {
+      "id": "gateway-dev-003",
+      "category": "budget",
+      "mode": "experimental",
+      "token_budget": 1,
+      "question": "Compare alfa confidencial e beta confidencial.",
+      "evidence_groups": [
+        {"step_id": "alfa", "scope": "alfa", "evidence": [{"evidence_id": "alfa-c1", "document_id": "alfa-doc", "text": "SEGREDO_SINTETICO alfa."}]},
+        {"step_id": "beta", "scope": "beta", "evidence": [{"evidence_id": "beta-c1", "document_id": "beta-doc", "text": "SEGREDO_SINTETICO beta."}]}
+      ],
+      "expected": {"status": "blocked", "context_status": "budget_exceeded", "failure_code": "context_budget_exceeded", "request_present": false, "item_count": 0, "group_count": 0, "exclusion_count": 2}
+    },
+    {
+      "id": "gateway-dev-004",
+      "category": "review",
+      "mode": "experimental",
+      "token_budget": 100,
+      "review_evidence_ids": ["alfa-c1"],
+      "question": "Compare alfa confidencial e beta confidencial.",
+      "evidence_groups": [
+        {"step_id": "alfa", "scope": "alfa", "evidence": [{"evidence_id": "alfa-c1", "document_id": "alfa-doc", "text": "SEGREDO_SINTETICO alfa."}]},
+        {"step_id": "beta", "scope": "beta", "evidence": [{"evidence_id": "beta-c1", "document_id": "beta-doc", "text": "SEGREDO_SINTETICO beta."}]}
+      ],
+      "expected": {"status": "blocked", "context_status": "needs_review", "failure_code": "context_needs_review", "request_present": false, "item_count": 2, "group_count": 0, "exclusion_count": 1}
+    },
+    {
+      "id": "gateway-dev-005",
+      "category": "compiler_rejection",
+      "mode": "experimental",
+      "token_budget": 100,
+      "estimator": "rejecting",
+      "question": "Compare alfa confidencial e beta confidencial.",
+      "evidence_groups": [
+        {"step_id": "alfa", "scope": "alfa", "evidence": [{"evidence_id": "alfa-c1", "document_id": "alfa-doc", "text": "SEGREDO_SINTETICO alfa."}]},
+        {"step_id": "beta", "scope": "beta", "evidence": [{"evidence_id": "beta-c1", "document_id": "beta-doc", "text": "SEGREDO_SINTETICO beta."}]}
+      ],
+      "expected": {"status": "rejected", "context_status": null, "failure_code": "compiler_rejected_input", "request_present": false, "item_count": 0, "group_count": 0, "exclusion_count": 0}
+    }
+  ]
+}

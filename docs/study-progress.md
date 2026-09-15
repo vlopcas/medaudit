@@ -186,7 +186,10 @@ cliente de LLM. Em modo experimental, ele somente retorna request após
 compilação e renderização aprovadas; budget ou contratos inválidos falham
 fechados com códigos genéricos. A telemetria omite consultas, textos e IDs. O
 próximo marco é avaliar essa fronteira de integração antes de conectá-la ao
-roteador principal.
+roteador principal. O desenvolvimento atingiu 100% nos cinco casos e na
+segurança de emissão do request: desabilitado, budget, revisão e erro do
+compilador não produziram request. O próximo marco é um holdout sintético
+inédito do gateway; o roteador permanece inalterado.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em

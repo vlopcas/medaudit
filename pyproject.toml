@@ -69,6 +69,7 @@ medaudit-benchmark-local-decomposed-grounding = "medaudit.evaluation.local_decom
 medaudit-evaluate-evidence-safety = "medaudit.evaluation.evidence_safety:main"
 medaudit-evaluate-context-compilation = "medaudit.evaluation.context_compilation:main"
 medaudit-evaluate-compiled-context-security = "medaudit.evaluation.compiled_context_security:main"
+medaudit-evaluate-compiled-context-gateway = "medaudit.evaluation.compiled_context_gateway:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/medaudit"]

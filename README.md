@@ -181,6 +181,9 @@ um gateway desabilitado por padrão: em modo experimental, ele compila e renderi
 somente contextos aprovados; em qualquer bloqueio não produz `LLMRequest`. Sua
 telemetria contém apenas estados, códigos, contagens, tokens e duração. O gateway
 não possui cliente de modelo e ainda não está conectado ao roteador principal.
+No desenvolvimento sintético, ele atingiu 5/5 em correspondência exata e
+segurança de emissão: somente o caso preparado recebeu request. O próximo gate
+é um holdout próprio antes de qualquer conexão ao roteador.
 
 ## Ambiente de desenvolvimento
 

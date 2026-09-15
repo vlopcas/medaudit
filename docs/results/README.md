@@ -45,3 +45,4 @@ para evitar a exposição indireta do corpus privado.
 - [Resultado 029: holdout do renderer de contexto selado](029-sealed-context-renderer-holdout.md)
 - [Resultado 030: harness de contexto selado em desenvolvimento](030-sealed-context-harness-development.md)
 - [Resultado 031: segundo holdout do renderer de contexto selado](031-sealed-context-renderer-holdout-v2.md)
+- [Resultado 032: gateway de contexto compilado em desenvolvimento](032-compiled-context-gateway-development.md)
