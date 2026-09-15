@@ -672,6 +672,25 @@ services:
       - /artifacts/routed-compiled-integration-holdout.local.json
       - --refuse-overwrite
 
+  evaluate-routed-compiled-integration-holdout-v2:
+    extends: evaluate-routed-compiled-integration
+    user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
+    volumes:
+      - type: bind
+        source: ./artifacts
+        target: /artifacts
+    command:
+      - medaudit-evaluate-routed-compiled-integration
+      - --dataset
+      - /app/data/synthetic_cases/routed_compiled_integration_holdout_v2.json
+      - --dataset-policy
+      - routed-compiled-integration-holdout-v2
+      - --expected-sha256
+      - b0e7168b233eefad27362b71c2e8ff8e1f2c3ad8b6c0158132b6708b1b1a0ee8
+      - --output
+      - /artifacts/routed-compiled-integration-holdout-v2.local.json
+      - --refuse-overwrite
+
   evaluate-explicit-query-routing-holdout:
     extends: evaluate-explicit-query-routing
     user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"

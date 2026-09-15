@@ -23,6 +23,7 @@ from medaudit.retrieval import BM25Index
 _NOTICE = "Conteúdo integralmente sintético, sem reprodução de documentos reais."
 _DEVELOPMENT_POLICY = "routed-compiled-integration-development-v1"
 _HOLDOUT_POLICY = "routed-compiled-integration-holdout-v1"
+_HOLDOUT_V2_POLICY = "routed-compiled-integration-holdout-v2"
 
 
 def load_dataset(
@@ -145,7 +146,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--dataset", type=Path, required=True)
     parser.add_argument(
         "--dataset-policy",
-        choices=(_DEVELOPMENT_POLICY, _HOLDOUT_POLICY),
+        choices=(_DEVELOPMENT_POLICY, _HOLDOUT_POLICY, _HOLDOUT_V2_POLICY),
         default=_DEVELOPMENT_POLICY,
     )
     parser.add_argument("--expected-sha256")
