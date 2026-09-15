@@ -148,7 +148,12 @@ inédito e continua opt-in. Nesse holdout, porém, a correspondência exata caiu
 para 25% e somente 2/7 mutações inseguras foram recusadas. Alterações de conteúdo
 pós-compilação, membership adicional e inversão de grupos atravessaram a
 fronteira. O renderer foi rejeitado para runtime; a próxima candidata deve usar
-representação canônica selada e invariantes completas de topologia.
+representação canônica selada e invariantes completas de topologia. Essa
+candidata agora anexa um SHA-256 determinístico que cobre todos os campos do
+contexto e é recalculado pelo renderer. Unicidade por grupo e correspondência
+bidirecional entre grupos e memberships continuam sendo validadas como regras
+semânticas. O digest não é autenticação contra execução de código e a candidata
+ainda não foi promovida nem integrada ao runtime.
 
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no

@@ -157,7 +157,11 @@ inédito antes de qualquer ativação.
 Esse holdout reprovou o renderer com apenas 25% de correspondência exata e
 28,57% de rejeição das mutações inseguras. Alterações pós-compilação de conteúdo
 e topologia não foram detectadas; a integração permanece bloqueada até existir
-uma representação canônica selada e novamente avaliada.
+uma representação canônica selada e novamente avaliada. A nova candidata já
+calcula um SHA-256 determinístico sobre todo o contexto representado e o
+renderer verifica o selo antes de usar qualquer campo, além de manter
+invariantes explícitas de topologia. Ela permanece fora do runtime e ainda
+precisa passar por desenvolvimento adversarial e por um novo holdout.
 
 ## Ambiente de desenvolvimento
 

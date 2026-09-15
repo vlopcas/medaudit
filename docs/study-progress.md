@@ -155,7 +155,14 @@ O holdout estrutural seguinte reprovou essa fronteira: apenas 25% de
 correspondência exata e 28,57% de rejeição das sete mutações inseguras.
 Alterações pós-compilação em conteúdo, membership adicional e ordem de grupos
 foram aceitas. O renderer não será ativado. O próximo ciclo deve formular um
-contexto canônico selado por digest e só depois enfrentar outro holdout.
+contexto canônico selado por digest e só depois enfrentar outro holdout. A nova
+candidata já serializa deterministicamente estado, budget, itens, ordem,
+confiança, provenance, grupos e exclusões e sela o resultado com SHA-256. O
+renderer recusa divergências antes de consumir os campos e mantém invariantes
+completas de topologia. Esse selo detecta alteração interna, mas não autentica
+um contexto contra quem possa recalcular o digest. O próximo marco é um dataset
+adversarial sintético de desenvolvimento; runtime, modelo e corpus privado
+continuam fora de escopo.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em

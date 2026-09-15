@@ -10,6 +10,7 @@ from medaudit.rag import (
     build_compiled_decomposed_grounded_request,
     build_decomposed_grounded_request,
     compile_decomposed_context,
+    context_integrity_is_valid,
 )
 
 
@@ -46,6 +47,22 @@ def make_bundle() -> DecompositionEvidenceBundle:
 
 
 class CompiledContextRequestTest(unittest.TestCase):
+    def test_compiler_seals_ready_and_blocked_contexts(self) -> None:
+        ready = compile_decomposed_context(
+            make_bundle(),
+            instruction=DECOMPOSED_GROUNDED_INSTRUCTION,
+            token_budget=10_000,
+        )
+        budget_exceeded = compile_decomposed_context(
+            make_bundle(),
+            instruction=DECOMPOSED_GROUNDED_INSTRUCTION,
+            token_budget=1,
+        )
+
+        self.assertTrue(context_integrity_is_valid(ready))
+        self.assertTrue(context_integrity_is_valid(budget_exceeded))
+        self.assertEqual(len(ready.integrity_sha256), 64)
+
     def test_ready_context_is_equivalent_to_existing_request(self) -> None:
         bundle = make_bundle()
         context = compile_decomposed_context(
@@ -85,7 +102,8 @@ class CompiledContextRequestTest(unittest.TestCase):
             ),
         )
 
-        with self.assertRaisesRegex(ValueError, "remain untrusted data"):
+        self.assertFalse(context_integrity_is_valid(tampered))
+        with self.assertRaisesRegex(ValueError, "content integrity mismatch"):
             build_compiled_decomposed_grounded_request(tampered)
 
     def test_renderer_rejects_missing_group_evidence(self) -> None:
@@ -98,7 +116,7 @@ class CompiledContextRequestTest(unittest.TestCase):
             context.groups[0], evidence_ids=("missing-c1",)
         )
 
-        with self.assertRaisesRegex(ValueError, "references missing evidence"):
+        with self.assertRaisesRegex(ValueError, "content integrity mismatch"):
             build_compiled_decomposed_grounded_request(
                 replace(context, groups=(tampered_group, *context.groups[1:]))
             )
@@ -110,7 +128,7 @@ class CompiledContextRequestTest(unittest.TestCase):
             token_budget=10_000,
         )
 
-        with self.assertRaisesRegex(ValueError, "invalid token budget"):
+        with self.assertRaisesRegex(ValueError, "content integrity mismatch"):
             build_compiled_decomposed_grounded_request(
                 replace(context, token_budget=context.estimated_tokens - 1)
             )
@@ -123,10 +141,31 @@ class CompiledContextRequestTest(unittest.TestCase):
         )
         shortened_group = replace(context.groups[0], evidence_ids=())
 
-        with self.assertRaisesRegex(ValueError, "invalid step-scoped evidence"):
+        with self.assertRaisesRegex(ValueError, "content integrity mismatch"):
             build_compiled_decomposed_grounded_request(
                 replace(context, groups=(shortened_group, *context.groups[1:]))
             )
+
+    def test_integrity_covers_order_and_provenance(self) -> None:
+        context = compile_decomposed_context(
+            make_bundle(),
+            instruction=DECOMPOSED_GROUNDED_INSTRUCTION,
+            token_budget=10_000,
+        )
+        reordered = replace(
+            context,
+            groups=tuple(reversed(context.groups)),
+        )
+        changed_provenance = replace(
+            context,
+            items=(
+                *context.items[:-1],
+                replace(context.items[-1], document_id="outro-doc"),
+            ),
+        )
+
+        self.assertFalse(context_integrity_is_valid(reordered))
+        self.assertFalse(context_integrity_is_valid(changed_provenance))
 
 
 if __name__ == "__main__":

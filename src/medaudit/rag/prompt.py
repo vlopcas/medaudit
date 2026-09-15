@@ -8,6 +8,7 @@ from medaudit.rag.context import (
     ContextItemKind,
     ContextStatus,
     ContextTrust,
+    context_integrity_is_valid,
 )
 from medaudit.rag.models import (
     DecompositionEvidenceBundle,
@@ -172,6 +173,8 @@ def build_compiled_decomposed_grounded_request(
     """Render only a complete, bounded and structurally separated context."""
     if context.status is not ContextStatus.READY or not context.can_generate:
         raise ValueError("compiled grounded generation requires ready context")
+    if not context_integrity_is_valid(context):
+        raise ValueError("compiled context content integrity mismatch")
     if (
         context.estimated_tokens > context.token_budget
         or sum(item.estimated_tokens for item in context.items)
@@ -200,7 +203,12 @@ def build_compiled_decomposed_grounded_request(
     ):
         raise ValueError("query and evidence must remain untrusted data")
     groups = []
+    declared_steps_by_evidence: dict[str, set[str]] = {
+        evidence_id: set() for evidence_id in evidence
+    }
     for group in context.groups:
+        if len(set(group.evidence_ids)) != len(group.evidence_ids):
+            raise ValueError("compiled group evidence ids must be unique")
         try:
             group_evidence = [evidence[item_id] for item_id in group.evidence_ids]
         except KeyError as error:
@@ -209,6 +217,8 @@ def build_compiled_decomposed_grounded_request(
             group.step_id not in item.step_ids for item in group_evidence
         ):
             raise ValueError("compiled group has invalid step-scoped evidence")
+        for item in group_evidence:
+            declared_steps_by_evidence[item.item_id].add(group.step_id)
         groups.append(
             {
                 "step_id": group.step_id,
@@ -233,6 +243,11 @@ def build_compiled_decomposed_grounded_request(
     }
     if referenced_ids != set(evidence):
         raise ValueError("compiled context contains unreferenced evidence")
+    if any(
+        set(item.step_ids) != declared_steps_by_evidence[item.item_id]
+        for item in evidence.values()
+    ):
+        raise ValueError("compiled evidence has unexpected step membership")
     return LLMRequest(
         instruction=instructions[0].text,
         input_text=json.dumps(

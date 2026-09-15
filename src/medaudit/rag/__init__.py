@@ -13,6 +13,7 @@ from medaudit.rag.context import (
     TokenEstimator,
     Utf8ByteTokenEstimator,
     compile_decomposed_context,
+    context_integrity_is_valid,
 )
 from medaudit.rag.decomposition import DeterministicDecompositionExecutor
 from medaudit.rag.evidence_safety import (
@@ -92,6 +93,7 @@ __all__ = [
     "build_decomposed_grounded_request",
     "build_grounded_request",
     "compile_decomposed_context",
+    "context_integrity_is_valid",
     "group_decomposition_evidence",
     "inspect_evidence_text",
     "validate_decomposed_grounded_response",

@@ -34,6 +34,14 @@ decomposto. Ele revalida budget, inventário, confiança, IDs e vínculos por pa
 antes de produzir o payload. O runtime continua sem adotar esse caminho por
 padrão.
 
+Depois de o primeiro holdout estrutural revelar alterações pós-compilação não
+detectadas, o compilador passou a selar cada `CompiledContext` produzido com um
+SHA-256 de sua serialização JSON canônica. O digest cobre estado, orçamento,
+conteúdo, ordem, confiança, provenance, grupos e exclusões. O renderer recalcula
+esse valor antes de ler os campos e também exige unicidade dentro de cada grupo
+e correspondência bidirecional entre os grupos declarados e os `step_ids` das
+evidências.
+
 ## Consequências
 
 Há um lugar único para explicar por que cada item foi incluído ou excluído e
@@ -50,6 +58,12 @@ O renderer foi comparado ao construtor de request anterior e produziu o mesmo
 contrato, payload e schema para um pacote sem exclusões. Contextos bloqueados ou
 adulterados falham antes de qualquer chamada de modelo.
 
+O SHA-256 sem chave detecta alteração acidental ou interna entre compilação e
+renderização; ele não autentica a origem e não protege contra um agente com
+execução de código capaz de alterar o contexto e recalcular o digest. Portanto,
+o selo complementa, mas não substitui, isolamento de processo, controle de
+acesso ou as invariantes semânticas do renderer.
+
 ## Como validar
 
 - testar separação de tipos e níveis de confiança;
@@ -57,4 +71,6 @@ adulterados falham antes de qualquer chamada de modelo.
 - testar deduplicação e conflito de identidade;
 - testar revisão sem reter texto rejeitado no resultado;
 - avaliar o contrato em desenvolvimento e depois em holdout sintético inédito;
+- testar que mudanças em qualquer campo representado invalidam o selo;
+- testar a topologia completa independentemente do digest;
 - manter o componente fora do runtime até esses gates serem aprovados.

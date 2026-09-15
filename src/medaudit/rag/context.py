@@ -1,5 +1,7 @@
 """Provider-neutral deterministic context compilation."""
 
+import hashlib
+import json
 from dataclasses import dataclass, replace
 from datetime import date
 from enum import StrEnum
@@ -109,10 +111,66 @@ class CompiledContext:
     items: tuple[ContextItem, ...] = ()
     groups: tuple[CompiledContextGroup, ...] = ()
     exclusions: tuple[ContextExclusion, ...] = ()
+    integrity_sha256: str = ""
 
     @property
     def can_generate(self) -> bool:
         return self.status is ContextStatus.READY
+
+
+def _context_integrity_sha256(context: CompiledContext) -> str:
+    payload = {
+        "status": context.status.value,
+        "token_budget": context.token_budget,
+        "estimated_tokens": context.estimated_tokens,
+        "items": [
+            {
+                "item_id": item.item_id,
+                "kind": item.kind.value,
+                "trust": item.trust.value,
+                "text": item.text,
+                "estimated_tokens": item.estimated_tokens,
+                "step_ids": list(item.step_ids),
+                "document_id": item.document_id,
+                "page": item.page,
+                "section": item.section,
+            }
+            for item in context.items
+        ],
+        "groups": [
+            {
+                "step_id": group.step_id,
+                "scope": group.scope,
+                "reference_date": (
+                    group.reference_date.isoformat() if group.reference_date else None
+                ),
+                "evidence_ids": list(group.evidence_ids),
+            }
+            for group in context.groups
+        ],
+        "exclusions": [
+            {"item_id": item.item_id, "reason": item.reason.value}
+            for item in context.exclusions
+        ],
+    }
+    canonical = json.dumps(
+        payload,
+        ensure_ascii=False,
+        separators=(",", ":"),
+        sort_keys=True,
+    ).encode("utf-8")
+    return hashlib.sha256(canonical).hexdigest()
+
+
+def _seal_context(context: CompiledContext) -> CompiledContext:
+    return replace(context, integrity_sha256=_context_integrity_sha256(context))
+
+
+def context_integrity_is_valid(context: CompiledContext) -> bool:
+    """Verify that no represented field changed after compilation."""
+    return bool(context.integrity_sha256) and (
+        context.integrity_sha256 == _context_integrity_sha256(context)
+    )
 
 
 def _same_evidence_identity(left: Evidence, right: Evidence) -> bool:
@@ -164,21 +222,27 @@ def compile_decomposed_context(
     )
     control_tokens = sum(item.estimated_tokens for item in control_items)
     if control_tokens > token_budget:
-        return CompiledContext(
-            status=ContextStatus.BUDGET_EXCEEDED,
-            token_budget=token_budget,
-            estimated_tokens=control_tokens,
-            exclusions=(
-                ContextExclusion("instruction", ContextExclusionReason.TOKEN_BUDGET),
-                ContextExclusion("query", ContextExclusionReason.TOKEN_BUDGET),
-            ),
+        return _seal_context(
+            CompiledContext(
+                status=ContextStatus.BUDGET_EXCEEDED,
+                token_budget=token_budget,
+                estimated_tokens=control_tokens,
+                exclusions=(
+                    ContextExclusion(
+                        "instruction", ContextExclusionReason.TOKEN_BUDGET
+                    ),
+                    ContextExclusion("query", ContextExclusionReason.TOKEN_BUDGET),
+                ),
+            )
         )
     if not bundle.can_generate or not bundle.groups:
-        return CompiledContext(
-            status=ContextStatus.INSUFFICIENT_EVIDENCE,
-            token_budget=token_budget,
-            estimated_tokens=control_tokens,
-            items=control_items,
+        return _seal_context(
+            CompiledContext(
+                status=ContextStatus.INSUFFICIENT_EVIDENCE,
+                token_budget=token_budget,
+                estimated_tokens=control_tokens,
+                items=control_items,
+            )
         )
 
     unique: dict[str, tuple[Evidence, ContextItem]] = {}
@@ -231,12 +295,14 @@ def compile_decomposed_context(
                 ),
             )
     if review_required:
-        return CompiledContext(
-            status=ContextStatus.NEEDS_REVIEW,
-            token_budget=token_budget,
-            estimated_tokens=control_tokens,
-            items=control_items,
-            exclusions=tuple(exclusions),
+        return _seal_context(
+            CompiledContext(
+                status=ContextStatus.NEEDS_REVIEW,
+                token_budget=token_budget,
+                estimated_tokens=control_tokens,
+                items=control_items,
+                exclusions=tuple(exclusions),
+            )
         )
 
     selected = list(control_items)
@@ -275,11 +341,13 @@ def compile_decomposed_context(
             )
             for group in bundle.groups
         )
-    return CompiledContext(
-        status=status,
-        token_budget=token_budget,
-        estimated_tokens=used_tokens,
-        items=tuple(selected),
-        groups=groups,
-        exclusions=tuple(exclusions),
+    return _seal_context(
+        CompiledContext(
+            status=status,
+            token_budget=token_budget,
+            estimated_tokens=used_tokens,
+            items=tuple(selected),
+            groups=groups,
+            exclusions=tuple(exclusions),
+        )
     )
