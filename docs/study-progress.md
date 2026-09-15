@@ -181,6 +181,12 @@ mutações inéditas recusadas e nenhuma transformação nula. A fronteira selad
 está autorizada a avançar para uma integração experimental opt-in com falha
 fechada e telemetria sem conteúdo sensível. Modelo local, corpus privado e
 runtime padrão continuam bloqueados.
+O gateway dessa integração foi implementado desabilitado por padrão e sem
+cliente de LLM. Em modo experimental, ele somente retorna request após
+compilação e renderização aprovadas; budget ou contratos inválidos falham
+fechados com códigos genéricos. A telemetria omite consultas, textos e IDs. O
+próximo marco é avaliar essa fronteira de integração antes de conectá-la ao
+roteador principal.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em

@@ -176,7 +176,11 @@ descartados e outras associações. O instrumento está autorizado a produzir um
 novo holdout, mas o renderer continua fora do runtime. O segundo holdout passou
 em 11/11 casos, com dez mutações inéditas recusadas e nenhuma mutação nula. A
 fronteira está aprovada apenas para uma integração experimental e opt-in, ainda
-sem habilitar modelo local ou corpus privado.
+sem habilitar modelo local ou corpus privado. Essa integração agora existe como
+um gateway desabilitado por padrão: em modo experimental, ele compila e renderiza
+somente contextos aprovados; em qualquer bloqueio não produz `LLMRequest`. Sua
+telemetria contém apenas estados, códigos, contagens, tokens e duração. O gateway
+não possui cliente de modelo e ainda não está conectado ao roteador principal.
 
 ## Ambiente de desenvolvimento
 

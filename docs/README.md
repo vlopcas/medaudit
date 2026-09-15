@@ -74,6 +74,8 @@ O contrato de afirmações com suporte por passo está em
 [ADR-018](decisions/ADR-018-claim-scoped-decomposed-generation.md).
 A fronteira explícita de compilação de contexto está em
 [ADR-019](decisions/ADR-019-explicit-context-compilation-boundary.md).
+O gateway experimental e opt-in para essa fronteira está em
+[ADR-020](decisions/ADR-020-opt-in-compiled-context-gateway.md).
 
 ## Conteúdo permitido
 

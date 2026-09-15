@@ -171,6 +171,14 @@ experimental explicitamente opt-in e com falha fechada. Essa decisão não
 promove a síntese local, não libera o corpus privado e não altera o runtime
 padrão.
 
+O `CompiledContextGateway` materializa essa integração como componente isolado.
+Seu modo padrão `disabled` não compila nem produz request. O modo
+`experimental` recebe um pacote agrupado, compila o contexto, exige estado
+`ready`, verifica o selo e só então produz o `LLMRequest`. Falhas esperadas
+retornam sem request e com códigos genéricos. A telemetria registra apenas
+estado, contagens, tokens, budget e duração; o componente não possui cliente de
+LLM e ainda não é chamado pelo `RoutedEvidenceFirstPipeline`.
+
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no
 desenvolvimento e não pertence ao fluxo principal.
@@ -241,6 +249,7 @@ em `data/processed/`, que é ignorado pelo Git.
 - [ADR-017: pacotes de evidências preservam o escopo dos passos](decisions/ADR-017-step-scoped-evidence-bundles.md)
 - [ADR-018: geração decomposta usa afirmações com suporte por passo](decisions/ADR-018-claim-scoped-decomposed-generation.md)
 - [ADR-019: compilação de contexto é uma fronteira explícita](decisions/ADR-019-explicit-context-compilation-boundary.md)
+- [ADR-020: gateway opt-in para contexto compilado](decisions/ADR-020-opt-in-compiled-context-gateway.md)
 
 ## Ambiente de execução
 

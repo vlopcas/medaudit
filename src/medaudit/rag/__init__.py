@@ -23,6 +23,13 @@ from medaudit.rag.evidence_safety import (
     assess_decomposed_evidence,
     inspect_evidence_text,
 )
+from medaudit.rag.integration import (
+    CompiledContextGateway,
+    CompiledRequestMode,
+    CompiledRequestResult,
+    CompiledRequestStatus,
+    CompiledRequestTelemetry,
+)
 from medaudit.rag.models import (
     DecompositionEvidenceBundle,
     DecompositionExecution,
@@ -59,7 +66,12 @@ __all__ = [
     "DECOMPOSED_GROUNDED_INSTRUCTION",
     "ClaimSupport",
     "CompiledContext",
+    "CompiledContextGateway",
     "CompiledContextGroup",
+    "CompiledRequestMode",
+    "CompiledRequestResult",
+    "CompiledRequestStatus",
+    "CompiledRequestTelemetry",
     "ContextExclusion",
     "ContextExclusionReason",
     "ContextItem",
