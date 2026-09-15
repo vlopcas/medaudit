@@ -165,6 +165,11 @@ seção quando declaradas. Essas mudanças corrigem o instrumento, sem promover 
 renderer ou reinterpretar o holdout já executado. O harness corrigido atingiu
 7/7 no desenvolvimento, cobrindo os campos antes descartados. Ele pode agora
 ser usado para um novo holdout congelado.
+O segundo holdout atingiu 11/11, recusando dez mutações inéditas e efetivas. A
+fronteira selada está aprovada para ser conectada ao pipeline por um caminho
+experimental explicitamente opt-in e com falha fechada. Essa decisão não
+promove a síntese local, não libera o corpus privado e não altera o runtime
+padrão.
 
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no

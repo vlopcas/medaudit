@@ -64,6 +64,12 @@ execução de código capaz de alterar o contexto e recalcular o digest. Portant
 o selo complementa, mas não substitui, isolamento de processo, controle de
 acesso ou as invariantes semânticas do renderer.
 
+Após um primeiro holdout inconclusivo por mutações nulas, o harness passou a
+exigir que cada transformação altere efetivamente o contexto. Um segundo
+holdout congelado atingiu 11/11 casos e recusou 10/10 mutações. Isso autoriza
+somente uma integração experimental opt-in, com falha fechada; o runtime padrão
+e a promoção do modelo permanecem fora desta decisão.
+
 ## Como validar
 
 - testar separação de tipos e níveis de confiança;

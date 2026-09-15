@@ -173,7 +173,10 @@ implementada, e o adaptador sintético agora preserva provenance opcional; falta
 validar o harness corrigido em desenvolvimento antes de outro congelamento. A
 validação posterior atingiu 100% nos sete casos, cobrindo os campos antes
 descartados e outras associações. O instrumento está autorizado a produzir um
-novo holdout, mas o renderer continua fora do runtime.
+novo holdout, mas o renderer continua fora do runtime. O segundo holdout passou
+em 11/11 casos, com dez mutações inéditas recusadas e nenhuma mutação nula. A
+fronteira está aprovada apenas para uma integração experimental e opt-in, ainda
+sem habilitar modelo local ou corpus privado.
 
 ## Ambiente de desenvolvimento
 

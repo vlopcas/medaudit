@@ -176,6 +176,11 @@ e cobertas por testes. O próximo marco imediato é validar o harness corrigido 
 desenvolvimento antes de criar o novo holdout. Essa validação atingiu 100% nos
 sete casos, com seis mutações efetivas recusadas. O próximo marco é congelar um
 novo holdout; o anterior permanece inconclusivo e não será reutilizado.
+O segundo holdout válido atingiu 100% nos onze casos: controle aceito, dez
+mutações inéditas recusadas e nenhuma transformação nula. A fronteira selada
+está autorizada a avançar para uma integração experimental opt-in com falha
+fechada e telemetria sem conteúdo sensível. Modelo local, corpus privado e
+runtime padrão continuam bloqueados.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em
