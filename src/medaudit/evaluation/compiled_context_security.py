@@ -377,6 +377,14 @@ def _mutate(context: CompiledContext, mutation: str) -> CompiledContext:
                 *context.groups[1:],
             ),
         )
+    if mutation == "added_group_reference_date":
+        return replace(
+            context,
+            groups=(
+                replace(context.groups[0], reference_date=date(2099, 12, 31)),
+                *context.groups[1:],
+            ),
+        )
     if mutation == "swapped_group_scopes":
         group_left = context.groups[0]
         group_right = context.groups[1]
@@ -494,6 +502,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             "compiled-context-renderer-holdout-v1",
             "sealed-context-renderer-development-v1",
             "sealed-context-renderer-holdout-v1",
+            "sealed-context-harness-development-v1",
         ),
         default="compiled-context-renderer-adversarial-v1",
     )

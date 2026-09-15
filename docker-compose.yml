@@ -567,6 +567,15 @@ services:
       - /artifacts/sealed-context-renderer-holdout.local.json
       - --refuse-overwrite
 
+  evaluate-sealed-context-harness:
+    extends: evaluate-compiled-context-security
+    command:
+      - medaudit-evaluate-compiled-context-security
+      - --dataset
+      - /app/data/synthetic_cases/sealed_context_harness_development.json
+      - --dataset-policy
+      - sealed-context-harness-development-v1
+
   evaluate-explicit-query-routing-holdout:
     extends: evaluate-explicit-query-routing
     user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"

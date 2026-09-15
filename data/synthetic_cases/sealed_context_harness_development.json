@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "policy": "sealed-context-harness-development-v1",
+  "notice": "Conteúdo integralmente sintético, sem reprodução de documentos reais.",
+  "base_context": {
+    "question": "Compare jade e quartzo no cenário sintético.",
+    "evidence_groups": [
+      {
+        "step_id": "jade",
+        "scope": "escopo sintético de jade",
+        "evidence": [
+          {
+            "evidence_id": "jade-c1",
+            "document_id": "jade-doc",
+            "page": 31,
+            "section": "Jade principal",
+            "text": "Jade apresenta um fato integralmente sintético."
+          }
+        ]
+      },
+      {
+        "step_id": "quartzo",
+        "scope": "escopo sintético de quartzo",
+        "evidence": [
+          {
+            "evidence_id": "quartzo-c1",
+            "document_id": "quartzo-doc",
+            "page": 41,
+            "section": "Quartzo principal",
+            "text": "Quartzo apresenta outro fato integralmente sintético."
+          }
+        ]
+      }
+    ]
+  },
+  "cases": [
+    {"id": "harness-dev-001", "category": "valid_control", "mutation": "none", "expected": {"accepted": true}},
+    {"id": "harness-dev-002", "category": "page", "mutation": "cleared_evidence_page", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "harness-dev-003", "category": "section", "mutation": "cleared_evidence_section", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "harness-dev-004", "category": "scope", "mutation": "swapped_group_scopes", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "harness-dev-005", "category": "reference_date", "mutation": "added_group_reference_date", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "harness-dev-006", "category": "association", "mutation": "swapped_document_ids", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "harness-dev-007", "category": "order", "mutation": "rotated_items", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}}
+  ]
+}

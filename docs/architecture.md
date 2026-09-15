@@ -162,7 +162,9 @@ os campos desafiados. A arquitetura não foi promovida; o harness deve validar
 que cada mutação realmente altera o objeto antes de uma nova avaliação.
 O avaliador agora aborta diante de mutação nula, e o adaptador preserva página e
 seção quando declaradas. Essas mudanças corrigem o instrumento, sem promover o
-renderer ou reinterpretar o holdout já executado.
+renderer ou reinterpretar o holdout já executado. O harness corrigido atingiu
+7/7 no desenvolvimento, cobrindo os campos antes descartados. Ele pode agora
+ser usado para um novo holdout congelado.
 
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no
