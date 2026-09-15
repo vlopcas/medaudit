@@ -162,7 +162,10 @@ renderer recusa divergências antes de consumir os campos e mantém invariantes
 completas de topologia. Esse selo detecta alteração interna, mas não autentica
 um contexto contra quem possa recalcular o digest. O próximo marco é um dataset
 adversarial sintético de desenvolvimento; runtime, modelo e corpus privado
-continuam fora de escopo.
+continuam fora de escopo. Esse desenvolvimento atingiu 100% nos 21 casos e em
+todas as onze categorias, recusando as vinte mutações e aceitando o controle.
+A candidata está autorizada somente a enfrentar um novo holdout sintético
+congelado; nenhuma integração ao runtime foi liberada.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em

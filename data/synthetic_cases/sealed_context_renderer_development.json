@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "policy": "sealed-context-renderer-development-v1",
+  "notice": "Conteúdo integralmente sintético, sem reprodução de documentos reais.",
+  "base_context": {
+    "question": "Compare alfa e beta na data sintética informada.",
+    "evidence_groups": [
+      {
+        "step_id": "alfa",
+        "scope": "alfa",
+        "reference_date": "2030-01-01",
+        "evidence": [
+          {
+            "evidence_id": "alfa-c1",
+            "document_id": "alfa-doc",
+            "page": 1,
+            "section": "Seção alfa",
+            "text": "Alfa possui o primeiro fato integralmente sintético."
+          },
+          {
+            "evidence_id": "alfa-c2",
+            "document_id": "alfa-doc",
+            "page": 2,
+            "section": "Seção alfa complementar",
+            "text": "Alfa possui o segundo fato integralmente sintético."
+          }
+        ]
+      },
+      {
+        "step_id": "beta",
+        "scope": "beta",
+        "reference_date": "2030-01-01",
+        "evidence": [
+          {
+            "evidence_id": "beta-c1",
+            "document_id": "beta-doc",
+            "page": 3,
+            "section": "Seção beta",
+            "text": "Beta possui o terceiro fato integralmente sintético."
+          }
+        ]
+      }
+    ]
+  },
+  "cases": [
+    {"id": "sealed-dev-001", "category": "valid_control", "mutation": "none", "expected": {"accepted": true}},
+    {"id": "sealed-dev-002", "category": "seal", "mutation": "changed_integrity_digest", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "sealed-dev-003", "category": "content", "mutation": "changed_instruction_text", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "sealed-dev-004", "category": "content", "mutation": "changed_query_text", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "sealed-dev-005", "category": "content", "mutation": "changed_evidence_text", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "sealed-dev-006", "category": "inventory", "mutation": "changed_evidence_kind", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "sealed-dev-007", "category": "budget", "mutation": "budget_overflow", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "sealed-dev-008", "category": "budget", "mutation": "accounting_mismatch", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "sealed-dev-009", "category": "budget", "mutation": "changed_evidence_token_count", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "sealed-dev-010", "category": "trust", "mutation": "trusted_evidence", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "sealed-dev-011", "category": "topology", "mutation": "unexpected_step_membership", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "sealed-dev-012", "category": "topology", "mutation": "duplicate_group_evidence_id", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "sealed-dev-013", "category": "order", "mutation": "reversed_items", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "sealed-dev-014", "category": "order", "mutation": "reversed_groups", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "sealed-dev-015", "category": "order", "mutation": "reversed_group_evidence", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "sealed-dev-016", "category": "provenance", "mutation": "changed_evidence_document", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "sealed-dev-017", "category": "provenance", "mutation": "changed_evidence_page", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "sealed-dev-018", "category": "provenance", "mutation": "changed_evidence_section", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "sealed-dev-019", "category": "group_metadata", "mutation": "changed_group_scope", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "sealed-dev-020", "category": "group_metadata", "mutation": "changed_group_reference_date", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}},
+    {"id": "sealed-dev-021", "category": "exclusions", "mutation": "added_exclusion", "expected": {"accepted": false, "error": "compiled context content integrity mismatch"}}
+  ]
+}

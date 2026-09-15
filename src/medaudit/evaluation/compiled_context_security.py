@@ -5,6 +5,7 @@ import json
 from collections import Counter
 from collections.abc import Sequence
 from dataclasses import replace
+from datetime import date
 from pathlib import Path
 from typing import Any
 
@@ -13,6 +14,9 @@ from medaudit.evaluation.query_understanding import verify_input
 from medaudit.rag import (
     DECOMPOSED_GROUNDED_INSTRUCTION,
     CompiledContext,
+    ContextExclusion,
+    ContextExclusionReason,
+    ContextItemKind,
     ContextStatus,
     ContextTrust,
     build_compiled_decomposed_grounded_request,
@@ -191,6 +195,95 @@ def _mutate(context: CompiledContext, mutation: str) -> CompiledContext:
         )
     if mutation == "reversed_groups":
         return replace(context, groups=tuple(reversed(context.groups)))
+    if mutation == "changed_integrity_digest":
+        return replace(context, integrity_sha256="0" * 64)
+    if mutation == "changed_evidence_kind":
+        return replace(
+            context,
+            items=(
+                *context.items[:2],
+                replace(context.items[2], kind=ContextItemKind.QUERY),
+                *context.items[3:],
+            ),
+        )
+    if mutation == "changed_evidence_token_count":
+        return replace(
+            context,
+            items=(
+                *context.items[:2],
+                replace(
+                    context.items[2],
+                    estimated_tokens=context.items[2].estimated_tokens + 1,
+                ),
+                *context.items[3:],
+            ),
+        )
+    if mutation == "changed_evidence_document":
+        return replace(
+            context,
+            items=(
+                *context.items[:2],
+                replace(context.items[2], document_id="forged-doc"),
+                *context.items[3:],
+            ),
+        )
+    if mutation == "changed_evidence_page":
+        return replace(
+            context,
+            items=(
+                *context.items[:2],
+                replace(context.items[2], page=999),
+                *context.items[3:],
+            ),
+        )
+    if mutation == "changed_evidence_section":
+        return replace(
+            context,
+            items=(
+                *context.items[:2],
+                replace(context.items[2], section="seção adulterada"),
+                *context.items[3:],
+            ),
+        )
+    if mutation == "reversed_items":
+        return replace(context, items=tuple(reversed(context.items)))
+    if mutation == "changed_group_scope":
+        return replace(
+            context,
+            groups=(
+                replace(context.groups[0], scope="escopo adulterado"),
+                *context.groups[1:],
+            ),
+        )
+    if mutation == "changed_group_reference_date":
+        return replace(
+            context,
+            groups=(
+                replace(context.groups[0], reference_date=date(2099, 1, 1)),
+                *context.groups[1:],
+            ),
+        )
+    if mutation == "reversed_group_evidence":
+        return replace(
+            context,
+            groups=(
+                replace(
+                    context.groups[0],
+                    evidence_ids=tuple(reversed(context.groups[0].evidence_ids)),
+                ),
+                *context.groups[1:],
+            ),
+        )
+    if mutation == "added_exclusion":
+        return replace(
+            context,
+            exclusions=(
+                *context.exclusions,
+                ContextExclusion(
+                    "forged-item", ContextExclusionReason.TOKEN_BUDGET
+                ),
+            ),
+        )
     raise ValueError(f"unsupported compiled context mutation: {mutation}")
 
 
@@ -260,6 +353,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         choices=(
             "compiled-context-renderer-adversarial-v1",
             "compiled-context-renderer-holdout-v1",
+            "sealed-context-renderer-development-v1",
         ),
         default="compiled-context-renderer-adversarial-v1",
     )

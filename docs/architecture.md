@@ -153,7 +153,9 @@ candidata agora anexa um SHA-256 determinístico que cobre todos os campos do
 contexto e é recalculado pelo renderer. Unicidade por grupo e correspondência
 bidirecional entre grupos e memberships continuam sendo validadas como regras
 semânticas. O digest não é autenticação contra execução de código e a candidata
-ainda não foi promovida nem integrada ao runtime.
+ainda não foi promovida nem integrada ao runtime. No desenvolvimento sintético,
+ela acertou 21/21 casos e recusou 20/20 mutações. O próximo limite é um novo
+holdout estrutural congelado, não a ativação do caminho padrão.
 
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no

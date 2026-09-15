@@ -161,7 +161,10 @@ uma representação canônica selada e novamente avaliada. A nova candidata já
 calcula um SHA-256 determinístico sobre todo o contexto representado e o
 renderer verifica o selo antes de usar qualquer campo, além de manter
 invariantes explícitas de topologia. Ela permanece fora do runtime e ainda
-precisa passar por desenvolvimento adversarial e por um novo holdout.
+precisa passar por desenvolvimento adversarial e por um novo holdout. O
+desenvolvimento adversarial seguinte atingiu 100% nos 21 casos: o controle foi
+aceito e as vinte mutações foram recusadas em todas as categorias. Isso autoriza
+somente a criação de um novo holdout congelado; não autoriza o runtime.
 
 ## Ambiente de desenvolvimento
 
