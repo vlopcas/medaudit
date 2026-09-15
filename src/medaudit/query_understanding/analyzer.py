@@ -14,11 +14,25 @@ _EXTERNAL_SIGNALS = (
     "cotacao atual",
     "dados em tempo real",
     "preco atual",
-    "portal externo",
+)
+_EXTERNAL_ACTIONS = (
+    "acesse",
+    "buscar",
+    "busque",
+    "consulte",
+    "consultar",
+    "informado",
+    "obtenha",
+)
+_EXTERNAL_SOURCES = (
+    "api",
+    "base externa",
+    "fonte externa",
+    "portal",
+    "servico externo",
     "sistema externo",
 )
-_EXTERNAL_SOURCES = ("api", "portal", "sistema externo")
-_FRESHNESS_SIGNALS = ("atual", "hoje", "mais recente", "tempo real")
+_FRESHNESS_SIGNALS = ("agora", "atual", "hoje", "mais recente", "tempo real")
 _COMPARISON_SIGNALS = (
     "compare",
     "comparar",
@@ -65,7 +79,8 @@ class DeterministicQueryAnalyzer:
         procedure = _first_match(_PROCEDURE_CODE, normalized)
         reference_dates = _extract_dates(normalized)
         requires_external_data = _contains_any(folded, _EXTERNAL_SIGNALS) or (
-            _contains_any(folded, _EXTERNAL_SOURCES)
+            _contains_any(folded, _EXTERNAL_ACTIONS)
+            and _contains_any(folded, _EXTERNAL_SOURCES)
             and _contains_any(folded, _FRESHNESS_SIGNALS)
         )
         requires_decomposition = (

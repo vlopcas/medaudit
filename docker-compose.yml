@@ -646,6 +646,13 @@ services:
       - --dataset
       - /app/data/synthetic_cases/routed_compiled_integration_development.json
 
+  evaluate-routed-compiled-external-development:
+    extends: evaluate-routed-compiled-integration
+    command:
+      - medaudit-evaluate-routed-compiled-integration
+      - --dataset
+      - /app/data/synthetic_cases/routed_compiled_external_development.json
+
   evaluate-routed-compiled-integration-holdout:
     extends: evaluate-routed-compiled-integration
     user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"

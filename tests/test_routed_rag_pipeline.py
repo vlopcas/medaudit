@@ -61,6 +61,15 @@ class RoutedEvidenceFirstPipelineTest(unittest.TestCase):
         self.assertIsNone(decision.execution)
         self.assertIsNone(decision.evidence_bundle)
 
+    def test_composed_external_dependency_stops_before_retrieval(self) -> None:
+        decision = self.pipeline.retrieve(
+            "Busque hoje o estado sintético em uma base externa."
+        )
+
+        self.assertEqual(decision.route, QueryRoute.REQUIRES_EXTERNAL_DATA)
+        self.assertIsNone(decision.retrieval)
+        self.assertIsNone(decision.plan)
+
     def test_explicitly_configured_executor_runs_decomposition(self) -> None:
         executor = DeterministicDecompositionExecutor(
             comparison_pipeline=self.evidence_pipeline,
