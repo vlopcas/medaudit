@@ -611,6 +611,25 @@ services:
       - --dataset
       - /app/data/synthetic_cases/compiled_context_gateway_development.json
 
+  evaluate-compiled-context-gateway-holdout:
+    extends: evaluate-compiled-context-gateway
+    user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
+    volumes:
+      - type: bind
+        source: ./artifacts
+        target: /artifacts
+    command:
+      - medaudit-evaluate-compiled-context-gateway
+      - --dataset
+      - /app/data/synthetic_cases/compiled_context_gateway_holdout.json
+      - --dataset-policy
+      - compiled-context-gateway-holdout-v1
+      - --expected-sha256
+      - c8b43428fa6d14bfe37254c29cd2fd9e48c62082e7d60850dd1b2d021a264e34
+      - --output
+      - /artifacts/compiled-context-gateway-holdout.local.json
+      - --refuse-overwrite
+
   evaluate-explicit-query-routing-holdout:
     extends: evaluate-explicit-query-routing
     user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"

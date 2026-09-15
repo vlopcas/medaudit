@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "policy": "compiled-context-gateway-holdout-v1",
+  "notice": "Conteúdo integralmente sintético, sem reprodução de documentos reais.",
+  "cases": [
+    {
+      "id": "gateway-holdout-001",
+      "category": "disabled_short_circuit",
+      "mode": "disabled",
+      "estimator": "rejecting",
+      "token_budget": 100,
+      "question": "Compare cobre e estanho.",
+      "evidence_groups": [
+        {"step_id": "cobre", "scope": "cobre", "evidence": [{"evidence_id": "cobre-c1", "document_id": "cobre-doc", "text": "Cobre contém um fato sintético."}]},
+        {"step_id": "estanho", "scope": "estanho", "evidence": [{"evidence_id": "estanho-c1", "document_id": "estanho-doc", "text": "Estanho contém outro fato sintético."}]}
+      ],
+      "expected": {"status": "disabled", "context_status": null, "failure_code": "integration_disabled", "request_present": false, "item_count": 0, "group_count": 0, "exclusion_count": 0}
+    },
+    {
+      "id": "gateway-holdout-002",
+      "category": "incomplete_bundle",
+      "mode": "experimental",
+      "bundle_ready": false,
+      "token_budget": 100,
+      "question": "Compare cobre e estanho.",
+      "evidence_groups": [
+        {"step_id": "cobre", "scope": "cobre", "evidence": [{"evidence_id": "cobre-c1", "document_id": "cobre-doc", "text": "Cobre contém um fato sintético."}]},
+        {"step_id": "estanho", "scope": "estanho", "evidence": [{"evidence_id": "estanho-c1", "document_id": "estanho-doc", "text": "Estanho contém outro fato sintético."}]}
+      ],
+      "expected": {"status": "blocked", "context_status": "insufficient_evidence", "failure_code": "context_insufficient_evidence", "request_present": false, "item_count": 2, "group_count": 0, "exclusion_count": 0}
+    },
+    {
+      "id": "gateway-holdout-003",
+      "category": "multiple_review",
+      "mode": "experimental",
+      "token_budget": 100,
+      "review_evidence_ids": ["cobre-c1", "estanho-c1"],
+      "question": "Compare cobre e estanho.",
+      "evidence_groups": [
+        {"step_id": "cobre", "scope": "cobre", "evidence": [{"evidence_id": "cobre-c1", "document_id": "cobre-doc", "text": "Cobre contém um fato sintético."}]},
+        {"step_id": "estanho", "scope": "estanho", "evidence": [{"evidence_id": "estanho-c1", "document_id": "estanho-doc", "text": "Estanho contém outro fato sintético."}]}
+      ],
+      "expected": {"status": "blocked", "context_status": "needs_review", "failure_code": "context_needs_review", "request_present": false, "item_count": 2, "group_count": 0, "exclusion_count": 2}
+    },
+    {
+      "id": "gateway-holdout-004",
+      "category": "shared_evidence",
+      "mode": "experimental",
+      "token_budget": 100,
+      "question": "Compare cobre e estanho.",
+      "evidence_groups": [
+        {"step_id": "cobre", "scope": "cobre", "evidence": [{"evidence_id": "shared-c1", "document_id": "shared-doc", "text": "Fato sintético compartilhado."}]},
+        {"step_id": "estanho", "scope": "estanho", "evidence": [{"evidence_id": "shared-c1", "document_id": "shared-doc", "text": "Fato sintético compartilhado."}]}
+      ],
+      "expected": {"status": "prepared", "context_status": "ready", "failure_code": null, "request_present": true, "item_count": 3, "group_count": 2, "exclusion_count": 1}
+    },
+    {
+      "id": "gateway-holdout-005",
+      "category": "shared_review",
+      "mode": "experimental",
+      "token_budget": 100,
+      "review_evidence_ids": ["shared-c1"],
+      "question": "Compare cobre e estanho.",
+      "evidence_groups": [
+        {"step_id": "cobre", "scope": "cobre", "evidence": [{"evidence_id": "shared-c1", "document_id": "shared-doc", "text": "Fato sintético compartilhado."}]},
+        {"step_id": "estanho", "scope": "estanho", "evidence": [{"evidence_id": "shared-c1", "document_id": "shared-doc", "text": "Fato sintético compartilhado."}]}
+      ],
+      "expected": {"status": "blocked", "context_status": "needs_review", "failure_code": "context_needs_review", "request_present": false, "item_count": 2, "group_count": 0, "exclusion_count": 2}
+    }
+  ]
+}
