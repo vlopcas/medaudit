@@ -47,3 +47,4 @@ para evitar a exposição indireta do corpus privado.
 - [Resultado 031: segundo holdout do renderer de contexto selado](031-sealed-context-renderer-holdout-v2.md)
 - [Resultado 032: gateway de contexto compilado em desenvolvimento](032-compiled-context-gateway-development.md)
 - [Resultado 033: holdout do gateway de contexto compilado](033-compiled-context-gateway-holdout.md)
+- [Resultado 034: integração roteador-gateway em desenvolvimento](034-routed-compiled-integration-development.md)

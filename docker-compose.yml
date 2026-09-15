@@ -630,6 +630,22 @@ services:
       - /artifacts/compiled-context-gateway-holdout.local.json
       - --refuse-overwrite
 
+  evaluate-routed-compiled-integration:
+    build:
+      context: .
+    network_mode: none
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    command:
+      - medaudit-evaluate-routed-compiled-integration
+      - --dataset
+      - /app/data/synthetic_cases/routed_compiled_integration_development.json
+
   evaluate-explicit-query-routing-holdout:
     extends: evaluate-explicit-query-routing
     user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"

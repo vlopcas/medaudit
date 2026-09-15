@@ -191,6 +191,10 @@ agora existe em `retrieve_with_compiled_request`, sem alterar `retrieve`: soment
 uma decomposição executada com bundle chega ao gateway. Rotas diretas, externas
 ou sem executor não produzem preparação, e nenhuma chamada de modelo foi
 adicionada.
+Na avaliação integrada de desenvolvimento, os sete fluxos atingiram 100% em
+correspondência e segurança de emissão. Apenas a decomposição suficiente com
+gateway experimental produziu request. O próximo gate é um holdout integrado
+antes de qualquer avanço da síntese.
 
 ## Ambiente de desenvolvimento
 

@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "policy": "routed-compiled-integration-development-v1",
+  "notice": "Conteúdo integralmente sintético, sem reprodução de documentos reais.",
+  "cases": [
+    {"id": "routed-gateway-dev-001", "category": "direct_route", "query": "Qual é a regra alfa sintética?", "expected": {"route": "direct_retrieval", "execution_present": false, "bundle_present": false, "preparation_present": false, "preparation_status": null, "context_status": null, "request_present": false}},
+    {"id": "routed-gateway-dev-002", "category": "external_route", "query": "Consulte o preço atual no portal externo.", "expected": {"route": "requires_external_data", "execution_present": false, "bundle_present": false, "preparation_present": false, "preparation_status": null, "context_status": null, "request_present": false}},
+    {"id": "routed-gateway-dev-003", "category": "missing_executor", "query": "Compare regra alfa com regra beta.", "expected": {"route": "requires_decomposition", "execution_present": false, "bundle_present": false, "preparation_present": false, "preparation_status": null, "context_status": null, "request_present": false}},
+    {"id": "routed-gateway-dev-004", "category": "disabled_gateway", "query": "Compare regra alfa com regra beta.", "executor": true, "expected": {"route": "requires_decomposition", "execution_present": true, "bundle_present": true, "preparation_present": true, "preparation_status": "disabled", "context_status": null, "request_present": false}},
+    {"id": "routed-gateway-dev-005", "category": "prepared", "query": "Compare regra alfa com regra beta.", "executor": true, "gateway_mode": "experimental", "expected": {"route": "requires_decomposition", "execution_present": true, "bundle_present": true, "preparation_present": true, "preparation_status": "prepared", "context_status": "ready", "request_present": true}},
+    {"id": "routed-gateway-dev-006", "category": "insufficient_retrieval", "query": "Compare regra alfa com regra beta.", "executor": true, "gateway_mode": "experimental", "threshold": 100, "expected": {"route": "requires_decomposition", "execution_present": true, "bundle_present": true, "preparation_present": true, "preparation_status": "blocked", "context_status": "insufficient_evidence", "request_present": false}},
+    {"id": "routed-gateway-dev-007", "category": "review", "query": "Compare regra alfa com regra beta.", "executor": true, "gateway_mode": "experimental", "review_evidence_ids": ["chunk-alpha"], "expected": {"route": "requires_decomposition", "execution_present": true, "bundle_present": true, "preparation_present": true, "preparation_status": "blocked", "context_status": "needs_review", "request_present": false}}
+  ]
+}

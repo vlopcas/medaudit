@@ -189,6 +189,10 @@ separada. Ela reutiliza `retrieve` e só encaminha um bundle de decomposição j
 executado ao gateway injetado. Sem bundle, retorna apenas a decisão roteada; com
 o gateway padrão, retorna telemetria `disabled` e nenhum request. O método
 original e todas as demais rotas permanecem inalterados.
+A avaliação integrada atingiu 7/7 em correspondência e presença segura de
+request, cobrindo rotas direta e externa, ausência de executor, modo
+desabilitado, preparação válida, evidência insuficiente e revisão. A unidade
+continua experimental até enfrentar holdout inédito.
 
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no

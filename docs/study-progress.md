@@ -197,6 +197,9 @@ Essa injeção foi implementada por um método composto separado, preservando a
 API de recuperação existente. Testes cobrem padrão desabilitado, ativação
 experimental, rota direta e decomposição sem executor. O próximo marco é
 avaliar a integração roteador-gateway como unidade antes de qualquer síntese.
+Essa avaliação atingiu 100% nos sete fluxos e na segurança de emissão de
+request. O próximo marco é congelar um holdout integrado com casos inéditos;
+nenhum modelo foi liberado.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em

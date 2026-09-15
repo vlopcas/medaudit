@@ -59,3 +59,7 @@ A conexão usa o método separado `retrieve_with_compiled_request`. Ele preserva
 possui execução e bundle. Rotas diretas, externas ou sem executor não atravessam
 essa fronteira. O resultado composto mantém decisão de retrieval e preparação
 distintas; nenhuma resposta generativa é produzida.
+
+A avaliação integrada em desenvolvimento atingiu 7/7 em correspondência e
+segurança de emissão de request. Isso autoriza somente um holdout da unidade
+roteador-gateway; a conexão permanece experimental e sem cliente de LLM.
