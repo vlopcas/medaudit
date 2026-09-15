@@ -436,10 +436,13 @@ def evaluate(
     category_correct: Counter[str] = Counter()
     for case in payload["cases"]:
         expected = case["expected"]
-        try:
-            build_compiled_decomposed_grounded_request(
-                _mutate(context, case["mutation"])
+        mutated_context = _mutate(context, case["mutation"])
+        if case["mutation"] != "none" and mutated_context == context:
+            raise ValueError(
+                f"compiled context mutation produced no change: {case['mutation']}"
             )
+        try:
+            build_compiled_decomposed_grounded_request(mutated_context)
             accepted = True
             error = None
         except ValueError as exception:

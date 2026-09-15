@@ -168,7 +168,9 @@ somente a criação de um novo holdout congelado; não autoriza o runtime.
 O holdout posterior recusou todas as nove mutações que efetivamente alteraram o
 contexto, mas três casos eram no-ops produzidos pelo adaptador do benchmark. O
 resultado é inconclusivo, não uma aprovação: o próximo avaliador deve recusar
-mutações nulas antes de congelarmos outro holdout.
+mutações nulas antes de congelarmos outro holdout. Essa pré-condição já foi
+implementada, e o adaptador sintético agora preserva provenance opcional; falta
+validar o harness corrigido em desenvolvimento antes de outro congelamento.
 
 ## Ambiente de desenvolvimento
 

@@ -43,3 +43,11 @@ mutação gerar um contexto igual ao original e deve construir provenance e
 metadados compatíveis com os campos que pretende desafiar. Depois disso será
 necessário congelar um dataset novo. Renderer, runtime, modelo e corpus privado
 continuam inalterados.
+
+## Remediação posterior
+
+Sem reexecutar ou alterar este holdout, o harness passou a abortar quando uma
+mutação não modifica o `CompiledContext`. O adaptador sintético também passou a
+preservar `page` e `section` opcionais. Dois testes automatizados cobrem essas
+pré-condições. Essa correção valida o instrumento futuro; não muda as métricas
+nem a decisão desta execução.

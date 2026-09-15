@@ -151,8 +151,8 @@ def build_bundle(case: dict[str, Any]) -> DecompositionEvidenceBundle:
                             document_id=item["document_id"],
                             rank=index,
                             score=1.0,
-                            page=None,
-                            section=None,
+                            page=item.get("page"),
+                            section=item.get("section"),
                         ),
                         text=item["text"],
                     )

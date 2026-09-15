@@ -171,6 +171,9 @@ mutações eram no-ops causados pelo adaptador do benchmark. O resultado foi
 classificado como inconclusivo. O próximo marco é adicionar uma pré-condição
 que rejeite mutações nulas, preservar os campos sob teste e só então congelar
 outro holdout; o conjunto comprometido não será ajustado nem reexecutado.
+A pré-condição e a preservação opcional de página e seção já foram implementadas
+e cobertas por testes. O próximo marco imediato é validar o harness corrigido em
+desenvolvimento antes de criar o novo holdout.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em
