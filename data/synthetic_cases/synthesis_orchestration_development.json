@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "policy": "synthesis-orchestration-development-v1",
+  "notice": "Conteúdo integralmente sintético, sem reprodução de documentos reais.",
+  "cases": [
+    {"id": "synthesis-orchestration-dev-001", "category": "disabled", "query": "Compare regra alfa com regra beta.", "executor": true, "gateway_mode": "experimental", "expected": {"status": "disabled", "failure_code": "synthesis_disabled", "client_called": false, "answer_present": false, "answer_status": null, "claim_count": 0}},
+    {"id": "synthesis-orchestration-dev-002", "category": "missing_request", "query": "Qual é a regra alfa sintética?", "synthesis_mode": "experimental", "expected": {"status": "blocked", "failure_code": "request_not_prepared", "client_called": false, "answer_present": false, "answer_status": null, "claim_count": 0}},
+    {"id": "synthesis-orchestration-dev-003", "category": "gateway_blocked", "query": "Compare regra alfa com regra beta.", "executor": true, "synthesis_mode": "experimental", "expected": {"status": "blocked", "failure_code": "request_not_prepared", "client_called": false, "answer_present": false, "answer_status": null, "claim_count": 0}},
+    {"id": "synthesis-orchestration-dev-004", "category": "validated_answer", "query": "Compare regra alfa com regra beta.", "executor": true, "gateway_mode": "experimental", "synthesis_mode": "experimental", "client_behavior": "valid", "expected": {"status": "validated", "failure_code": null, "client_called": true, "answer_present": true, "answer_status": "answered", "claim_count": 2}},
+    {"id": "synthesis-orchestration-dev-005", "category": "validated_abstention", "query": "Compare regra alfa com regra beta.", "executor": true, "gateway_mode": "experimental", "synthesis_mode": "experimental", "client_behavior": "abstention", "expected": {"status": "validated", "failure_code": null, "client_called": true, "answer_present": true, "answer_status": "insufficient_evidence", "claim_count": 0}},
+    {"id": "synthesis-orchestration-dev-006", "category": "response_rejected", "query": "Compare regra alfa com regra beta.", "executor": true, "gateway_mode": "experimental", "synthesis_mode": "experimental", "client_behavior": "cross_group", "expected": {"status": "rejected", "failure_code": "response_rejected", "client_called": true, "answer_present": false, "answer_status": null, "claim_count": 0}},
+    {"id": "synthesis-orchestration-dev-007", "category": "client_failure", "query": "Compare regra alfa com regra beta.", "executor": true, "gateway_mode": "experimental", "synthesis_mode": "experimental", "client_behavior": "failure", "expected": {"status": "failed", "failure_code": "client_failed", "client_called": true, "answer_present": false, "answer_status": null, "claim_count": 0}}
+  ]
+}

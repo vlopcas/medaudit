@@ -71,6 +71,7 @@ medaudit-evaluate-context-compilation = "medaudit.evaluation.context_compilation
 medaudit-evaluate-compiled-context-security = "medaudit.evaluation.compiled_context_security:main"
 medaudit-evaluate-compiled-context-gateway = "medaudit.evaluation.compiled_context_gateway:main"
 medaudit-evaluate-routed-compiled-integration = "medaudit.evaluation.routed_compiled_integration:main"
+medaudit-evaluate-synthesis-orchestration = "medaudit.evaluation.synthesis_orchestration:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/medaudit"]

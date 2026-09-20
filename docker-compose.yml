@@ -691,6 +691,22 @@ services:
       - /artifacts/routed-compiled-integration-holdout-v2.local.json
       - --refuse-overwrite
 
+  evaluate-synthesis-orchestration:
+    build:
+      context: .
+    network_mode: none
+    read_only: true
+    tmpfs:
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    command:
+      - medaudit-evaluate-synthesis-orchestration
+      - --dataset
+      - /app/data/synthetic_cases/synthesis_orchestration_development.json
+
   evaluate-explicit-query-routing-holdout:
     extends: evaluate-explicit-query-routing
     user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"

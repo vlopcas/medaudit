@@ -42,6 +42,13 @@ from medaudit.rag.models import (
     RoutedRetrievalDecision,
     StepEvidenceGroup,
 )
+from medaudit.rag.orchestration import (
+    GroundedSynthesisOrchestrator,
+    SynthesisMode,
+    SynthesisResult,
+    SynthesisStatus,
+    SynthesisTelemetry,
+)
 from medaudit.rag.pipeline import (
     EvidenceFirstPipeline,
     FrozenTopScorePolicy,
@@ -94,12 +101,17 @@ __all__ = [
     "FrozenTopScorePolicy",
     "GroundedAnswer",
     "GroundedClaim",
+    "GroundedSynthesisOrchestrator",
     "RetrievalDecision",
     "RetrievalStatus",
     "RoutedCompiledRequestResult",
     "RoutedEvidenceFirstPipeline",
     "RoutedRetrievalDecision",
     "StepEvidenceGroup",
+    "SynthesisMode",
+    "SynthesisResult",
+    "SynthesisStatus",
+    "SynthesisTelemetry",
     "TokenEstimator",
     "Utf8ByteTokenEstimator",
     "assess_decomposed_evidence",
