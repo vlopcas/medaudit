@@ -75,3 +75,10 @@ exigir conjuntamente ação de consulta, origem externa e atualidade. A candidat
 atingiu 10/10 em correspondência e segurança de emissão, inclusive diante de
 menções documentais estáticas. Isso autoriza apenas um novo holdout sintético;
 não altera o resultado nem os dados do holdout anterior.
+
+O segundo holdout integrado posterior atingiu 10/10 nas duas métricas e em
+todas as seis categorias. A fronteira roteador-gateway está aprovada como
+caminho estrutural experimental e opt-in. Essa decisão não inclui cliente de
+LLM, chamada externa, modelo local, corpus privado ou ativação no runtime
+padrão; uma futura orquestração deve permanecer separada e desabilitada por
+padrão.

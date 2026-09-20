@@ -201,7 +201,12 @@ passou a exigir, para marcadores genéricos, a composição entre ação de cons
 origem externa e atualidade. Em desenvolvimento, essa candidata atingiu 10/10
 em correspondência e segurança de emissão, incluindo controles documentais
 estáticos. Ela está autorizada somente a enfrentar outro holdout inédito antes
-de qualquer avanço da síntese.
+de qualquer avanço da síntese. O segundo holdout integrado atingiu 10/10 em
+correspondência e segurança de emissão, incluindo formulações externas inéditas
+e controles negativos. A fronteira está aprovada somente como caminho
+experimental opt-in. O próximo marco é uma orquestração de síntese isolada,
+desabilitada por padrão e inicialmente avaliada apenas com cliente falso e
+dados sintéticos.
 
 ## Ambiente de desenvolvimento
 

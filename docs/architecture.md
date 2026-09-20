@@ -200,7 +200,11 @@ deve ocorrer em desenvolvimento separado antes de nova avaliação inédita. A
 nova candidata trata formulações genéricas como dependência externa somente
 quando ação de consulta, origem externa e atualidade aparecem juntas. Ela
 atingiu 10/10 no desenvolvimento integrado, com controles negativos para
-menções documentais, e ainda precisa de outro holdout inédito.
+menções documentais. O segundo holdout integrado também atingiu 10/10 em
+correspondência e segurança de emissão, cobrindo seis categorias inéditas. A
+fronteira estrutural está aprovada apenas para receber uma camada de
+orquestração experimental, injetável e desabilitada por padrão; modelo local e
+corpus privado continuam fora desse caminho.
 
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no

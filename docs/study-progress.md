@@ -206,8 +206,11 @@ classe de dependência externa em dados sintéticos separados e só então, se o
 gates passarem, congelar outro holdout inédito. A candidata composicional
 posterior atingiu 100% nos dez fluxos e na segurança de emissão, distinguindo
 consulta externa atual de menções documentais estáticas. O próximo marco é
-congelar um novo holdout com formulações e controles inéditos. Nenhum modelo foi
-liberado.
+congelar um novo holdout com formulações e controles inéditos. Esse segundo
+holdout atingiu 100% nos dez casos e na segurança de emissão. A fronteira
+integrada está aprovada somente como caminho experimental opt-in. O próximo
+marco é uma camada de orquestração desabilitada por padrão, validada primeiro
+com cliente falso e dados sintéticos. Nenhum modelo foi liberado.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em
