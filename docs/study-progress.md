@@ -213,7 +213,10 @@ marco é uma camada de orquestração desabilitada por padrão, validada primeir
 com cliente falso e dados sintéticos. Essa camada foi implementada separadamente
 e atingiu 100% nos sete fluxos e na segurança de liberação: resposta bruta nunca
 é exposta, e somente saída grounded validada pode atravessar a fronteira. O
-próximo marco é um holdout sintético inédito da orquestração. Nenhum modelo foi
+holdout sintético posterior atingiu 100% nos nove casos e na segurança de
+liberação, incluindo bloqueios anteriores ao cliente, violações de contrato e
+timeout. O próximo marco é uma composição de aplicação opt-in que encadeie o
+pipeline e o orquestrador sem alterar o comportamento padrão. Nenhum modelo foi
 liberado.
 
 Os números e decisões dos experimentos generativos estão em

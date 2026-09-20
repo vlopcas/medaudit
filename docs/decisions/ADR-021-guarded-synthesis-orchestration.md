@@ -38,3 +38,9 @@ avançar, deve comprovar modo desabilitado, ausência de chamada sem request
 preparado, resposta e abstention válidas, rejeição de citação fora do grupo e
 falha fechada do cliente. Um resultado em desenvolvimento não autoriza modelo
 real; exige holdout sintético inédito.
+
+O holdout posterior atingiu 9/9 em correspondência e segurança de liberação,
+incluindo rota externa, clarificação, budget, revisão, suporte combinado,
+violações de contrato e timeout. A fronteira está aprovada para uma composição
+de aplicação opt-in, ainda com o caminho padrão desabilitado. O resultado não
+promove modelo local, qualidade factual ou corpus privado.

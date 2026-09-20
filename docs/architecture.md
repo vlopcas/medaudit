@@ -212,8 +212,11 @@ ativado automaticamente pelo pipeline. Ele exige request preparado, chama um
 interna até a validação contra o bundle original. Somente uma resposta
 decomposta validada é liberada; falhas do cliente ou do contrato terminam sem
 resposta e com código genérico. Em desenvolvimento com clientes falsos, os sete
-fluxos atingiram 100% em correspondência e segurança de liberação. Um holdout
-inédito ainda é obrigatório antes de qualquer conexão adicional.
+fluxos atingiram 100% em correspondência e segurança de liberação. O holdout
+posterior também atingiu 100% nos nove casos inéditos, cobrindo bloqueios,
+suporte combinado, respostas inválidas e timeout. Isso autoriza somente uma
+composição de aplicação opt-in que preserve as APIs atuais; nenhum modelo foi
+promovido e o caminho padrão permanece sem síntese.
 
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no

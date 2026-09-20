@@ -209,8 +209,10 @@ desabilitada por padrão e inicialmente avaliada apenas com cliente falso e
 dados sintéticos. Essa orquestração agora existe e nunca expõe a resposta bruta:
 somente saída aprovada pelo validador grounded é liberada. No desenvolvimento
 com clientes falsos, atingiu 7/7 em correspondência e segurança de liberação. O
-próximo gate é um holdout sintético inédito; modelo local e corpus privado
-continuam bloqueados.
+holdout sintético posterior atingiu 9/9 nas duas métricas, incluindo bloqueios,
+suporte combinado, respostas inválidas e timeout. A fronteira está aprovada
+somente para uma composição de aplicação opt-in; modelo local, qualidade
+factual e corpus privado continuam bloqueados.
 
 ## Ambiente de desenvolvimento
 
