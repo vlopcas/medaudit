@@ -25,7 +25,8 @@ from medaudit.rag import (
 from medaudit.retrieval import BM25Index
 
 _NOTICE = "Conteúdo integralmente sintético, sem reprodução de documentos reais."
-_POLICY = "synthesis-orchestration-development-v1"
+_DEVELOPMENT_POLICY = "synthesis-orchestration-development-v1"
+_HOLDOUT_POLICY = "synthesis-orchestration-holdout-v1"
 
 
 class SyntheticClient:
@@ -39,6 +40,8 @@ class SyntheticClient:
         self.call_count += 1
         if self.behavior == "failure":
             raise RuntimeError("synthetic client failure")
+        if self.behavior == "timeout":
+            raise TimeoutError("synthetic client timeout")
         data = _response_data(self.behavior)
         return LLMResponse(
             data=data,
@@ -48,11 +51,13 @@ class SyntheticClient:
         )
 
 
-def load_dataset(path: Path) -> list[dict[str, Any]]:
+def load_dataset(
+    path: Path, *, expected_policy: str = _DEVELOPMENT_POLICY
+) -> list[dict[str, Any]]:
     payload = json.loads(path.read_text(encoding="utf-8"))
     if (
         payload.get("schema_version") != 1
-        or payload.get("policy") != _POLICY
+        or payload.get("policy") != expected_policy
         or payload.get("notice") != _NOTICE
     ):
         raise ValueError("unsupported synthesis orchestration dataset schema")
@@ -65,7 +70,9 @@ def load_dataset(path: Path) -> list[dict[str, Any]]:
     return cases
 
 
-async def evaluate(cases: list[dict[str, Any]]) -> dict[str, Any]:
+async def evaluate(
+    cases: list[dict[str, Any]], *, policy: str = _DEVELOPMENT_POLICY
+) -> dict[str, Any]:
     if not cases:
         raise ValueError("synthesis orchestration cases are required")
     outcomes: list[dict[str, Any]] = []
@@ -74,7 +81,9 @@ async def evaluate(cases: list[dict[str, Any]]) -> dict[str, Any]:
     for case in cases:
         client = SyntheticClient(case.get("client_behavior", "valid"))
         routed = _pipeline(case).retrieve_with_compiled_request(
-            case["query"], top_k=1
+            case["query"],
+            top_k=1,
+            reviewed_evidence_ids=case.get("review_evidence_ids", []),
         )
         result = await GroundedSynthesisOrchestrator(
             mode=SynthesisMode(case.get("synthesis_mode", "disabled")),
@@ -103,7 +112,7 @@ async def evaluate(cases: list[dict[str, Any]]) -> dict[str, Any]:
         )
     return {
         "schema_version": 1,
-        "policy": _POLICY,
+        "policy": policy,
         "case_count": len(outcomes),
         "metrics": {
             "exact_match": sum(item["correct"] for item in outcomes) / len(outcomes),
@@ -141,7 +150,7 @@ def _pipeline(case: dict[str, Any]) -> RoutedEvidenceFirstPipeline:
     )
     gateway = CompiledContextGateway(
         mode=CompiledRequestMode(case.get("gateway_mode", "disabled")),
-        token_budget=100,
+        token_budget=case.get("token_budget", 100),
         estimator=WordTokenEstimator(),
         clock=lambda: 1.0,
     )
@@ -165,6 +174,55 @@ def _response_data(behavior: str) -> dict[str, Any]:
                         {
                             "step_id": "comparison-1",
                             "evidence_ids": ["chunk-beta"],
+                        }
+                    ],
+                }
+            ],
+        }
+    if behavior == "combined":
+        return {
+            "status": "answered",
+            "claims": [
+                {
+                    "text": "As duas regras possuem suporte sintético.",
+                    "supports": [
+                        {
+                            "step_id": "comparison-1",
+                            "evidence_ids": ["chunk-alpha"],
+                        },
+                        {
+                            "step_id": "comparison-2",
+                            "evidence_ids": ["chunk-beta"],
+                        },
+                    ],
+                }
+            ],
+        }
+    if behavior == "unknown_step":
+        return {
+            "status": "answered",
+            "claims": [
+                {
+                    "text": "Afirmação sintética inválida.",
+                    "supports": [
+                        {
+                            "step_id": "comparison-unknown",
+                            "evidence_ids": ["chunk-alpha"],
+                        }
+                    ],
+                }
+            ],
+        }
+    if behavior == "duplicate_citation":
+        return {
+            "status": "answered",
+            "claims": [
+                {
+                    "text": "Afirmação sintética inválida.",
+                    "supports": [
+                        {
+                            "step_id": "comparison-1",
+                            "evidence_ids": ["chunk-alpha", "chunk-alpha"],
                         }
                     ],
                 }
@@ -200,11 +258,30 @@ def _response_data(behavior: str) -> dict[str, Any]:
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dataset", type=Path, required=True)
+    parser.add_argument(
+        "--dataset-policy",
+        choices=(_DEVELOPMENT_POLICY, _HOLDOUT_POLICY),
+        default=_DEVELOPMENT_POLICY,
+    )
     parser.add_argument("--expected-sha256")
+    parser.add_argument("--output", type=Path)
+    parser.add_argument("--refuse-overwrite", action="store_true")
     args = parser.parse_args(argv)
-    report = asyncio.run(evaluate(load_dataset(args.dataset)))
+    if args.output and args.refuse_overwrite and args.output.exists():
+        raise FileExistsError(f"refusing to overwrite existing report: {args.output}")
+    report = asyncio.run(
+        evaluate(
+            load_dataset(args.dataset, expected_policy=args.dataset_policy),
+            policy=args.dataset_policy,
+        )
+    )
     report["input_sha256"] = verify_input(args.dataset, args.expected_sha256)
-    print(json.dumps(report, ensure_ascii=False, indent=2))
+    rendered = json.dumps(report, ensure_ascii=False, indent=2) + "\n"
+    if args.output:
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        args.output.write_text(rendered, encoding="utf-8")
+    else:
+        print(rendered, end="")
     return 0
 
 
