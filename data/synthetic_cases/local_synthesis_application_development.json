@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "policy": "local-synthesis-application-development-v1",
+  "notice": "Conteúdo integralmente sintético, sem reprodução de documentos reais.",
+  "cases": [
+    {
+      "id": "local-synthesis-app-dev-001",
+      "category": "supported_numeric_comparison",
+      "query": "Compare item âmbar com item cobalto.",
+      "chunks": [
+        {"chunk_id": "chunk-ambar", "document_id": "document-ambar", "text": "Item âmbar: o prazo sintético é de dez dias."},
+        {"chunk_id": "chunk-cobalto", "document_id": "document-cobalto", "text": "Item cobalto: o prazo sintético é de vinte dias."}
+      ],
+      "expected": {"status": "answered", "required_concepts": [["dez dias", "10 dias"], ["vinte dias", "20 dias"]]}
+    },
+    {
+      "id": "local-synthesis-app-dev-002",
+      "category": "supported_policy_comparison",
+      "query": "Compare plano rubi com plano safira.",
+      "chunks": [
+        {"chunk_id": "chunk-rubi", "document_id": "document-rubi", "text": "Plano rubi: exige revisão manual antes da liberação."},
+        {"chunk_id": "chunk-safira", "document_id": "document-safira", "text": "Plano safira: permite processamento automático antes da liberação."}
+      ],
+      "expected": {"status": "answered", "required_concepts": [["revisão manual", "revisao manual"], ["processamento automático", "processamento automatico"]]}
+    },
+    {
+      "id": "local-synthesis-app-dev-003",
+      "category": "supported_categorical_comparison",
+      "query": "Compare protocolo solar com protocolo lunar.",
+      "chunks": [
+        {"chunk_id": "chunk-solar", "document_id": "document-solar", "text": "Protocolo solar: a categoria sintética registrada é prioritária."},
+        {"chunk_id": "chunk-lunar", "document_id": "document-lunar", "text": "Protocolo lunar: a categoria sintética registrada é ordinária."}
+      ],
+      "expected": {"status": "answered", "required_concepts": [["prioritária", "prioritaria"], ["ordinária", "ordinaria"]]}
+    },
+    {
+      "id": "local-synthesis-app-dev-004",
+      "category": "insufficient_evidence",
+      "query": "Compare a taxa da regra cobre com a taxa da regra prata.",
+      "chunks": [
+        {"chunk_id": "chunk-cobre", "document_id": "document-cobre", "text": "Regra cobre: existe uma classificação sintética, sem informação de taxa."},
+        {"chunk_id": "chunk-prata", "document_id": "document-prata", "text": "Regra prata: existe uma classificação sintética, sem informação de taxa."}
+      ],
+      "expected": {"status": "insufficient_evidence"}
+    }
+  ]
+}

@@ -761,6 +761,19 @@ services:
       - /artifacts/synthesis-application-holdout.local.json
       - --refuse-overwrite
 
+  benchmark-local-synthesis-application:
+    extends: benchmark-local-llm
+    command:
+      - medaudit-benchmark-local-synthesis-application
+      - --dataset
+      - /app/data/synthetic_cases/local_synthesis_application_development.json
+      - --output
+      - /artifacts/local-synthesis-application-development.local.json
+      - --repetitions
+      - "3"
+      - --max-output-tokens
+      - "512"
+
   evaluate-explicit-query-routing-holdout:
     extends: evaluate-explicit-query-routing
     user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
