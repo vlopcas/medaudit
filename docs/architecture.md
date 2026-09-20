@@ -206,6 +206,15 @@ fronteira estrutural está aprovada apenas para receber uma camada de
 orquestração experimental, injetável e desabilitada por padrão; modelo local e
 corpus privado continuam fora desse caminho.
 
+`GroundedSynthesisOrchestrator` implementa essa próxima fronteira sem ser
+ativado automaticamente pelo pipeline. Ele exige request preparado, chama um
+`LLMClient` injetado somente em modo experimental e mantém a resposta bruta
+interna até a validação contra o bundle original. Somente uma resposta
+decomposta validada é liberada; falhas do cliente ou do contrato terminam sem
+resposta e com código genérico. Em desenvolvimento com clientes falsos, os sete
+fluxos atingiram 100% em correspondência e segurança de liberação. Um holdout
+inédito ainda é obrigatório antes de qualquer conexão adicional.
+
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no
 desenvolvimento e não pertence ao fluxo principal.

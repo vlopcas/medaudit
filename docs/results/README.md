@@ -51,3 +51,4 @@ para evitar a exposição indireta do corpus privado.
 - [Resultado 035: holdout da integração roteador-gateway](035-routed-compiled-integration-holdout.md)
 - [Resultado 036: composição de dependência externa em desenvolvimento](036-external-dependency-composition-development.md)
 - [Resultado 037: segundo holdout da integração roteador-gateway](037-routed-compiled-integration-holdout-v2.md)
+- [Resultado 038: orquestração de síntese em desenvolvimento](038-synthesis-orchestration-development.md)

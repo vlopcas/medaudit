@@ -210,7 +210,11 @@ congelar um novo holdout com formulações e controles inéditos. Esse segundo
 holdout atingiu 100% nos dez casos e na segurança de emissão. A fronteira
 integrada está aprovada somente como caminho experimental opt-in. O próximo
 marco é uma camada de orquestração desabilitada por padrão, validada primeiro
-com cliente falso e dados sintéticos. Nenhum modelo foi liberado.
+com cliente falso e dados sintéticos. Essa camada foi implementada separadamente
+e atingiu 100% nos sete fluxos e na segurança de liberação: resposta bruta nunca
+é exposta, e somente saída grounded validada pode atravessar a fronteira. O
+próximo marco é um holdout sintético inédito da orquestração. Nenhum modelo foi
+liberado.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em

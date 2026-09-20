@@ -206,7 +206,11 @@ correspondência e segurança de emissão, incluindo formulações externas iné
 e controles negativos. A fronteira está aprovada somente como caminho
 experimental opt-in. O próximo marco é uma orquestração de síntese isolada,
 desabilitada por padrão e inicialmente avaliada apenas com cliente falso e
-dados sintéticos.
+dados sintéticos. Essa orquestração agora existe e nunca expõe a resposta bruta:
+somente saída aprovada pelo validador grounded é liberada. No desenvolvimento
+com clientes falsos, atingiu 7/7 em correspondência e segurança de liberação. O
+próximo gate é um holdout sintético inédito; modelo local e corpus privado
+continuam bloqueados.
 
 ## Ambiente de desenvolvimento
 

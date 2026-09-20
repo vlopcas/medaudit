@@ -76,6 +76,8 @@ A fronteira explícita de compilação de contexto está em
 [ADR-019](decisions/ADR-019-explicit-context-compilation-boundary.md).
 O gateway experimental e opt-in para essa fronteira está em
 [ADR-020](decisions/ADR-020-opt-in-compiled-context-gateway.md).
+A orquestração que libera somente síntese validada está em
+[ADR-021](decisions/ADR-021-guarded-synthesis-orchestration.md).
 
 ## Conteúdo permitido
 
