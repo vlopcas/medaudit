@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "policy": "synthesis-application-development-v1",
+  "notice": "Conteúdo integralmente sintético, sem reprodução de documentos reais.",
+  "cases": [
+    {"id": "synthesis-application-dev-001", "category": "default_disabled", "query": "Compare regra alfa com regra beta.", "executor": true, "gateway_mode": "experimental", "expected": {"route": "requires_decomposition", "preparation_status": "prepared", "synthesis_status": "disabled", "failure_code": "synthesis_disabled", "client_called": false, "answer_present": false, "answer_status": null}},
+    {"id": "synthesis-application-dev-002", "category": "validated_answer", "query": "Compare regra alfa com regra beta.", "executor": true, "gateway_mode": "experimental", "synthesis_mode": "experimental", "expected": {"route": "requires_decomposition", "preparation_status": "prepared", "synthesis_status": "validated", "failure_code": null, "client_called": true, "answer_present": true, "answer_status": "answered"}},
+    {"id": "synthesis-application-dev-003", "category": "direct_blocked", "query": "Qual é a regra alfa sintética?", "gateway_mode": "experimental", "synthesis_mode": "experimental", "expected": {"route": "direct_retrieval", "preparation_status": null, "synthesis_status": "blocked", "failure_code": "request_not_prepared", "client_called": false, "answer_present": false, "answer_status": null}},
+    {"id": "synthesis-application-dev-004", "category": "external_blocked", "query": "Consulte hoje o portal para obter o estado sintético.", "executor": true, "gateway_mode": "experimental", "synthesis_mode": "experimental", "expected": {"route": "requires_external_data", "preparation_status": null, "synthesis_status": "blocked", "failure_code": "request_not_prepared", "client_called": false, "answer_present": false, "answer_status": null}},
+    {"id": "synthesis-application-dev-005", "category": "clarification_blocked", "query": "Faça uma comparação geral.", "executor": true, "gateway_mode": "experimental", "synthesis_mode": "experimental", "expected": {"route": "requires_decomposition", "preparation_status": "blocked", "synthesis_status": "blocked", "failure_code": "request_not_prepared", "client_called": false, "answer_present": false, "answer_status": null}},
+    {"id": "synthesis-application-dev-006", "category": "invalid_response", "query": "Compare regra alfa com regra beta.", "executor": true, "gateway_mode": "experimental", "synthesis_mode": "experimental", "client_behavior": "cross_group", "expected": {"route": "requires_decomposition", "preparation_status": "prepared", "synthesis_status": "rejected", "failure_code": "response_rejected", "client_called": true, "answer_present": false, "answer_status": null}}
+  ]
+}

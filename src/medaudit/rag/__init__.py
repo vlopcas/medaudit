@@ -1,6 +1,10 @@
 """Evidence-first retrieval-augmented generation boundaries."""
 
 from medaudit.rag.aggregation import group_decomposition_evidence
+from medaudit.rag.application import (
+    GroundedSynthesisApplication,
+    RoutedSynthesisResult,
+)
 from medaudit.rag.context import (
     CompiledContext,
     CompiledContextGroup,
@@ -101,12 +105,14 @@ __all__ = [
     "FrozenTopScorePolicy",
     "GroundedAnswer",
     "GroundedClaim",
+    "GroundedSynthesisApplication",
     "GroundedSynthesisOrchestrator",
     "RetrievalDecision",
     "RetrievalStatus",
     "RoutedCompiledRequestResult",
     "RoutedEvidenceFirstPipeline",
     "RoutedRetrievalDecision",
+    "RoutedSynthesisResult",
     "StepEvidenceGroup",
     "SynthesisMode",
     "SynthesisResult",
