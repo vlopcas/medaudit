@@ -742,6 +742,25 @@ services:
       - --dataset
       - /app/data/synthetic_cases/synthesis_application_development.json
 
+  evaluate-synthesis-application-holdout:
+    extends: evaluate-synthesis-application
+    user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
+    volumes:
+      - type: bind
+        source: ./artifacts
+        target: /artifacts
+    command:
+      - medaudit-evaluate-synthesis-application
+      - --dataset
+      - /app/data/synthetic_cases/synthesis_application_holdout.json
+      - --dataset-policy
+      - synthesis-application-holdout-v1
+      - --expected-sha256
+      - e2d6939111c599773e9b6265a4dfc5fafaeab4436ed526586b3eccebe22267d3
+      - --output
+      - /artifacts/synthesis-application-holdout.local.json
+      - --refuse-overwrite
+
   evaluate-explicit-query-routing-holdout:
     extends: evaluate-explicit-query-routing
     user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"

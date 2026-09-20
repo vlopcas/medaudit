@@ -198,6 +198,30 @@ def _response_data(behavior: str) -> dict[str, Any]:
                 }
             ],
         }
+    if behavior == "temporal":
+        return {
+            "status": "answered",
+            "claims": [
+                {
+                    "text": "A primeira data possui suporte sintético.",
+                    "supports": [
+                        {
+                            "step_id": "temporal-1",
+                            "evidence_ids": ["chunk-alpha"],
+                        }
+                    ],
+                },
+                {
+                    "text": "A segunda data possui suporte sintético.",
+                    "supports": [
+                        {
+                            "step_id": "temporal-2",
+                            "evidence_ids": ["chunk-alpha"],
+                        }
+                    ],
+                },
+            ],
+        }
     if behavior == "unknown_step":
         return {
             "status": "answered",
