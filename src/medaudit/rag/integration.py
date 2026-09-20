@@ -13,6 +13,7 @@ from medaudit.rag.context import (
 )
 from medaudit.rag.models import DecompositionEvidenceBundle
 from medaudit.rag.prompt import (
+    ANSWER_WHEN_SUPPORTED_INSTRUCTION,
     DECOMPOSED_GROUNDED_INSTRUCTION,
     build_compiled_decomposed_grounded_request,
 )
@@ -23,6 +24,13 @@ class CompiledRequestMode(StrEnum):
 
     DISABLED = "disabled"
     EXPERIMENTAL = "experimental"
+
+
+class CompiledInstructionPolicy(StrEnum):
+    """Explicit trusted instruction selected before context compilation."""
+
+    BASELINE = "baseline"
+    ANSWER_WHEN_SUPPORTED_V1 = "answer-when-supported-v1"
 
 
 class CompiledRequestStatus(StrEnum):
@@ -72,6 +80,9 @@ class CompiledContextGateway:
         self,
         *,
         mode: CompiledRequestMode = CompiledRequestMode.DISABLED,
+        instruction_policy: CompiledInstructionPolicy = (
+            CompiledInstructionPolicy.BASELINE
+        ),
         token_budget: int = 8_192,
         estimator: TokenEstimator | None = None,
         clock: Callable[[], float] = perf_counter,
@@ -79,6 +90,7 @@ class CompiledContextGateway:
         if token_budget <= 0:
             raise ValueError("compiled request token budget must be positive")
         self._mode = mode
+        self._instruction_policy = instruction_policy
         self._token_budget = token_budget
         self._estimator = estimator
         self._clock = clock
@@ -102,7 +114,7 @@ class CompiledContextGateway:
         try:
             context = compile_decomposed_context(
                 bundle,
-                instruction=DECOMPOSED_GROUNDED_INSTRUCTION,
+                instruction=self._instruction(),
                 token_budget=self._token_budget,
                 estimator=self._estimator,
                 review_evidence_ids=frozenset(reviewed_evidence_ids),
@@ -149,6 +161,14 @@ class CompiledContextGateway:
             exclusion_count=len(context.exclusions),
             estimated_tokens=context.estimated_tokens,
         )
+
+    def _instruction(self) -> str:
+        if (
+            self._instruction_policy
+            is CompiledInstructionPolicy.ANSWER_WHEN_SUPPORTED_V1
+        ):
+            return ANSWER_WHEN_SUPPORTED_INSTRUCTION
+        return DECOMPOSED_GROUNDED_INSTRUCTION
 
     def _result(
         self,

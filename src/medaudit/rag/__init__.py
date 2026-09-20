@@ -29,6 +29,7 @@ from medaudit.rag.evidence_safety import (
 )
 from medaudit.rag.integration import (
     CompiledContextGateway,
+    CompiledInstructionPolicy,
     CompiledRequestMode,
     CompiledRequestResult,
     CompiledRequestStatus,
@@ -60,6 +61,7 @@ from medaudit.rag.pipeline import (
     RoutedEvidenceFirstPipeline,
 )
 from medaudit.rag.prompt import (
+    ANSWER_WHEN_SUPPORTED_INSTRUCTION,
     DECOMPOSED_GROUNDED_INSTRUCTION,
     build_compiled_decomposed_grounded_request,
     build_decomposed_grounded_request,
@@ -75,11 +77,13 @@ from medaudit.rag.validation import (
 )
 
 __all__ = [
+    "ANSWER_WHEN_SUPPORTED_INSTRUCTION",
     "DECOMPOSED_GROUNDED_INSTRUCTION",
     "ClaimSupport",
     "CompiledContext",
     "CompiledContextGateway",
     "CompiledContextGroup",
+    "CompiledInstructionPolicy",
     "CompiledRequestMode",
     "CompiledRequestResult",
     "CompiledRequestStatus",

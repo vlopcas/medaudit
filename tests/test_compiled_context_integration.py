@@ -4,7 +4,9 @@ from dataclasses import asdict
 
 from medaudit.evaluation.local_decomposed_grounding import build_bundle
 from medaudit.rag import (
+    ANSWER_WHEN_SUPPORTED_INSTRUCTION,
     CompiledContextGateway,
+    CompiledInstructionPolicy,
     CompiledRequestMode,
     CompiledRequestStatus,
     ContextStatus,
@@ -71,6 +73,37 @@ class CompiledContextGatewayTest(unittest.TestCase):
         self.assertEqual(result.telemetry.group_count, 2)
         self.assertEqual(result.telemetry.item_count, 4)
         self.assertAlmostEqual(result.telemetry.duration_ms, 25.0)
+
+    def test_answer_policy_changes_only_the_sealed_instruction(self) -> None:
+        baseline = CompiledContextGateway(
+            mode=CompiledRequestMode.EXPERIMENTAL,
+            token_budget=10_000,
+            clock=lambda: 1.0,
+        ).prepare(make_bundle())
+        candidate = CompiledContextGateway(
+            mode=CompiledRequestMode.EXPERIMENTAL,
+            instruction_policy=(
+                CompiledInstructionPolicy.ANSWER_WHEN_SUPPORTED_V1
+            ),
+            token_budget=10_000,
+            clock=lambda: 1.0,
+        ).prepare(make_bundle())
+
+        self.assertIsNotNone(baseline.request)
+        self.assertIsNotNone(candidate.request)
+        assert baseline.request is not None
+        assert candidate.request is not None
+        self.assertEqual(
+            candidate.request.instruction, ANSWER_WHEN_SUPPORTED_INSTRUCTION
+        )
+        self.assertNotEqual(
+            candidate.request.instruction, baseline.request.instruction
+        )
+        self.assertEqual(candidate.request.input_text, baseline.request.input_text)
+        self.assertEqual(
+            candidate.request.response_schema, baseline.request.response_schema
+        )
+        self.assertEqual(candidate.request.temperature, baseline.request.temperature)
 
     def test_budget_failure_returns_no_request(self) -> None:
         gateway = CompiledContextGateway(

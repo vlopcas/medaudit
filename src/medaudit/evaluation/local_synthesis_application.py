@@ -18,6 +18,7 @@ from medaudit.evaluation.private_bm25 import write_private_report
 from medaudit.llm import LlamaCppClient, LLMClient, LLMRequest, LLMResponse
 from medaudit.rag import (
     CompiledContextGateway,
+    CompiledInstructionPolicy,
     CompiledRequestMode,
     DeterministicDecompositionExecutor,
     EvidenceFirstPipeline,
@@ -76,7 +77,9 @@ def load_dataset(path: Path) -> list[dict[str, Any]]:
 
 
 def _application(
-    case: dict[str, Any], client: LLMClient
+    case: dict[str, Any],
+    client: LLMClient,
+    instruction_policy: CompiledInstructionPolicy,
 ) -> GroundedSynthesisApplication:
     chunks = [
         Chunk(item["chunk_id"], item["document_id"], item["text"])
@@ -96,6 +99,7 @@ def _application(
         decomposition_executor=executor,
         compiled_context_gateway=CompiledContextGateway(
             mode=CompiledRequestMode.EXPERIMENTAL,
+            instruction_policy=instruction_policy,
             token_budget=10_000,
             estimator=WordTokenEstimator(),
         ),
@@ -138,6 +142,9 @@ async def run_benchmark(
     *,
     client: LLMClient,
     repetitions: int = 1,
+    instruction_policy: CompiledInstructionPolicy = (
+        CompiledInstructionPolicy.BASELINE
+    ),
 ) -> dict[str, Any]:
     """Measure the sealed application path without retaining generated text."""
     if repetitions < 1:
@@ -154,6 +161,8 @@ async def run_benchmark(
     outcomes: list[dict[str, Any]] = []
     category_attempts: Counter[str] = Counter()
     category_validated: Counter[str] = Counter()
+    synthesis_statuses: Counter[str] = Counter()
+    failure_codes: Counter[str] = Counter()
     exact_stable = status_stable = content_stable = 0
 
     for case in cases:
@@ -165,12 +174,14 @@ async def run_benchmark(
         content_results: list[bool] = []
         case_prepared = case_invoked = case_validated = 0
         case_status_correct = case_content_correct = 0
+        case_synthesis_statuses: Counter[str] = Counter()
+        case_failure_codes: Counter[str] = Counter()
         for _ in range(repetitions):
             counting_client = CountingClient(client)
             started_at = time.perf_counter()
-            result = await _application(case, counting_client).execute(
-                case["query"], top_k=1
-            )
+            result = await _application(
+                case, counting_client, instruction_policy
+            ).execute(case["query"], top_k=1)
             latencies.append((time.perf_counter() - started_at) * 1_000)
             preparation = result.routed.compiled_request
             was_prepared = preparation is not None and preparation.is_prepared
@@ -179,6 +190,11 @@ async def run_benchmark(
             invoked += counting_client.call_count
             case_invoked += counting_client.call_count
             telemetry = result.synthesis.telemetry
+            synthesis_statuses[telemetry.status.value] += 1
+            case_synthesis_statuses[telemetry.status.value] += 1
+            if telemetry.failure_code is not None:
+                failure_codes[telemetry.failure_code] += 1
+                case_failure_codes[telemetry.failure_code] += 1
             input_tokens += telemetry.input_tokens
             output_tokens += telemetry.output_tokens
             answer = result.synthesis.answer
@@ -222,6 +238,10 @@ async def run_benchmark(
                 "validated_count": case_validated,
                 "status_correct_count": case_status_correct,
                 "content_correct_count": case_content_correct,
+                "synthesis_status_counts": dict(
+                    sorted(case_synthesis_statuses.items())
+                ),
+                "failure_code_counts": dict(sorted(case_failure_codes.items())),
                 "exact_response_stable": exact_case_stable,
                 "status_stable": status_case_stable,
                 "content_correctness_stable": content_case_stable,
@@ -231,6 +251,7 @@ async def run_benchmark(
     return {
         "schema_version": 1,
         "policy": _POLICY,
+        "instruction_policy": instruction_policy.value,
         "dataset": "wholly_synthetic",
         "case_count": len(cases),
         "repetitions_per_case": repetitions,
@@ -261,6 +282,8 @@ async def run_benchmark(
             }
             for category, count in sorted(category_attempts.items())
         },
+        "synthesis_status_counts": dict(sorted(synthesis_statuses.items())),
+        "failure_code_counts": dict(sorted(failure_codes.items())),
         "cases": outcomes,
     }
 
@@ -273,6 +296,11 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--startup-timeout", type=float, default=180)
     parser.add_argument("--repetitions", type=int, default=3)
     parser.add_argument("--max-output-tokens", type=int, default=512)
+    parser.add_argument(
+        "--instruction-policy",
+        choices=tuple(item.value for item in CompiledInstructionPolicy),
+        default=CompiledInstructionPolicy.BASELINE.value,
+    )
     args = parser.parse_args(argv)
     try:
         fingerprint = verify_input(args.dataset, None)
@@ -284,7 +312,14 @@ def main(argv: Sequence[str] | None = None) -> int:
             allowed_hosts=frozenset({"llm-server", "127.0.0.1", "localhost", "::1"}),
         )
         report = asyncio.run(
-            run_benchmark(cases, client=client, repetitions=args.repetitions)
+            run_benchmark(
+                cases,
+                client=client,
+                repetitions=args.repetitions,
+                instruction_policy=CompiledInstructionPolicy(
+                    args.instruction_policy
+                ),
+            )
         )
         report["input_sha256"] = fingerprint
         report["max_output_tokens"] = args.max_output_tokens

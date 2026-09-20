@@ -8,6 +8,7 @@ from medaudit.evaluation.local_synthesis_application import (
     run_benchmark,
 )
 from medaudit.llm import LLMRequest, LLMResponse, Usage
+from medaudit.rag import CompiledInstructionPolicy
 
 
 class DeterministicClient:
@@ -73,12 +74,24 @@ class LocalSynthesisApplicationBenchmarkTest(unittest.TestCase):
         ]
 
         report = asyncio.run(
-            run_benchmark(cases, client=DeterministicClient(), repetitions=2)
+            run_benchmark(
+                cases,
+                client=DeterministicClient(),
+                repetitions=2,
+                instruction_policy=(
+                    CompiledInstructionPolicy.ANSWER_WHEN_SUPPORTED_V1
+                ),
+            )
         )
 
         self.assertEqual(report["metrics"]["preparation_rate"], 1.0)
         self.assertEqual(report["metrics"]["validated_release_rate"], 1.0)
         self.assertEqual(report["metrics"]["answer_content_accuracy"], 1.0)
+        self.assertEqual(
+            report["instruction_policy"], "answer-when-supported-v1"
+        )
+        self.assertEqual(report["synthesis_status_counts"], {"validated": 2})
+        self.assertEqual(report["failure_code_counts"], {})
         self.assertNotIn("query", report["cases"][0])
         self.assertNotIn("answer", report["cases"][0])
 

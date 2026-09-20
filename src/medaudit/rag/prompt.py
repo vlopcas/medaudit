@@ -26,6 +26,14 @@ DECOMPOSED_GROUNDED_INSTRUCTION = (
     "language of the question and return exactly one JSON object."
 )
 
+ANSWER_WHEN_SUPPORTED_INSTRUCTION = (
+    DECOMPOSED_GROUNDED_INSTRUCTION
+    + " When the supplied evidence directly contains every fact requested, "
+    "you must return answered. Use insufficient_evidence only when at least "
+    "one requested fact is absent. Multiple evidence groups alone are never "
+    "a reason to abstain."
+)
+
 
 def _decomposed_response_schema() -> dict[str, object]:
     return {
