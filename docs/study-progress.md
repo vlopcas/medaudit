@@ -224,7 +224,14 @@ esse holdout atingiu 100% nos nove casos, na segurança de invocação e na
 segurança de liberação. A arquitetura completa está aprovada apenas com cliente
 falso. O próximo marco é um benchmark sintético controlado do modelo local por
 essa aplicação, medindo conteúdo, grounding, repetibilidade e latência. Corpus
-privado e runtime permanecem bloqueados.
+privado e runtime permanecem bloqueados. Esse benchmark executou 12 tentativas
+pela aplicação: 100% dos requests foram preparados, chamados uma única vez e
+validados, mas a acurácia de status foi 25% e a de conteúdo nos casos
+respondíveis foi 0%. O modelo se absteve de forma estável mesmo quando as duas
+evidências continham a resposta. A promoção foi rejeitada. O próximo marco é
+diagnosticar o request compilado vigente contra a configuração local
+anteriormente bem-sucedida em desenvolvimento sintético separado, sem abrir
+novo holdout.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em

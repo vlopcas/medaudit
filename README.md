@@ -220,7 +220,13 @@ operação completa. Esse holdout atingiu 9/9 nas três métricas, incluindo
 temporalidade, revisão, budget, falhas do cliente e respostas inválidas. A
 arquitetura está aprovada somente com cliente falso. O próximo marco é medir a
 compatibilidade e a qualidade do modelo local através dessa aplicação em dados
-sintéticos; corpus privado e runtime continuam bloqueados.
+sintéticos. Esse benchmark executou 12/12 requests preparados e liberou 12/12
+saídas grounded válidas, mas obteve somente 25% de acurácia de status e 0% de
+conteúdo nos casos respondíveis: o modelo se absteve de forma estável nas nove
+tentativas com evidência suficiente. A promoção foi rejeitada. O próximo marco
+é diagnosticar, em desenvolvimento sintético separado, a diferença entre o
+request compilado vigente e a configuração local anteriormente bem-sucedida;
+corpus privado e runtime continuam bloqueados.
 
 ## Ambiente de desenvolvimento
 

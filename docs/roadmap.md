@@ -106,7 +106,10 @@ Critério de avanço: explicar por que cada item entrou no contexto, qual seu
 custo, sua origem e qual política o autorizou, com testes de orçamento,
 isolamento, posição e conteúdo adversarial.
 
-Estado: fase ativa.
+Estado: o caminho estrutural e a aplicação opt-in foram validados com clientes
+falsos. O primeiro benchmark do modelo local pela aplicação preservou 100% de
+preparação e validação, mas obteve 25% de acurácia de status e 0% de conteúdo
+nos casos respondíveis; a geração local não foi promovida.
 
 ### 5. Regras estruturadas e conhecimento temporal
 
@@ -197,12 +200,13 @@ não usar LLM, RAG, grafo ou agente.
 
 ## Próximos marcos
 
-1. Definir o contrato mínimo do compilador de contexto, sem integrá-lo ao
-   runtime nem ao corpus privado.
-2. Avaliar orçamento, separação estrutural, provenance e recusa em casos
-   sintéticos.
-3. Integrar somente o comportamento aprovado por desenvolvimento e holdout
-   inéditos.
+1. Diagnosticar em desenvolvimento sintético por que o request compilado induz
+   abstention estável no modelo local, comparando-o com a última configuração
+   local aprovada sem reutilizar holdout para ajuste.
+2. Formular uma única candidata controlada e avaliá-la primeiro em novos casos
+   de desenvolvimento; qualquer holdout posterior deverá ser inédito.
+3. Manter síntese desabilitada e o corpus privado bloqueado até qualidade,
+   grounding, segurança e repetibilidade passarem juntas.
 4. Retomar regras estruturadas e consolidar a temporalidade já antecipada.
 5. Executar o primeiro checkpoint de seleção arquitetural antes de grafos.
 

@@ -227,7 +227,11 @@ qualquer conexão adicional. O holdout posterior atingiu 9/9 em correspondência
 segurança de invocação e segurança de liberação. A composição está aprovada
 como arquitetura experimental com cliente falso, não como prova de qualidade
 do modelo. O caminho padrão continua desabilitado e o corpus privado permanece
-fora de escopo.
+fora de escopo. No benchmark posterior com `Qwen3-4B Q4_K_M`, a aplicação
+preparou, invocou e validou 12/12 execuções, mas o modelo se absteve nas nove
+tentativas respondíveis. A acurácia de status foi 25% e a de conteúdo, 0%.
+Assim, a arquitetura preservou seus limites de segurança, mas o modelo e o
+request atual não foram aprovados para uso.
 
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no
