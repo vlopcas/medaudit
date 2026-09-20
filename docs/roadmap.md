@@ -202,7 +202,9 @@ não usar LLM, RAG, grafo ou agente.
 
 1. Diagnosticar em desenvolvimento sintético por que o request compilado induz
    abstention estável no modelo local, comparando-o com a última configuração
-   local aprovada sem reutilizar holdout para ajuste.
+   local aprovada sem reutilizar holdout para ajuste. A instrução isolada
+   removeu a abstention, mas produziu falha estruturada nas nove tentativas
+   respondíveis; o próximo controle acrescenta somente o schema limitado.
 2. Formular uma única candidata controlada e avaliá-la primeiro em novos casos
    de desenvolvimento; qualquer holdout posterior deverá ser inédito.
 3. Manter síntese desabilitada e o corpus privado bloqueado até qualidade,

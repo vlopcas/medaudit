@@ -231,7 +231,11 @@ respondíveis foi 0%. O modelo se absteve de forma estável mesmo quando as duas
 evidências continham a resposta. A promoção foi rejeitada. O próximo marco é
 diagnosticar o request compilado vigente contra a configuração local
 anteriormente bem-sucedida em desenvolvimento sintético separado, sem abrir
-novo holdout.
+novo holdout. O teste seguinte alterou somente a instrução explícita: as nove
+tentativas respondíveis falharam fechadas no cliente antes da validação, e as
+três abstentions esperadas continuaram válidas. A política isolada foi
+rejeitada. O próximo marco acrescenta somente o schema limitado já validado em
+desenvolvimento anterior.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em

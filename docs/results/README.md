@@ -56,3 +56,4 @@ para evitar a exposição indireta do corpus privado.
 - [Resultado 040: aplicação de síntese em desenvolvimento](040-synthesis-application-development.md)
 - [Resultado 041: holdout da aplicação de síntese](041-synthesis-application-holdout.md)
 - [Resultado 042: modelo local pela aplicação de síntese](042-local-synthesis-application-development.md)
+- [Resultado 043: política explícita no request compilado](043-compiled-answer-policy-development.md)

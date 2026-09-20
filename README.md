@@ -226,7 +226,11 @@ conteúdo nos casos respondíveis: o modelo se absteve de forma estável nas nov
 tentativas com evidência suficiente. A promoção foi rejeitada. O próximo marco
 é diagnosticar, em desenvolvimento sintético separado, a diferença entre o
 request compilado vigente e a configuração local anteriormente bem-sucedida;
-corpus privado e runtime continuam bloqueados.
+o primeiro teste alterou somente a instrução explícita de resposta. As nove
+tentativas respondíveis terminaram em falha fechada do cliente antes da
+validação, enquanto as três abstentions esperadas permaneceram válidas. A
+política isolada foi rejeitada. O próximo teste acrescenta apenas o schema
+limitado já conhecido; corpus privado e runtime continuam bloqueados.
 
 ## Ambiente de desenvolvimento
 

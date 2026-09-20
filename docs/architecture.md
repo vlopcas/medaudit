@@ -233,6 +233,12 @@ tentativas respondíveis. A acurácia de status foi 25% e a de conteúdo, 0%.
 Assim, a arquitetura preservou seus limites de segurança, mas o modelo e o
 request atual não foram aprovados para uso.
 
+Uma política de instrução explícita pode ser selecionada antes da compilação e
+passa a fazer parte do contexto selado. Ela é opt-in e não muda input, schema,
+temperatura nem o padrão do gateway. Isoladamente, porém, produziu nove falhas
+fechadas do cliente nas nove tentativas respondíveis e foi rejeitada. Nenhuma
+resposta inválida atravessou o orquestrador.
+
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no
 desenvolvimento e não pertence ao fluxo principal.
