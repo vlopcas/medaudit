@@ -223,7 +223,11 @@ suas políticas. A operação preserva lado a lado o resultado roteado e a sínt
 e usa um orquestrador desabilitado por padrão. Em desenvolvimento sintético,
 atingiu 6/6 em correspondência, segurança de invocação e segurança de
 liberação. Ela ainda não é um endpoint e precisa de holdout inédito antes de
-qualquer conexão adicional.
+qualquer conexão adicional. O holdout posterior atingiu 9/9 em correspondência,
+segurança de invocação e segurança de liberação. A composição está aprovada
+como arquitetura experimental com cliente falso, não como prova de qualidade
+do modelo. O caminho padrão continua desabilitado e o corpus privado permanece
+fora de escopo.
 
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no

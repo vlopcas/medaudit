@@ -220,7 +220,11 @@ pipeline e o orquestrador sem alterar o comportamento padrão. Nenhum modelo foi
 liberado. Essa composição foi implementada e atingiu 100% nos seis fluxos, na
 segurança de invocação e na segurança de liberação, usando somente cliente falso
 e dados sintéticos. O próximo marco é um holdout inédito da aplicação completa;
-modelo local e corpus privado permanecem bloqueados.
+esse holdout atingiu 100% nos nove casos, na segurança de invocação e na
+segurança de liberação. A arquitetura completa está aprovada apenas com cliente
+falso. O próximo marco é um benchmark sintético controlado do modelo local por
+essa aplicação, medindo conteúdo, grounding, repetibilidade e latência. Corpus
+privado e runtime permanecem bloqueados.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em

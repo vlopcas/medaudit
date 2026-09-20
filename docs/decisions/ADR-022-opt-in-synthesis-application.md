@@ -35,3 +35,9 @@ O primeiro gate deve usar somente dados sintéticos e clientes falsos, cobrindo
 modo padrão, resposta validada, rotas sem preparação, clarificação e saída
 inválida. Aprovação em desenvolvimento autoriza apenas um holdout inédito da
 composição completa.
+
+O holdout posterior atingiu 9/9 em correspondência, segurança de invocação e
+segurança de liberação, incluindo temporalidade, revisão, budget, estados
+desabilitados, saída inválida e timeout. A composição está aprovada como
+arquitetura experimental com cliente falso. Essa decisão não promove modelo,
+qualidade factual, endpoint, corpus privado ou ativação no runtime padrão.

@@ -216,7 +216,11 @@ factual e corpus privado continuam bloqueados. Essa composição agora existe se
 alterar as APIs anteriores e mantém síntese desabilitada por padrão. Na
 avaliação sintética com cliente falso, atingiu 6/6 em correspondência, segurança
 de invocação e segurança de liberação. O próximo gate é um holdout inédito da
-operação completa.
+operação completa. Esse holdout atingiu 9/9 nas três métricas, incluindo
+temporalidade, revisão, budget, falhas do cliente e respostas inválidas. A
+arquitetura está aprovada somente com cliente falso. O próximo marco é medir a
+compatibilidade e a qualidade do modelo local através dessa aplicação em dados
+sintéticos; corpus privado e runtime continuam bloqueados.
 
 ## Ambiente de desenvolvimento
 
