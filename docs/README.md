@@ -78,6 +78,8 @@ O gateway experimental e opt-in para essa fronteira está em
 [ADR-020](decisions/ADR-020-opt-in-compiled-context-gateway.md).
 A orquestração que libera somente síntese validada está em
 [ADR-021](decisions/ADR-021-guarded-synthesis-orchestration.md).
+A composição opt-in da aplicação de síntese está em
+[ADR-022](decisions/ADR-022-opt-in-synthesis-application.md).
 
 ## Conteúdo permitido
 

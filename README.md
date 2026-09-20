@@ -212,7 +212,11 @@ com clientes falsos, atingiu 7/7 em correspondência e segurança de liberação
 holdout sintético posterior atingiu 9/9 nas duas métricas, incluindo bloqueios,
 suporte combinado, respostas inválidas e timeout. A fronteira está aprovada
 somente para uma composição de aplicação opt-in; modelo local, qualidade
-factual e corpus privado continuam bloqueados.
+factual e corpus privado continuam bloqueados. Essa composição agora existe sem
+alterar as APIs anteriores e mantém síntese desabilitada por padrão. Na
+avaliação sintética com cliente falso, atingiu 6/6 em correspondência, segurança
+de invocação e segurança de liberação. O próximo gate é um holdout inédito da
+operação completa.
 
 ## Ambiente de desenvolvimento
 

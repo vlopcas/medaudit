@@ -53,3 +53,4 @@ para evitar a exposição indireta do corpus privado.
 - [Resultado 037: segundo holdout da integração roteador-gateway](037-routed-compiled-integration-holdout-v2.md)
 - [Resultado 038: orquestração de síntese em desenvolvimento](038-synthesis-orchestration-development.md)
 - [Resultado 039: holdout da orquestração de síntese](039-synthesis-orchestration-holdout.md)
+- [Resultado 040: aplicação de síntese em desenvolvimento](040-synthesis-application-development.md)

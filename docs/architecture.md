@@ -218,6 +218,13 @@ suporte combinado, respostas inválidas e timeout. Isso autoriza somente uma
 composição de aplicação opt-in que preserve as APIs atuais; nenhum modelo foi
 promovido e o caminho padrão permanece sem síntese.
 
+`GroundedSynthesisApplication` compõe o pipeline e o orquestrador sem duplicar
+suas políticas. A operação preserva lado a lado o resultado roteado e a síntese
+e usa um orquestrador desabilitado por padrão. Em desenvolvimento sintético,
+atingiu 6/6 em correspondência, segurança de invocação e segurança de
+liberação. Ela ainda não é um endpoint e precisa de holdout inédito antes de
+qualquer conexão adicional.
+
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no
 desenvolvimento e não pertence ao fluxo principal.
