@@ -238,7 +238,11 @@ rejeitada. O próximo marco acrescenta somente o schema limitado já validado em
 desenvolvimento anterior. A combinação limitada posterior atingiu 12/12 em
 preparação, validação e status, 9/9 em conteúdo respondível e estabilidade exata
 nos quatro casos. A configuração avançou somente para a criação de um holdout
-sintético inédito; runtime e corpus privado seguem bloqueados.
+sintético inédito; runtime e corpus privado seguem bloqueados. No holdout, as
+18 saídas foram estruturalmente válidas, mas a acurácia de status caiu para
+66,7% e a de conteúdo respondível para 75%. O caso adversarial e os dois casos
+insuficientes falharam estavelmente. A candidata foi rejeitada; o conjunto
+encerrado não será usado para ajuste.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em

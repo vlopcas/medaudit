@@ -233,7 +233,11 @@ política isolada foi rejeitada. O próximo teste acrescenta apenas o schema
 limitado já conhecido. Essa combinação atingiu 12/12 em preparação, validação,
 status e estabilidade, além de 9/9 em conteúdo respondível, com latência máxima
 de 4,48 s. Ela está aprovada somente para um holdout sintético inédito; corpus
-privado e runtime continuam bloqueados.
+privado e runtime continuam bloqueados. No holdout congelado, a validação
+estrutural permaneceu em 18/18, mas a acurácia de status caiu para 66,7% e a de
+conteúdo respondível para 75%. O caso com instrução não confiável e os dois
+casos de evidência insuficiente reprovaram de forma estável. A candidata foi
+rejeitada e esse holdout não será usado para ajuste.
 
 ## Ambiente de desenvolvimento
 

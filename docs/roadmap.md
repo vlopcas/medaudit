@@ -206,7 +206,10 @@ não usar LLM, RAG, grafo ou agente.
    removeu a abstention, mas produziu falha estruturada nas nove tentativas
    respondíveis. O schema limitado corrigiu a falha e a combinação atingiu
    100% no desenvolvimento; o próximo gate é um holdout sintético inédito,
-   congelado antes da primeira execução.
+   congelado antes da primeira execução. Esse holdout reprovou a candidata em
+   segurança de conteúdo e abstention; ele está encerrado e não será ajustado.
+   O próximo ciclo usa novos casos de desenvolvimento para avaliar uma
+   fronteira adicional de verificação dessas duas classes.
 2. Formular uma única candidata controlada e avaliá-la primeiro em novos casos
    de desenvolvimento; qualquer holdout posterior deverá ser inédito.
 3. Manter síntese desabilitada e o corpus privado bloqueado até qualidade,

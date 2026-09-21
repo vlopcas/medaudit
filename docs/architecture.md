@@ -244,7 +244,10 @@ textos, suportes e citações. Com a instrução explícita, teto de 512 tokens 
 esses limites, o modelo atingiu 12/12 em validação e status e 9/9 em conteúdo
 respondível no desenvolvimento, com estabilidade exata. A configuração está
 apta somente a um holdout sintético novo; o padrão continua baseline e
-desabilitado.
+desabilitado. Esse holdout preservou 18/18 saídas estruturalmente válidas, mas
+caiu para 66,7% em status e 75% em conteúdo respondível. Instrução não
+confiável e evidência insuficiente continuam sem proteção semântica adequada.
+A configuração foi rejeitada e não altera o caminho padrão.
 
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no
