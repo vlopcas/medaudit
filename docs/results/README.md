@@ -60,3 +60,4 @@ para evitar a exposição indireta do corpus privado.
 - [Resultado 044: síntese compilada com schema limitado](044-bounded-compiled-synthesis-development.md)
 - [Resultado 045: holdout da síntese local pela aplicação](045-local-synthesis-application-holdout.md)
 - [Resultado 046: fronteira de verificação de liberação](046-release-verification-boundary-development.md)
+- [Resultado 047: verificador lexical conservador](047-lexical-release-verifier-development.md)

@@ -243,6 +243,10 @@ grounded e antes da liberação. Com verificadores falsos, atingiu 7/7 em
 correspondência e segurança de liberação, cobrindo rejeição, revisão humana,
 falha fechada e ordem estrutural. Ainda não existe estratégia semântica
 aprovada; o próximo ciclo será somente desenvolvimento sintético novo.
+A primeira estratégia real combinou cobertura lexical das evidências citadas
+com revisão de instruções explícitas. Ela preservou 100% dos casos seguros, mas
+bloqueou somente 33,3% dos inseguros e deixou passar expansão sem suporte e
+contradição de valor. Foi rejeitada no desenvolvimento e não consumirá holdout.
 
 ## Ambiente de desenvolvimento
 

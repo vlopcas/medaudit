@@ -211,7 +211,10 @@ não usar LLM, RAG, grafo ou agente.
    O próximo ciclo usa novos casos de desenvolvimento para avaliar uma
    fronteira adicional de verificação dessas duas classes. O contrato dessa
    fronteira já foi validado com verificadores falsos; o próximo marco é uma
-   primeira estratégia estreita em casos novos de desenvolvimento.
+   primeira estratégia estreita em casos novos de desenvolvimento. A candidata
+   lexical foi rejeitada por deixar passar expansão sem suporte e contradição
+   pontual; o próximo ciclo deve estruturar fatos verificáveis ou testar um
+   verificador semanticamente independente.
 2. Formular uma única candidata controlada e avaliá-la primeiro em novos casos
    de desenvolvimento; qualquer holdout posterior deverá ser inédito.
 3. Manter síntese desabilitada e o corpus privado bloqueado até qualidade,

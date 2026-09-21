@@ -256,6 +256,13 @@ falha jamais expõem a resposta, e uma saída estruturalmente inválida nem cheg
 ao verificador. O contrato atingiu 7/7 fluxos e 100% de segurança de liberação
 com verificadores falsos. Ainda não existe uma estratégia semântica promovida.
 
+`ConservativeLexicalVerifier` é a primeira estratégia experimental dessa
+fronteira. Ele compara tokens do claim somente com evidências citadas e envia
+instruções explícitas para revisão. No desenvolvimento, liberou todos os casos
+seguros, mas bloqueou apenas um de três inseguros: expansão sem suporte e
+contradição pontual atravessaram a verificação. A estratégia foi rejeitada e
+não integra o caminho aprovado.
+
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no
 desenvolvimento e não pertence ao fluxo principal.
