@@ -250,9 +250,10 @@ contradição de valor. Foi rejeitada no desenvolvimento e não consumirá holdo
 Uma segunda estratégia restringiu a verificação a quantidades com unidade,
 códigos e polaridade. Após uma correção de flexões no próprio desenvolvimento,
 ela atingiu 10/10, inclusive 100% nos grupos seguro, inseguro e revisão. A
-candidata está apta somente a um holdout sintético inédito; linguagem fora
-desses tipos segue para revisão, e nenhuma autorização foi dada ao corpus
-privado ou ao runtime principal.
+candidata avançou para um holdout sintético inédito e congelado, no qual também
+atingiu 10/10. Está aprovada apenas como componente experimental opt-in para
+esses tipos; linguagem fora do domínio segue para revisão, e nenhuma
+autorização foi dada ao corpus privado ou ao runtime principal.
 
 ## Ambiente de desenvolvimento
 

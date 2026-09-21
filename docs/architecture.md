@@ -267,8 +267,9 @@ não integra o caminho aprovado.
 somente quantidades com unidade, códigos alfanuméricos e polaridade de
 permissão ou proibição nas evidências citadas. Divergências são rejeitadas;
 claims sem um tipo reconhecido e evidência suspeita seguem para revisão. No
-desenvolvimento sintético atingiu 10/10, mas ainda não enfrentou holdout e não
-integra o caminho aprovado.
+desenvolvimento sintético atingiu 10/10 e repetiu 10/10 em holdout congelado.
+Está aprovado somente como componente experimental opt-in e não integra o
+caminho padrão.
 
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no

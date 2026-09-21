@@ -29,7 +29,7 @@ implementação dedicada.
 | 10 | Temporalidade e versionamento | Parcial, antecipada | Catálogo temporal, relações de substituição, snapshots por data e avaliações temporais já existem. |
 | 11–18 | Grafos, tools, APIs e agentes | Não iniciadas | Permanecem no roteiro futuro. |
 | 19 | Provenance e citações | Parcial, antecipada | IDs determinísticos, origem dos chunks e validação das citações já atravessam o pipeline. |
-| 20–26 | Verifier até arquitetura final | Parcial, experimental | A fronteira de verificação foi integrada; a candidata estruturada passou em desenvolvimento e aguarda holdout. Arquitetura final permanece futura. |
+| 20–26 | Verifier até arquitetura final | Parcial, experimental | A fronteira foi integrada; a candidata estruturada passou em desenvolvimento e holdout como opt-in estreito. Arquitetura final permanece futura. |
 
 ## Decisões vigentes
 
@@ -257,7 +257,9 @@ O experimento estruturado subsequente restringiu o domínio a quantidades com
 unidade, códigos e polaridade. Depois de corrigir apenas a normalização de duas
 flexões no conjunto de desenvolvimento, atingiu 10/10 e 100% nos grupos seguro,
 inseguro e revisão. A candidata pode avançar somente para um holdout sintético
-inédito e previamente congelado; fatos não reconhecidos continuam em revisão.
+inédito e previamente congelado; nele repetiu 10/10 e 100% em todos os grupos.
+Está aprovada somente como componente experimental opt-in para esses três tipos;
+fatos não reconhecidos continuam em revisão e o holdout está encerrado.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em
