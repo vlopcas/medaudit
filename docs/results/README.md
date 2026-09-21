@@ -63,3 +63,4 @@ para evitar a exposição indireta do corpus privado.
 - [Resultado 047: verificador lexical conservador](047-lexical-release-verifier-development.md)
 - [Resultado 048: verificador de fatos estruturados](048-structured-fact-verifier-development.md)
 - [Resultado 049: holdout do verificador de fatos estruturados](049-structured-fact-verifier-holdout.md)
+- [Resultado 050: integração do verificador estruturado à aplicação](050-structured-verifier-application-development.md)

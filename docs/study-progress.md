@@ -260,6 +260,11 @@ inseguro e revisão. A candidata pode avançar somente para um holdout sintétic
 inédito e previamente congelado; nele repetiu 10/10 e 100% em todos os grupos.
 Está aprovada somente como componente experimental opt-in para esses três tipos;
 fatos não reconhecidos continuam em revisão e o holdout está encerrado.
+A integração opt-in subsequente percorreu a aplicação completa e atingiu 7/7,
+com 100% de segurança de liberação. Desligar o verificador preservou o
+comportamento anterior; quando ligado, contradições foram rejeitadas e linguagem
+fora do domínio ficou retida sem resposta. O próximo gate é um holdout inédito
+da integração.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em

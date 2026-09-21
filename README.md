@@ -254,6 +254,11 @@ candidata avançou para um holdout sintético inédito e congelado, no qual tamb
 atingiu 10/10. Está aprovada apenas como componente experimental opt-in para
 esses tipos; linguagem fora do domínio segue para revisão, e nenhuma
 autorização foi dada ao corpus privado ou ao runtime principal.
+Sua integração opt-in com a aplicação completa foi então exercitada em sete
+fluxos sintéticos e atingiu 100% de correspondência e segurança de liberação.
+Rejeições e revisões não expuseram respostas, e o opt-in desligado preservou o
+comportamento anterior. A integração permanece experimental e aguarda um
+holdout próprio antes de qualquer promoção adicional.
 
 ## Ambiente de desenvolvimento
 
