@@ -13,6 +13,9 @@ from medaudit.rag import (
     RoutedEvidenceFirstPipeline,
     SynthesisMode,
     SynthesisStatus,
+    VerificationCode,
+    VerificationDecision,
+    VerificationResult,
 )
 from medaudit.retrieval import BM25Index
 
@@ -27,6 +30,20 @@ class FakeClient:
         if isinstance(self.response, Exception):
             raise self.response
         return self.response
+
+
+class FakeVerifier:
+    def __init__(
+        self, result: VerificationResult | Exception
+    ) -> None:
+        self.result = result
+        self.call_count = 0
+
+    def verify(self, answer: object, evidence: object) -> VerificationResult:
+        self.call_count += 1
+        if isinstance(self.result, Exception):
+            raise self.result
+        return self.result
 
 
 class GroundedSynthesisOrchestratorTest(unittest.TestCase):
@@ -129,6 +146,64 @@ class GroundedSynthesisOrchestratorTest(unittest.TestCase):
 
         self.assertEqual(result.telemetry.status, SynthesisStatus.REJECTED)
         self.assertEqual(result.telemetry.failure_code, "response_rejected")
+        self.assertIsNone(result.answer)
+
+    def test_verifier_can_reject_without_releasing_validated_answer(self) -> None:
+        verifier = FakeVerifier(
+            VerificationResult(
+                VerificationDecision.REJECT,
+                VerificationCode.UNTRUSTED_CONTENT,
+            )
+        )
+        result = asyncio.run(
+            GroundedSynthesisOrchestrator(
+                mode=SynthesisMode.EXPERIMENTAL,
+                client=FakeClient(self._valid_response()),
+                verifier=verifier,
+            ).synthesize(self.prepared)
+        )
+
+        self.assertEqual(result.telemetry.status, SynthesisStatus.REJECTED)
+        self.assertEqual(
+            result.telemetry.failure_code,
+            "verification_untrusted_content",
+        )
+        self.assertIsNone(result.answer)
+        self.assertEqual(verifier.call_count, 1)
+
+    def test_verifier_can_hold_answer_for_review(self) -> None:
+        verifier = FakeVerifier(
+            VerificationResult(
+                VerificationDecision.REVIEW,
+                VerificationCode.REVIEW_REQUIRED,
+            )
+        )
+        result = asyncio.run(
+            GroundedSynthesisOrchestrator(
+                mode=SynthesisMode.EXPERIMENTAL,
+                client=FakeClient(self._valid_response()),
+                verifier=verifier,
+            ).synthesize(self.prepared)
+        )
+
+        self.assertEqual(result.telemetry.status, SynthesisStatus.HELD)
+        self.assertEqual(
+            result.telemetry.failure_code,
+            "verification_review_required",
+        )
+        self.assertIsNone(result.answer)
+
+    def test_verifier_failure_is_closed(self) -> None:
+        result = asyncio.run(
+            GroundedSynthesisOrchestrator(
+                mode=SynthesisMode.EXPERIMENTAL,
+                client=FakeClient(self._valid_response()),
+                verifier=FakeVerifier(RuntimeError("synthetic verifier failure")),
+            ).synthesize(self.prepared)
+        )
+
+        self.assertEqual(result.telemetry.status, SynthesisStatus.FAILED)
+        self.assertEqual(result.telemetry.failure_code, "verifier_failed")
         self.assertIsNone(result.answer)
 
     def test_client_failure_returns_no_answer(self) -> None:

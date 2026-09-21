@@ -76,6 +76,12 @@ from medaudit.rag.validation import (
     validate_decomposed_grounded_response,
     validate_grounded_response,
 )
+from medaudit.rag.verification import (
+    GroundedAnswerVerifier,
+    VerificationCode,
+    VerificationDecision,
+    VerificationResult,
+)
 
 __all__ = [
     "ANSWER_WHEN_SUPPORTED_INSTRUCTION",
@@ -110,6 +116,7 @@ __all__ = [
     "ExecutedQueryStep",
     "FrozenTopScorePolicy",
     "GroundedAnswer",
+    "GroundedAnswerVerifier",
     "GroundedClaim",
     "GroundedSynthesisApplication",
     "GroundedSynthesisOrchestrator",
@@ -126,6 +133,9 @@ __all__ = [
     "SynthesisTelemetry",
     "TokenEstimator",
     "Utf8ByteTokenEstimator",
+    "VerificationCode",
+    "VerificationDecision",
+    "VerificationResult",
     "assess_decomposed_evidence",
     "build_compiled_decomposed_grounded_request",
     "build_decomposed_grounded_request",

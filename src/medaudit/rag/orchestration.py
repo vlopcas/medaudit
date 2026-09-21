@@ -11,6 +11,10 @@ from medaudit.rag.validation import (
     DecomposedGroundedAnswer,
     validate_decomposed_grounded_response,
 )
+from medaudit.rag.verification import (
+    GroundedAnswerVerifier,
+    VerificationDecision,
+)
 
 
 class SynthesisMode(StrEnum):
@@ -27,6 +31,7 @@ class SynthesisStatus(StrEnum):
     BLOCKED = "blocked"
     VALIDATED = "validated"
     REJECTED = "rejected"
+    HELD = "held"
     FAILED = "failed"
 
 
@@ -65,12 +70,14 @@ class GroundedSynthesisOrchestrator:
         *,
         mode: SynthesisMode = SynthesisMode.DISABLED,
         client: LLMClient | None = None,
+        verifier: GroundedAnswerVerifier | None = None,
         clock: Callable[[], float] = perf_counter,
     ) -> None:
         if mode is SynthesisMode.EXPERIMENTAL and client is None:
             raise ValueError("experimental synthesis requires an LLM client")
         self._mode = mode
         self._client = client
+        self._verifier = verifier
         self._clock = clock
 
     async def synthesize(
@@ -119,6 +126,35 @@ class GroundedSynthesisOrchestrator:
                 input_tokens=response.usage.input_tokens,
                 output_tokens=response.usage.output_tokens,
             )
+        if self._verifier is not None:
+            try:
+                verification = self._verifier.verify(answer, bundle)
+            except (RuntimeError, TypeError, ValueError):
+                return self._result(
+                    started_at=started_at,
+                    status=SynthesisStatus.FAILED,
+                    failure_code="verifier_failed",
+                    input_tokens=response.usage.input_tokens,
+                    output_tokens=response.usage.output_tokens,
+                )
+            if verification.decision is VerificationDecision.REJECT:
+                assert verification.code is not None
+                return self._result(
+                    started_at=started_at,
+                    status=SynthesisStatus.REJECTED,
+                    failure_code=f"verification_{verification.code.value}",
+                    input_tokens=response.usage.input_tokens,
+                    output_tokens=response.usage.output_tokens,
+                )
+            if verification.decision is VerificationDecision.REVIEW:
+                assert verification.code is not None
+                return self._result(
+                    started_at=started_at,
+                    status=SynthesisStatus.HELD,
+                    failure_code=f"verification_{verification.code.value}",
+                    input_tokens=response.usage.input_tokens,
+                    output_tokens=response.usage.output_tokens,
+                )
         return self._result(
             started_at=started_at,
             status=SynthesisStatus.VALIDATED,

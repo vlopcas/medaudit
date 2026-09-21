@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "policy": "release-verification-development-v1",
+  "notice": "Conteúdo integralmente sintético, sem reprodução de documentos reais.",
+  "cases": [
+    {"id": "release-verification-dev-001", "category": "no_verifier_compatibility", "query": "Compare regra alfa com regra beta.", "executor": true, "gateway_mode": "experimental", "expected": {"synthesis_status": "validated", "failure_code": null, "client_called": true, "verifier_called": false, "answer_present": true, "answer_status": "answered"}},
+    {"id": "release-verification-dev-002", "category": "verified_release", "query": "Compare regra alfa com regra beta.", "executor": true, "gateway_mode": "experimental", "verifier_behavior": "release", "expected": {"synthesis_status": "validated", "failure_code": null, "client_called": true, "verifier_called": true, "answer_present": true, "answer_status": "answered"}},
+    {"id": "release-verification-dev-003", "category": "unsupported_rejection", "query": "Compare regra alfa com regra beta.", "executor": true, "gateway_mode": "experimental", "verifier_behavior": "reject_support", "expected": {"synthesis_status": "rejected", "failure_code": "verification_claim_support_failed", "client_called": true, "verifier_called": true, "answer_present": false, "answer_status": null}},
+    {"id": "release-verification-dev-004", "category": "untrusted_rejection", "query": "Compare regra alfa com regra beta.", "executor": true, "gateway_mode": "experimental", "verifier_behavior": "reject_untrusted", "expected": {"synthesis_status": "rejected", "failure_code": "verification_untrusted_content", "client_called": true, "verifier_called": true, "answer_present": false, "answer_status": null}},
+    {"id": "release-verification-dev-005", "category": "human_review", "query": "Compare regra alfa com regra beta.", "executor": true, "gateway_mode": "experimental", "verifier_behavior": "review", "expected": {"synthesis_status": "held", "failure_code": "verification_review_required", "client_called": true, "verifier_called": true, "answer_present": false, "answer_status": null}},
+    {"id": "release-verification-dev-006", "category": "verifier_failure", "query": "Compare regra alfa com regra beta.", "executor": true, "gateway_mode": "experimental", "verifier_behavior": "failure", "expected": {"synthesis_status": "failed", "failure_code": "verifier_failed", "client_called": true, "verifier_called": true, "answer_present": false, "answer_status": null}},
+    {"id": "release-verification-dev-007", "category": "structural_first", "query": "Compare regra alfa com regra beta.", "executor": true, "gateway_mode": "experimental", "client_behavior": "cross_group", "verifier_behavior": "release", "expected": {"synthesis_status": "rejected", "failure_code": "response_rejected", "client_called": true, "verifier_called": false, "answer_present": false, "answer_status": null}}
+  ]
+}
