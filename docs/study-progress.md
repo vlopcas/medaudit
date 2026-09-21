@@ -24,12 +24,12 @@ implementação dedicada.
 | 5 | Document parsing e chunking | Parcial | Texto, PDF, XLS/XLSX, OCR por página e chunking estrutural estão implementados; novas estratégias ainda podem ser comparadas. |
 | 6 | Hybrid Retrieval | Experimental, não promovida | BM25, dense e RRF foram comparados; BM25 permanece como baseline principal. |
 | 7 | Reranking | Experimental, não promovida | Reranking semântico restrito aos candidatos foi avaliado sem justificar promoção. |
-| 8 | Query Understanding | Parcial | Roteamento, planejamento e execução opt-in por passo foram validados; combinação de evidências e reescrita semântica ainda não foram implementadas. |
+| 8 | Query Understanding | Concluída para o ciclo atual | Roteamento, planejamento, execução e agrupamento opt-in por passo foram validados; reescrita semântica foi rejeitada. |
 | 9 | Regras estruturadas | Não iniciada | Será tratada depois do ciclo de Query Understanding. |
 | 10 | Temporalidade e versionamento | Parcial, antecipada | Catálogo temporal, relações de substituição, snapshots por data e avaliações temporais já existem. |
 | 11–18 | Grafos, tools, APIs e agentes | Não iniciadas | Permanecem no roteiro futuro. |
 | 19 | Provenance e citações | Parcial, antecipada | IDs determinísticos, origem dos chunks e validação das citações já atravessam o pipeline. |
-| 20–26 | Verifier até arquitetura final | Não iniciadas | Permanecem no roteiro futuro. |
+| 20–26 | Verifier até arquitetura final | Parcial, experimental | A fronteira de verificação foi integrada; a candidata estruturada passou em desenvolvimento e aguarda holdout. Arquitetura final permanece futura. |
 
 ## Decisões vigentes
 
@@ -253,6 +253,11 @@ A primeira candidata lexical atingiu 100% de liberação segura, mas somente
 contradição de valor mantiveram sobreposição lexical suficiente para passar.
 A candidata foi rejeitada sem holdout; o próximo experimento deve representar
 fatos verificáveis de forma estruturada ou usar verificação independente.
+O experimento estruturado subsequente restringiu o domínio a quantidades com
+unidade, códigos e polaridade. Depois de corrigir apenas a normalização de duas
+flexões no conjunto de desenvolvimento, atingiu 10/10 e 100% nos grupos seguro,
+inseguro e revisão. A candidata pode avançar somente para um holdout sintético
+inédito e previamente congelado; fatos não reconhecidos continuam em revisão.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em

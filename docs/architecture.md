@@ -263,6 +263,13 @@ seguros, mas bloqueou apenas um de três inseguros: expansão sem suporte e
 contradição pontual atravessaram a verificação. A estratégia foi rejeitada e
 não integra o caminho aprovado.
 
+`StructuredFactVerifier` é a candidata determinística seguinte. Ele reconhece
+somente quantidades com unidade, códigos alfanuméricos e polaridade de
+permissão ou proibição nas evidências citadas. Divergências são rejeitadas;
+claims sem um tipo reconhecido e evidência suspeita seguem para revisão. No
+desenvolvimento sintético atingiu 10/10, mas ainda não enfrentou holdout e não
+integra o caminho aprovado.
+
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no
 desenvolvimento e não pertence ao fluxo principal.

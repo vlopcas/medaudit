@@ -61,3 +61,4 @@ para evitar a exposição indireta do corpus privado.
 - [Resultado 045: holdout da síntese local pela aplicação](045-local-synthesis-application-holdout.md)
 - [Resultado 046: fronteira de verificação de liberação](046-release-verification-boundary-development.md)
 - [Resultado 047: verificador lexical conservador](047-lexical-release-verifier-development.md)
+- [Resultado 048: verificador de fatos estruturados](048-structured-fact-verifier-development.md)

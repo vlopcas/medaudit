@@ -154,8 +154,10 @@ para revisão humana.
 Critério de avanço: falhas multimodais são mensuradas separadamente e nenhuma
 conclusão de alto impacto é automatizada sem política explícita.
 
-Estado: parsing multimodal básico e provenance parcial foram antecipados;
-verifier e workflow humano não foram iniciados.
+Estado: parsing multimodal básico e provenance parcial foram antecipados. A
+fronteira de verifier está integrada e uma candidata estruturada passou em
+desenvolvimento, mas ainda aguarda holdout; workflow humano permanece não
+iniciado.
 
 ### 9. Evaluation avançada
 
@@ -213,8 +215,9 @@ não usar LLM, RAG, grafo ou agente.
    fronteira já foi validado com verificadores falsos; o próximo marco é uma
    primeira estratégia estreita em casos novos de desenvolvimento. A candidata
    lexical foi rejeitada por deixar passar expansão sem suporte e contradição
-   pontual; o próximo ciclo deve estruturar fatos verificáveis ou testar um
-   verificador semanticamente independente.
+   pontual. A candidata estruturada seguinte atingiu 10/10 em desenvolvimento
+   para quantidades com unidade, códigos e polaridade; o próximo gate é um
+   holdout sintético inédito, congelado antes da primeira execução.
 2. Formular uma única candidata controlada e avaliá-la primeiro em novos casos
    de desenvolvimento; qualquer holdout posterior deverá ser inédito.
 3. Manter síntese desabilitada e o corpus privado bloqueado até qualidade,
