@@ -218,8 +218,10 @@ não usar LLM, RAG, grafo ou agente.
    pontual. A candidata estruturada seguinte atingiu 10/10 em desenvolvimento
    para quantidades com unidade, códigos e polaridade e repetiu 10/10 em
    holdout congelado. Sua integração opt-in com a aplicação atingiu 7/7 em
-   desenvolvimento sem ampliar o domínio; o próximo gate é um holdout sintético
-   inédito dessa composição, congelado antes da primeira execução.
+   desenvolvimento sem ampliar o domínio e repetiu 9/9 em holdout congelado.
+   A composição permanece experimental e opt-in; o próximo ciclo deve testar
+   o modelo local somente em desenvolvimento sintético ou avançar para regras
+   estruturadas, sem reutilizar os holdouts encerrados.
 2. Formular uma única candidata controlada e avaliá-la primeiro em novos casos
    de desenvolvimento; qualquer holdout posterior deverá ser inédito.
 3. Manter síntese desabilitada e o corpus privado bloqueado até qualidade,

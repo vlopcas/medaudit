@@ -64,3 +64,4 @@ para evitar a exposição indireta do corpus privado.
 - [Resultado 048: verificador de fatos estruturados](048-structured-fact-verifier-development.md)
 - [Resultado 049: holdout do verificador de fatos estruturados](049-structured-fact-verifier-holdout.md)
 - [Resultado 050: integração do verificador estruturado à aplicação](050-structured-verifier-application-development.md)
+- [Resultado 051: holdout da integração do verificador estruturado](051-structured-verifier-application-holdout.md)

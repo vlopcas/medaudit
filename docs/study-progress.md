@@ -263,8 +263,9 @@ fatos não reconhecidos continuam em revisão e o holdout está encerrado.
 A integração opt-in subsequente percorreu a aplicação completa e atingiu 7/7,
 com 100% de segurança de liberação. Desligar o verificador preservou o
 comportamento anterior; quando ligado, contradições foram rejeitadas e linguagem
-fora do domínio ficou retida sem resposta. O próximo gate é um holdout inédito
-da integração.
+fora do domínio ficou retida sem resposta. O holdout congelado da integração
+repetiu 9/9 e 100% de segurança de liberação; está encerrado, e a composição
+permanece experimental e opt-in.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em

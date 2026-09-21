@@ -274,7 +274,8 @@ Quando injetado no `GroundedSynthesisOrchestrator`, o verificador também
 atravessou a composição completa da aplicação em 7/7 fluxos de desenvolvimento
 e 100% de segurança de liberação. O opt-in desligado preserva o comportamento
 anterior; rejeição e revisão nunca carregam a resposta para fora do
-orquestrador. A integração ainda não enfrentou holdout próprio.
+orquestrador. Em holdout próprio e congelado, repetiu 9/9 e 100% de segurança
+de liberação. Continua opt-in, experimental e fora do caminho padrão.
 
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no

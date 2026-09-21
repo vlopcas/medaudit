@@ -257,8 +257,9 @@ autorização foi dada ao corpus privado ou ao runtime principal.
 Sua integração opt-in com a aplicação completa foi então exercitada em sete
 fluxos sintéticos e atingiu 100% de correspondência e segurança de liberação.
 Rejeições e revisões não expuseram respostas, e o opt-in desligado preservou o
-comportamento anterior. A integração permanece experimental e aguarda um
-holdout próprio antes de qualquer promoção adicional.
+comportamento anterior. Em holdout próprio e congelado, repetiu 100% nos nove
+fluxos e na segurança de liberação. A integração está aprovada apenas como
+caminho experimental opt-in dentro do domínio estreito do verificador.
 
 ## Ambiente de desenvolvimento
 
