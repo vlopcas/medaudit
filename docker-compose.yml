@@ -844,6 +844,13 @@ services:
       - --dataset
       - /app/data/synthetic_cases/release_verification_development.json
 
+  evaluate-lexical-release-verifier:
+    extends: evaluate-release-verification
+    command:
+      - medaudit-evaluate-lexical-release-verifier
+      - --dataset
+      - /app/data/synthetic_cases/lexical_release_verifier_development.json
+
   evaluate-explicit-query-routing-holdout:
     extends: evaluate-explicit-query-routing
     user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"

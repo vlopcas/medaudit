@@ -77,6 +77,7 @@ from medaudit.rag.validation import (
     validate_grounded_response,
 )
 from medaudit.rag.verification import (
+    ConservativeLexicalVerifier,
     GroundedAnswerVerifier,
     VerificationCode,
     VerificationDecision,
@@ -96,6 +97,7 @@ __all__ = [
     "CompiledRequestStatus",
     "CompiledRequestTelemetry",
     "CompiledSchemaPolicy",
+    "ConservativeLexicalVerifier",
     "ContextExclusion",
     "ContextExclusionReason",
     "ContextItem",

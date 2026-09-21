@@ -75,6 +75,7 @@ medaudit-evaluate-synthesis-orchestration = "medaudit.evaluation.synthesis_orche
 medaudit-evaluate-synthesis-application = "medaudit.evaluation.synthesis_application:main"
 medaudit-benchmark-local-synthesis-application = "medaudit.evaluation.local_synthesis_application:main"
 medaudit-evaluate-release-verification = "medaudit.evaluation.release_verification:main"
+medaudit-evaluate-lexical-release-verifier = "medaudit.evaluation.lexical_release_verifier:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/medaudit"]
