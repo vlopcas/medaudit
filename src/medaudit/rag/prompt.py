@@ -1,6 +1,7 @@
 """Provider-neutral request construction for grounded answers."""
 
 import json
+from typing import Any
 
 from medaudit.llm import LLMRequest
 from medaudit.rag.context import (
@@ -35,8 +36,8 @@ ANSWER_WHEN_SUPPORTED_INSTRUCTION = (
 )
 
 
-def _decomposed_response_schema() -> dict[str, object]:
-    return {
+def _decomposed_response_schema(*, bounded: bool = False) -> dict[str, Any]:
+    schema: dict[str, Any] = {
         "type": "object",
         "additionalProperties": False,
         "required": ["status", "claims"],
@@ -74,6 +75,15 @@ def _decomposed_response_schema() -> dict[str, object]:
             },
         },
     }
+    if bounded:
+        claims = schema["properties"]["claims"]
+        claims["maxItems"] = 4
+        claim = claims["items"]
+        claim["properties"]["text"]["maxLength"] = 240
+        supports = claim["properties"]["supports"]
+        supports["maxItems"] = 4
+        supports["items"]["properties"]["evidence_ids"]["maxItems"] = 4
+    return schema
 
 
 def build_grounded_request(decision: RetrievalDecision) -> LLMRequest:
@@ -177,6 +187,8 @@ def build_decomposed_grounded_request(
 
 def build_compiled_decomposed_grounded_request(
     context: CompiledContext,
+    *,
+    bounded_schema: bool = False,
 ) -> LLMRequest:
     """Render only a complete, bounded and structurally separated context."""
     if context.status is not ContextStatus.READY or not context.can_generate:
@@ -263,5 +275,5 @@ def build_compiled_decomposed_grounded_request(
             ensure_ascii=False,
             sort_keys=True,
         ),
-        response_schema=_decomposed_response_schema(),
+        response_schema=_decomposed_response_schema(bounded=bounded_schema),
     )

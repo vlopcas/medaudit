@@ -789,6 +789,23 @@ services:
       - --instruction-policy
       - answer-when-supported-v1
 
+  benchmark-local-synthesis-application-bounded:
+    extends: benchmark-local-synthesis-application-answer-policy
+    command:
+      - medaudit-benchmark-local-synthesis-application
+      - --dataset
+      - /app/data/synthetic_cases/local_synthesis_application_development.json
+      - --output
+      - /artifacts/local-synthesis-application-bounded.local.json
+      - --repetitions
+      - "3"
+      - --max-output-tokens
+      - "512"
+      - --instruction-policy
+      - answer-when-supported-v1
+      - --schema-policy
+      - bounded-v1
+
   evaluate-explicit-query-routing-holdout:
     extends: evaluate-explicit-query-routing
     user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"

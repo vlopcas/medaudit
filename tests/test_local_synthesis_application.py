@@ -8,7 +8,7 @@ from medaudit.evaluation.local_synthesis_application import (
     run_benchmark,
 )
 from medaudit.llm import LLMRequest, LLMResponse, Usage
-from medaudit.rag import CompiledInstructionPolicy
+from medaudit.rag import CompiledInstructionPolicy, CompiledSchemaPolicy
 
 
 class DeterministicClient:
@@ -81,6 +81,7 @@ class LocalSynthesisApplicationBenchmarkTest(unittest.TestCase):
                 instruction_policy=(
                     CompiledInstructionPolicy.ANSWER_WHEN_SUPPORTED_V1
                 ),
+                schema_policy=CompiledSchemaPolicy.BOUNDED_V1,
             )
         )
 
@@ -90,6 +91,7 @@ class LocalSynthesisApplicationBenchmarkTest(unittest.TestCase):
         self.assertEqual(
             report["instruction_policy"], "answer-when-supported-v1"
         )
+        self.assertEqual(report["schema_policy"], "bounded-v1")
         self.assertEqual(report["synthesis_status_counts"], {"validated": 2})
         self.assertEqual(report["failure_code_counts"], {})
         self.assertNotIn("query", report["cases"][0])

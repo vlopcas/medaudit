@@ -34,6 +34,7 @@ from medaudit.rag.integration import (
     CompiledRequestResult,
     CompiledRequestStatus,
     CompiledRequestTelemetry,
+    CompiledSchemaPolicy,
 )
 from medaudit.rag.models import (
     DecompositionEvidenceBundle,
@@ -88,6 +89,7 @@ __all__ = [
     "CompiledRequestResult",
     "CompiledRequestStatus",
     "CompiledRequestTelemetry",
+    "CompiledSchemaPolicy",
     "ContextExclusion",
     "ContextExclusionReason",
     "ContextItem",

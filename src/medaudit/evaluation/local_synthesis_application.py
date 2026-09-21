@@ -20,6 +20,7 @@ from medaudit.rag import (
     CompiledContextGateway,
     CompiledInstructionPolicy,
     CompiledRequestMode,
+    CompiledSchemaPolicy,
     DeterministicDecompositionExecutor,
     EvidenceFirstPipeline,
     FrozenTopScorePolicy,
@@ -80,6 +81,7 @@ def _application(
     case: dict[str, Any],
     client: LLMClient,
     instruction_policy: CompiledInstructionPolicy,
+    schema_policy: CompiledSchemaPolicy,
 ) -> GroundedSynthesisApplication:
     chunks = [
         Chunk(item["chunk_id"], item["document_id"], item["text"])
@@ -100,6 +102,7 @@ def _application(
         compiled_context_gateway=CompiledContextGateway(
             mode=CompiledRequestMode.EXPERIMENTAL,
             instruction_policy=instruction_policy,
+            schema_policy=schema_policy,
             token_budget=10_000,
             estimator=WordTokenEstimator(),
         ),
@@ -145,6 +148,7 @@ async def run_benchmark(
     instruction_policy: CompiledInstructionPolicy = (
         CompiledInstructionPolicy.BASELINE
     ),
+    schema_policy: CompiledSchemaPolicy = CompiledSchemaPolicy.BASELINE,
 ) -> dict[str, Any]:
     """Measure the sealed application path without retaining generated text."""
     if repetitions < 1:
@@ -180,7 +184,7 @@ async def run_benchmark(
             counting_client = CountingClient(client)
             started_at = time.perf_counter()
             result = await _application(
-                case, counting_client, instruction_policy
+                case, counting_client, instruction_policy, schema_policy
             ).execute(case["query"], top_k=1)
             latencies.append((time.perf_counter() - started_at) * 1_000)
             preparation = result.routed.compiled_request
@@ -252,6 +256,7 @@ async def run_benchmark(
         "schema_version": 1,
         "policy": _POLICY,
         "instruction_policy": instruction_policy.value,
+        "schema_policy": schema_policy.value,
         "dataset": "wholly_synthetic",
         "case_count": len(cases),
         "repetitions_per_case": repetitions,
@@ -301,6 +306,11 @@ def main(argv: Sequence[str] | None = None) -> int:
         choices=tuple(item.value for item in CompiledInstructionPolicy),
         default=CompiledInstructionPolicy.BASELINE.value,
     )
+    parser.add_argument(
+        "--schema-policy",
+        choices=tuple(item.value for item in CompiledSchemaPolicy),
+        default=CompiledSchemaPolicy.BASELINE.value,
+    )
     args = parser.parse_args(argv)
     try:
         fingerprint = verify_input(args.dataset, None)
@@ -319,6 +329,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                 instruction_policy=CompiledInstructionPolicy(
                     args.instruction_policy
                 ),
+                schema_policy=CompiledSchemaPolicy(args.schema_policy),
             )
         )
         report["input_sha256"] = fingerprint

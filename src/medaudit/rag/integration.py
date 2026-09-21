@@ -33,6 +33,13 @@ class CompiledInstructionPolicy(StrEnum):
     ANSWER_WHEN_SUPPORTED_V1 = "answer-when-supported-v1"
 
 
+class CompiledSchemaPolicy(StrEnum):
+    """Explicit structured-output limits selected by the gateway."""
+
+    BASELINE = "baseline"
+    BOUNDED_V1 = "bounded-v1"
+
+
 class CompiledRequestStatus(StrEnum):
     """Safe outcome codes that do not expose query or evidence content."""
 
@@ -83,6 +90,7 @@ class CompiledContextGateway:
         instruction_policy: CompiledInstructionPolicy = (
             CompiledInstructionPolicy.BASELINE
         ),
+        schema_policy: CompiledSchemaPolicy = CompiledSchemaPolicy.BASELINE,
         token_budget: int = 8_192,
         estimator: TokenEstimator | None = None,
         clock: Callable[[], float] = perf_counter,
@@ -91,6 +99,7 @@ class CompiledContextGateway:
             raise ValueError("compiled request token budget must be positive")
         self._mode = mode
         self._instruction_policy = instruction_policy
+        self._schema_policy = schema_policy
         self._token_budget = token_budget
         self._estimator = estimator
         self._clock = clock
@@ -138,7 +147,12 @@ class CompiledContextGateway:
                 estimated_tokens=context.estimated_tokens,
             )
         try:
-            request = build_compiled_decomposed_grounded_request(context)
+            request = build_compiled_decomposed_grounded_request(
+                context,
+                bounded_schema=(
+                    self._schema_policy is CompiledSchemaPolicy.BOUNDED_V1
+                ),
+            )
         except ValueError:
             return self._result(
                 started_at=started_at,

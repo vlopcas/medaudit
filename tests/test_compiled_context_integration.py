@@ -9,6 +9,7 @@ from medaudit.rag import (
     CompiledInstructionPolicy,
     CompiledRequestMode,
     CompiledRequestStatus,
+    CompiledSchemaPolicy,
     ContextStatus,
     DecompositionEvidenceBundle,
 )
@@ -104,6 +105,30 @@ class CompiledContextGatewayTest(unittest.TestCase):
             candidate.request.response_schema, baseline.request.response_schema
         )
         self.assertEqual(candidate.request.temperature, baseline.request.temperature)
+
+    def test_bounded_schema_changes_only_structural_limits(self) -> None:
+        baseline = CompiledContextGateway(
+            mode=CompiledRequestMode.EXPERIMENTAL,
+            token_budget=10_000,
+            clock=lambda: 1.0,
+        ).prepare(make_bundle())
+        bounded = CompiledContextGateway(
+            mode=CompiledRequestMode.EXPERIMENTAL,
+            schema_policy=CompiledSchemaPolicy.BOUNDED_V1,
+            token_budget=10_000,
+            clock=lambda: 1.0,
+        ).prepare(make_bundle())
+
+        assert baseline.request is not None
+        assert bounded.request is not None
+        self.assertEqual(bounded.request.instruction, baseline.request.instruction)
+        self.assertEqual(bounded.request.input_text, baseline.request.input_text)
+        self.assertEqual(bounded.request.temperature, baseline.request.temperature)
+        claims = bounded.request.response_schema["properties"]["claims"]
+        self.assertEqual(claims["maxItems"], 4)
+        self.assertNotEqual(
+            bounded.request.response_schema, baseline.request.response_schema
+        )
 
     def test_budget_failure_returns_no_request(self) -> None:
         gateway = CompiledContextGateway(
