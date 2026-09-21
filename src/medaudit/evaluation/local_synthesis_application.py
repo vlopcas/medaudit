@@ -32,7 +32,8 @@ from medaudit.rag import (
 from medaudit.retrieval import BM25Index
 
 _NOTICE = "Conteúdo integralmente sintético, sem reprodução de documentos reais."
-_POLICY = "local-synthesis-application-development-v1"
+_DEVELOPMENT_POLICY = "local-synthesis-application-development-v1"
+_HOLDOUT_POLICY = "local-synthesis-application-holdout-v1"
 
 
 class CountingClient:
@@ -47,12 +48,14 @@ class CountingClient:
         return await self._client.generate(request)
 
 
-def load_dataset(path: Path) -> list[dict[str, Any]]:
+def load_dataset(
+    path: Path, *, expected_policy: str = _DEVELOPMENT_POLICY
+) -> list[dict[str, Any]]:
     """Load the explicit, wholly synthetic application benchmark schema."""
     payload = json.loads(path.read_text(encoding="utf-8"))
     if (
         payload.get("schema_version") != 1
-        or payload.get("policy") != _POLICY
+        or payload.get("policy") != expected_policy
         or payload.get("notice") != _NOTICE
     ):
         raise ValueError("unsupported local synthesis application schema")
@@ -149,6 +152,7 @@ async def run_benchmark(
         CompiledInstructionPolicy.BASELINE
     ),
     schema_policy: CompiledSchemaPolicy = CompiledSchemaPolicy.BASELINE,
+    policy: str = _DEVELOPMENT_POLICY,
 ) -> dict[str, Any]:
     """Measure the sealed application path without retaining generated text."""
     if repetitions < 1:
@@ -254,7 +258,7 @@ async def run_benchmark(
 
     return {
         "schema_version": 1,
-        "policy": _POLICY,
+        "policy": policy,
         "instruction_policy": instruction_policy.value,
         "schema_policy": schema_policy.value,
         "dataset": "wholly_synthetic",
@@ -302,6 +306,13 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--repetitions", type=int, default=3)
     parser.add_argument("--max-output-tokens", type=int, default=512)
     parser.add_argument(
+        "--dataset-policy",
+        choices=(_DEVELOPMENT_POLICY, _HOLDOUT_POLICY),
+        default=_DEVELOPMENT_POLICY,
+    )
+    parser.add_argument("--expected-sha256")
+    parser.add_argument("--refuse-overwrite", action="store_true")
+    parser.add_argument(
         "--instruction-policy",
         choices=tuple(item.value for item in CompiledInstructionPolicy),
         default=CompiledInstructionPolicy.BASELINE.value,
@@ -313,8 +324,12 @@ def main(argv: Sequence[str] | None = None) -> int:
     )
     args = parser.parse_args(argv)
     try:
-        fingerprint = verify_input(args.dataset, None)
-        cases = load_dataset(args.dataset)
+        if args.refuse_overwrite and args.output.exists():
+            raise FileExistsError("benchmark output already exists")
+        fingerprint = verify_input(args.dataset, args.expected_sha256)
+        cases = load_dataset(
+            args.dataset, expected_policy=args.dataset_policy
+        )
         wait_until_ready(args.base_url, timeout_seconds=args.startup_timeout)
         client = LlamaCppClient(
             base_url=args.base_url,
@@ -330,6 +345,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                     args.instruction_policy
                 ),
                 schema_policy=CompiledSchemaPolicy(args.schema_policy),
+                policy=args.dataset_policy,
             )
         )
         report["input_sha256"] = fingerprint

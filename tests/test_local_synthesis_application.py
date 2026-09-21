@@ -107,6 +107,16 @@ class LocalSynthesisApplicationBenchmarkTest(unittest.TestCase):
             with self.assertRaises(ValueError):
                 load_dataset(path)
 
+    def test_loader_accepts_explicit_holdout_policy(self) -> None:
+        path = Path("data/synthetic_cases/local_synthesis_application_holdout.json")
+
+        cases = load_dataset(
+            path,
+            expected_policy="local-synthesis-application-holdout-v1",
+        )
+
+        self.assertGreaterEqual(len(cases), 6)
+
 
 if __name__ == "__main__":
     unittest.main()

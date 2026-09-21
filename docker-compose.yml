@@ -806,6 +806,28 @@ services:
       - --schema-policy
       - bounded-v1
 
+  evaluate-local-synthesis-application-holdout:
+    extends: benchmark-local-synthesis-application-bounded
+    command:
+      - medaudit-benchmark-local-synthesis-application
+      - --dataset
+      - /app/data/synthetic_cases/local_synthesis_application_holdout.json
+      - --dataset-policy
+      - local-synthesis-application-holdout-v1
+      - --expected-sha256
+      - aa93b1d235d0f6903f680a6e49a4b524843b612030202b46a0afd093f6524aba
+      - --output
+      - /artifacts/local-synthesis-application-holdout.local.json
+      - --repetitions
+      - "3"
+      - --max-output-tokens
+      - "512"
+      - --instruction-policy
+      - answer-when-supported-v1
+      - --schema-policy
+      - bounded-v1
+      - --refuse-overwrite
+
   evaluate-explicit-query-routing-holdout:
     extends: evaluate-explicit-query-routing
     user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
