@@ -238,6 +238,11 @@ estrutural permaneceu em 18/18, mas a acurácia de status caiu para 66,7% e a de
 conteúdo respondível para 75%. O caso com instrução não confiável e os dois
 casos de evidência insuficiente reprovaram de forma estável. A candidata foi
 rejeitada e esse holdout não será usado para ajuste.
+Uma fronteira independente de verificação agora opera depois da validação
+grounded e antes da liberação. Com verificadores falsos, atingiu 7/7 em
+correspondência e segurança de liberação, cobrindo rejeição, revisão humana,
+falha fechada e ordem estrutural. Ainda não existe estratégia semântica
+aprovada; o próximo ciclo será somente desenvolvimento sintético novo.
 
 ## Ambiente de desenvolvimento
 

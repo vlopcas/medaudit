@@ -249,6 +249,13 @@ caiu para 66,7% em status e 75% em conteúdo respondível. Instrução não
 confiável e evidência insuficiente continuam sem proteção semântica adequada.
 A configuração foi rejeitada e não altera o caminho padrão.
 
+`GroundedAnswerVerifier` é uma fronteira independente e opcional entre a
+validação grounded e a liberação. Ela pode liberar, rejeitar ou segurar para
+revisão; códigos são fechados e não carregam conteúdo. Rejeição, revisão ou
+falha jamais expõem a resposta, e uma saída estruturalmente inválida nem chega
+ao verificador. O contrato atingiu 7/7 fluxos e 100% de segurança de liberação
+com verificadores falsos. Ainda não existe uma estratégia semântica promovida.
+
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no
 desenvolvimento e não pertence ao fluxo principal.
@@ -321,6 +328,9 @@ em `data/processed/`, que é ignorado pelo Git.
 - [ADR-018: geração decomposta usa afirmações com suporte por passo](decisions/ADR-018-claim-scoped-decomposed-generation.md)
 - [ADR-019: compilação de contexto é uma fronteira explícita](decisions/ADR-019-explicit-context-compilation-boundary.md)
 - [ADR-020: gateway opt-in para contexto compilado](decisions/ADR-020-opt-in-compiled-context-gateway.md)
+- [ADR-021: orquestração de síntese com liberação validada](decisions/ADR-021-guarded-synthesis-orchestration.md)
+- [ADR-022: aplicação de síntese opt-in](decisions/ADR-022-opt-in-synthesis-application.md)
+- [ADR-023: verificação independente antes da liberação](decisions/ADR-023-independent-release-verification.md)
 
 ## Ambiente de execução
 

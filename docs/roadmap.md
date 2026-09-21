@@ -209,7 +209,9 @@ não usar LLM, RAG, grafo ou agente.
    congelado antes da primeira execução. Esse holdout reprovou a candidata em
    segurança de conteúdo e abstention; ele está encerrado e não será ajustado.
    O próximo ciclo usa novos casos de desenvolvimento para avaliar uma
-   fronteira adicional de verificação dessas duas classes.
+   fronteira adicional de verificação dessas duas classes. O contrato dessa
+   fronteira já foi validado com verificadores falsos; o próximo marco é uma
+   primeira estratégia estreita em casos novos de desenvolvimento.
 2. Formular uma única candidata controlada e avaliá-la primeiro em novos casos
    de desenvolvimento; qualquer holdout posterior deverá ser inédito.
 3. Manter síntese desabilitada e o corpus privado bloqueado até qualidade,

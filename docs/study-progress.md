@@ -243,6 +243,11 @@ sintético inédito; runtime e corpus privado seguem bloqueados. No holdout, as
 66,7% e a de conteúdo respondível para 75%. O caso adversarial e os dois casos
 insuficientes falharam estavelmente. A candidata foi rejeitada; o conjunto
 encerrado não será usado para ajuste.
+Uma fronteira de verificação independente foi adicionada depois da validação
+grounded. Em sete fluxos com verificadores falsos, atingiu 100% de
+correspondência e segurança de liberação, incluindo rejeição, revisão humana e
+falha fechada. A arquitetura está validada, mas nenhuma estratégia semântica de
+verificação foi aprovada ainda.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em
