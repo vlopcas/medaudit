@@ -851,6 +851,13 @@ services:
       - --dataset
       - /app/data/synthetic_cases/lexical_release_verifier_development.json
 
+  evaluate-structured-fact-verifier:
+    extends: evaluate-release-verification
+    command:
+      - medaudit-evaluate-structured-fact-verifier
+      - --dataset
+      - /app/data/synthetic_cases/structured_fact_verifier_development.json
+
   evaluate-explicit-query-routing-holdout:
     extends: evaluate-explicit-query-routing
     user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"

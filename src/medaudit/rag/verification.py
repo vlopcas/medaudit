@@ -73,6 +73,35 @@ _STOPWORDS = frozenset(
     }
 )
 
+_NUMBER_WORDS = {
+    "zero": "0",
+    "um": "1",
+    "uma": "1",
+    "dois": "2",
+    "duas": "2",
+    "tres": "3",
+    "quatro": "4",
+    "cinco": "5",
+    "seis": "6",
+    "sete": "7",
+    "oito": "8",
+    "nove": "9",
+    "dez": "10",
+    "quatorze": "14",
+    "vinte": "20",
+    "trinta": "30",
+    "noventa": "90",
+}
+_UNITS = {
+    "dia": "day",
+    "dias": "day",
+    "hora": "hour",
+    "horas": "hour",
+    "minuto": "minute",
+    "minutos": "minute",
+}
+_CODE_PATTERN = re.compile(r"\b(?=[A-Z0-9-]*\d)[A-Z]{1,8}-?\d{2,}\b")
+
 
 def _content_tokens(text: str) -> frozenset[str]:
     decomposed = unicodedata.normalize("NFKD", text.casefold())
@@ -84,6 +113,43 @@ def _content_tokens(text: str) -> frozenset[str]:
         for token in re.findall(r"[a-z0-9]+", normalized)
         if len(token) > 1 and token not in _STOPWORDS
     )
+
+
+def _normalized_text(text: str) -> str:
+    decomposed = unicodedata.normalize("NFKD", text.casefold())
+    return "".join(
+        char for char in decomposed if not unicodedata.combining(char)
+    )
+
+
+def _structured_facts(text: str) -> frozenset[tuple[str, ...]]:
+    normalized = _normalized_text(text)
+    facts: set[tuple[str, ...]] = set()
+    number = r"\d+|" + "|".join(_NUMBER_WORDS)
+    unit = "|".join(_UNITS)
+    for match in re.finditer(rf"\b({number})\s+({unit})\b", normalized):
+        raw_number, raw_unit = match.groups()
+        facts.add(
+            (
+                "quantity",
+                _NUMBER_WORDS.get(raw_number, raw_number),
+                _UNITS[raw_unit],
+            )
+        )
+    for code in _CODE_PATTERN.findall(text.upper()):
+        facts.add(("code", code))
+    if re.search(
+        r"\b(?:proibe|proibido|proibida|veda|vedado|vedada|"
+        r"nao permite|nao autoriza)\b",
+        normalized,
+    ):
+        facts.add(("polarity", "deny"))
+    elif re.search(
+        r"\b(?:permite|autoriza|permitido|permitida|autorizado|autorizada)\b",
+        normalized,
+    ):
+        facts.add(("polarity", "allow"))
+    return frozenset(facts)
 
 
 @dataclass(frozen=True, slots=True)
@@ -127,6 +193,48 @@ class ConservativeLexicalVerifier:
                 else 0.0
             )
             if coverage < self.minimum_claim_coverage:
+                return VerificationResult(
+                    VerificationDecision.REJECT,
+                    VerificationCode.CLAIM_SUPPORT_FAILED,
+                )
+        return VerificationResult(VerificationDecision.RELEASE)
+
+
+@dataclass(frozen=True, slots=True)
+class StructuredFactVerifier:
+    """Verify only narrow typed facts and defer unrecognized claims to review."""
+
+    def verify(
+        self,
+        answer: DecomposedGroundedAnswer,
+        evidence: DecompositionEvidenceBundle,
+    ) -> VerificationResult:
+        if answer.status == "insufficient_evidence":
+            return VerificationResult(VerificationDecision.RELEASE)
+        if not assess_decomposed_evidence(evidence).can_generate:
+            return VerificationResult(
+                VerificationDecision.REVIEW,
+                VerificationCode.UNTRUSTED_CONTENT,
+            )
+        evidence_by_id = {
+            item.location.chunk_id: item.text
+            for group in evidence.groups
+            for item in group.evidence
+        }
+        for claim in answer.claims:
+            claim_facts = _structured_facts(claim.text)
+            if not claim_facts:
+                return VerificationResult(
+                    VerificationDecision.REVIEW,
+                    VerificationCode.REVIEW_REQUIRED,
+                )
+            cited_facts = frozenset(
+                fact
+                for support in claim.supports
+                for citation in support.citations
+                for fact in _structured_facts(evidence_by_id[citation.chunk_id])
+            )
+            if not claim_facts <= cited_facts:
                 return VerificationResult(
                     VerificationDecision.REJECT,
                     VerificationCode.CLAIM_SUPPORT_FAILED,

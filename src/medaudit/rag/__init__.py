@@ -79,6 +79,7 @@ from medaudit.rag.validation import (
 from medaudit.rag.verification import (
     ConservativeLexicalVerifier,
     GroundedAnswerVerifier,
+    StructuredFactVerifier,
     VerificationCode,
     VerificationDecision,
     VerificationResult,
@@ -129,6 +130,7 @@ __all__ = [
     "RoutedRetrievalDecision",
     "RoutedSynthesisResult",
     "StepEvidenceGroup",
+    "StructuredFactVerifier",
     "SynthesisMode",
     "SynthesisResult",
     "SynthesisStatus",
