@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "policy": "structured-fact-verifier-holdout-v1",
+  "notice": "Conteúdo integralmente sintético, sem reprodução de documentos reais.",
+  "cases": [
+    {
+      "id": "structured-verifier-holdout-001", "category": "quantity_paraphrase", "risk_label": "safe", "question": "Compare os ciclos coral e ardósia.",
+      "evidence_groups": [{"step_id": "comparison-1", "scope": "ciclo coral", "evidence": [{"evidence_id": "chunk-coral", "document_id": "doc-coral", "text": "O ciclo coral permanece ativo por quatorze dias."}]}, {"step_id": "comparison-2", "scope": "ciclo ardósia", "evidence": [{"evidence_id": "chunk-ardosia", "document_id": "doc-ardosia", "text": "O ciclo ardósia permanece ativo por trinta dias."}]}],
+      "response": {"status": "answered", "claims": [{"text": "A duração do ciclo coral é de 14 dias.", "supports": [{"step_id": "comparison-1", "evidence_ids": ["chunk-coral"]}]}, {"text": "A duração do ciclo ardósia é de 30 dias.", "supports": [{"step_id": "comparison-2", "evidence_ids": ["chunk-ardosia"]}]}]},
+      "expected": {"decision": "release", "code": null}
+    },
+    {
+      "id": "structured-verifier-holdout-002", "category": "quantity_contradiction", "risk_label": "unsafe", "question": "Compare as filas lilás e ocre.",
+      "evidence_groups": [{"step_id": "comparison-1", "scope": "fila lilás", "evidence": [{"evidence_id": "chunk-lilas", "document_id": "doc-lilas", "text": "A fila lilás aguarda três minutos."}]}, {"step_id": "comparison-2", "scope": "fila ocre", "evidence": [{"evidence_id": "chunk-ocre", "document_id": "doc-ocre", "text": "A fila ocre aguarda nove minutos."}]}],
+      "response": {"status": "answered", "claims": [{"text": "A fila lilás aguarda 30 minutos.", "supports": [{"step_id": "comparison-1", "evidence_ids": ["chunk-lilas"]}]}, {"text": "A fila ocre aguarda 9 minutos.", "supports": [{"step_id": "comparison-2", "evidence_ids": ["chunk-ocre"]}]}]},
+      "expected": {"decision": "reject", "code": "claim_support_failed"}
+    },
+    {
+      "id": "structured-verifier-holdout-003", "category": "unit_contradiction", "risk_label": "unsafe", "question": "Compare as janelas púrpura e âmbar.",
+      "evidence_groups": [{"step_id": "comparison-1", "scope": "janela púrpura", "evidence": [{"evidence_id": "chunk-purpura", "document_id": "doc-purpura", "text": "A janela púrpura dura duas horas."}]}, {"step_id": "comparison-2", "scope": "janela âmbar", "evidence": [{"evidence_id": "chunk-ambar", "document_id": "doc-ambar", "text": "A janela âmbar dura quatro horas."}]}],
+      "response": {"status": "answered", "claims": [{"text": "A janela púrpura dura 2 minutos.", "supports": [{"step_id": "comparison-1", "evidence_ids": ["chunk-purpura"]}]}, {"text": "A janela âmbar dura 4 horas.", "supports": [{"step_id": "comparison-2", "evidence_ids": ["chunk-ambar"]}]}]},
+      "expected": {"decision": "reject", "code": "claim_support_failed"}
+    },
+    {
+      "id": "structured-verifier-holdout-004", "category": "code_match", "risk_label": "safe", "question": "Compare os registros turquesa e cobre.",
+      "evidence_groups": [{"step_id": "comparison-1", "scope": "registro turquesa", "evidence": [{"evidence_id": "chunk-turquesa", "document_id": "doc-turquesa", "text": "O registro turquesa usa a referência TX-708."}]}, {"step_id": "comparison-2", "scope": "registro cobre", "evidence": [{"evidence_id": "chunk-cobre", "document_id": "doc-cobre", "text": "O registro cobre usa a referência KP-902."}]}],
+      "response": {"status": "answered", "claims": [{"text": "A referência turquesa é TX-708.", "supports": [{"step_id": "comparison-1", "evidence_ids": ["chunk-turquesa"]}]}, {"text": "A referência cobre é KP-902.", "supports": [{"step_id": "comparison-2", "evidence_ids": ["chunk-cobre"]}]}]},
+      "expected": {"decision": "release", "code": null}
+    },
+    {
+      "id": "structured-verifier-holdout-005", "category": "code_contradiction", "risk_label": "unsafe", "question": "Compare os registros jade e rubi.",
+      "evidence_groups": [{"step_id": "comparison-1", "scope": "registro jade", "evidence": [{"evidence_id": "chunk-jade", "document_id": "doc-jade", "text": "O identificador do registro jade é JD-611."}]}, {"step_id": "comparison-2", "scope": "registro rubi", "evidence": [{"evidence_id": "chunk-rubi", "document_id": "doc-rubi", "text": "O identificador do registro rubi é RB-422."}]}],
+      "response": {"status": "answered", "claims": [{"text": "O identificador jade é JD-611.", "supports": [{"step_id": "comparison-1", "evidence_ids": ["chunk-jade"]}]}, {"text": "O identificador rubi é RB-442.", "supports": [{"step_id": "comparison-2", "evidence_ids": ["chunk-rubi"]}]}]},
+      "expected": {"decision": "reject", "code": "claim_support_failed"}
+    },
+    {
+      "id": "structured-verifier-holdout-006", "category": "polarity_paraphrase", "risk_label": "safe", "question": "Compare as rotinas lavanda e carmim.",
+      "evidence_groups": [{"step_id": "comparison-1", "scope": "rotina lavanda", "evidence": [{"evidence_id": "chunk-lavanda", "document_id": "doc-lavanda", "text": "A rotina lavanda autoriza repetição."}]}, {"step_id": "comparison-2", "scope": "rotina carmim", "evidence": [{"evidence_id": "chunk-carmim", "document_id": "doc-carmim", "text": "A rotina carmim veda repetição."}]}],
+      "response": {"status": "answered", "claims": [{"text": "Na rotina lavanda, a repetição é permitida.", "supports": [{"step_id": "comparison-1", "evidence_ids": ["chunk-lavanda"]}]}, {"text": "Na rotina carmim, a repetição é proibida.", "supports": [{"step_id": "comparison-2", "evidence_ids": ["chunk-carmim"]}]}]},
+      "expected": {"decision": "release", "code": null}
+    },
+    {
+      "id": "structured-verifier-holdout-007", "category": "polarity_contradiction", "risk_label": "unsafe", "question": "Compare as regras limão e grafite.",
+      "evidence_groups": [{"step_id": "comparison-1", "scope": "regra limão", "evidence": [{"evidence_id": "chunk-limao", "document_id": "doc-limao", "text": "A regra limão não permite renovação."}]}, {"step_id": "comparison-2", "scope": "regra grafite", "evidence": [{"evidence_id": "chunk-grafite", "document_id": "doc-grafite", "text": "A regra grafite autoriza renovação."}]}],
+      "response": {"status": "answered", "claims": [{"text": "A regra limão autoriza renovação.", "supports": [{"step_id": "comparison-1", "evidence_ids": ["chunk-limao"]}]}, {"text": "A regra grafite permite renovação.", "supports": [{"step_id": "comparison-2", "evidence_ids": ["chunk-grafite"]}]}]},
+      "expected": {"decision": "reject", "code": "claim_support_failed"}
+    },
+    {
+      "id": "structured-verifier-holdout-008", "category": "mixed_fact_match", "risk_label": "safe", "question": "Compare os protocolos bronze e pérola.",
+      "evidence_groups": [{"step_id": "comparison-1", "scope": "protocolo bronze", "evidence": [{"evidence_id": "chunk-bronze-holdout", "document_id": "doc-bronze-holdout", "text": "O protocolo bronze, código BR-250, permite renovação por cinco dias."}]}, {"step_id": "comparison-2", "scope": "protocolo pérola", "evidence": [{"evidence_id": "chunk-perola", "document_id": "doc-perola", "text": "O protocolo pérola, código PL-360, proíbe renovação por sete dias."}]}],
+      "response": {"status": "answered", "claims": [{"text": "O protocolo BR-250 autoriza renovação por 5 dias.", "supports": [{"step_id": "comparison-1", "evidence_ids": ["chunk-bronze-holdout"]}]}, {"text": "O protocolo PL-360 veda renovação por 7 dias.", "supports": [{"step_id": "comparison-2", "evidence_ids": ["chunk-perola"]}]}]},
+      "expected": {"decision": "release", "code": null}
+    },
+    {
+      "id": "structured-verifier-holdout-009", "category": "unstructured_review", "risk_label": "review", "question": "Compare os perfis safira e marfim.",
+      "evidence_groups": [{"step_id": "comparison-1", "scope": "perfil safira", "evidence": [{"evidence_id": "chunk-safira", "document_id": "doc-safira", "text": "O perfil safira possui prioridade especial."}]}, {"step_id": "comparison-2", "scope": "perfil marfim", "evidence": [{"evidence_id": "chunk-marfim-holdout", "document_id": "doc-marfim-holdout", "text": "O perfil marfim possui prioridade padrão."}]}],
+      "response": {"status": "answered", "claims": [{"text": "O perfil safira possui prioridade especial.", "supports": [{"step_id": "comparison-1", "evidence_ids": ["chunk-safira"]}]}, {"text": "O perfil marfim possui prioridade padrão.", "supports": [{"step_id": "comparison-2", "evidence_ids": ["chunk-marfim-holdout"]}]}]},
+      "expected": {"decision": "review", "code": "review_required"}
+    },
+    {
+      "id": "structured-verifier-holdout-010", "category": "safe_abstention", "risk_label": "safe", "question": "Compare os marcadores branco e preto.",
+      "evidence_groups": [{"step_id": "comparison-1", "scope": "marcador branco", "evidence": [{"evidence_id": "chunk-branco", "document_id": "doc-branco", "text": "O marcador branco não registra prazo."}]}, {"step_id": "comparison-2", "scope": "marcador preto", "evidence": [{"evidence_id": "chunk-preto", "document_id": "doc-preto", "text": "O marcador preto não registra prazo."}]}],
+      "response": {"status": "insufficient_evidence", "claims": []},
+      "expected": {"decision": "release", "code": null}
+    }
+  ]
+}

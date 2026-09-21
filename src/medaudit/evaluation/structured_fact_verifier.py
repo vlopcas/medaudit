@@ -14,13 +14,16 @@ from medaudit.rag import StructuredFactVerifier, validate_decomposed_grounded_re
 
 _NOTICE = "Conteúdo integralmente sintético, sem reprodução de documentos reais."
 _POLICY = "structured-fact-verifier-development-v1"
+_HOLDOUT_POLICY = "structured-fact-verifier-holdout-v1"
 
 
-def load_dataset(path: Path) -> list[dict[str, Any]]:
+def load_dataset(
+    path: Path, *, expected_policy: str = _POLICY
+) -> list[dict[str, Any]]:
     payload = json.loads(path.read_text(encoding="utf-8"))
     if (
         payload.get("schema_version") != 1
-        or payload.get("policy") != _POLICY
+        or payload.get("policy") != expected_policy
         or payload.get("notice") != _NOTICE
     ):
         raise ValueError("unsupported structured fact verifier schema")
@@ -33,7 +36,9 @@ def load_dataset(path: Path) -> list[dict[str, Any]]:
     return cases
 
 
-def evaluate(cases: list[dict[str, Any]]) -> dict[str, Any]:
+def evaluate(
+    cases: list[dict[str, Any]], *, policy: str = _POLICY
+) -> dict[str, Any]:
     verifier = StructuredFactVerifier()
     outcomes: list[dict[str, Any]] = []
     label_counts: Counter[str] = Counter()
@@ -69,7 +74,7 @@ def evaluate(cases: list[dict[str, Any]]) -> dict[str, Any]:
         )
     return {
         "schema_version": 1,
-        "policy": _POLICY,
+        "policy": policy,
         "case_count": len(cases),
         "metrics": {
             "exact_match": sum(item["correct"] for item in outcomes) / len(outcomes),
@@ -85,10 +90,30 @@ def evaluate(cases: list[dict[str, Any]]) -> dict[str, Any]:
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dataset", type=Path, required=True)
+    parser.add_argument(
+        "--dataset-policy",
+        choices=(_POLICY, _HOLDOUT_POLICY),
+        default=_POLICY,
+    )
+    parser.add_argument("--expected-sha256")
+    parser.add_argument("--output", type=Path)
+    parser.add_argument("--refuse-overwrite", action="store_true")
     args = parser.parse_args(argv)
-    report = evaluate(load_dataset(args.dataset))
-    report["input_sha256"] = verify_input(args.dataset, None)
-    print(json.dumps(report, ensure_ascii=False, indent=2))
+    if args.output and args.refuse_overwrite and args.output.exists():
+        raise FileExistsError(f"refusing to overwrite existing report: {args.output}")
+    report = evaluate(
+        load_dataset(args.dataset, expected_policy=args.dataset_policy),
+        policy=args.dataset_policy,
+    )
+    report["input_sha256"] = verify_input(
+        args.dataset, args.expected_sha256
+    )
+    rendered = json.dumps(report, ensure_ascii=False, indent=2) + "\n"
+    if args.output:
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        args.output.write_text(rendered, encoding="utf-8")
+    else:
+        print(rendered, end="")
     return 0
 
 

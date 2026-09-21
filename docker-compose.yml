@@ -858,6 +858,25 @@ services:
       - --dataset
       - /app/data/synthetic_cases/structured_fact_verifier_development.json
 
+  evaluate-structured-fact-verifier-holdout:
+    extends: evaluate-structured-fact-verifier
+    user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
+    volumes:
+      - type: bind
+        source: ./artifacts
+        target: /artifacts
+    command:
+      - medaudit-evaluate-structured-fact-verifier
+      - --dataset
+      - /app/data/synthetic_cases/structured_fact_verifier_holdout.json
+      - --dataset-policy
+      - structured-fact-verifier-holdout-v1
+      - --expected-sha256
+      - b4e5146886ed4b270939679925d977efcdf533e4aad1c8f636e4ec0032b15087
+      - --output
+      - /artifacts/structured-fact-verifier-holdout.local.json
+      - --refuse-overwrite
+
   evaluate-explicit-query-routing-holdout:
     extends: evaluate-explicit-query-routing
     user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
