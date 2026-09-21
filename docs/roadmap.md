@@ -204,7 +204,9 @@ não usar LLM, RAG, grafo ou agente.
    abstention estável no modelo local, comparando-o com a última configuração
    local aprovada sem reutilizar holdout para ajuste. A instrução isolada
    removeu a abstention, mas produziu falha estruturada nas nove tentativas
-   respondíveis; o próximo controle acrescenta somente o schema limitado.
+   respondíveis. O schema limitado corrigiu a falha e a combinação atingiu
+   100% no desenvolvimento; o próximo gate é um holdout sintético inédito,
+   congelado antes da primeira execução.
 2. Formular uma única candidata controlada e avaliá-la primeiro em novos casos
    de desenvolvimento; qualquer holdout posterior deverá ser inédito.
 3. Manter síntese desabilitada e o corpus privado bloqueado até qualidade,

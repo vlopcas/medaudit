@@ -230,7 +230,10 @@ o primeiro teste alterou somente a instrução explícita de resposta. As nove
 tentativas respondíveis terminaram em falha fechada do cliente antes da
 validação, enquanto as três abstentions esperadas permaneceram válidas. A
 política isolada foi rejeitada. O próximo teste acrescenta apenas o schema
-limitado já conhecido; corpus privado e runtime continuam bloqueados.
+limitado já conhecido. Essa combinação atingiu 12/12 em preparação, validação,
+status e estabilidade, além de 9/9 em conteúdo respondível, com latência máxima
+de 4,48 s. Ela está aprovada somente para um holdout sintético inédito; corpus
+privado e runtime continuam bloqueados.
 
 ## Ambiente de desenvolvimento
 

@@ -235,7 +235,10 @@ novo holdout. O teste seguinte alterou somente a instrução explícita: as nove
 tentativas respondíveis falharam fechadas no cliente antes da validação, e as
 três abstentions esperadas continuaram válidas. A política isolada foi
 rejeitada. O próximo marco acrescenta somente o schema limitado já validado em
-desenvolvimento anterior.
+desenvolvimento anterior. A combinação limitada posterior atingiu 12/12 em
+preparação, validação e status, 9/9 em conteúdo respondível e estabilidade exata
+nos quatro casos. A configuração avançou somente para a criação de um holdout
+sintético inédito; runtime e corpus privado seguem bloqueados.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em

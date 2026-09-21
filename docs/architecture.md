@@ -239,6 +239,13 @@ temperatura nem o padrão do gateway. Isoladamente, porém, produziu nove falhas
 fechadas do cliente nas nove tentativas respondíveis e foi rejeitada. Nenhuma
 resposta inválida atravessou o orquestrador.
 
+O gateway também aceita uma política de schema opt-in que limita claims,
+textos, suportes e citações. Com a instrução explícita, teto de 512 tokens e
+esses limites, o modelo atingiu 12/12 em validação e status e 9/9 em conteúdo
+respondível no desenvolvimento, com estabilidade exata. A configuração está
+apta somente a um holdout sintético novo; o padrão continua baseline e
+desabilitado.
+
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no
 desenvolvimento e não pertence ao fluxo principal.
