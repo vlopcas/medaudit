@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "policy": "structured-verifier-application-holdout-v1",
+  "notice": "Conteúdo integralmente sintético, sem reprodução de documentos reais.",
+  "cases": [
+    {"id": "structured-app-holdout-001", "category": "opt_out_compatibility", "client_behavior": "unit_contradiction", "verifier_enabled": false, "expected": {"status": "validated", "failure_code": null, "client_called": true, "verifier_called": false, "answer_present": true}},
+    {"id": "structured-app-holdout-002", "category": "reordered_safe_release", "client_behavior": "safe_reordered", "verifier_enabled": true, "expected": {"status": "validated", "failure_code": null, "client_called": true, "verifier_called": true, "answer_present": true}},
+    {"id": "structured-app-holdout-003", "category": "unit_rejection", "client_behavior": "unit_contradiction", "verifier_enabled": true, "expected": {"status": "rejected", "failure_code": "verification_claim_support_failed", "client_called": true, "verifier_called": true, "answer_present": false}},
+    {"id": "structured-app-holdout-004", "category": "quantity_rejection", "client_behavior": "quantity_contradiction", "verifier_enabled": true, "expected": {"status": "rejected", "failure_code": "verification_claim_support_failed", "client_called": true, "verifier_called": true, "answer_present": false}},
+    {"id": "structured-app-holdout-005", "category": "code_rejection", "client_behavior": "code_contradiction", "verifier_enabled": true, "expected": {"status": "rejected", "failure_code": "verification_claim_support_failed", "client_called": true, "verifier_called": true, "answer_present": false}},
+    {"id": "structured-app-holdout-006", "category": "polarity_rejection", "client_behavior": "polarity_contradiction", "verifier_enabled": true, "expected": {"status": "rejected", "failure_code": "verification_claim_support_failed", "client_called": true, "verifier_called": true, "answer_present": false}},
+    {"id": "structured-app-holdout-007", "category": "partial_unstructured_review", "client_behavior": "partial_unstructured", "verifier_enabled": true, "expected": {"status": "held", "failure_code": "verification_review_required", "client_called": true, "verifier_called": true, "answer_present": false}},
+    {"id": "structured-app-holdout-008", "category": "fully_unstructured_review", "client_behavior": "unstructured", "verifier_enabled": true, "expected": {"status": "held", "failure_code": "verification_review_required", "client_called": true, "verifier_called": true, "answer_present": false}},
+    {"id": "structured-app-holdout-009", "category": "safe_abstention", "client_behavior": "abstention", "verifier_enabled": true, "expected": {"status": "validated", "failure_code": null, "client_called": true, "verifier_called": true, "answer_present": true}}
+  ]
+}

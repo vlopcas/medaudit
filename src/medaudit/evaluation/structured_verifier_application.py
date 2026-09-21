@@ -30,6 +30,7 @@ from medaudit.retrieval import BM25Index
 
 _NOTICE = "Conteúdo integralmente sintético, sem reprodução de documentos reais."
 _POLICY = "structured-verifier-application-development-v1"
+_HOLDOUT_POLICY = "structured-verifier-application-holdout-v1"
 
 
 class SyntheticClient:
@@ -65,11 +66,13 @@ class RecordingStructuredVerifier:
         return self._delegate.verify(answer, evidence)
 
 
-def load_dataset(path: Path) -> list[dict[str, Any]]:
+def load_dataset(
+    path: Path, *, expected_policy: str = _POLICY
+) -> list[dict[str, Any]]:
     payload = json.loads(path.read_text(encoding="utf-8"))
     if (
         payload.get("schema_version") != 1
-        or payload.get("policy") != _POLICY
+        or payload.get("policy") != expected_policy
         or payload.get("notice") != _NOTICE
     ):
         raise ValueError("unsupported structured verifier application schema")
@@ -82,7 +85,9 @@ def load_dataset(path: Path) -> list[dict[str, Any]]:
     return cases
 
 
-async def evaluate(cases: list[dict[str, Any]]) -> dict[str, Any]:
+async def evaluate(
+    cases: list[dict[str, Any]], *, policy: str = _POLICY
+) -> dict[str, Any]:
     outcomes: list[dict[str, Any]] = []
     category_counts: Counter[str] = Counter()
     category_correct: Counter[str] = Counter()
@@ -117,7 +122,7 @@ async def evaluate(cases: list[dict[str, Any]]) -> dict[str, Any]:
         )
     return {
         "schema_version": 1,
-        "policy": _POLICY,
+        "policy": policy,
         "case_count": len(cases),
         "metrics": {
             "exact_match": sum(item["correct"] for item in outcomes) / len(outcomes),
@@ -188,6 +193,18 @@ def _response_data(behavior: str) -> dict[str, Any]:
             "A regra AX-204 proíbe renovação por 10 dias.",
             "A regra BQ-510 veda renovação por 20 dias.",
         ),
+        "safe_reordered": (
+            "Por 10 dias, a renovação é autorizada pela regra AX-204.",
+            "Por 20 dias, a renovação é vedada pela regra BQ-510.",
+        ),
+        "unit_contradiction": (
+            "A regra AX-204 autoriza renovação por 10 horas.",
+            "A regra BQ-510 veda renovação por 20 dias.",
+        ),
+        "partial_unstructured": (
+            "A regra AX-204 autoriza renovação por 10 dias.",
+            "A regra beta possui prioridade comum.",
+        ),
         "unstructured": (
             "A regra alfa possui prioridade especial.",
             "A regra beta possui prioridade comum.",
@@ -217,10 +234,30 @@ def _response_data(behavior: str) -> dict[str, Any]:
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dataset", type=Path, required=True)
+    parser.add_argument(
+        "--dataset-policy",
+        choices=(_POLICY, _HOLDOUT_POLICY),
+        default=_POLICY,
+    )
+    parser.add_argument("--expected-sha256")
+    parser.add_argument("--output", type=Path)
+    parser.add_argument("--refuse-overwrite", action="store_true")
     args = parser.parse_args(argv)
-    report = asyncio.run(evaluate(load_dataset(args.dataset)))
-    report["input_sha256"] = verify_input(args.dataset, None)
-    print(json.dumps(report, ensure_ascii=False, indent=2))
+    if args.output and args.refuse_overwrite and args.output.exists():
+        raise FileExistsError(f"refusing to overwrite existing report: {args.output}")
+    report = asyncio.run(
+        evaluate(
+            load_dataset(args.dataset, expected_policy=args.dataset_policy),
+            policy=args.dataset_policy,
+        )
+    )
+    report["input_sha256"] = verify_input(args.dataset, args.expected_sha256)
+    rendered = json.dumps(report, ensure_ascii=False, indent=2) + "\n"
+    if args.output:
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        args.output.write_text(rendered, encoding="utf-8")
+    else:
+        print(rendered, end="")
     return 0
 
 
