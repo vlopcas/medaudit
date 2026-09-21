@@ -877,6 +877,13 @@ services:
       - /artifacts/structured-fact-verifier-holdout.local.json
       - --refuse-overwrite
 
+  evaluate-structured-verifier-application:
+    extends: evaluate-release-verification
+    command:
+      - medaudit-evaluate-structured-verifier-application
+      - --dataset
+      - /app/data/synthetic_cases/structured_verifier_application_development.json
+
   evaluate-explicit-query-routing-holdout:
     extends: evaluate-explicit-query-routing
     user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"

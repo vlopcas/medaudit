@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "policy": "structured-verifier-application-development-v1",
+  "notice": "Conteúdo integralmente sintético, sem reprodução de documentos reais.",
+  "cases": [
+    {"id": "structured-app-dev-001", "category": "disabled_compatibility", "client_behavior": "unstructured", "verifier_enabled": false, "expected": {"status": "validated", "failure_code": null, "client_called": true, "verifier_called": false, "answer_present": true}},
+    {"id": "structured-app-dev-002", "category": "safe_release", "client_behavior": "safe", "verifier_enabled": true, "expected": {"status": "validated", "failure_code": null, "client_called": true, "verifier_called": true, "answer_present": true}},
+    {"id": "structured-app-dev-003", "category": "quantity_rejection", "client_behavior": "quantity_contradiction", "verifier_enabled": true, "expected": {"status": "rejected", "failure_code": "verification_claim_support_failed", "client_called": true, "verifier_called": true, "answer_present": false}},
+    {"id": "structured-app-dev-004", "category": "code_rejection", "client_behavior": "code_contradiction", "verifier_enabled": true, "expected": {"status": "rejected", "failure_code": "verification_claim_support_failed", "client_called": true, "verifier_called": true, "answer_present": false}},
+    {"id": "structured-app-dev-005", "category": "polarity_rejection", "client_behavior": "polarity_contradiction", "verifier_enabled": true, "expected": {"status": "rejected", "failure_code": "verification_claim_support_failed", "client_called": true, "verifier_called": true, "answer_present": false}},
+    {"id": "structured-app-dev-006", "category": "unstructured_review", "client_behavior": "unstructured", "verifier_enabled": true, "expected": {"status": "held", "failure_code": "verification_review_required", "client_called": true, "verifier_called": true, "answer_present": false}},
+    {"id": "structured-app-dev-007", "category": "safe_abstention", "client_behavior": "abstention", "verifier_enabled": true, "expected": {"status": "validated", "failure_code": null, "client_called": true, "verifier_called": true, "answer_present": true}}
+  ]
+}

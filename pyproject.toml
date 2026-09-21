@@ -77,6 +77,7 @@ medaudit-benchmark-local-synthesis-application = "medaudit.evaluation.local_synt
 medaudit-evaluate-release-verification = "medaudit.evaluation.release_verification:main"
 medaudit-evaluate-lexical-release-verifier = "medaudit.evaluation.lexical_release_verifier:main"
 medaudit-evaluate-structured-fact-verifier = "medaudit.evaluation.structured_fact_verifier:main"
+medaudit-evaluate-structured-verifier-application = "medaudit.evaluation.structured_verifier_application:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/medaudit"]
