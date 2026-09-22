@@ -48,3 +48,6 @@ ser confundido com evidência de generalização.
 
 Catálogo privado, extração documental, publicação real e decisões de alto
 impacto permanecem bloqueados.
+
+O holdout posterior está registrado no
+[Resultado 056](056-structured-rule-admission-holdout.md).

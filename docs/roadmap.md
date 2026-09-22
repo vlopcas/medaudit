@@ -204,12 +204,12 @@ não usar LLM, RAG, grafo ou agente.
 
 ## Próximos marcos
 
-1. Congelar um holdout sintético inédito do gate de admissão antes da primeira
-   execução, preservando o conjunto de desenvolvimento já aberto.
-2. Executar o holdout uma única vez, com hash verificado e recusa de
-   sobrescrita do relatório local.
-3. Se aprovado, avaliar a fronteira de publicação e provenance sem conectar o
-   catálogo privado; se reprovado, encerrar a candidata sem ajustar o holdout.
+1. Modelar uma fronteira sintética de publicação que só aceite o resultado
+   `admitted` e preserve a identidade e versão de cada regra publicada.
+2. Definir falhas explícitas para catálogo não admitido, aprovação desatualizada
+   e tentativa de substituir uma versão já publicada sem nova revisão.
+3. Avaliar a candidata somente em novos casos de desenvolvimento; o holdout do
+   gate de admissão está encerrado e não será usado para ajuste.
 4. Manter extração automática, catálogo privado e uso decisório real
    bloqueados até que revisão, provenance e política de falha fechada estejam
    validadas em conjunto.

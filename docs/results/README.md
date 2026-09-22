@@ -69,3 +69,4 @@ para evitar a exposição indireta do corpus privado.
 - [Resultado 053: baseline de regras estruturadas](053-structured-rules-development.md)
 - [Resultado 054: auditoria estática de regras estruturadas](054-structured-rule-audit-development.md)
 - [Resultado 055: gate de admissão de regras estruturadas](055-structured-rule-admission-development.md)
+- [Resultado 056: holdout do gate de admissão de regras](056-structured-rule-admission-holdout.md)

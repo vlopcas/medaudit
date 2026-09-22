@@ -358,6 +358,8 @@ Ela não publica regras, não interpreta documentos e não toca o catálogo
 privado. O gate de admissão bloqueia qualquer conflito, encaminha redundâncias
 não revisadas para revisão e rejeita referências de revisão que não correspondam
 a um achado atual. Somente catálogos sem pendências chegam ao motor.
+Essa composição repetiu o comportamento esperado em holdout sintético congelado
+e permanece isolada de qualquer catálogo privado ou fluxo real de publicação.
 
 ## Decisões relacionadas
 

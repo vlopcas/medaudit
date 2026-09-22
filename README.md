@@ -280,6 +280,11 @@ redundâncias antes de congelar um holdout. Esse gate passou em 5/5 casos de
 desenvolvimento: conflitos bloqueiam a admissão, revisões desatualizadas falham
 e redundâncias só são admitidas mediante referência explícita ao par atual. O
 próximo passo é congelar um holdout sintético inédito para essa composição.
+O holdout congelado atingiu 6/6, cobrindo separação temporal, atributos
+incompatíveis, conflitos entre chaves diferentes, múltiplas redundâncias e
+precedência de conflito. O relatório local tem sobrescrita recusada e o conjunto
+está encerrado. A próxima etapa é estudar uma fronteira sintética de publicação
+com provenance explícita, sem conectar o catálogo privado.
 
 ## Ambiente de desenvolvimento
 

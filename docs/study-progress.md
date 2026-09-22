@@ -51,8 +51,9 @@ O trabalho ativo está na **Fase 9 — Regras estruturadas**. O motor determiní
 e a auditoria estática passaram em desenvolvimento sintético. A fronteira de
 admissão também passou em 5/5 casos: conflito bloqueia, redundância pendente vai
 para revisão, redundância explicitamente revisada pode ser admitida e referências
-desatualizadas são recusadas. O próximo marco é congelar, antes da primeira
-execução, um holdout sintético inédito dessa composição.
+desatualizadas são recusadas. O holdout congelado atingiu 6/6 e está encerrado.
+O próximo marco modelará uma fronteira sintética de publicação com provenance
+por versão, sem conexão ao catálogo privado.
 
 O histórico que levou a esse marco permanece abaixo. Na **Fase 8 — Query
 Understanding**, após chegar a 100% no
@@ -287,6 +288,8 @@ nove regras sintéticas, sem alertar os controles incompatíveis. Ela está
 aprovada como diagnóstico.
 O gate subsequente atingiu 5/5 em desenvolvimento e manteve a precedência de
 conflitos mesmo quando outra redundância do catálogo havia sido revisada.
+No holdout congelado, a composição repetiu 6/6; o hash foi verificado e uma
+segunda chamada foi recusada antes da avaliação para proteger o relatório.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em
