@@ -982,6 +982,13 @@ services:
       - /artifacts/structured-rule-admission-holdout.local.json
       - --refuse-overwrite
 
+  evaluate-structured-rule-publication:
+    extends: evaluate-release-verification
+    command:
+      - medaudit-evaluate-structured-rule-publication
+      - --dataset
+      - /app/data/synthetic_cases/structured_rule_publication_development.json
+
   evaluate-explicit-query-routing-holdout:
     extends: evaluate-explicit-query-routing
     user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"

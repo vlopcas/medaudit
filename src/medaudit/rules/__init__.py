@@ -17,15 +17,26 @@ from medaudit.rules.models import (
     RuleSet,
     StructuredRule,
 )
+from medaudit.rules.publication import (
+    PublishedRuleCatalog,
+    RulePublicationCode,
+    RulePublicationResult,
+    RulePublicationStatus,
+    publish_rule_set,
+)
 
 __all__ = [
     "DeterministicRuleEngine",
+    "PublishedRuleCatalog",
     "RuleAdmissionCode",
     "RuleAdmissionResult",
     "RuleAdmissionStatus",
     "RuleAuditCode",
     "RuleAuditFinding",
     "RuleDecision",
+    "RulePublicationCode",
+    "RulePublicationResult",
+    "RulePublicationStatus",
     "RuleQuery",
     "RuleResolution",
     "RuleResolutionCode",
@@ -34,4 +45,5 @@ __all__ = [
     "StructuredRule",
     "admit_rule_set",
     "audit_rule_set",
+    "publish_rule_set",
 ]

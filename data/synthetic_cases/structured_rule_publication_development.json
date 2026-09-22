@@ -1,0 +1,92 @@
+{
+  "schema_version": 1,
+  "policy": "structured-rule-publication-development-v1",
+  "notice": "Conteúdo integralmente sintético, sem reprodução de documentos reais.",
+  "cases": [
+    {
+      "case_id": "initial-publication-preserves-versions",
+      "current_rules": [
+        {"rule_id": "zeta", "version": 2, "subject": "zeta-scope", "action": "apply", "decision": "allow", "effective_from": "2026-01-01", "effective_until": null, "priority": 5, "conditions": {"tier": "alpha"}, "source_document_id": "synthetic-zeta"},
+        {"rule_id": "alpha", "version": 1, "subject": "alpha-scope", "action": "apply", "decision": "deny", "effective_from": "2026-01-01", "effective_until": null, "priority": 5, "conditions": {"tier": "beta"}, "source_document_id": "synthetic-alpha"}
+      ],
+      "expected": {"status": "published", "code": "published", "published_rule_versions": ["alpha@1", "zeta@2"]}
+    },
+    {
+      "case_id": "conflicting-catalog-blocked",
+      "current_rules": [
+        {"rule_id": "conflict-allow", "version": 1, "subject": "shared-scope", "action": "apply", "decision": "allow", "effective_from": "2026-01-01", "effective_until": null, "priority": 5, "conditions": {"tier": "alpha"}, "source_document_id": "synthetic-conflict-a"},
+        {"rule_id": "conflict-deny", "version": 1, "subject": "shared-scope", "action": "apply", "decision": "deny", "effective_from": "2026-01-01", "effective_until": null, "priority": 5, "conditions": {"tier": "alpha"}, "source_document_id": "synthetic-conflict-b"}
+      ],
+      "expected": {"status": "blocked", "code": "catalog_not_admitted", "published_rule_versions": []}
+    },
+    {
+      "case_id": "pending-redundancy-not-published",
+      "current_rules": [
+        {"rule_id": "redundant-base", "version": 1, "subject": "redundant-scope", "action": "apply", "decision": "allow", "effective_from": "2026-01-01", "effective_until": null, "priority": 5, "conditions": {"tier": "alpha"}, "source_document_id": "synthetic-redundant-a"},
+        {"rule_id": "redundant-specific", "version": 1, "subject": "redundant-scope", "action": "apply", "decision": "allow", "effective_from": "2026-01-01", "effective_until": null, "priority": 5, "conditions": {"tier": "alpha", "region": "south"}, "source_document_id": "synthetic-redundant-b"}
+      ],
+      "expected": {"status": "review", "code": "catalog_not_admitted", "published_rule_versions": []}
+    },
+    {
+      "case_id": "reviewed-redundancy-published",
+      "current_rules": [
+        {"rule_id": "reviewed-base", "version": 1, "subject": "reviewed-scope", "action": "apply", "decision": "deny", "effective_from": "2026-01-01", "effective_until": null, "priority": 5, "conditions": {"tier": "beta"}, "source_document_id": "synthetic-reviewed-a"},
+        {"rule_id": "reviewed-specific", "version": 1, "subject": "reviewed-scope", "action": "apply", "decision": "deny", "effective_from": "2026-01-01", "effective_until": null, "priority": 5, "conditions": {"tier": "beta", "region": "north"}, "source_document_id": "synthetic-reviewed-b"}
+      ],
+      "reviewed_redundancies": [["reviewed-base@1", "reviewed-specific@1"]],
+      "expected": {"status": "published", "code": "published", "published_rule_versions": ["reviewed-base@1", "reviewed-specific@1"]}
+    },
+    {
+      "case_id": "same-version-rewrite-blocked",
+      "previous_rules": [
+        {"rule_id": "stable", "version": 3, "subject": "stable-scope", "action": "apply", "decision": "allow", "effective_from": "2026-01-01", "effective_until": null, "priority": 4, "conditions": {"tier": "alpha"}, "source_document_id": "synthetic-stable-original"}
+      ],
+      "current_rules": [
+        {"rule_id": "stable", "version": 3, "subject": "stable-scope", "action": "apply", "decision": "allow", "effective_from": "2026-01-01", "effective_until": null, "priority": 4, "conditions": {"tier": "alpha"}, "source_document_id": "synthetic-stable-mutated"}
+      ],
+      "expected": {"status": "blocked", "code": "version_rewrite_forbidden", "published_rule_versions": []}
+    },
+    {
+      "case_id": "replacement-awaits-review",
+      "previous_rules": [
+        {"rule_id": "versioned-pending", "version": 1, "subject": "pending-scope", "action": "apply", "decision": "allow", "effective_from": "2026-01-01", "effective_until": "2026-06-30", "priority": 4, "conditions": {"tier": "alpha"}, "source_document_id": "synthetic-pending-v1"}
+      ],
+      "current_rules": [
+        {"rule_id": "versioned-pending", "version": 2, "subject": "pending-scope", "action": "apply", "decision": "deny", "effective_from": "2026-07-01", "effective_until": null, "priority": 4, "conditions": {"tier": "alpha"}, "source_document_id": "synthetic-pending-v2"}
+      ],
+      "expected": {"status": "review", "code": "replacement_review_required", "published_rule_versions": []}
+    },
+    {
+      "case_id": "reviewed-replacement-published",
+      "previous_rules": [
+        {"rule_id": "versioned-approved", "version": 4, "subject": "approved-scope", "action": "apply", "decision": "deny", "effective_from": "2026-01-01", "effective_until": "2026-09-30", "priority": 7, "conditions": {"tier": "gamma"}, "source_document_id": "synthetic-approved-v4"}
+      ],
+      "current_rules": [
+        {"rule_id": "versioned-approved", "version": 5, "subject": "approved-scope", "action": "apply", "decision": "allow", "effective_from": "2026-10-01", "effective_until": null, "priority": 7, "conditions": {"tier": "gamma"}, "source_document_id": "synthetic-approved-v5"}
+      ],
+      "reviewed_replacements": [["versioned-approved@4", "versioned-approved@5"]],
+      "expected": {"status": "published", "code": "published", "published_rule_versions": ["versioned-approved@5"]}
+    },
+    {
+      "case_id": "non-monotonic-version-blocked",
+      "previous_rules": [
+        {"rule_id": "monotonic", "version": 3, "subject": "monotonic-scope", "action": "apply", "decision": "allow", "effective_from": "2026-01-01", "effective_until": null, "priority": 2, "conditions": {"tier": "alpha"}, "source_document_id": "synthetic-monotonic-v3"}
+      ],
+      "current_rules": [
+        {"rule_id": "monotonic", "version": 2, "subject": "monotonic-scope", "action": "apply", "decision": "allow", "effective_from": "2026-01-01", "effective_until": null, "priority": 2, "conditions": {"tier": "alpha"}, "source_document_id": "synthetic-monotonic-v2"}
+      ],
+      "expected": {"status": "blocked", "code": "non_monotonic_version", "published_rule_versions": []}
+    },
+    {
+      "case_id": "silent-removal-awaits-review",
+      "previous_rules": [
+        {"rule_id": "kept", "version": 1, "subject": "kept-scope", "action": "apply", "decision": "allow", "effective_from": "2026-01-01", "effective_until": null, "priority": 3, "conditions": {"tier": "alpha"}, "source_document_id": "synthetic-kept"},
+        {"rule_id": "removed", "version": 1, "subject": "removed-scope", "action": "apply", "decision": "deny", "effective_from": "2026-01-01", "effective_until": null, "priority": 3, "conditions": {"tier": "beta"}, "source_document_id": "synthetic-removed"}
+      ],
+      "current_rules": [
+        {"rule_id": "kept", "version": 1, "subject": "kept-scope", "action": "apply", "decision": "allow", "effective_from": "2026-01-01", "effective_until": null, "priority": 3, "conditions": {"tier": "alpha"}, "source_document_id": "synthetic-kept"}
+      ],
+      "expected": {"status": "review", "code": "removal_review_required", "published_rule_versions": []}
+    }
+  ]
+}
