@@ -963,6 +963,25 @@ services:
       - --dataset
       - /app/data/synthetic_cases/structured_rule_admission_development.json
 
+  evaluate-structured-rule-admission-holdout:
+    extends: evaluate-structured-rule-admission
+    user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
+    volumes:
+      - type: bind
+        source: ./artifacts
+        target: /artifacts
+    command:
+      - medaudit-evaluate-structured-rule-admission
+      - --dataset
+      - /app/data/synthetic_cases/structured_rule_admission_holdout.json
+      - --dataset-policy
+      - structured-rule-admission-holdout-v1
+      - --expected-sha256
+      - 64291089e2e103a158fae915896c6605c6cd0cde5acd6bb1541d88e016b57490
+      - --output
+      - /artifacts/structured-rule-admission-holdout.local.json
+      - --refuse-overwrite
+
   evaluate-explicit-query-routing-holdout:
     extends: evaluate-explicit-query-routing
     user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"

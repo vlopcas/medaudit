@@ -18,6 +18,15 @@ class StructuredRuleAdmissionEvaluationTest(unittest.TestCase):
         self.assertEqual(report["metrics"]["passed"], 5)
         self.assertEqual(report["metrics"]["total"], 5)
 
+    def test_loader_rejects_unexpected_policy(self) -> None:
+        with self.assertRaisesRegex(ValueError, "unsupported"):
+            load_dataset(
+                Path(
+                    "data/synthetic_cases/structured_rule_admission_development.json"
+                ),
+                expected_policy="structured-rule-admission-holdout-v1",
+            )
+
 
 if __name__ == "__main__":
     unittest.main()

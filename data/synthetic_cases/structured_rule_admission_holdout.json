@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "policy": "structured-rule-admission-holdout-v1",
+  "notice": "Conteúdo integralmente sintético, sem reprodução de documentos reais.",
+  "cases": [
+    {
+      "case_id": "temporal-separation-admitted",
+      "rules": [
+        {"rule_id": "temporal-old", "version": 2, "subject": "request-a", "action": "authorize", "decision": "allow", "effective_from": "2025-01-01", "effective_until": "2025-12-31", "priority": 4, "conditions": {"tier": "alpha"}, "source_document_id": "synthetic-holdout-a1"},
+        {"rule_id": "temporal-new", "version": 1, "subject": "request-a", "action": "authorize", "decision": "deny", "effective_from": "2026-01-01", "effective_until": null, "priority": 4, "conditions": {"tier": "alpha"}, "source_document_id": "synthetic-holdout-a2"}
+      ],
+      "reviewed_redundancies": [],
+      "expected": {"status": "admitted", "code": "clean_catalog", "finding_count": 0}
+    },
+    {
+      "case_id": "incompatible-attributes-admitted",
+      "rules": [
+        {"rule_id": "attribute-east", "version": 1, "subject": "request-b", "action": "route", "decision": "allow", "effective_from": "2026-01-01", "effective_until": null, "priority": 8, "conditions": {"region": "east"}, "source_document_id": "synthetic-holdout-b1"},
+        {"rule_id": "attribute-west", "version": 1, "subject": "request-b", "action": "route", "decision": "deny", "effective_from": "2026-01-01", "effective_until": null, "priority": 8, "conditions": {"region": "west"}, "source_document_id": "synthetic-holdout-b2"}
+      ],
+      "reviewed_redundancies": [],
+      "expected": {"status": "admitted", "code": "clean_catalog", "finding_count": 0}
+    },
+    {
+      "case_id": "cross-attribute-conflict-rejected",
+      "rules": [
+        {"rule_id": "channel-rule", "version": 3, "subject": "request-c", "action": "route", "decision": "allow", "effective_from": "2026-03-01", "effective_until": null, "priority": 6, "conditions": {"channel": "portal"}, "source_document_id": "synthetic-holdout-c1"},
+        {"rule_id": "marker-rule", "version": 2, "subject": "request-c", "action": "route", "decision": "deny", "effective_from": "2026-06-01", "effective_until": "2027-02-28", "priority": 6, "conditions": {"marker": "manual"}, "source_document_id": "synthetic-holdout-c2"}
+      ],
+      "reviewed_redundancies": [],
+      "expected": {"status": "rejected", "code": "conflicting_overlap", "finding_count": 1}
+    },
+    {
+      "case_id": "multiple-redundancies-require-review",
+      "rules": [
+        {"rule_id": "multi-base", "version": 1, "subject": "request-d", "action": "classify", "decision": "deny", "effective_from": "2026-01-01", "effective_until": null, "priority": 9, "conditions": {"tier": "beta"}, "source_document_id": "synthetic-holdout-d1"},
+        {"rule_id": "multi-north", "version": 1, "subject": "request-d", "action": "classify", "decision": "deny", "effective_from": "2026-01-01", "effective_until": null, "priority": 9, "conditions": {"tier": "beta", "region": "north"}, "source_document_id": "synthetic-holdout-d2"},
+        {"rule_id": "multi-south", "version": 1, "subject": "request-d", "action": "classify", "decision": "deny", "effective_from": "2026-01-01", "effective_until": null, "priority": 9, "conditions": {"tier": "beta", "region": "south"}, "source_document_id": "synthetic-holdout-d3"}
+      ],
+      "reviewed_redundancies": [],
+      "expected": {"status": "review", "code": "redundancy_review_required", "finding_count": 2}
+    },
+    {
+      "case_id": "multiple-reviewed-redundancies-admitted",
+      "rules": [
+        {"rule_id": "approved-base", "version": 4, "subject": "request-e", "action": "classify", "decision": "allow", "effective_from": "2026-04-01", "effective_until": null, "priority": 3, "conditions": {"tier": "gamma"}, "source_document_id": "synthetic-holdout-e1"},
+        {"rule_id": "approved-north", "version": 2, "subject": "request-e", "action": "classify", "decision": "allow", "effective_from": "2026-05-01", "effective_until": null, "priority": 3, "conditions": {"tier": "gamma", "region": "north"}, "source_document_id": "synthetic-holdout-e2"},
+        {"rule_id": "approved-south", "version": 5, "subject": "request-e", "action": "classify", "decision": "allow", "effective_from": "2026-06-01", "effective_until": null, "priority": 3, "conditions": {"tier": "gamma", "region": "south"}, "source_document_id": "synthetic-holdout-e3"}
+      ],
+      "reviewed_redundancies": [["approved-base@4", "approved-north@2"], ["approved-base@4", "approved-south@5"]],
+      "expected": {"status": "admitted", "code": "clean_catalog", "finding_count": 0}
+    },
+    {
+      "case_id": "conflict-precedes-pending-redundancy",
+      "rules": [
+        {"rule_id": "precedence-base", "version": 1, "subject": "request-f", "action": "release", "decision": "allow", "effective_from": "2026-01-01", "effective_until": null, "priority": 7, "conditions": {"channel": "web"}, "source_document_id": "synthetic-holdout-f1"},
+        {"rule_id": "precedence-south", "version": 1, "subject": "request-f", "action": "release", "decision": "allow", "effective_from": "2026-01-01", "effective_until": null, "priority": 7, "conditions": {"channel": "web", "region": "south"}, "source_document_id": "synthetic-holdout-f2"},
+        {"rule_id": "precedence-north-deny", "version": 1, "subject": "request-f", "action": "release", "decision": "deny", "effective_from": "2026-01-01", "effective_until": null, "priority": 7, "conditions": {"channel": "web", "region": "north"}, "source_document_id": "synthetic-holdout-f3"}
+      ],
+      "reviewed_redundancies": [],
+      "expected": {"status": "rejected", "code": "conflicting_overlap", "finding_count": 1}
+    }
+  ]
+}
