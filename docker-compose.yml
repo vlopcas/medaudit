@@ -949,6 +949,13 @@ services:
       - --dataset
       - /app/data/synthetic_cases/structured_rules_development.json
 
+  evaluate-structured-rule-audit:
+    extends: evaluate-release-verification
+    command:
+      - medaudit-evaluate-structured-rule-audit
+      - --dataset
+      - /app/data/synthetic_cases/structured_rule_audit_development.json
+
   evaluate-explicit-query-routing-holdout:
     extends: evaluate-explicit-query-routing
     user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"

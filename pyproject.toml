@@ -79,6 +79,7 @@ medaudit-evaluate-lexical-release-verifier = "medaudit.evaluation.lexical_releas
 medaudit-evaluate-structured-fact-verifier = "medaudit.evaluation.structured_fact_verifier:main"
 medaudit-evaluate-structured-verifier-application = "medaudit.evaluation.structured_verifier_application:main"
 medaudit-evaluate-structured-rules = "medaudit.evaluation.structured_rules:main"
+medaudit-evaluate-structured-rule-audit = "medaudit.evaluation.structured_rule_audit:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/medaudit"]

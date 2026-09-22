@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "policy": "structured-rule-audit-development-v1",
+  "notice": "Conteúdo integralmente sintético, sem reprodução de documentos reais.",
+  "rules": [
+    {"rule_id": "claim-gold-base", "version": 1, "subject": "claim-a", "action": "pay", "decision": "allow", "effective_from": "2026-01-01", "effective_until": "2026-12-31", "priority": 5, "conditions": {"plan": "gold"}, "source_document_id": "synthetic-a"},
+    {"rule_id": "claim-gold-conflict", "version": 1, "subject": "claim-a", "action": "pay", "decision": "deny", "effective_from": "2026-06-01", "effective_until": "2026-12-31", "priority": 5, "conditions": {"plan": "gold"}, "source_document_id": "synthetic-b"},
+    {"rule_id": "claim-gold-redundant", "version": 1, "subject": "claim-a", "action": "pay", "decision": "allow", "effective_from": "2026-01-01", "effective_until": "2026-05-31", "priority": 5, "conditions": {"plan": "gold", "region": "south"}, "source_document_id": "synthetic-c"},
+    {"rule_id": "claim-silver", "version": 1, "subject": "claim-a", "action": "pay", "decision": "deny", "effective_from": "2026-01-01", "effective_until": "2026-12-31", "priority": 5, "conditions": {"plan": "silver"}, "source_document_id": "synthetic-d"},
+    {"rule_id": "claim-gold-higher-priority", "version": 1, "subject": "claim-a", "action": "pay", "decision": "deny", "effective_from": "2026-01-01", "effective_until": "2026-12-31", "priority": 10, "conditions": {"plan": "gold"}, "source_document_id": "synthetic-e"},
+    {"rule_id": "claim-gold-adjacent", "version": 1, "subject": "claim-a", "action": "pay", "decision": "deny", "effective_from": "2027-01-01", "effective_until": null, "priority": 5, "conditions": {"plan": "gold"}, "source_document_id": "synthetic-f"},
+    {"rule_id": "renewal-channel", "version": 1, "subject": "renewal-b", "action": "process", "decision": "allow", "effective_from": "2026-01-01", "effective_until": null, "priority": 7, "conditions": {"channel": "blue"}, "source_document_id": "synthetic-g"},
+    {"rule_id": "renewal-marker", "version": 1, "subject": "renewal-b", "action": "process", "decision": "deny", "effective_from": "2026-01-01", "effective_until": null, "priority": 7, "conditions": {"marker": "amber"}, "source_document_id": "synthetic-h"},
+    {"rule_id": "other-scope", "version": 1, "subject": "other", "action": "process", "decision": "deny", "effective_from": "2026-01-01", "effective_until": null, "priority": 7, "conditions": {"channel": "blue"}, "source_document_id": "synthetic-i"}
+  ],
+  "expected_findings": [
+    {"code": "conflicting_overlap", "rule_versions": ["claim-gold-base@1", "claim-gold-conflict@1"]},
+    {"code": "conflicting_overlap", "rule_versions": ["renewal-channel@1", "renewal-marker@1"]},
+    {"code": "redundant_overlap", "rule_versions": ["claim-gold-base@1", "claim-gold-redundant@1"]}
+  ]
+}
