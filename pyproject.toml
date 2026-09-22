@@ -82,6 +82,7 @@ medaudit-evaluate-structured-rules = "medaudit.evaluation.structured_rules:main"
 medaudit-evaluate-structured-rule-audit = "medaudit.evaluation.structured_rule_audit:main"
 medaudit-evaluate-structured-rule-admission = "medaudit.evaluation.structured_rule_admission:main"
 medaudit-evaluate-structured-rule-publication = "medaudit.evaluation.structured_rule_publication:main"
+medaudit-evaluate-graph-necessity = "medaudit.evaluation.graph_necessity:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/medaudit"]

@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "policy": "graph-necessity-development-v1",
+  "notice": "Conteúdo integralmente sintético, sem reprodução de documentos reais.",
+  "cases": [
+    {
+      "case_id": "two-hop-lexically-connected",
+      "category": "two_hop",
+      "query": "Qual exceção afeta o procedimento PX-A?",
+      "top_k": 2,
+      "chunks": [
+        {"chunk_id": "two-edge-1", "document_id": "synthetic-two-a", "text": "O procedimento PX-A é regulado pela regra RA-10."},
+        {"chunk_id": "two-edge-2", "document_id": "synthetic-two-b", "text": "A regra RA-10 possui a exceção EX-AZUL."},
+        {"chunk_id": "two-distractor", "document_id": "synthetic-two-c", "text": "O procedimento PX-Z possui referência independente."}
+      ],
+      "expected_chain": ["two-edge-1", "two-edge-2"],
+      "expected_outcome": "chain"
+    },
+    {
+      "case_id": "three-hop-hidden-middle-edge",
+      "category": "three_hop",
+      "query": "Qual condição final afeta o procedimento PX-B?",
+      "top_k": 3,
+      "chunks": [
+        {"chunk_id": "three-edge-1", "document_id": "synthetic-three-a", "text": "O procedimento PX-B é regulado pela regra RB-20."},
+        {"chunk_id": "three-edge-2", "document_id": "synthetic-three-b", "text": "RB-20 referencia a exceção EX-VERDE."},
+        {"chunk_id": "three-edge-3", "document_id": "synthetic-three-c", "text": "EX-VERDE depende da condição final CD-30."},
+        {"chunk_id": "three-distractor-1", "document_id": "synthetic-three-d", "text": "A condição final CD-99 afeta outro fluxo."},
+        {"chunk_id": "three-distractor-2", "document_id": "synthetic-three-e", "text": "O procedimento PX-Q não possui relação com este conjunto."}
+      ],
+      "expected_chain": ["three-edge-1", "three-edge-2", "three-edge-3"],
+      "expected_outcome": "chain"
+    },
+    {
+      "case_id": "four-hop-hidden-chain",
+      "category": "four_hop",
+      "query": "Qual regra final se relaciona ao procedimento PX-C?",
+      "top_k": 4,
+      "chunks": [
+        {"chunk_id": "four-edge-1", "document_id": "synthetic-four-a", "text": "O procedimento PX-C aponta para a regra RC-1."},
+        {"chunk_id": "four-edge-2", "document_id": "synthetic-four-b", "text": "RC-1 possui a exceção EX-CINZA."},
+        {"chunk_id": "four-edge-3", "document_id": "synthetic-four-c", "text": "EX-CINZA exige a condição CD-40."},
+        {"chunk_id": "four-edge-4", "document_id": "synthetic-four-d", "text": "CD-40 aciona a regra final RF-9."},
+        {"chunk_id": "four-distractor-1", "document_id": "synthetic-four-e", "text": "A regra final RF-8 pertence a outro procedimento."},
+        {"chunk_id": "four-distractor-2", "document_id": "synthetic-four-f", "text": "O procedimento PX-X aponta para relação externa."}
+      ],
+      "expected_chain": ["four-edge-1", "four-edge-2", "four-edge-3", "four-edge-4"],
+      "expected_outcome": "chain"
+    },
+    {
+      "case_id": "temporal-rule-resolved-without-graph",
+      "category": "temporal_supersession",
+      "query": "Qual decisão vale para ITEM-T em 15/08/2027?",
+      "top_k": 2,
+      "chunks": [
+        {"chunk_id": "temporal-edge-1", "document_id": "synthetic-temporal-a", "text": "A versão RT-1 trata do ITEM-T no período inicial."},
+        {"chunk_id": "temporal-edge-2", "document_id": "synthetic-temporal-b", "text": "A versão RT-2 substitui RT-1 a partir do segundo semestre."},
+        {"chunk_id": "temporal-distractor", "document_id": "synthetic-temporal-c", "text": "ITEM-X possui calendário diferente em 2027."}
+      ],
+      "expected_chain": ["temporal-edge-1", "temporal-edge-2"],
+      "expected_outcome": "chain",
+      "rule_baseline": {
+        "rules": [
+          {"rule_id": "temporal-v1", "version": 1, "subject": "ITEM-T", "action": "decide", "decision": "deny", "effective_from": "2027-01-01", "effective_until": "2027-06-30", "priority": 5, "conditions": {"tier": "alpha"}, "source_document_id": "synthetic-temporal-a"},
+          {"rule_id": "temporal-v2", "version": 2, "subject": "ITEM-T", "action": "decide", "decision": "allow", "effective_from": "2027-07-01", "effective_until": null, "priority": 5, "conditions": {"tier": "alpha"}, "source_document_id": "synthetic-temporal-b"}
+        ],
+        "query": {"subject": "ITEM-T", "action": "decide", "reference_date": "2027-08-15", "attributes": {"tier": "alpha"}}
+      }
+    },
+    {
+      "case_id": "reverse-impact-hidden-middle-edge",
+      "category": "reverse_impact",
+      "query": "Quais procedimentos dependem da condição CD-DELTA?",
+      "top_k": 3,
+      "chunks": [
+        {"chunk_id": "reverse-edge-1", "document_id": "synthetic-reverse-a", "text": "A condição CD-DELTA ativa a exceção EX-DELTA."},
+        {"chunk_id": "reverse-edge-2", "document_id": "synthetic-reverse-b", "text": "EX-DELTA altera a regra RD-50."},
+        {"chunk_id": "reverse-edge-3", "document_id": "synthetic-reverse-c", "text": "RD-50 regula os procedimentos PX-D e PX-E."},
+        {"chunk_id": "reverse-distractor-1", "document_id": "synthetic-reverse-d", "text": "A condição CD-DELTA também aparece em nota sem efeito."},
+        {"chunk_id": "reverse-distractor-2", "document_id": "synthetic-reverse-e", "text": "Outros procedimentos dependem da condição CD-OMEGA."}
+      ],
+      "expected_chain": ["reverse-edge-1", "reverse-edge-2", "reverse-edge-3"],
+      "expected_outcome": "chain"
+    },
+    {
+      "case_id": "disconnected-entities-have-no-path",
+      "category": "no_path",
+      "query": "Qual relação existe entre PX-F e CD-ZETA?",
+      "top_k": 3,
+      "chunks": [
+        {"chunk_id": "no-path-a", "document_id": "synthetic-no-path-a", "text": "PX-F é regulado exclusivamente por RF-60."},
+        {"chunk_id": "no-path-b", "document_id": "synthetic-no-path-b", "text": "CD-ZETA pertence ao fluxo independente RZ-70."},
+        {"chunk_id": "no-path-c", "document_id": "synthetic-no-path-c", "text": "Não há declaração de conexão entre os dois fluxos."}
+      ],
+      "expected_chain": [],
+      "expected_outcome": "no_path"
+    },
+    {
+      "case_id": "ambiguous-entity-requires-review",
+      "category": "ambiguous_entity",
+      "query": "Quais regras se relacionam ao item ALFA?",
+      "top_k": 3,
+      "chunks": [
+        {"chunk_id": "ambiguous-a", "document_id": "synthetic-ambiguous-a", "text": "ALFA identifica o item ALFA-1 no catálogo A."},
+        {"chunk_id": "ambiguous-b", "document_id": "synthetic-ambiguous-b", "text": "ALFA também identifica o item ALFA-2 no catálogo B."},
+        {"chunk_id": "ambiguous-c", "document_id": "synthetic-ambiguous-c", "text": "ALFA-1 e ALFA-2 possuem regras distintas."}
+      ],
+      "expected_chain": [],
+      "expected_outcome": "review"
+    },
+    {
+      "case_id": "explicit-comparison-uses-existing-planner",
+      "category": "explicit_comparison",
+      "query": "Compare regra RX-1 com regra RX-2",
+      "top_k": 2,
+      "chunks": [
+        {"chunk_id": "comparison-a", "document_id": "synthetic-comparison-a", "text": "A regra RX-1 permite o fluxo sintético A."},
+        {"chunk_id": "comparison-b", "document_id": "synthetic-comparison-b", "text": "A regra RX-2 nega o fluxo sintético B."},
+        {"chunk_id": "comparison-c", "document_id": "synthetic-comparison-c", "text": "A regra RX-9 pertence a outro escopo."}
+      ],
+      "expected_chain": ["comparison-a", "comparison-b"],
+      "expected_outcome": "chain"
+    }
+  ]
+}
