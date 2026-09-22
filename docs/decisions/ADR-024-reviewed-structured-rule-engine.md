@@ -22,6 +22,10 @@ provenance explícitos.
 - ausência de regra aplicável é um estado explícito, nunca uma permissão
   implícita;
 - toda decisão aplicada conserva IDs e versões das regras que a sustentam;
+- antes da admissão, pares de regras de mesma prioridade e escopo são auditados
+  estaticamente quanto a vigências e condições compatíveis;
+- sobreposições divergentes são conflitos; sobreposições equivalentes exigem
+  revisão de redundância;
 - LLMs não participam da execução e não resolvem conflitos.
 
 ## Consequências
@@ -29,4 +33,5 @@ provenance explícitos.
 O baseline é pequeno e explicável, mas ainda não oferece linguagem de condições
 complexas, composição booleana, importação do catálogo privado ou workflow de
 aprovação. Extração de regras a partir de documentos será uma fronteira separada
-e não poderá publicar regras sem revisão.
+e não poderá publicar regras sem revisão. A auditoria existe, mas sua aplicação
+como gate bloqueante de admissão ainda é o próximo incremento.

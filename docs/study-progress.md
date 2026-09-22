@@ -25,7 +25,7 @@ implementação dedicada.
 | 6 | Hybrid Retrieval | Experimental, não promovida | BM25, dense e RRF foram comparados; BM25 permanece como baseline principal. |
 | 7 | Reranking | Experimental, não promovida | Reranking semântico restrito aos candidatos foi avaliado sem justificar promoção. |
 | 8 | Query Understanding | Concluída para o ciclo atual | Roteamento, planejamento, execução e agrupamento opt-in por passo foram validados; reescrita semântica foi rejeitada. |
-| 9 | Regras estruturadas | Parcial | Schema versionado e motor determinístico de vigência, prioridade, condições e conflitos passaram em desenvolvimento sintético. |
+| 9 | Regras estruturadas | Parcial | Motor determinístico e auditoria estática de conflitos e redundâncias passaram em desenvolvimento sintético. |
 | 10 | Temporalidade e versionamento | Parcial, antecipada | Catálogo temporal, relações de substituição, snapshots por data e avaliações temporais já existem. |
 | 11–18 | Grafos, tools, APIs e agentes | Não iniciadas | Permanecem no roteiro futuro. |
 | 19 | Provenance e citações | Parcial, antecipada | IDs determinísticos, origem dos chunks e validação das citações já atravessam o pipeline. |
@@ -47,7 +47,15 @@ implementação dedicada.
 
 ## Próximo marco
 
-A **Fase 8 — Query Understanding** está em andamento. Após chegar a 100% no
+O trabalho ativo está na **Fase 9 — Regras estruturadas**. O motor determinístico
+e a auditoria estática passaram em desenvolvimento sintético. O próximo
+incremento é transformar os achados do auditor em uma fronteira de admissão:
+conflitos devem bloquear o catálogo e redundâncias devem exigir revisão
+explícita. Depois de passar em casos novos de desenvolvimento, a candidata
+poderá receber um holdout sintético inédito e congelado.
+
+O histórico que levou a esse marco permanece abaixo. Na **Fase 8 — Query
+Understanding**, após chegar a 100% no
 conjunto de desenvolvimento, o baseline determinístico obteve apenas 66,7% no
 holdout sintético congelado e não controla o retriever. O próximo ciclo deve
 formular outra abordagem usando novos casos de desenvolvimento; o holdout já
@@ -273,8 +281,10 @@ A composição local foi rejeitada sem holdout. O próximo ciclo avança para re
 estruturadas, preservando o verificador como experimento estreito.
 O primeiro baseline de regras estruturadas atingiu 8/8 em desenvolvimento.
 Ele preserva vigência, prioridade, condições e provenance, envia conflitos para
-revisão e representa ausência de regra explicitamente. O próximo marco é uma
-auditoria estática de sobreposições antes de qualquer holdout.
+revisão e representa ausência de regra explicitamente. A auditoria estática
+seguinte encontrou exatamente dois conflitos e uma redundância esperados em
+nove regras sintéticas, sem alertar os controles incompatíveis. Ela está
+aprovada como diagnóstico; o gate de admissão ainda não foi implementado.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em

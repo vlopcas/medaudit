@@ -204,33 +204,18 @@ não usar LLM, RAG, grafo ou agente.
 
 ## Próximos marcos
 
-1. Diagnosticar em desenvolvimento sintético por que o request compilado induz
-   abstention estável no modelo local, comparando-o com a última configuração
-   local aprovada sem reutilizar holdout para ajuste. A instrução isolada
-   removeu a abstention, mas produziu falha estruturada nas nove tentativas
-   respondíveis. O schema limitado corrigiu a falha e a combinação atingiu
-   100% no desenvolvimento; o próximo gate é um holdout sintético inédito,
-   congelado antes da primeira execução. Esse holdout reprovou a candidata em
-   segurança de conteúdo e abstention; ele está encerrado e não será ajustado.
-   O próximo ciclo usa novos casos de desenvolvimento para avaliar uma
-   fronteira adicional de verificação dessas duas classes. O contrato dessa
-   fronteira já foi validado com verificadores falsos; o próximo marco é uma
-   primeira estratégia estreita em casos novos de desenvolvimento. A candidata
-   lexical foi rejeitada por deixar passar expansão sem suporte e contradição
-   pontual. A candidata estruturada seguinte atingiu 10/10 em desenvolvimento
-   para quantidades com unidade, códigos e polaridade e repetiu 10/10 em
-   holdout congelado. Sua integração opt-in com a aplicação atingiu 7/7 em
-   desenvolvimento sem ampliar o domínio e repetiu 9/9 em holdout congelado.
-   A composição permanece experimental e opt-in. Com o modelo local, manteve
-   segurança, mas reduziu conteúdo respondível de 100% no controle para 33,3%;
-   foi rejeitada sem holdout. O próximo ciclo avança para regras estruturadas,
-   sem reutilizar os holdouts encerrados.
-2. Formular uma única candidata controlada e avaliá-la primeiro em novos casos
-   de desenvolvimento; qualquer holdout posterior deverá ser inédito.
-3. Manter síntese desabilitada e o corpus privado bloqueado até qualidade,
-   grounding, segurança e repetibilidade passarem juntas.
-4. Retomar regras estruturadas e consolidar a temporalidade já antecipada.
-5. Executar o primeiro checkpoint de seleção arquitetural antes de grafos.
+1. Implementar um gate de admissão sintético para catálogos estruturados:
+   conflitos bloqueiam a admissão e redundâncias exigem revisão explícita.
+2. Avaliar o gate somente em novos casos de desenvolvimento, incluindo catálogo
+   válido, conflito, redundância não revisada e redundância aceita.
+3. Se o contrato passar, congelar um holdout sintético inédito antes da primeira
+   execução; nenhum holdout encerrado será reutilizado para ajuste.
+4. Manter extração automática, catálogo privado e uso decisório real
+   bloqueados até que revisão, provenance e política de falha fechada estejam
+   validadas em conjunto.
+5. Após esse checkpoint de regras, comparar a arquitetura atual com a
+   necessidade real de grafo, tools e workflow agêntico antes de ampliar a
+   complexidade.
 
 O detalhamento curricular completo continua no
 [plano original](plano_estudos_llm_rag_graph_agentic.md); números e decisões

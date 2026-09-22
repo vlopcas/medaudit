@@ -270,6 +270,13 @@ regras previamente revisadas. Vigência, prioridade, condições, conflitos e
 provenance por versão atingiram 8/8 em desenvolvimento sintético. Conflitos na
 mesma prioridade seguem para revisão e ausência de regra nunca implica
 permissão. Extração documental e catálogo privado ainda não estão conectados.
+Uma auditoria estática do catálogo passou então a detectar, antes da execução,
+regras de mesma prioridade, escopo, vigência sobreposta e condições
+compatíveis. O cenário sintético encontrou exatamente dois conflitos e uma
+redundância, sem falsos alertas nos controles de prioridade, período, escopo e
+condições incompatíveis. O próximo gate é aplicar essa auditoria na admissão de
+um catálogo sintético, bloqueando conflitos e exigindo revisão explícita das
+redundâncias antes de congelar um holdout.
 
 ## Ambiente de desenvolvimento
 

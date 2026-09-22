@@ -67,3 +67,4 @@ para evitar a exposição indireta do corpus privado.
 - [Resultado 051: holdout da integração do verificador estruturado](051-structured-verifier-application-holdout.md)
 - [Resultado 052: verificação estruturada com modelo local](052-local-structured-verifier-application-development.md)
 - [Resultado 053: baseline de regras estruturadas](053-structured-rules-development.md)
+- [Resultado 054: auditoria estática de regras estruturadas](054-structured-rule-audit-development.md)

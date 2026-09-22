@@ -343,6 +343,20 @@ não acessa rede nem armazenamento: recebe bytes e retorna um resultado. A
 persistência é uma responsabilidade separada e seus artefatos devem permanecer
 em `data/processed/`, que é ignorado pelo Git.
 
+## Regras estruturadas revisadas
+
+O módulo `medaudit.rules` mantém a execução de regras fora do caminho
+generativo. O motor resolve regras tipadas por escopo, data, condições e
+prioridade; ausência de regra e conflitos permanecem estados explícitos. Uma
+auditoria estática independente compara pares de mesma prioridade e escopo,
+considerando vigências sobrepostas e condições que possam coexistir. Decisões
+divergentes são classificadas como conflito e decisões iguais como
+redundância.
+
+Essa análise é conservadora e limitada à linguagem atual de condições exatas.
+Ela não publica regras, não interpreta documentos e não toca o catálogo
+privado. O gate de admissão que consumirá seus achados ainda será implementado.
+
 ## Decisões relacionadas
 
 - [ADR-001: governança dos dados privados](decisions/ADR-001-private-data-governance.md)
