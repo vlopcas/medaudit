@@ -311,6 +311,11 @@ explícita. Como recebeu IDs já resolvidos em um fixture próprio, ele ainda n�
 demonstra ganho ponta a ponta. O próximo gate é converter referências explícitas
 em uma solicitação auditável de traversal e então comparar retrieval lexical e
 assistido por grafo sobre os mesmos inputs.
+Uma fronteira determinística subsequente compilou 10/10 perguntas sintéticas
+explícitas em solicitações tipadas ou estados fechados de revisão. Ela exige
+exatamente duas referências revisadas e não tenta resolver semanticamente texto
+desconhecido. O próximo passo é compor essa fronteira com o traversal e comparar
+o resultado ao BM25 sobre as mesmas perguntas.
 
 ## Ambiente de desenvolvimento
 

@@ -55,3 +55,7 @@ determinística de entidades e montagem explícita de uma solicitação de
 traversal. Depois disso, uma avaliação integrada deve comparar BM25 e recuperação
 assistida por grafo sobre os mesmos casos antes de qualquer holdout ou conexão
 ao catálogo privado.
+
+A fronteira determinística inicial foi avaliada no
+[Resultado 063](063-explicit-graph-request-development.md). A composição entre
+essa solicitação e o traversal permanece como o próximo experimento.

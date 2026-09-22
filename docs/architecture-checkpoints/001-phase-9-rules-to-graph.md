@@ -95,3 +95,9 @@ mesmo input textual do BM25. A promoção continua bloqueada até avaliar a
 fronteira pergunta-entidade-traversal e fazer uma comparação integrada. A
 decisão estreita está registrada na
 [ADR-027](../decisions/ADR-027-bounded-reviewed-graph-traversal.md).
+
+A primeira fronteira pergunta-entidade atingiu 10/10 no
+[Resultado 063](../results/063-explicit-graph-request-development.md). Ela só
+compila intenção explícita com duas referências revisadas; os demais casos não
+se aplicam ou seguem para revisão. O próximo gate é a composição completa e a
+comparação com BM25 nos mesmos inputs.

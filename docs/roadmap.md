@@ -139,7 +139,9 @@ Estado: checkpoint concluído. Graph RAG foi inicialmente adiado; o benchmark
 seguinte encontrou quatro lacunas candidatas e autorizou somente um protótipo
 determinístico em memória. Esse protótipo recuperou as quatro categorias, mas
 recebeu entidades já resolvidas e ainda não constitui uma comparação integrada.
-O próximo gate é a fronteira auditável entre pergunta e traversal. A análise está no
+Uma fronteira explícita pergunta-entidade passou em desenvolvimento sintético;
+o próximo gate é a composição ponta a ponta e sua comparação com BM25 sobre os
+mesmos inputs. A análise está no
 [Checkpoint arquitetural 001](architecture-checkpoints/001-phase-9-rules-to-graph.md).
 
 ### 7. Tools, dados estruturados e agentes

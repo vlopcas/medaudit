@@ -35,3 +35,10 @@ passa a ser a ligação auditável entre linguagem natural e IDs revisados.
 Um acerto no fixture do componente não deve ser relatado como ganho ponta a
 ponta. Holdout, banco de grafo, ETL documental e uso de dados privados continuam
 bloqueados.
+
+## Resultado posterior
+
+O [Resultado 063](../results/063-explicit-graph-request-development.md) validou
+uma gramática conservadora para compilar solicitações. Ela atende ao
+pré-requisito inicial de entity resolution explícita, mas ainda não substitui a
+comparação integrada exigida por esta decisão.

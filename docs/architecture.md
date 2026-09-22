@@ -382,6 +382,10 @@ O protótipo recuperou as quatro categorias no desenvolvimento sintético. Ele
 permanece isolado porque recebe IDs já resolvidos; a ligação entre pergunta,
 entidades e traversal ainda precisa de avaliação própria antes de integrar o
 retrieval.
+Essa ligação agora possui uma primeira fronteira determinística: somente
+perguntas com intenção de caminho e duas referências revisadas geram uma
+solicitação tipada. Casos incompletos ou ambíguos param em revisão. A composição
+com traversal e a comparação no mesmo input do baseline continuam pendentes.
 
 ## Decisões relacionadas
 

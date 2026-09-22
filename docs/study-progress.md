@@ -27,7 +27,7 @@ implementação dedicada.
 | 8 | Query Understanding | Concluída para o ciclo atual | Roteamento, planejamento, execução e agrupamento opt-in por passo foram validados; reescrita semântica foi rejeitada. |
 | 9 | Regras estruturadas | Concluída para o ciclo sintético | Motor, auditoria, admissão e publicação versionada passaram em desenvolvimento e holdouts controlados. |
 | 10 | Temporalidade e versionamento | Parcial, antecipada | Catálogo temporal, relações de substituição, snapshots por data e avaliações temporais já existem. |
-| 11–18 | Grafos, tools, APIs e agentes | Traversal de grafo experimental; demais não iniciadas | O protótipo resolveu quatro lacunas sintéticas com IDs já resolvidos; integração e Graph RAG não estão autorizados. |
+| 11–18 | Grafos, tools, APIs e agentes | Grafo explícito experimental; demais não iniciadas | Traversal e compilação conservadora passaram separadamente; comparação integrada e Graph RAG não estão autorizados. |
 | 19 | Provenance e citações | Parcial, antecipada | IDs determinísticos, origem dos chunks e validação das citações já atravessam o pipeline. |
 | 20–26 | Verifier até arquitetura final | Parcial, experimental | A fronteira foi integrada; a candidata estruturada passou em desenvolvimento e holdout como opt-in estreito. Arquitetura final permanece futura. |
 
@@ -60,8 +60,10 @@ O checkpoint arquitetural concluiu que ainda não existe evidência para Graph
 RAG. O benchmark seguinte encontrou quatro lacunas candidatas após executar os
 baselines atuais. O protótipo determinístico subsequente recuperou as quatro
 categorias, preservou provenance e falhou fechado nos controles. Como recebeu
-IDs já resolvidos, o próximo marco é avaliar a fronteira entre referência
-explícita e solicitação de traversal, sem conexão ao catálogo privado.
+IDs já resolvidos, uma fronteira explícita foi avaliada em seguida e atingiu
+10/10 sem adivinhar referências ausentes ou ambíguas. O próximo marco é compor
+essa fronteira ao traversal e compará-la ao BM25 nos mesmos inputs, sem conexão
+ao catálogo privado.
 
 O histórico que levou a esse marco permanece abaixo. Na **Fase 8 — Query
 Understanding**, após chegar a 100% no
