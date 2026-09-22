@@ -219,9 +219,10 @@ não usar LLM, RAG, grafo ou agente.
    para quantidades com unidade, códigos e polaridade e repetiu 10/10 em
    holdout congelado. Sua integração opt-in com a aplicação atingiu 7/7 em
    desenvolvimento sem ampliar o domínio e repetiu 9/9 em holdout congelado.
-   A composição permanece experimental e opt-in; o próximo ciclo deve testar
-   o modelo local somente em desenvolvimento sintético ou avançar para regras
-   estruturadas, sem reutilizar os holdouts encerrados.
+   A composição permanece experimental e opt-in. Com o modelo local, manteve
+   segurança, mas reduziu conteúdo respondível de 100% no controle para 33,3%;
+   foi rejeitada sem holdout. O próximo ciclo avança para regras estruturadas,
+   sem reutilizar os holdouts encerrados.
 2. Formular uma única candidata controlada e avaliá-la primeiro em novos casos
    de desenvolvimento; qualquer holdout posterior deverá ser inédito.
 3. Manter síntese desabilitada e o corpus privado bloqueado até qualidade,

@@ -266,6 +266,11 @@ comportamento anterior; quando ligado, contradições foram rejeitadas e linguag
 fora do domínio ficou retida sem resposta. O holdout congelado da integração
 repetiu 9/9 e 100% de segurança de liberação; está encerrado, e a composição
 permanece experimental e opt-in.
+No benchmark seguinte com Qwen3-4B, o controle sem verificador atingiu 100% de
+conteúdo e segurança em 12 tentativas. A verificação manteve a segurança, mas
+reteve seis respostas corretas e reduziu o conteúdo respondível para 33,3%.
+A composição local foi rejeitada sem holdout. O próximo ciclo avança para regras
+estruturadas, preservando o verificador como experimento estreito.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em

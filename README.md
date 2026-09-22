@@ -260,6 +260,11 @@ Rejeições e revisões não expuseram respostas, e o opt-in desligado preservou
 comportamento anterior. Em holdout próprio e congelado, repetiu 100% nos nove
 fluxos e na segurança de liberação. A integração está aprovada apenas como
 caminho experimental opt-in dentro do domínio estreito do verificador.
+Ao conectar o mesmo componente ao Qwen3-4B local, o controle sem verificador
+atingiu 100% de conteúdo e segurança em 12 tentativas. O verificador manteve
+100% de segurança, mas reteve seis respostas corretas e reduziu a acurácia de
+conteúdo respondível para 33,3%. Essa composição foi rejeitada no
+desenvolvimento e não seguirá para holdout.
 
 ## Ambiente de desenvolvimento
 

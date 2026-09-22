@@ -276,6 +276,10 @@ e 100% de segurança de liberação. O opt-in desligado preserva o comportamento
 anterior; rejeição e revisão nunca carregam a resposta para fora do
 orquestrador. Em holdout próprio e congelado, repetiu 9/9 e 100% de segurança
 de liberação. Continua opt-in, experimental e fora do caminho padrão.
+Com o modelo local, porém, essa integração reteve seis de doze saídas de um
+controle que já tinha 100% de conteúdo e segurança. Quantidade e código foram
+falsamente retidos de forma estável; a composição local foi rejeitada e não
+integra o caminho aprovado.
 
 Uma variante experimental preserva extrações determinísticas e usa o
 `LlamaCppClient` apenas para os três campos semânticos, mas foi rejeitada no
