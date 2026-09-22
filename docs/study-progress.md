@@ -25,9 +25,9 @@ implementação dedicada.
 | 6 | Hybrid Retrieval | Experimental, não promovida | BM25, dense e RRF foram comparados; BM25 permanece como baseline principal. |
 | 7 | Reranking | Experimental, não promovida | Reranking semântico restrito aos candidatos foi avaliado sem justificar promoção. |
 | 8 | Query Understanding | Concluída para o ciclo atual | Roteamento, planejamento, execução e agrupamento opt-in por passo foram validados; reescrita semântica foi rejeitada. |
-| 9 | Regras estruturadas | Parcial | Motor determinístico e auditoria estática de conflitos e redundâncias passaram em desenvolvimento sintético. |
+| 9 | Regras estruturadas | Concluída para o ciclo sintético | Motor, auditoria, admissão e publicação versionada passaram em desenvolvimento e holdouts controlados. |
 | 10 | Temporalidade e versionamento | Parcial, antecipada | Catálogo temporal, relações de substituição, snapshots por data e avaliações temporais já existem. |
-| 11–18 | Grafos, tools, APIs e agentes | Não iniciadas | Permanecem no roteiro futuro. |
+| 11–18 | Grafos, tools, APIs e agentes | Grafo em checkpoint; demais não iniciadas | Graph RAG foi adiado até um benchmark demonstrar lacuna relacional. |
 | 19 | Provenance e citações | Parcial, antecipada | IDs determinísticos, origem dos chunks e validação das citações já atravessam o pipeline. |
 | 20–26 | Verifier até arquitetura final | Parcial, experimental | A fronteira foi integrada; a candidata estruturada passou em desenvolvimento e holdout como opt-in estreito. Arquitetura final permanece futura. |
 
@@ -47,7 +47,7 @@ implementação dedicada.
 
 ## Próximo marco
 
-O trabalho ativo está na **Fase 9 — Regras estruturadas**. O motor determinístico
+O ciclo sintético da **Fase 9 — Regras estruturadas** foi concluído. O motor determinístico
 e a auditoria estática passaram em desenvolvimento sintético. A fronteira de
 admissão também passou em 5/5 casos: conflito bloqueia, redundância pendente vai
 para revisão, redundância explicitamente revisada pode ser admitida e referências
@@ -56,8 +56,9 @@ A primeira fronteira sintética de publicação atingiu 9/9, preservou snapshots
 determinísticos e bloqueou mutações e substituições não revisadas. O próximo
 incremento vinculou aposentadorias ao snapshot anterior e elevou o conjunto para
 11/11. O holdout sintético inédito da composição atingiu 8/8 e está encerrado.
-O próximo marco é o checkpoint arquitetural da Fase 9, ainda sem conexão ao
-catálogo privado.
+O checkpoint arquitetural concluiu que ainda não existe evidência para Graph
+RAG. O próximo marco é um benchmark sintético de necessidade de grafo, executado
+primeiro com os baselines atuais e sem conexão ao catálogo privado.
 
 O histórico que levou a esse marco permanece abaixo. Na **Fase 8 — Query
 Understanding**, após chegar a 100% no

@@ -296,6 +296,10 @@ pode ser preparada para um holdout sintético inédito. Esse holdout atingiu 8/8
 incluindo publicação inicial, conflito de admissão, redundância com substituição,
 aposentadoria com adição, revisão parcial, mutação e regressão de versão. O
 conjunto está encerrado e não será usado para tuning.
+O checkpoint arquitetural subsequente não encontrou evidência suficiente para
+adotar Graph RAG. O próximo experimento será um benchmark sintético de cadeias
+relacionais executado primeiro com BM25, decomposição explícita e regras; grafo
+só será prototipado diante de uma falha multi-hop reproduzível.
 
 ## Ambiente de desenvolvimento
 

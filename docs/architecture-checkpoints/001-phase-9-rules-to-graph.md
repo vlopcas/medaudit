@@ -1,0 +1,72 @@
+# Checkpoint arquitetural 001: regras para grafo
+
+## Pergunta
+
+Após concluir o ciclo de regras estruturadas, existe evidência de que um grafo é
+necessário para o próximo incremento?
+
+## Capacidades observadas
+
+| Necessidade | Menor componente atual | Evidência | Situação |
+|---|---|---|---|
+| Resolver regra por vigência, condição e prioridade | motor determinístico | [Resultado 053](../results/053-structured-rules-development.md) | Coberta no desenvolvimento sintético |
+| Bloquear conflito e redundância não revisada | auditoria e admissão | [Resultado 056](../results/056-structured-rule-admission-holdout.md) | Coberta no holdout sintético |
+| Preservar versões, substituições e aposentadorias | fronteira de publicação | [Resultado 059](../results/059-structured-rule-publication-holdout.md) | Coberta no holdout sintético |
+| Rotear comparação explícita e dependência externa | roteador determinístico | [Resultado 009](../results/009-explicit-query-routing-holdout.md) | Coberta no slice sintético explícito |
+| Executar passos temporais por documento | executor de decomposição | [Resultado 011](../results/011-decomposition-execution-holdout.md) | Coberta no slice sintético explícito |
+| Preservar contexto e citações por grupo | agregador de evidências | [Resultado 012](../results/012-evidence-aggregation-holdout.md) | Coberta no slice sintético avaliado |
+
+Esses resultados não demonstram que relações multi-hop arbitrárias estejam
+resolvidas. Também não demonstram que estejam falhando. A heurística ampla de
+detecção estrutural foi rejeitada no [Resultado 008](../results/008-structural-decomposition-holdout.md),
+mas isso é uma falha de classificação por superfície textual, não evidência de
+que armazenamento ou retrieval em grafo a corrigiria.
+
+## Lacunas candidatas
+
+Um grafo só será considerado para perguntas cuja resposta dependa de uma cadeia
+relacional explícita, por exemplo:
+
+- regra → exceção → condição → outra regra;
+- regra substituída → regra substituta → documento de origem;
+- procedimento → regras diretas e indiretas que o afetam;
+- impacto reverso: quais decisões dependem de uma condição alterada;
+- ausência de caminho entre duas entidades, que deve produzir resultado vazio e
+  não uma associação inventada.
+
+Resolução de entidades ambíguas é um pré-requisito separado. Um grafo não deve
+ser usado para mascarar aliases ou entidades não resolvidas.
+
+## Decisão
+
+Graph RAG fica adiado. Não há, neste momento, uma lacuna medida que justifique
+ETL de entidades e relações, armazenamento, traversal e operação adicionais.
+Isso não remove Knowledge Graph do plano de estudos; apenas exige evidência antes
+da implementação.
+
+O próximo experimento será um benchmark sintético de necessidade de grafo. Ele
+avaliará primeiro BM25, decomposição explícita e regras estruturadas sobre os
+mesmos casos, sem implementação de grafo.
+
+## Gate para autorizar um protótipo
+
+O benchmark deve conter casos inéditos de:
+
+- cadeia com dois, três e quatro saltos;
+- supersessão temporal;
+- exceção e condição compartilhada;
+- impacto reverso;
+- entidades desconectadas;
+- entidade ambígua que exige revisão.
+
+Um protótipo de grafo só será autorizado se houver falha reproduzível em pelo
+menos uma categoria relacional que não seja explicada por parsing, entity
+resolution, ausência de evidência ou regra formalizável. Se autorizado, deverá
+ser comparado na mesma avaliação e permanecer somente se:
+
+- melhorar a recuperação da cadeia completa no slice que motivou o experimento;
+- não reduzir correção temporal nem abstention em casos sem caminho;
+- preservar documento de origem em cada nó ou aresta recuperada;
+- tornar explícitos custo de ETL, latência e complexidade operacional.
+
+Até esse gate, nenhuma dependência ou banco de grafo será adicionado.

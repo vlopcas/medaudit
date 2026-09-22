@@ -373,6 +373,8 @@ o `publication_id` do snapshot anterior. Aprovações parciais mantêm o catálo
 em revisão; referências antigas ou destinadas a regras presentes são recusadas.
 A composição completa repetiu o comportamento esperado em holdout sintético
 congelado. Persistência e integração com catálogo privado continuam ausentes.
+O [checkpoint entre regras e grafo](architecture-checkpoints/001-phase-9-rules-to-graph.md)
+adiou Graph RAG até que um benchmark demonstre uma lacuna multi-hop real.
 
 ## Decisões relacionadas
 
@@ -401,6 +403,7 @@ congelado. Persistência e integração com catálogo privado continuam ausentes
 - [ADR-023: verificação independente antes da liberação](decisions/ADR-023-independent-release-verification.md)
 - [ADR-024: regras estruturadas revisadas](decisions/ADR-024-reviewed-structured-rule-engine.md)
 - [ADR-025: publicação versionada de regras](decisions/ADR-025-versioned-rule-publication.md)
+- [ADR-026: grafo adiado até lacuna medida](decisions/ADR-026-defer-graph-until-measured-gap.md)
 
 ## Ambiente de execução
 

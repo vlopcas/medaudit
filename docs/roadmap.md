@@ -121,8 +121,10 @@ Critério de avanço: casos temporais, exceções e conflitos são reproduzívei
 explicáveis e encaminhados para revisão quando necessário.
 
 Estado: temporalidade antecipada parcialmente. Um primeiro motor determinístico
-para regras revisadas atingiu 8/8 em desenvolvimento; auditoria estática de
-sobreposições, holdout e integração permanecem pendentes.
+para regras revisadas atingiu 8/8 em desenvolvimento. Auditoria, admissão e
+publicação versionada foram implementadas; os holdouts de admissão e publicação
+atingiram 6/6 e 8/8, respectivamente. Integração com catálogo privado permanece
+bloqueada.
 
 ### 6. Grafos e primeiro checkpoint arquitetural
 
@@ -133,7 +135,10 @@ graph-assisted retrieval sobre a mesma avaliação.
 Critério de avanço: o grafo permanece apenas se trouxer ganho mensurável no
 slice-alvo que justifique ETL, modelagem e operação adicionais.
 
-Estado: não iniciado.
+Estado: checkpoint concluído. Graph RAG foi adiado porque ainda não existe uma
+falha relacional medida. O próximo passo é um benchmark sintético de necessidade
+de grafo, executado primeiro com os baselines atuais. A análise está no
+[Checkpoint arquitetural 001](architecture-checkpoints/001-phase-9-rules-to-graph.md).
 
 ### 7. Tools, dados estruturados e agentes
 
@@ -204,12 +209,12 @@ não usar LLM, RAG, grafo ou agente.
 
 ## Próximos marcos
 
-1. Executar o checkpoint arquitetural da Fase 9, consolidando requisitos já
-   atendidos por regras determinísticas, temporalidade e provenance.
-2. Definir uma lacuna mensurável que justificaria relações em grafo; não adotar
-   Graph RAG apenas como aumento de complexidade.
-3. Se nenhuma lacuna exigir grafo, avançar pelo menor experimento útil seguinte;
-   os holdouts de admissão e publicação estão encerrados e não serão reutilizados.
+1. Criar um benchmark sintético de necessidade de grafo com cadeias de dois a
+   quatro saltos, supersessão, impacto reverso, ausência de caminho e ambiguidade.
+2. Executar BM25, decomposição explícita e regras estruturadas antes de qualquer
+   protótipo de grafo.
+3. Autorizar um protótipo apenas se uma falha relacional reproduzível permanecer;
+   os holdouts encerrados não serão reutilizados.
 4. Manter extração automática, catálogo privado e uso decisório real
    bloqueados até que revisão, provenance e política de falha fechada estejam
    validadas em conjunto.
