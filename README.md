@@ -276,7 +276,10 @@ compatíveis. O cenário sintético encontrou exatamente dois conflitos e uma
 redundância, sem falsos alertas nos controles de prioridade, período, escopo e
 condições incompatíveis. O próximo gate é aplicar essa auditoria na admissão de
 um catálogo sintético, bloqueando conflitos e exigindo revisão explícita das
-redundâncias antes de congelar um holdout.
+redundâncias antes de congelar um holdout. Esse gate passou em 5/5 casos de
+desenvolvimento: conflitos bloqueiam a admissão, revisões desatualizadas falham
+e redundâncias só são admitidas mediante referência explícita ao par atual. O
+próximo passo é congelar um holdout sintético inédito para essa composição.
 
 ## Ambiente de desenvolvimento
 

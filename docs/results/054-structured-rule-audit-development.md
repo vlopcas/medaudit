@@ -46,5 +46,8 @@ gate deve implementar uma fronteira de admissão que bloqueie conflitos e exija
 revisão explícita das redundâncias. Somente depois dessa política passar em
 novos casos de desenvolvimento será considerado um holdout inédito e congelado.
 
+Esse gate foi implementado e validado posteriormente no
+[Resultado 055](055-structured-rule-admission-development.md).
+
 Catálogo privado, extração documental automática e decisões reais permanecem
 fora do escopo.

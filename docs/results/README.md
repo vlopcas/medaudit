@@ -68,3 +68,4 @@ para evitar a exposição indireta do corpus privado.
 - [Resultado 052: verificação estruturada com modelo local](052-local-structured-verifier-application-development.md)
 - [Resultado 053: baseline de regras estruturadas](053-structured-rules-development.md)
 - [Resultado 054: auditoria estática de regras estruturadas](054-structured-rule-audit-development.md)
+- [Resultado 055: gate de admissão de regras estruturadas](055-structured-rule-admission-development.md)

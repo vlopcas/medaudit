@@ -33,5 +33,6 @@ provenance explícitos.
 O baseline é pequeno e explicável, mas ainda não oferece linguagem de condições
 complexas, composição booleana, importação do catálogo privado ou workflow de
 aprovação. Extração de regras a partir de documentos será uma fronteira separada
-e não poderá publicar regras sem revisão. A auditoria existe, mas sua aplicação
-como gate bloqueante de admissão ainda é o próximo incremento.
+e não poderá publicar regras sem revisão. O gate bloqueante já existe para o
+contrato sintético, mas ainda não foi conectado a catálogo privado nem a um
+workflow real de publicação.

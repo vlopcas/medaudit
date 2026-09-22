@@ -204,12 +204,12 @@ não usar LLM, RAG, grafo ou agente.
 
 ## Próximos marcos
 
-1. Implementar um gate de admissão sintético para catálogos estruturados:
-   conflitos bloqueiam a admissão e redundâncias exigem revisão explícita.
-2. Avaliar o gate somente em novos casos de desenvolvimento, incluindo catálogo
-   válido, conflito, redundância não revisada e redundância aceita.
-3. Se o contrato passar, congelar um holdout sintético inédito antes da primeira
-   execução; nenhum holdout encerrado será reutilizado para ajuste.
+1. Congelar um holdout sintético inédito do gate de admissão antes da primeira
+   execução, preservando o conjunto de desenvolvimento já aberto.
+2. Executar o holdout uma única vez, com hash verificado e recusa de
+   sobrescrita do relatório local.
+3. Se aprovado, avaliar a fronteira de publicação e provenance sem conectar o
+   catálogo privado; se reprovado, encerrar a candidata sem ajustar o holdout.
 4. Manter extração automática, catálogo privado e uso decisório real
    bloqueados até que revisão, provenance e política de falha fechada estejam
    validadas em conjunto.

@@ -48,11 +48,11 @@ implementação dedicada.
 ## Próximo marco
 
 O trabalho ativo está na **Fase 9 — Regras estruturadas**. O motor determinístico
-e a auditoria estática passaram em desenvolvimento sintético. O próximo
-incremento é transformar os achados do auditor em uma fronteira de admissão:
-conflitos devem bloquear o catálogo e redundâncias devem exigir revisão
-explícita. Depois de passar em casos novos de desenvolvimento, a candidata
-poderá receber um holdout sintético inédito e congelado.
+e a auditoria estática passaram em desenvolvimento sintético. A fronteira de
+admissão também passou em 5/5 casos: conflito bloqueia, redundância pendente vai
+para revisão, redundância explicitamente revisada pode ser admitida e referências
+desatualizadas são recusadas. O próximo marco é congelar, antes da primeira
+execução, um holdout sintético inédito dessa composição.
 
 O histórico que levou a esse marco permanece abaixo. Na **Fase 8 — Query
 Understanding**, após chegar a 100% no
@@ -284,7 +284,9 @@ Ele preserva vigência, prioridade, condições e provenance, envia conflitos pa
 revisão e representa ausência de regra explicitamente. A auditoria estática
 seguinte encontrou exatamente dois conflitos e uma redundância esperados em
 nove regras sintéticas, sem alertar os controles incompatíveis. Ela está
-aprovada como diagnóstico; o gate de admissão ainda não foi implementado.
+aprovada como diagnóstico.
+O gate subsequente atingiu 5/5 em desenvolvimento e manteve a precedência de
+conflitos mesmo quando outra redundância do catálogo havia sido revisada.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em

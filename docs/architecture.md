@@ -355,7 +355,9 @@ redundância.
 
 Essa análise é conservadora e limitada à linguagem atual de condições exatas.
 Ela não publica regras, não interpreta documentos e não toca o catálogo
-privado. O gate de admissão que consumirá seus achados ainda será implementado.
+privado. O gate de admissão bloqueia qualquer conflito, encaminha redundâncias
+não revisadas para revisão e rejeita referências de revisão que não correspondam
+a um achado atual. Somente catálogos sem pendências chegam ao motor.
 
 ## Decisões relacionadas
 
