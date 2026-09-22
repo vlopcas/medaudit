@@ -35,3 +35,8 @@ O [Resultado 061](../results/061-graph-necessity-development.md) encontrou quatr
 falhas relacionais candidatas após executar os baselines atuais. A condição para
 um protótipo foi atendida. Está autorizado somente um traversal determinístico
 em memória, sem dependência de banco, para comparação no mesmo desenvolvimento.
+
+O [Resultado 062](../results/062-graph-traversal-development.md) validou a
+primitiva em um fixture sintético próprio. Como os IDs foram fornecidos já
+resolvidos, a comparação integrada continua pendente e o escopo permanece
+limitado pela [ADR-027](ADR-027-bounded-reviewed-graph-traversal.md).

@@ -82,3 +82,16 @@ de dois, três e quatro saltos e impacto reverso.
 O gate autoriza um protótipo determinístico em memória, limitado a relações
 sintéticas revisadas. Ele não autoriza Graph RAG completo, banco de grafo,
 extração automática de relações nem corpus privado.
+
+## Resultado do protótipo
+
+O [Resultado 062](../results/062-graph-traversal-development.md) recuperou as
+quatro categorias candidatas, preservou provenance por aresta e manteve os
+controles de caminho ausente e ambiguidade. A travessia em si demonstrou valor
+no fixture do componente.
+
+O protótipo, porém, recebeu entidades já resolvidas e não foi executado sobre o
+mesmo input textual do BM25. A promoção continua bloqueada até avaliar a
+fronteira pergunta-entidade-traversal e fazer uma comparação integrada. A
+decisão estreita está registrada na
+[ADR-027](../decisions/ADR-027-bounded-reviewed-graph-traversal.md).

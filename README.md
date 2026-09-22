@@ -305,6 +305,12 @@ quatro saltos e impacto reverso. BM25 recuperou integralmente 1/6 cadeias; regra
 e planejamento elevaram a resolução combinada para 2/6. Isso autoriza um
 protótipo limitado em memória sobre relações sintéticas revisadas, mas ainda não
 autoriza Graph RAG, extração automática nem banco de grafo.
+O protótipo recuperou as quatro categorias candidatas em 4/4 casos, manteve
+provenance por aresta e tratou ausência de caminho e ambiguidade de forma
+explícita. Como recebeu IDs já resolvidos em um fixture próprio, ele ainda não
+demonstra ganho ponta a ponta. O próximo gate é converter referências explícitas
+em uma solicitação auditável de traversal e então comparar retrieval lexical e
+assistido por grafo sobre os mesmos inputs.
 
 ## Ambiente de desenvolvimento
 

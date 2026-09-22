@@ -59,3 +59,8 @@ dependência, com:
 O protótipo será comparado no mesmo dataset. Graph RAG completo, extração
 automática, entity resolution probabilística, banco de grafo e corpus privado
 continuam bloqueados.
+
+O primeiro teste do componente foi registrado no
+[Resultado 062](062-graph-traversal-development.md). Ele reproduziu as categorias
+em um fixture próprio e revelou que a comparação no mesmo input ainda depende
+de uma fronteira explícita de resolução de entidades e montagem do traversal.

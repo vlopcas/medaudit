@@ -75,3 +75,4 @@ para evitar a exposição indireta do corpus privado.
 - [Resultado 059: holdout da publicação de regras](059-structured-rule-publication-holdout.md)
 - [Resultado 060: checkpoint arquitetural da Fase 9](060-phase-9-architecture-checkpoint.md)
 - [Resultado 061: benchmark de necessidade de grafo](061-graph-necessity-development.md)
+- [Resultado 062: traversal determinístico em grafo](062-graph-traversal-development.md)

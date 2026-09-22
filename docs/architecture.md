@@ -378,6 +378,10 @@ adiou Graph RAG até que um benchmark demonstre uma lacuna multi-hop real.
 O primeiro benchmark encontrou quatro lacunas candidatas e autorizou somente um
 protótipo de traversal em memória, com IDs exatos, relações revisadas, limite de
 quatro saltos e provenance por aresta. Nenhum banco de grafo foi adotado.
+O protótipo recuperou as quatro categorias no desenvolvimento sintético. Ele
+permanece isolado porque recebe IDs já resolvidos; a ligação entre pergunta,
+entidades e traversal ainda precisa de avaliação própria antes de integrar o
+retrieval.
 
 ## Decisões relacionadas
 
@@ -407,6 +411,7 @@ quatro saltos e provenance por aresta. Nenhum banco de grafo foi adotado.
 - [ADR-024: regras estruturadas revisadas](decisions/ADR-024-reviewed-structured-rule-engine.md)
 - [ADR-025: publicação versionada de regras](decisions/ADR-025-versioned-rule-publication.md)
 - [ADR-026: grafo adiado até lacuna medida](decisions/ADR-026-defer-graph-until-measured-gap.md)
+- [ADR-027: traversal em grafo limitado e revisado](decisions/ADR-027-bounded-reviewed-graph-traversal.md)
 
 ## Ambiente de execução
 
