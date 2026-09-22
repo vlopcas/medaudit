@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "policy": "structured-rules-development-v1",
+  "notice": "Conteúdo integralmente sintético, sem reprodução de documentos reais.",
+  "rules": [
+    {"rule_id": "renewal-general", "version": 1, "subject": "renewal", "action": "process", "decision": "allow", "effective_from": "2026-01-01", "effective_until": null, "priority": 1, "conditions": {}, "source_document_id": "synthetic-general"},
+    {"rule_id": "renewal-blue", "version": 1, "subject": "renewal", "action": "process", "decision": "allow", "effective_from": "2026-01-01", "effective_until": "2026-06-30", "priority": 10, "conditions": {"channel": "blue"}, "source_document_id": "synthetic-blue-v1"},
+    {"rule_id": "renewal-blue", "version": 2, "subject": "renewal", "action": "process", "decision": "deny", "effective_from": "2026-07-01", "effective_until": null, "priority": 10, "conditions": {"channel": "blue"}, "source_document_id": "synthetic-blue-v2"},
+    {"rule_id": "renewal-blue-exception", "version": 1, "subject": "renewal", "action": "process", "decision": "deny", "effective_from": "2026-04-01", "effective_until": "2026-05-31", "priority": 20, "conditions": {"channel": "blue", "marker": "amber"}, "source_document_id": "synthetic-blue-exception"},
+    {"rule_id": "payment-gold-allow", "version": 1, "subject": "claim", "action": "pay", "decision": "allow", "effective_from": "2026-01-01", "effective_until": null, "priority": 5, "conditions": {"plan": "gold"}, "source_document_id": "synthetic-gold-a"},
+    {"rule_id": "payment-gold-deny", "version": 1, "subject": "claim", "action": "pay", "decision": "deny", "effective_from": "2026-01-01", "effective_until": null, "priority": 5, "conditions": {"plan": "gold"}, "source_document_id": "synthetic-gold-b"}
+  ],
+  "cases": [
+    {"id": "structured-rules-dev-001", "category": "specific_rule", "query": {"subject": "renewal", "action": "process", "reference_date": "2026-03-15", "attributes": {"channel": "blue"}}, "expected": {"status": "applied", "code": "active_rule", "decision": "allow", "matched_rule_versions": ["renewal-blue@1"]}},
+    {"id": "structured-rules-dev-002", "category": "priority_exception", "query": {"subject": "renewal", "action": "process", "reference_date": "2026-05-01", "attributes": {"channel": "blue", "marker": "amber"}}, "expected": {"status": "applied", "code": "active_rule", "decision": "deny", "matched_rule_versions": ["renewal-blue-exception@1"]}},
+    {"id": "structured-rules-dev-003", "category": "temporal_transition", "query": {"subject": "renewal", "action": "process", "reference_date": "2026-07-01", "attributes": {"channel": "blue"}}, "expected": {"status": "applied", "code": "active_rule", "decision": "deny", "matched_rule_versions": ["renewal-blue@2"]}},
+    {"id": "structured-rules-dev-004", "category": "inclusive_boundary", "query": {"subject": "renewal", "action": "process", "reference_date": "2026-06-30", "attributes": {"channel": "blue"}}, "expected": {"status": "applied", "code": "active_rule", "decision": "allow", "matched_rule_versions": ["renewal-blue@1"]}},
+    {"id": "structured-rules-dev-005", "category": "general_fallback", "query": {"subject": "renewal", "action": "process", "reference_date": "2026-08-10", "attributes": {"channel": "red"}}, "expected": {"status": "applied", "code": "active_rule", "decision": "allow", "matched_rule_versions": ["renewal-general@1"]}},
+    {"id": "structured-rules-dev-006", "category": "conflict_review", "query": {"subject": "claim", "action": "pay", "reference_date": "2026-09-01", "attributes": {"plan": "gold"}}, "expected": {"status": "review", "code": "conflicting_rules", "decision": null, "matched_rule_versions": ["payment-gold-allow@1", "payment-gold-deny@1"]}},
+    {"id": "structured-rules-dev-007", "category": "missing_condition", "query": {"subject": "claim", "action": "pay", "reference_date": "2026-09-01", "attributes": {}}, "expected": {"status": "no_match", "code": "no_applicable_rule", "decision": null, "matched_rule_versions": []}},
+    {"id": "structured-rules-dev-008", "category": "unknown_scope", "query": {"subject": "unknown", "action": "process", "reference_date": "2026-09-01", "attributes": {}}, "expected": {"status": "no_match", "code": "no_applicable_rule", "decision": null, "matched_rule_versions": []}}
+  ]
+}

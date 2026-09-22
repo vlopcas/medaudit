@@ -942,6 +942,13 @@ services:
       - /artifacts/structured-verifier-application-holdout.local.json
       - --refuse-overwrite
 
+  evaluate-structured-rules:
+    extends: evaluate-release-verification
+    command:
+      - medaudit-evaluate-structured-rules
+      - --dataset
+      - /app/data/synthetic_cases/structured_rules_development.json
+
   evaluate-explicit-query-routing-holdout:
     extends: evaluate-explicit-query-routing
     user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
