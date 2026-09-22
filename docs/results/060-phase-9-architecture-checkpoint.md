@@ -36,3 +36,6 @@ Os critérios completos estão no
 [Checkpoint arquitetural 001](../architecture-checkpoints/001-phase-9-rules-to-graph.md)
 e a decisão está no
 [ADR-026](../decisions/ADR-026-defer-graph-until-measured-gap.md).
+
+O benchmark posterior encontrou lacunas candidatas e está registrado no
+[Resultado 061](061-graph-necessity-development.md).

@@ -375,6 +375,9 @@ A composição completa repetiu o comportamento esperado em holdout sintético
 congelado. Persistência e integração com catálogo privado continuam ausentes.
 O [checkpoint entre regras e grafo](architecture-checkpoints/001-phase-9-rules-to-graph.md)
 adiou Graph RAG até que um benchmark demonstre uma lacuna multi-hop real.
+O primeiro benchmark encontrou quatro lacunas candidatas e autorizou somente um
+protótipo de traversal em memória, com IDs exatos, relações revisadas, limite de
+quatro saltos e provenance por aresta. Nenhum banco de grafo foi adotado.
 
 ## Decisões relacionadas
 

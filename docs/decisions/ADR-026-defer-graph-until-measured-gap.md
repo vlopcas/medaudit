@@ -28,3 +28,10 @@ O estudo de Knowledge Graph continua no roteiro, mas sua implementação passa a
 ter um gate empírico. O próximo artefato é um dataset sintético de
 desenvolvimento, não um grafo e não um holdout. Corpus privado, entidades reais e
 serviços externos permanecem fora do escopo.
+
+## Resultado posterior
+
+O [Resultado 061](../results/061-graph-necessity-development.md) encontrou quatro
+falhas relacionais candidatas após executar os baselines atuais. A condição para
+um protótipo foi atendida. Está autorizado somente um traversal determinístico
+em memória, sem dependência de banco, para comparação no mesmo desenvolvimento.

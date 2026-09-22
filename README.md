@@ -300,6 +300,11 @@ O checkpoint arquitetural subsequente não encontrou evidência suficiente para
 adotar Graph RAG. O próximo experimento será um benchmark sintético de cadeias
 relacionais executado primeiro com BM25, decomposição explícita e regras; grafo
 só será prototipado diante de uma falha multi-hop reproduzível.
+O benchmark inicial encontrou quatro lacunas candidatas: cadeias de dois, três e
+quatro saltos e impacto reverso. BM25 recuperou integralmente 1/6 cadeias; regras
+e planejamento elevaram a resolução combinada para 2/6. Isso autoriza um
+protótipo limitado em memória sobre relações sintéticas revisadas, mas ainda não
+autoriza Graph RAG, extração automática nem banco de grafo.
 
 ## Ambiente de desenvolvimento
 

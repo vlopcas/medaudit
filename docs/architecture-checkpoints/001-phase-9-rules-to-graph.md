@@ -70,3 +70,15 @@ ser comparado na mesma avaliação e permanecer somente se:
 - tornar explícitos custo de ETL, latência e complexidade operacional.
 
 Até esse gate, nenhuma dependência ou banco de grafo será adicionado.
+
+## Resultado do gate
+
+O benchmark foi executado posteriormente no
+[Resultado 061](../results/061-graph-necessity-development.md). BM25 recuperou a
+cadeia completa em 1/6 casos relacionais, e regras ou planejamento elevaram a
+resolução combinada para 2/6. Restaram quatro lacunas candidatas nas categorias
+de dois, três e quatro saltos e impacto reverso.
+
+O gate autoriza um protótipo determinístico em memória, limitado a relações
+sintéticas revisadas. Ele não autoriza Graph RAG completo, banco de grafo,
+extração automática de relações nem corpus privado.

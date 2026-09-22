@@ -27,7 +27,7 @@ implementação dedicada.
 | 8 | Query Understanding | Concluída para o ciclo atual | Roteamento, planejamento, execução e agrupamento opt-in por passo foram validados; reescrita semântica foi rejeitada. |
 | 9 | Regras estruturadas | Concluída para o ciclo sintético | Motor, auditoria, admissão e publicação versionada passaram em desenvolvimento e holdouts controlados. |
 | 10 | Temporalidade e versionamento | Parcial, antecipada | Catálogo temporal, relações de substituição, snapshots por data e avaliações temporais já existem. |
-| 11–18 | Grafos, tools, APIs e agentes | Grafo em checkpoint; demais não iniciadas | Graph RAG foi adiado até um benchmark demonstrar lacuna relacional. |
+| 11–18 | Grafos, tools, APIs e agentes | Protótipo de grafo autorizado; demais não iniciadas | Quatro lacunas relacionais candidatas justificam somente traversal sintético em memória. |
 | 19 | Provenance e citações | Parcial, antecipada | IDs determinísticos, origem dos chunks e validação das citações já atravessam o pipeline. |
 | 20–26 | Verifier até arquitetura final | Parcial, experimental | A fronteira foi integrada; a candidata estruturada passou em desenvolvimento e holdout como opt-in estreito. Arquitetura final permanece futura. |
 
@@ -57,8 +57,9 @@ determinísticos e bloqueou mutações e substituições não revisadas. O próx
 incremento vinculou aposentadorias ao snapshot anterior e elevou o conjunto para
 11/11. O holdout sintético inédito da composição atingiu 8/8 e está encerrado.
 O checkpoint arquitetural concluiu que ainda não existe evidência para Graph
-RAG. O próximo marco é um benchmark sintético de necessidade de grafo, executado
-primeiro com os baselines atuais e sem conexão ao catálogo privado.
+RAG. O benchmark seguinte encontrou quatro lacunas candidatas após executar os
+baselines atuais. O próximo marco é um protótipo determinístico em memória,
+limitado a quatro saltos e sem conexão ao catálogo privado.
 
 O histórico que levou a esse marco permanece abaixo. Na **Fase 8 — Query
 Understanding**, após chegar a 100% no

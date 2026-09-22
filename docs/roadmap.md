@@ -135,9 +135,9 @@ graph-assisted retrieval sobre a mesma avaliação.
 Critério de avanço: o grafo permanece apenas se trouxer ganho mensurável no
 slice-alvo que justifique ETL, modelagem e operação adicionais.
 
-Estado: checkpoint concluído. Graph RAG foi adiado porque ainda não existe uma
-falha relacional medida. O próximo passo é um benchmark sintético de necessidade
-de grafo, executado primeiro com os baselines atuais. A análise está no
+Estado: checkpoint concluído. Graph RAG foi inicialmente adiado; o benchmark
+seguinte encontrou quatro lacunas candidatas e autorizou somente um protótipo
+determinístico em memória. A análise está no
 [Checkpoint arquitetural 001](architecture-checkpoints/001-phase-9-rules-to-graph.md).
 
 ### 7. Tools, dados estruturados e agentes
@@ -209,12 +209,12 @@ não usar LLM, RAG, grafo ou agente.
 
 ## Próximos marcos
 
-1. Criar um benchmark sintético de necessidade de grafo com cadeias de dois a
-   quatro saltos, supersessão, impacto reverso, ausência de caminho e ambiguidade.
-2. Executar BM25, decomposição explícita e regras estruturadas antes de qualquer
-   protótipo de grafo.
-3. Autorizar um protótipo apenas se uma falha relacional reproduzível permanecer;
-   os holdouts encerrados não serão reutilizados.
+1. Implementar um grafo determinístico em memória sobre entidades e arestas
+   sintéticas revisadas, sem banco ou extração automática.
+2. Limitar traversal a quatro saltos e preservar documento e chunk de origem em
+   cada aresta; caminho ausente e ambiguidade devem permanecer explícitos.
+3. Comparar o protótipo no mesmo benchmark que deixou quatro lacunas candidatas;
+   nenhum holdout encerrado será reutilizado.
 4. Manter extração automática, catálogo privado e uso decisório real
    bloqueados até que revisão, provenance e política de falha fechada estejam
    validadas em conjunto.
