@@ -285,6 +285,12 @@ incompatíveis, conflitos entre chaves diferentes, múltiplas redundâncias e
 precedência de conflito. O relatório local tem sobrescrita recusada e o conjunto
 está encerrado. A próxima etapa é estudar uma fronteira sintética de publicação
 com provenance explícita, sem conectar o catálogo privado.
+Essa fronteira passou em 9/9 casos de desenvolvimento. Ela recalcula a admissão,
+gera identidade determinística para o snapshot, conserva origem e versão, proíbe
+reescrita da mesma versão e regressão de numeração, e exige revisão explícita
+para substituições. Remoções silenciosas ficam em revisão; como ainda não existe
+um caminho para aprovar aposentadorias, a candidata não seguirá para holdout
+antes desse contrato ser definido.
 
 ## Ambiente de desenvolvimento
 

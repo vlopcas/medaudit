@@ -204,12 +204,12 @@ não usar LLM, RAG, grafo ou agente.
 
 ## Próximos marcos
 
-1. Modelar uma fronteira sintética de publicação que só aceite o resultado
-   `admitted` e preserve a identidade e versão de cada regra publicada.
-2. Definir falhas explícitas para catálogo não admitido, aprovação desatualizada
-   e tentativa de substituir uma versão já publicada sem nova revisão.
-3. Avaliar a candidata somente em novos casos de desenvolvimento; o holdout do
-   gate de admissão está encerrado e não será usado para ajuste.
+1. Completar a fronteira sintética de publicação com aposentadorias
+   explicitamente revisadas e referências vinculadas ao snapshot anterior.
+2. Recusar aprovação de aposentadoria desatualizada, remoção parcial ambígua e
+   qualquer alteração da identidade determinística do snapshot.
+3. Avaliar o incremento somente em novos casos de desenvolvimento; a fronteira
+   atual atingiu 9/9, mas ainda não está pronta para holdout.
 4. Manter extração automática, catálogo privado e uso decisório real
    bloqueados até que revisão, provenance e política de falha fechada estejam
    validadas em conjunto.

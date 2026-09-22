@@ -52,8 +52,10 @@ e a auditoria estática passaram em desenvolvimento sintético. A fronteira de
 admissão também passou em 5/5 casos: conflito bloqueia, redundância pendente vai
 para revisão, redundância explicitamente revisada pode ser admitida e referências
 desatualizadas são recusadas. O holdout congelado atingiu 6/6 e está encerrado.
-O próximo marco modelará uma fronteira sintética de publicação com provenance
-por versão, sem conexão ao catálogo privado.
+A primeira fronteira sintética de publicação atingiu 9/9, preservou snapshots
+determinísticos e bloqueou mutações e substituições não revisadas. O próximo
+incremento deve permitir somente aposentadorias explicitamente revisadas antes
+de considerar um holdout, ainda sem conexão ao catálogo privado.
 
 O histórico que levou a esse marco permanece abaixo. Na **Fase 8 — Query
 Understanding**, após chegar a 100% no
@@ -290,6 +292,9 @@ O gate subsequente atingiu 5/5 em desenvolvimento e manteve a precedência de
 conflitos mesmo quando outra redundância do catálogo havia sido revisada.
 No holdout congelado, a composição repetiu 6/6; o hash foi verificado e uma
 segunda chamada foi recusada antes da avaliação para proteger o relatório.
+A fronteira de publicação subsequente atingiu 9/9 em desenvolvimento. Ela não
+avança para holdout enquanto aposentadorias legítimas não tiverem um contrato
+explícito de revisão.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em

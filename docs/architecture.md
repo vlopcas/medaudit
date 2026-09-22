@@ -361,6 +361,14 @@ a um achado atual. Somente catálogos sem pendências chegam ao motor.
 Essa composição repetiu o comportamento esperado em holdout sintético congelado
 e permanece isolada de qualquer catálogo privado ou fluxo real de publicação.
 
+A fronteira experimental seguinte recalcula a admissão antes de criar um
+`PublishedRuleCatalog`. O snapshot ordena as regras e recebe um SHA-256
+determinístico derivado de todo o conteúdo estruturado. Identidade, versão e
+origem permanecem no catálogo. Reescrever uma versão existente ou introduzir
+uma versão não monotônica é bloqueado; uma versão nova requer revisão explícita
+do par substituído/substituto. Remoções ainda param em revisão, sem caminho de
+aprovação nesta primeira iteração.
+
 ## Decisões relacionadas
 
 - [ADR-001: governança dos dados privados](decisions/ADR-001-private-data-governance.md)
@@ -387,6 +395,7 @@ e permanece isolada de qualquer catálogo privado ou fluxo real de publicação.
 - [ADR-022: aplicação de síntese opt-in](decisions/ADR-022-opt-in-synthesis-application.md)
 - [ADR-023: verificação independente antes da liberação](decisions/ADR-023-independent-release-verification.md)
 - [ADR-024: regras estruturadas revisadas](decisions/ADR-024-reviewed-structured-rule-engine.md)
+- [ADR-025: publicação versionada de regras](decisions/ADR-025-versioned-rule-publication.md)
 
 ## Ambiente de execução
 

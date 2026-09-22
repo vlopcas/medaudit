@@ -44,3 +44,6 @@ provenance por identidade e versão.
 
 Essa aprovação não autoriza extração automática, catálogo privado, publicação
 real nem decisões de alto impacto.
+
+A primeira fronteira de publicação posterior está registrada no
+[Resultado 057](057-structured-rule-publication-development.md).
