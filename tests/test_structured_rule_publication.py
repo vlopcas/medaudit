@@ -128,6 +128,63 @@ class StructuredRulePublicationTest(unittest.TestCase):
         self.assertEqual(result.status, RulePublicationStatus.REVIEW)
         self.assertEqual(result.code, RulePublicationCode.REMOVAL_REVIEW_REQUIRED)
 
+    def test_snapshot_bound_retirement_is_published(self) -> None:
+        first = publish_rule_set(make_set(make_rule("keep"), make_rule("retire")))
+        assert first.catalog is not None
+
+        result = publish_rule_set(
+            make_set(make_rule("keep")),
+            previous=first.catalog,
+            reviewed_retirements=frozenset({"retire@1"}),
+            retirement_review_publication_id=first.catalog.publication_id,
+        )
+
+        self.assertEqual(result.status, RulePublicationStatus.PUBLISHED)
+
+    def test_partial_retirement_review_keeps_catalog_in_review(self) -> None:
+        first = publish_rule_set(
+            make_set(
+                make_rule("keep"),
+                make_rule("retire-a"),
+                make_rule("retire-b"),
+            )
+        )
+        assert first.catalog is not None
+
+        result = publish_rule_set(
+            make_set(make_rule("keep")),
+            previous=first.catalog,
+            reviewed_retirements=frozenset({"retire-a@1"}),
+            retirement_review_publication_id=first.catalog.publication_id,
+        )
+
+        self.assertEqual(result.status, RulePublicationStatus.REVIEW)
+        self.assertEqual(result.affected_rule_versions, ("retire-b@1",))
+
+    def test_retirement_review_for_stale_snapshot_is_rejected(self) -> None:
+        first = publish_rule_set(make_set(make_rule("keep"), make_rule("retire")))
+        assert first.catalog is not None
+
+        with self.assertRaisesRegex(ValueError, "previous publication"):
+            publish_rule_set(
+                make_set(make_rule("keep")),
+                previous=first.catalog,
+                reviewed_retirements=frozenset({"retire@1"}),
+                retirement_review_publication_id="stale-publication",
+            )
+
+    def test_retirement_review_for_present_rule_is_rejected(self) -> None:
+        first = publish_rule_set(make_set(make_rule("keep"), make_rule("present")))
+        assert first.catalog is not None
+
+        with self.assertRaisesRegex(ValueError, "current removals"):
+            publish_rule_set(
+                make_set(make_rule("keep"), make_rule("present")),
+                previous=first.catalog,
+                reviewed_retirements=frozenset({"present@1"}),
+                retirement_review_publication_id=first.catalog.publication_id,
+            )
+
     def test_stale_replacement_review_is_rejected(self) -> None:
         first = publish_rule_set(make_set(make_rule("versioned")))
         assert first.catalog is not None

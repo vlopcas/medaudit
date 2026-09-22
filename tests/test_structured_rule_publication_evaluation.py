@@ -15,8 +15,8 @@ class StructuredRulePublicationEvaluationTest(unittest.TestCase):
         report = evaluate(cases)
 
         self.assertTrue(report["metrics"]["exact_match"])
-        self.assertEqual(report["metrics"]["passed"], 9)
-        self.assertEqual(report["metrics"]["total"], 9)
+        self.assertEqual(report["metrics"]["passed"], 11)
+        self.assertEqual(report["metrics"]["total"], 11)
 
 
 if __name__ == "__main__":

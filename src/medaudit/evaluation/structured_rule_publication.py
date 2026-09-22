@@ -65,6 +65,13 @@ def _evaluate_case(case: dict[str, Any]) -> dict[str, Any]:
         reviewed_replacements=frozenset(
             tuple(pair) for pair in case.get("reviewed_replacements", [])
         ),
+        reviewed_retirements=frozenset(case.get("reviewed_retirements", [])),
+        retirement_review_publication_id=(
+            previous.publication_id
+            if previous is not None
+            and case.get("retirement_review_uses_previous") is True
+            else None
+        ),
     )
     actual = {
         "status": result.status.value,

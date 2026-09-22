@@ -87,6 +87,33 @@
         {"rule_id": "kept", "version": 1, "subject": "kept-scope", "action": "apply", "decision": "allow", "effective_from": "2026-01-01", "effective_until": null, "priority": 3, "conditions": {"tier": "alpha"}, "source_document_id": "synthetic-kept"}
       ],
       "expected": {"status": "review", "code": "removal_review_required", "published_rule_versions": []}
+    },
+    {
+      "case_id": "reviewed-retirement-published",
+      "previous_rules": [
+        {"rule_id": "retirement-kept", "version": 2, "subject": "retirement-kept-scope", "action": "apply", "decision": "allow", "effective_from": "2026-01-01", "effective_until": null, "priority": 4, "conditions": {"tier": "alpha"}, "source_document_id": "synthetic-retirement-kept"},
+        {"rule_id": "retirement-approved", "version": 3, "subject": "retirement-approved-scope", "action": "apply", "decision": "deny", "effective_from": "2026-01-01", "effective_until": "2026-12-31", "priority": 4, "conditions": {"tier": "beta"}, "source_document_id": "synthetic-retirement-approved"}
+      ],
+      "current_rules": [
+        {"rule_id": "retirement-kept", "version": 2, "subject": "retirement-kept-scope", "action": "apply", "decision": "allow", "effective_from": "2026-01-01", "effective_until": null, "priority": 4, "conditions": {"tier": "alpha"}, "source_document_id": "synthetic-retirement-kept"}
+      ],
+      "reviewed_retirements": ["retirement-approved@3"],
+      "retirement_review_uses_previous": true,
+      "expected": {"status": "published", "code": "published", "published_rule_versions": ["retirement-kept@2"]}
+    },
+    {
+      "case_id": "partial-retirement-remains-in-review",
+      "previous_rules": [
+        {"rule_id": "partial-kept", "version": 1, "subject": "partial-kept-scope", "action": "apply", "decision": "allow", "effective_from": "2026-01-01", "effective_until": null, "priority": 6, "conditions": {"tier": "alpha"}, "source_document_id": "synthetic-partial-kept"},
+        {"rule_id": "partial-reviewed", "version": 1, "subject": "partial-reviewed-scope", "action": "apply", "decision": "deny", "effective_from": "2026-01-01", "effective_until": null, "priority": 6, "conditions": {"tier": "beta"}, "source_document_id": "synthetic-partial-reviewed"},
+        {"rule_id": "partial-pending", "version": 1, "subject": "partial-pending-scope", "action": "apply", "decision": "deny", "effective_from": "2026-01-01", "effective_until": null, "priority": 6, "conditions": {"tier": "gamma"}, "source_document_id": "synthetic-partial-pending"}
+      ],
+      "current_rules": [
+        {"rule_id": "partial-kept", "version": 1, "subject": "partial-kept-scope", "action": "apply", "decision": "allow", "effective_from": "2026-01-01", "effective_until": null, "priority": 6, "conditions": {"tier": "alpha"}, "source_document_id": "synthetic-partial-kept"}
+      ],
+      "reviewed_retirements": ["partial-reviewed@1"],
+      "retirement_review_uses_previous": true,
+      "expected": {"status": "review", "code": "removal_review_required", "published_rule_versions": []}
     }
   ]
 }

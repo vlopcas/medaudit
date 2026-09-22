@@ -72,6 +72,8 @@ def publish_rule_set(
     reviewed_redundancies: frozenset[tuple[str, str]] = frozenset(),
     previous: PublishedRuleCatalog | None = None,
     reviewed_replacements: frozenset[tuple[str, str]] = frozenset(),
+    reviewed_retirements: frozenset[str] = frozenset(),
+    retirement_review_publication_id: str | None = None,
 ) -> RulePublicationResult:
     """Publish only admitted catalogs and explicitly reviewed version changes."""
     admission = admit_rule_set(
@@ -98,9 +100,18 @@ def publish_rule_set(
 
     ordered_rules = tuple(sorted(rule_set.rules, key=_rule_sort_key))
     if previous is None:
-        if reviewed_replacements:
-            raise ValueError("initial publication cannot review replacements")
+        if reviewed_replacements or reviewed_retirements:
+            raise ValueError("initial publication cannot review prior changes")
+        if retirement_review_publication_id is not None:
+            raise ValueError("initial publication cannot reference prior publication")
         return _published(ordered_rules, admission)
+
+    if reviewed_retirements and (
+        retirement_review_publication_id != previous.publication_id
+    ):
+        raise ValueError("retirement review must reference previous publication")
+    if not reviewed_retirements and retirement_review_publication_id is not None:
+        raise ValueError("retirement publication reference requires reviewed rules")
 
     previous_by_identity = {_identity(rule): rule for rule in previous.rules}
     current_by_identity = {_identity(rule): rule for rule in ordered_rules}
@@ -140,6 +151,17 @@ def publish_rule_set(
             non_monotonic,
         )
 
+    removed_ids = {
+        rule_id for rule_id in previous_by_id if rule_id not in current_by_id
+    }
+    required_retirements = {
+        _rule_version(rule)
+        for rule_id in removed_ids
+        for rule in previous_by_id[rule_id]
+    }
+    if not reviewed_retirements <= required_retirements:
+        raise ValueError("reviewed retirements must reference current removals")
+
     required_replacements = {
         (
             _rule_version(max(previous_by_id[rule_id], key=lambda item: item.version)),
@@ -161,21 +183,13 @@ def publish_rule_set(
             tuple(sorted(version for pair in pending_replacements for version in pair)),
         )
 
-    removed_ids = {
-        rule_id for rule_id in previous_by_id if rule_id not in current_by_id
-    }
-    if removed_ids:
+    pending_retirements = required_retirements - reviewed_retirements
+    if pending_retirements:
         return _stopped(
             RulePublicationStatus.REVIEW,
             RulePublicationCode.REMOVAL_REVIEW_REQUIRED,
             admission,
-            tuple(
-                sorted(
-                    _rule_version(rule)
-                    for rule_id in removed_ids
-                    for rule in previous_by_id[rule_id]
-                )
-            ),
+            tuple(sorted(pending_retirements)),
         )
     return _published(ordered_rules, admission)
 
