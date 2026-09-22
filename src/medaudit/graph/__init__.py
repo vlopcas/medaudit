@@ -8,11 +8,21 @@ from medaudit.graph.models import (
     TraversalResult,
     TraversalStatus,
 )
+from medaudit.graph.request import (
+    ExplicitGraphRequestCompiler,
+    GraphRequestCompilation,
+    GraphRequestStatus,
+    GraphTraversalRequest,
+)
 from medaudit.graph.traversal import InMemoryKnowledgeGraph
 
 __all__ = [
+    "ExplicitGraphRequestCompiler",
     "GraphEdge",
     "GraphEntity",
+    "GraphRequestCompilation",
+    "GraphRequestStatus",
+    "GraphTraversalRequest",
     "InMemoryKnowledgeGraph",
     "TraversalDirection",
     "TraversalPath",

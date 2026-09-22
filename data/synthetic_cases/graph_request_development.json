@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "policy": "graph-request-development-v1",
+  "notice": "Conteúdo integralmente sintético, sem reprodução de documentos reais.",
+  "entities": [
+    {"entity_id": "PX-A", "entity_type": "procedure", "aliases": ["PROCEDIMENTO AZUL"]},
+    {"entity_id": "RULE-1", "entity_type": "rule", "aliases": ["REGRA UM"]},
+    {"entity_id": "COND-9", "entity_type": "condition", "aliases": ["CONDIÇÃO NOVE"]},
+    {"entity_id": "ALFA-1", "entity_type": "item", "aliases": ["ALFA"]},
+    {"entity_id": "ALFA-2", "entity_type": "item", "aliases": ["ALFA"]}
+  ],
+  "cases": [
+    {
+      "case_id": "canonical-forward",
+      "query": "Qual o caminho de PX-A até RULE-1?",
+      "expected": {"status": "ready", "review_references": [], "request": {"start_id": "PX-A", "target_id": "RULE-1", "direction": "forward", "max_hops": 4}}
+    },
+    {
+      "case_id": "unique-aliases",
+      "query": "Mostre o caminho de procedimento azul até regra um.",
+      "expected": {"status": "ready", "review_references": [], "request": {"start_id": "PX-A", "target_id": "RULE-1", "direction": "forward", "max_hops": 4}}
+    },
+    {
+      "case_id": "explicit-reverse",
+      "query": "Qual o caminho reverso de COND-9 até PX-A?",
+      "expected": {"status": "ready", "review_references": [], "request": {"start_id": "COND-9", "target_id": "PX-A", "direction": "reverse", "max_hops": 4}}
+    },
+    {
+      "case_id": "mention-order",
+      "query": "Qual o caminho de RULE-1 até PX-A?",
+      "expected": {"status": "ready", "review_references": [], "request": {"start_id": "RULE-1", "target_id": "PX-A", "direction": "forward", "max_hops": 4}}
+    },
+    {
+      "case_id": "ambiguous-alias",
+      "query": "Qual o caminho de ALFA até RULE-1?",
+      "expected": {"status": "review", "review_references": ["alfa"]}
+    },
+    {
+      "case_id": "missing-target",
+      "query": "Qual o caminho a partir de PX-A?",
+      "expected": {"status": "review", "review_references": ["<unresolved-reference-set>"]}
+    },
+    {
+      "case_id": "unknown-target",
+      "query": "Qual o caminho de PX-A até ITEM-DESCONHECIDO?",
+      "expected": {"status": "review", "review_references": ["<unresolved-reference-set>"]}
+    },
+    {
+      "case_id": "too-many-references",
+      "query": "Qual o caminho de PX-A por RULE-1 até COND-9?",
+      "expected": {"status": "review", "review_references": ["<unresolved-reference-set>"]}
+    },
+    {
+      "case_id": "no-path-intent",
+      "query": "Compare PX-A e RULE-1.",
+      "expected": {"status": "not_applicable", "review_references": []}
+    },
+    {
+      "case_id": "substring-control",
+      "query": "Qual o caminho para PREFIX-AZULADO?",
+      "expected": {"status": "review", "review_references": ["<unresolved-reference-set>"]}
+    }
+  ]
+}
