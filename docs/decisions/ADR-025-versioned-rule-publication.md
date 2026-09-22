@@ -2,7 +2,8 @@
 
 ## Status
 
-Aceita para desenvolvimento sintético.
+Aceita para avaliação sintética; não autorizada para catálogo privado ou
+publicação real.
 
 ## Contexto
 

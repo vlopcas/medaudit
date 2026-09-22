@@ -55,8 +55,9 @@ desatualizadas são recusadas. O holdout congelado atingiu 6/6 e está encerrado
 A primeira fronteira sintética de publicação atingiu 9/9, preservou snapshots
 determinísticos e bloqueou mutações e substituições não revisadas. O próximo
 incremento vinculou aposentadorias ao snapshot anterior e elevou o conjunto para
-11/11. O próximo marco é congelar um holdout sintético inédito dessa composição,
-ainda sem conexão ao catálogo privado.
+11/11. O holdout sintético inédito da composição atingiu 8/8 e está encerrado.
+O próximo marco é o checkpoint arquitetural da Fase 9, ainda sem conexão ao
+catálogo privado.
 
 O histórico que levou a esse marco permanece abaixo. Na **Fase 8 — Query
 Understanding**, após chegar a 100% no
@@ -298,6 +299,8 @@ avançou imediatamente para holdout enquanto aposentadorias legítimas não tinh
 contrato explícito. O incremento seguinte chegou a 11/11: aposentadoria completa
 foi publicada, aprovação parcial permaneceu em revisão e referências antigas ou
 incompatíveis foram recusadas.
+No holdout congelado da publicação, a composição atingiu 8/8; o hash coincidiu
+com o congelado e uma segunda chamada foi recusada antes da avaliação.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em

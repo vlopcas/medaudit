@@ -371,6 +371,8 @@ aprovação nesta primeira iteração. O incremento posterior aceita aposentador
 somente quando todas as versões removidas são declaradas e a revisão referencia
 o `publication_id` do snapshot anterior. Aprovações parciais mantêm o catálogo
 em revisão; referências antigas ou destinadas a regras presentes são recusadas.
+A composição completa repetiu o comportamento esperado em holdout sintético
+congelado. Persistência e integração com catálogo privado continuam ausentes.
 
 ## Decisões relacionadas
 

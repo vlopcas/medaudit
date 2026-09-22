@@ -43,3 +43,6 @@ casos de desenvolvimento.
 
 Identidade do revisor, assinatura, persistência, controle de acesso, catálogo
 privado e publicação real continuam fora do escopo.
+
+O holdout posterior está registrado no
+[Resultado 059](059-structured-rule-publication-holdout.md).

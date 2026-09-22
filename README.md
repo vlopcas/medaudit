@@ -292,7 +292,10 @@ para substituições. O incremento seguinte vinculou aposentadorias às versões
 removidas e ao identificador do snapshot anterior, chegando a 11/11 casos de
 desenvolvimento. Remoções silenciosas ficam em revisão, e aprovações parciais,
 antigas ou dirigidas a regras ainda presentes falham fechado. A composição agora
-pode ser preparada para um holdout sintético inédito.
+pode ser preparada para um holdout sintético inédito. Esse holdout atingiu 8/8,
+incluindo publicação inicial, conflito de admissão, redundância com substituição,
+aposentadoria com adição, revisão parcial, mutação e regressão de versão. O
+conjunto está encerrado e não será usado para tuning.
 
 ## Ambiente de desenvolvimento
 

@@ -204,12 +204,12 @@ não usar LLM, RAG, grafo ou agente.
 
 ## Próximos marcos
 
-1. Criar e congelar um holdout sintético inédito da fronteira de publicação,
-   combinando admissão, substituição e aposentadoria revisada.
-2. Registrar o hash antes da primeira execução e recusar sobrescrita do relatório
-   local; o desenvolvimento ampliado atingiu 11/11 e não será usado como holdout.
-3. Se aprovado, encerrar o conjunto e executar o checkpoint arquitetural da
-   Fase 9 antes de decidir se há necessidade concreta de grafo.
+1. Executar o checkpoint arquitetural da Fase 9, consolidando requisitos já
+   atendidos por regras determinísticas, temporalidade e provenance.
+2. Definir uma lacuna mensurável que justificaria relações em grafo; não adotar
+   Graph RAG apenas como aumento de complexidade.
+3. Se nenhuma lacuna exigir grafo, avançar pelo menor experimento útil seguinte;
+   os holdouts de admissão e publicação estão encerrados e não serão reutilizados.
 4. Manter extração automática, catálogo privado e uso decisório real
    bloqueados até que revisão, provenance e política de falha fechada estejam
    validadas em conjunto.
