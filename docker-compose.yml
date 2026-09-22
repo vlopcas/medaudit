@@ -989,6 +989,25 @@ services:
       - --dataset
       - /app/data/synthetic_cases/structured_rule_publication_development.json
 
+  evaluate-structured-rule-publication-holdout:
+    extends: evaluate-structured-rule-publication
+    user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
+    volumes:
+      - type: bind
+        source: ./artifacts
+        target: /artifacts
+    command:
+      - medaudit-evaluate-structured-rule-publication
+      - --dataset
+      - /app/data/synthetic_cases/structured_rule_publication_holdout.json
+      - --dataset-policy
+      - structured-rule-publication-holdout-v1
+      - --expected-sha256
+      - 25b1ef2c399e421db79dcad91baf1eab9449dd24c010fb158dfeea915899b824
+      - --output
+      - /artifacts/structured-rule-publication-holdout.local.json
+      - --refuse-overwrite
+
   evaluate-explicit-query-routing-holdout:
     extends: evaluate-explicit-query-routing
     user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"

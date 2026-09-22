@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "policy": "structured-rule-publication-holdout-v1",
+  "notice": "Conteúdo integralmente sintético, sem reprodução de documentos reais.",
+  "cases": [
+    {
+      "case_id": "ordered-initial-snapshot",
+      "current_rules": [
+        {"rule_id": "holdout-zeta", "version": 4, "subject": "scope-zeta", "action": "process", "decision": "allow", "effective_from": "2027-01-01", "effective_until": null, "priority": 8, "conditions": {"tier": "delta"}, "source_document_id": "synthetic-holdout-zeta"},
+        {"rule_id": "holdout-beta", "version": 2, "subject": "scope-beta", "action": "process", "decision": "deny", "effective_from": "2027-01-01", "effective_until": null, "priority": 6, "conditions": {"tier": "epsilon"}, "source_document_id": "synthetic-holdout-beta"},
+        {"rule_id": "holdout-alpha", "version": 3, "subject": "scope-alpha", "action": "process", "decision": "allow", "effective_from": "2027-01-01", "effective_until": null, "priority": 7, "conditions": {"tier": "gamma"}, "source_document_id": "synthetic-holdout-alpha"}
+      ],
+      "expected": {"status": "published", "code": "published", "published_rule_versions": ["holdout-alpha@3", "holdout-beta@2", "holdout-zeta@4"]}
+    },
+    {
+      "case_id": "admission-conflict-blocks-update",
+      "previous_rules": [
+        {"rule_id": "conflict-stable", "version": 1, "subject": "stable-scope", "action": "release", "decision": "allow", "effective_from": "2027-01-01", "effective_until": null, "priority": 4, "conditions": {"channel": "batch"}, "source_document_id": "synthetic-conflict-stable"}
+      ],
+      "current_rules": [
+        {"rule_id": "conflict-stable", "version": 1, "subject": "stable-scope", "action": "release", "decision": "allow", "effective_from": "2027-01-01", "effective_until": null, "priority": 4, "conditions": {"channel": "batch"}, "source_document_id": "synthetic-conflict-stable"},
+        {"rule_id": "cross-channel", "version": 1, "subject": "cross-scope", "action": "release", "decision": "allow", "effective_from": "2027-01-01", "effective_until": null, "priority": 9, "conditions": {"channel": "portal"}, "source_document_id": "synthetic-cross-channel"},
+        {"rule_id": "cross-marker", "version": 1, "subject": "cross-scope", "action": "release", "decision": "deny", "effective_from": "2027-01-01", "effective_until": null, "priority": 9, "conditions": {"marker": "manual"}, "source_document_id": "synthetic-cross-marker"}
+      ],
+      "expected": {"status": "blocked", "code": "catalog_not_admitted", "published_rule_versions": []}
+    },
+    {
+      "case_id": "reviewed-redundancy-and-replacement-published",
+      "previous_rules": [
+        {"rule_id": "combined-versioned", "version": 2, "subject": "combined-versioned-scope", "action": "classify", "decision": "deny", "effective_from": "2027-01-01", "effective_until": "2027-06-30", "priority": 5, "conditions": {"tier": "theta"}, "source_document_id": "synthetic-combined-v2"},
+        {"rule_id": "combined-base", "version": 1, "subject": "combined-shared-scope", "action": "classify", "decision": "allow", "effective_from": "2027-01-01", "effective_until": null, "priority": 3, "conditions": {"tier": "lambda"}, "source_document_id": "synthetic-combined-base"}
+      ],
+      "current_rules": [
+        {"rule_id": "combined-versioned", "version": 3, "subject": "combined-versioned-scope", "action": "classify", "decision": "allow", "effective_from": "2027-07-01", "effective_until": null, "priority": 5, "conditions": {"tier": "theta"}, "source_document_id": "synthetic-combined-v3"},
+        {"rule_id": "combined-base", "version": 1, "subject": "combined-shared-scope", "action": "classify", "decision": "allow", "effective_from": "2027-01-01", "effective_until": null, "priority": 3, "conditions": {"tier": "lambda"}, "source_document_id": "synthetic-combined-base"},
+        {"rule_id": "combined-specific", "version": 1, "subject": "combined-shared-scope", "action": "classify", "decision": "allow", "effective_from": "2027-01-01", "effective_until": null, "priority": 3, "conditions": {"tier": "lambda", "region": "central"}, "source_document_id": "synthetic-combined-specific"}
+      ],
+      "reviewed_redundancies": [["combined-base@1", "combined-specific@1"]],
+      "reviewed_replacements": [["combined-versioned@2", "combined-versioned@3"]],
+      "expected": {"status": "published", "code": "published", "published_rule_versions": ["combined-base@1", "combined-specific@1", "combined-versioned@3"]}
+    },
+    {
+      "case_id": "unreviewed-replacement-stays-in-review",
+      "previous_rules": [
+        {"rule_id": "pending-update", "version": 6, "subject": "pending-update-scope", "action": "route", "decision": "allow", "effective_from": "2027-01-01", "effective_until": "2027-08-31", "priority": 8, "conditions": {"tier": "iota"}, "source_document_id": "synthetic-pending-v6"}
+      ],
+      "current_rules": [
+        {"rule_id": "pending-update", "version": 7, "subject": "pending-update-scope", "action": "route", "decision": "deny", "effective_from": "2027-09-01", "effective_until": null, "priority": 8, "conditions": {"tier": "iota"}, "source_document_id": "synthetic-pending-v7"}
+      ],
+      "expected": {"status": "review", "code": "replacement_review_required", "published_rule_versions": []}
+    },
+    {
+      "case_id": "reviewed-retirement-with-addition-published",
+      "previous_rules": [
+        {"rule_id": "retirement-kept", "version": 5, "subject": "retirement-kept-scope", "action": "route", "decision": "allow", "effective_from": "2027-01-01", "effective_until": null, "priority": 2, "conditions": {"tier": "kappa"}, "source_document_id": "synthetic-retirement-kept-v5"},
+        {"rule_id": "retirement-old", "version": 4, "subject": "retirement-old-scope", "action": "route", "decision": "deny", "effective_from": "2027-01-01", "effective_until": "2027-12-31", "priority": 2, "conditions": {"tier": "mu"}, "source_document_id": "synthetic-retirement-old-v4"}
+      ],
+      "current_rules": [
+        {"rule_id": "retirement-kept", "version": 5, "subject": "retirement-kept-scope", "action": "route", "decision": "allow", "effective_from": "2027-01-01", "effective_until": null, "priority": 2, "conditions": {"tier": "kappa"}, "source_document_id": "synthetic-retirement-kept-v5"},
+        {"rule_id": "retirement-new", "version": 1, "subject": "retirement-new-scope", "action": "route", "decision": "allow", "effective_from": "2028-01-01", "effective_until": null, "priority": 2, "conditions": {"tier": "nu"}, "source_document_id": "synthetic-retirement-new-v1"}
+      ],
+      "reviewed_retirements": ["retirement-old@4"],
+      "retirement_review_uses_previous": true,
+      "expected": {"status": "published", "code": "published", "published_rule_versions": ["retirement-kept@5", "retirement-new@1"]}
+    },
+    {
+      "case_id": "partial-multi-retirement-stays-in-review",
+      "previous_rules": [
+        {"rule_id": "multi-kept", "version": 2, "subject": "multi-kept-scope", "action": "route", "decision": "allow", "effective_from": "2027-01-01", "effective_until": null, "priority": 6, "conditions": {"tier": "omicron"}, "source_document_id": "synthetic-multi-kept"},
+        {"rule_id": "multi-old-a", "version": 3, "subject": "multi-old-a-scope", "action": "route", "decision": "deny", "effective_from": "2027-01-01", "effective_until": null, "priority": 6, "conditions": {"tier": "pi"}, "source_document_id": "synthetic-multi-old-a"},
+        {"rule_id": "multi-old-b", "version": 4, "subject": "multi-old-b-scope", "action": "route", "decision": "deny", "effective_from": "2027-01-01", "effective_until": null, "priority": 6, "conditions": {"tier": "rho"}, "source_document_id": "synthetic-multi-old-b"}
+      ],
+      "current_rules": [
+        {"rule_id": "multi-kept", "version": 2, "subject": "multi-kept-scope", "action": "route", "decision": "allow", "effective_from": "2027-01-01", "effective_until": null, "priority": 6, "conditions": {"tier": "omicron"}, "source_document_id": "synthetic-multi-kept"}
+      ],
+      "reviewed_retirements": ["multi-old-a@3"],
+      "retirement_review_uses_previous": true,
+      "expected": {"status": "review", "code": "removal_review_required", "published_rule_versions": []}
+    },
+    {
+      "case_id": "same-version-source-mutation-blocked",
+      "previous_rules": [
+        {"rule_id": "immutable-source", "version": 8, "subject": "immutable-scope", "action": "apply", "decision": "allow", "effective_from": "2027-01-01", "effective_until": null, "priority": 5, "conditions": {"tier": "sigma"}, "source_document_id": "synthetic-immutable-original"}
+      ],
+      "current_rules": [
+        {"rule_id": "immutable-source", "version": 8, "subject": "immutable-scope", "action": "apply", "decision": "allow", "effective_from": "2027-01-01", "effective_until": null, "priority": 5, "conditions": {"tier": "sigma"}, "source_document_id": "synthetic-immutable-mutated"}
+      ],
+      "expected": {"status": "blocked", "code": "version_rewrite_forbidden", "published_rule_versions": []}
+    },
+    {
+      "case_id": "version-regression-blocked",
+      "previous_rules": [
+        {"rule_id": "regression", "version": 9, "subject": "regression-scope", "action": "apply", "decision": "deny", "effective_from": "2027-01-01", "effective_until": null, "priority": 5, "conditions": {"tier": "tau"}, "source_document_id": "synthetic-regression-v9"}
+      ],
+      "current_rules": [
+        {"rule_id": "regression", "version": 7, "subject": "regression-scope", "action": "apply", "decision": "deny", "effective_from": "2027-01-01", "effective_until": null, "priority": 5, "conditions": {"tier": "tau"}, "source_document_id": "synthetic-regression-v7"}
+      ],
+      "expected": {"status": "blocked", "code": "non_monotonic_version", "published_rule_versions": []}
+    }
+  ]
+}

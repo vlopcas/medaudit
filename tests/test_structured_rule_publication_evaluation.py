@@ -18,6 +18,15 @@ class StructuredRulePublicationEvaluationTest(unittest.TestCase):
         self.assertEqual(report["metrics"]["passed"], 11)
         self.assertEqual(report["metrics"]["total"], 11)
 
+    def test_loader_rejects_unexpected_policy(self) -> None:
+        with self.assertRaisesRegex(ValueError, "unsupported"):
+            load_dataset(
+                Path(
+                    "data/synthetic_cases/structured_rule_publication_development.json"
+                ),
+                expected_policy="structured-rule-publication-holdout-v1",
+            )
+
 
 if __name__ == "__main__":
     unittest.main()
