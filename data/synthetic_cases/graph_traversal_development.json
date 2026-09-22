@@ -1,0 +1,147 @@
+{
+  "schema_version": 1,
+  "policy": "graph-traversal-development-v1",
+  "notice": "Conteúdo integralmente sintético, sem reprodução de documentos reais.",
+  "cases": [
+    {
+      "case_id": "two-hop-path",
+      "category": "two_hop",
+      "baseline_gap": true,
+      "entities": [
+        {"entity_id": "PX-A", "entity_type": "procedure"},
+        {"entity_id": "RA-10", "entity_type": "rule"},
+        {"entity_id": "EX-AZUL", "entity_type": "exception"}
+      ],
+      "edges": [
+        {"source_id": "PX-A", "relation": "regulated_by", "target_id": "RA-10", "document_id": "synthetic-two-a", "chunk_id": "two-edge-1"},
+        {"source_id": "RA-10", "relation": "has_exception", "target_id": "EX-AZUL", "document_id": "synthetic-two-b", "chunk_id": "two-edge-2"}
+      ],
+      "queries": [{"start": "PX-A", "target": "EX-AZUL", "max_hops": 2}],
+      "expected": [{"status": "path_found", "path_chunks": ["two-edge-1", "two-edge-2"], "ambiguous_references": []}]
+    },
+    {
+      "case_id": "three-hop-path",
+      "category": "three_hop",
+      "baseline_gap": true,
+      "entities": [
+        {"entity_id": "PX-B", "entity_type": "procedure"},
+        {"entity_id": "RB-20", "entity_type": "rule"},
+        {"entity_id": "EX-VERDE", "entity_type": "exception"},
+        {"entity_id": "CD-30", "entity_type": "condition"}
+      ],
+      "edges": [
+        {"source_id": "PX-B", "relation": "regulated_by", "target_id": "RB-20", "document_id": "synthetic-three-a", "chunk_id": "three-edge-1"},
+        {"source_id": "RB-20", "relation": "has_exception", "target_id": "EX-VERDE", "document_id": "synthetic-three-b", "chunk_id": "three-edge-2"},
+        {"source_id": "EX-VERDE", "relation": "requires", "target_id": "CD-30", "document_id": "synthetic-three-c", "chunk_id": "three-edge-3"}
+      ],
+      "queries": [{"start": "PX-B", "target": "CD-30", "max_hops": 3}],
+      "expected": [{"status": "path_found", "path_chunks": ["three-edge-1", "three-edge-2", "three-edge-3"], "ambiguous_references": []}]
+    },
+    {
+      "case_id": "four-hop-path",
+      "category": "four_hop",
+      "baseline_gap": true,
+      "entities": [
+        {"entity_id": "PX-C", "entity_type": "procedure"},
+        {"entity_id": "RC-1", "entity_type": "rule"},
+        {"entity_id": "EX-CINZA", "entity_type": "exception"},
+        {"entity_id": "CD-40", "entity_type": "condition"},
+        {"entity_id": "RF-9", "entity_type": "rule"}
+      ],
+      "edges": [
+        {"source_id": "PX-C", "relation": "regulated_by", "target_id": "RC-1", "document_id": "synthetic-four-a", "chunk_id": "four-edge-1"},
+        {"source_id": "RC-1", "relation": "has_exception", "target_id": "EX-CINZA", "document_id": "synthetic-four-b", "chunk_id": "four-edge-2"},
+        {"source_id": "EX-CINZA", "relation": "requires", "target_id": "CD-40", "document_id": "synthetic-four-c", "chunk_id": "four-edge-3"},
+        {"source_id": "CD-40", "relation": "activates", "target_id": "RF-9", "document_id": "synthetic-four-d", "chunk_id": "four-edge-4"}
+      ],
+      "queries": [{"start": "PX-C", "target": "RF-9", "max_hops": 4}],
+      "expected": [{"status": "path_found", "path_chunks": ["four-edge-1", "four-edge-2", "four-edge-3", "four-edge-4"], "ambiguous_references": []}]
+    },
+    {
+      "case_id": "temporal-supersession-control",
+      "category": "temporal_supersession",
+      "baseline_gap": false,
+      "entities": [
+        {"entity_id": "RT-1", "entity_type": "rule_version"},
+        {"entity_id": "RT-2", "entity_type": "rule_version"}
+      ],
+      "edges": [
+        {"source_id": "RT-2", "relation": "supersedes", "target_id": "RT-1", "document_id": "synthetic-temporal-b", "chunk_id": "temporal-edge-2"}
+      ],
+      "queries": [{"start": "RT-2", "target": "RT-1", "max_hops": 1}],
+      "expected": [{"status": "path_found", "path_chunks": ["temporal-edge-2"], "ambiguous_references": []}]
+    },
+    {
+      "case_id": "reverse-impact-paths",
+      "category": "reverse_impact",
+      "baseline_gap": true,
+      "entities": [
+        {"entity_id": "CD-DELTA", "entity_type": "condition"},
+        {"entity_id": "EX-DELTA", "entity_type": "exception"},
+        {"entity_id": "RD-50", "entity_type": "rule"},
+        {"entity_id": "PX-D", "entity_type": "procedure"},
+        {"entity_id": "PX-E", "entity_type": "procedure"}
+      ],
+      "edges": [
+        {"source_id": "PX-D", "relation": "regulated_by", "target_id": "RD-50", "document_id": "synthetic-reverse-c", "chunk_id": "reverse-edge-3d"},
+        {"source_id": "PX-E", "relation": "regulated_by", "target_id": "RD-50", "document_id": "synthetic-reverse-c", "chunk_id": "reverse-edge-3e"},
+        {"source_id": "RD-50", "relation": "modified_by", "target_id": "EX-DELTA", "document_id": "synthetic-reverse-b", "chunk_id": "reverse-edge-2"},
+        {"source_id": "EX-DELTA", "relation": "activated_by", "target_id": "CD-DELTA", "document_id": "synthetic-reverse-a", "chunk_id": "reverse-edge-1"}
+      ],
+      "queries": [
+        {"start": "CD-DELTA", "target": "PX-D", "direction": "reverse", "max_hops": 3},
+        {"start": "CD-DELTA", "target": "PX-E", "direction": "reverse", "max_hops": 3}
+      ],
+      "expected": [
+        {"status": "path_found", "path_chunks": ["reverse-edge-1", "reverse-edge-2", "reverse-edge-3d"], "ambiguous_references": []},
+        {"status": "path_found", "path_chunks": ["reverse-edge-1", "reverse-edge-2", "reverse-edge-3e"], "ambiguous_references": []}
+      ]
+    },
+    {
+      "case_id": "disconnected-control",
+      "category": "no_path",
+      "baseline_gap": false,
+      "entities": [
+        {"entity_id": "PX-F", "entity_type": "procedure"},
+        {"entity_id": "RF-60", "entity_type": "rule"},
+        {"entity_id": "CD-ZETA", "entity_type": "condition"},
+        {"entity_id": "RZ-70", "entity_type": "rule"}
+      ],
+      "edges": [
+        {"source_id": "PX-F", "relation": "regulated_by", "target_id": "RF-60", "document_id": "synthetic-no-path-a", "chunk_id": "no-path-a"},
+        {"source_id": "CD-ZETA", "relation": "belongs_to", "target_id": "RZ-70", "document_id": "synthetic-no-path-b", "chunk_id": "no-path-b"}
+      ],
+      "queries": [{"start": "PX-F", "target": "CD-ZETA", "max_hops": 4}],
+      "expected": [{"status": "no_path", "path_chunks": [], "ambiguous_references": []}]
+    },
+    {
+      "case_id": "ambiguous-entity-control",
+      "category": "ambiguous_entity",
+      "baseline_gap": false,
+      "entities": [
+        {"entity_id": "ALFA-1", "entity_type": "item", "aliases": ["ALFA"]},
+        {"entity_id": "ALFA-2", "entity_type": "item", "aliases": ["ALFA"]},
+        {"entity_id": "RULE-ALFA", "entity_type": "rule"}
+      ],
+      "edges": [
+        {"source_id": "ALFA-1", "relation": "regulated_by", "target_id": "RULE-ALFA", "document_id": "synthetic-ambiguous-a", "chunk_id": "ambiguous-a"}
+      ],
+      "queries": [{"start": "ALFA", "target": "RULE-ALFA", "max_hops": 1}],
+      "expected": [{"status": "review", "path_chunks": [], "ambiguous_references": ["ALFA"]}]
+    },
+    {
+      "case_id": "explicit-comparison-control",
+      "category": "explicit_comparison",
+      "baseline_gap": false,
+      "entities": [
+        {"entity_id": "RX-1", "entity_type": "rule"},
+        {"entity_id": "RX-2", "entity_type": "rule"}
+      ],
+      "edges": [
+        {"source_id": "RX-1", "relation": "compared_with", "target_id": "RX-2", "document_id": "synthetic-comparison", "chunk_id": "comparison-edge"}
+      ],
+      "queries": [{"start": "RX-1", "target": "RX-2", "max_hops": 1}],
+      "expected": [{"status": "path_found", "path_chunks": ["comparison-edge"], "ambiguous_references": []}]
+    }
+  ]
+}
