@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "policy": "local-structured-verifier-application-development-v1",
+  "notice": "Conteúdo integralmente sintético, sem reprodução de documentos reais.",
+  "cases": [
+    {
+      "id": "local-structured-app-dev-001",
+      "category": "supported_quantity_comparison",
+      "query": "Compare ciclo âmbar com ciclo cobalto.",
+      "chunks": [
+        {"chunk_id": "chunk-ciclo-ambar", "document_id": "document-ciclo-ambar", "text": "Ciclo âmbar: o prazo sintético é de dez dias."},
+        {"chunk_id": "chunk-ciclo-cobalto", "document_id": "document-ciclo-cobalto", "text": "Ciclo cobalto: o prazo sintético é de vinte dias."}
+      ],
+      "expected": {"status": "answered", "required_concepts": [["dez dias", "10 dias"], ["vinte dias", "20 dias"]]}
+    },
+    {
+      "id": "local-structured-app-dev-002",
+      "category": "supported_code_comparison",
+      "query": "Compare item jade com item coral.",
+      "chunks": [
+        {"chunk_id": "chunk-item-jade", "document_id": "document-item-jade", "text": "Item jade: o código sintético é JD-410."},
+        {"chunk_id": "chunk-item-coral", "document_id": "document-item-coral", "text": "Item coral: o código sintético é CR-820."}
+      ],
+      "expected": {"status": "answered", "required_concepts": [["JD-410"], ["CR-820"]]}
+    },
+    {
+      "id": "local-structured-app-dev-003",
+      "category": "supported_polarity_comparison",
+      "query": "Compare regra violeta com regra turquesa.",
+      "chunks": [
+        {"chunk_id": "chunk-regra-violeta", "document_id": "document-regra-violeta", "text": "Regra violeta: permite renovação sintética."},
+        {"chunk_id": "chunk-regra-turquesa", "document_id": "document-regra-turquesa", "text": "Regra turquesa: proíbe renovação sintética."}
+      ],
+      "expected": {"status": "answered", "required_concepts": [["violeta"], ["permite", "autorizada"], ["turquesa"], ["proíbe", "proibe", "vedada"]]}
+    },
+    {
+      "id": "local-structured-app-dev-004",
+      "category": "insufficient_evidence",
+      "query": "Compare o prazo do registro cobre com o prazo do registro prata.",
+      "chunks": [
+        {"chunk_id": "chunk-registro-cobre", "document_id": "document-registro-cobre", "text": "Registro cobre: existe uma classificação sintética, sem informação de prazo."},
+        {"chunk_id": "chunk-registro-prata", "document_id": "document-registro-prata", "text": "Registro prata: existe uma classificação sintética, sem informação de prazo."}
+      ],
+      "expected": {"status": "insufficient_evidence"}
+    }
+  ]
+}

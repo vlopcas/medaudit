@@ -828,6 +828,45 @@ services:
       - bounded-v1
       - --refuse-overwrite
 
+  benchmark-local-structured-verifier-application:
+    extends: benchmark-local-synthesis-application-bounded
+    command:
+      - medaudit-benchmark-local-synthesis-application
+      - --dataset
+      - /app/data/synthetic_cases/local_structured_verifier_application_development.json
+      - --dataset-policy
+      - local-structured-verifier-application-development-v1
+      - --output
+      - /artifacts/local-structured-verifier-application-development.local.json
+      - --repetitions
+      - "3"
+      - --max-output-tokens
+      - "512"
+      - --instruction-policy
+      - answer-when-supported-v1
+      - --schema-policy
+      - bounded-v1
+      - --structured-verifier
+
+  benchmark-local-structured-verifier-application-baseline:
+    extends: benchmark-local-synthesis-application-bounded
+    command:
+      - medaudit-benchmark-local-synthesis-application
+      - --dataset
+      - /app/data/synthetic_cases/local_structured_verifier_application_development.json
+      - --dataset-policy
+      - local-structured-verifier-application-development-v1
+      - --output
+      - /artifacts/local-structured-verifier-application-baseline.local.json
+      - --repetitions
+      - "3"
+      - --max-output-tokens
+      - "512"
+      - --instruction-policy
+      - answer-when-supported-v1
+      - --schema-policy
+      - bounded-v1
+
   evaluate-release-verification:
     build:
       context: .

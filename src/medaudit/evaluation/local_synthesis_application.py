@@ -27,6 +27,7 @@ from medaudit.rag import (
     GroundedSynthesisApplication,
     GroundedSynthesisOrchestrator,
     RoutedEvidenceFirstPipeline,
+    StructuredFactVerifier,
     SynthesisMode,
 )
 from medaudit.retrieval import BM25Index
@@ -34,6 +35,9 @@ from medaudit.retrieval import BM25Index
 _NOTICE = "Conteúdo integralmente sintético, sem reprodução de documentos reais."
 _DEVELOPMENT_POLICY = "local-synthesis-application-development-v1"
 _HOLDOUT_POLICY = "local-synthesis-application-holdout-v1"
+_VERIFIER_DEVELOPMENT_POLICY = (
+    "local-structured-verifier-application-development-v1"
+)
 
 
 class CountingClient:
@@ -85,6 +89,7 @@ def _application(
     client: LLMClient,
     instruction_policy: CompiledInstructionPolicy,
     schema_policy: CompiledSchemaPolicy,
+    structured_verifier: bool,
 ) -> GroundedSynthesisApplication:
     chunks = [
         Chunk(item["chunk_id"], item["document_id"], item["text"])
@@ -115,6 +120,7 @@ def _application(
         orchestrator=GroundedSynthesisOrchestrator(
             mode=SynthesisMode.EXPERIMENTAL,
             client=client,
+            verifier=(StructuredFactVerifier() if structured_verifier else None),
         ),
     )
 
@@ -152,6 +158,7 @@ async def run_benchmark(
         CompiledInstructionPolicy.BASELINE
     ),
     schema_policy: CompiledSchemaPolicy = CompiledSchemaPolicy.BASELINE,
+    structured_verifier: bool = False,
     policy: str = _DEVELOPMENT_POLICY,
 ) -> dict[str, Any]:
     """Measure the sealed application path without retaining generated text."""
@@ -172,6 +179,7 @@ async def run_benchmark(
     synthesis_statuses: Counter[str] = Counter()
     failure_codes: Counter[str] = Counter()
     exact_stable = status_stable = content_stable = 0
+    safe_releases = unsafe_releases = 0
 
     for case in cases:
         expected = case["expected"]
@@ -188,7 +196,11 @@ async def run_benchmark(
             counting_client = CountingClient(client)
             started_at = time.perf_counter()
             result = await _application(
-                case, counting_client, instruction_policy, schema_policy
+                case,
+                counting_client,
+                instruction_policy,
+                schema_policy,
+                structured_verifier,
             ).execute(case["query"], top_k=1)
             latencies.append((time.perf_counter() - started_at) * 1_000)
             preparation = result.routed.compiled_request
@@ -207,6 +219,7 @@ async def run_benchmark(
             output_tokens += telemetry.output_tokens
             answer = result.synthesis.answer
             if answer is None:
+                safe_releases += 1
                 fingerprints.append(f"{telemetry.status.value}:{telemetry.failure_code}")
                 statuses.append(telemetry.status.value)
                 content_results.append(False)
@@ -228,6 +241,13 @@ async def run_benchmark(
                 content_ok = grade.correct
                 content_correct += content_ok
                 case_content_correct += content_ok
+            release_is_safe = answer.status == "insufficient_evidence" or (
+                answer.status == "answered"
+                and expected["status"] == "answered"
+                and content_ok
+            )
+            safe_releases += release_is_safe
+            unsafe_releases += not release_is_safe
             content_results.append(content_ok)
         category_attempts[str(case["category"])] += repetitions
         exact_case_stable = len(set(fingerprints)) == 1
@@ -261,6 +281,9 @@ async def run_benchmark(
         "policy": policy,
         "instruction_policy": instruction_policy.value,
         "schema_policy": schema_policy.value,
+        "verifier_policy": (
+            "structured-fact-v1" if structured_verifier else "disabled"
+        ),
         "dataset": "wholly_synthetic",
         "case_count": len(cases),
         "repetitions_per_case": repetitions,
@@ -269,6 +292,8 @@ async def run_benchmark(
             "preparation_rate": prepared / attempts,
             "single_invocation_rate": invoked / attempts,
             "validated_release_rate": validated / attempts,
+            "release_safety_rate": safe_releases / attempts,
+            "unsafe_release_count": unsafe_releases,
             "response_status_accuracy": status_correct / attempts,
             "answer_content_accuracy": (
                 content_correct / answerable_attempts if answerable_attempts else None
@@ -307,11 +332,16 @@ def main(argv: Sequence[str] | None = None) -> int:
     parser.add_argument("--max-output-tokens", type=int, default=512)
     parser.add_argument(
         "--dataset-policy",
-        choices=(_DEVELOPMENT_POLICY, _HOLDOUT_POLICY),
+        choices=(
+            _DEVELOPMENT_POLICY,
+            _HOLDOUT_POLICY,
+            _VERIFIER_DEVELOPMENT_POLICY,
+        ),
         default=_DEVELOPMENT_POLICY,
     )
     parser.add_argument("--expected-sha256")
     parser.add_argument("--refuse-overwrite", action="store_true")
+    parser.add_argument("--structured-verifier", action="store_true")
     parser.add_argument(
         "--instruction-policy",
         choices=tuple(item.value for item in CompiledInstructionPolicy),
@@ -345,6 +375,7 @@ def main(argv: Sequence[str] | None = None) -> int:
                     args.instruction_policy
                 ),
                 schema_policy=CompiledSchemaPolicy(args.schema_policy),
+                structured_verifier=args.structured_verifier,
                 policy=args.dataset_policy,
             )
         )

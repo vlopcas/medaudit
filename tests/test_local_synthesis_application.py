@@ -88,6 +88,9 @@ class LocalSynthesisApplicationBenchmarkTest(unittest.TestCase):
         self.assertEqual(report["metrics"]["preparation_rate"], 1.0)
         self.assertEqual(report["metrics"]["validated_release_rate"], 1.0)
         self.assertEqual(report["metrics"]["answer_content_accuracy"], 1.0)
+        self.assertEqual(report["metrics"]["release_safety_rate"], 1.0)
+        self.assertEqual(report["metrics"]["unsafe_release_count"], 0)
+        self.assertEqual(report["verifier_policy"], "disabled")
         self.assertEqual(
             report["instruction_policy"], "answer-when-supported-v1"
         )
@@ -106,6 +109,43 @@ class LocalSynthesisApplicationBenchmarkTest(unittest.TestCase):
             )
             with self.assertRaises(ValueError):
                 load_dataset(path)
+
+    def test_structured_verifier_releases_supported_quantities(self) -> None:
+        cases = [
+            {
+                "id": "case-structured",
+                "category": "supported",
+                "query": "Compare item âmbar com item cobalto.",
+                "chunks": [
+                    {
+                        "chunk_id": "chunk-ambar",
+                        "document_id": "doc-a",
+                        "text": "item âmbar dez dias",
+                    },
+                    {
+                        "chunk_id": "chunk-cobalto",
+                        "document_id": "doc-b",
+                        "text": "item cobalto vinte dias",
+                    },
+                ],
+                "expected": {
+                    "status": "answered",
+                    "required_concepts": [["dez dias"], ["vinte dias"]],
+                },
+            }
+        ]
+
+        report = asyncio.run(
+            run_benchmark(
+                cases,
+                client=DeterministicClient(),
+                structured_verifier=True,
+            )
+        )
+
+        self.assertEqual(report["metrics"]["validated_release_rate"], 1.0)
+        self.assertEqual(report["metrics"]["release_safety_rate"], 1.0)
+        self.assertEqual(report["verifier_policy"], "structured-fact-v1")
 
     def test_loader_accepts_explicit_holdout_policy(self) -> None:
         path = Path("data/synthetic_cases/local_synthesis_application_holdout.json")
