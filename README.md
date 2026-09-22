@@ -265,6 +265,11 @@ atingiu 100% de conteúdo e segurança em 12 tentativas. O verificador manteve
 100% de segurança, mas reteve seis respostas corretas e reduziu a acurácia de
 conteúdo respondível para 33,3%. Essa composição foi rejeitada no
 desenvolvimento e não seguirá para holdout.
+O ciclo seguinte iniciou regras estruturadas com um motor determinístico para
+regras previamente revisadas. Vigência, prioridade, condições, conflitos e
+provenance por versão atingiram 8/8 em desenvolvimento sintético. Conflitos na
+mesma prioridade seguem para revisão e ausência de regra nunca implica
+permissão. Extração documental e catálogo privado ainda não estão conectados.
 
 ## Ambiente de desenvolvimento
 

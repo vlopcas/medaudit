@@ -120,7 +120,9 @@ não decide silenciosamente cobertura, pagamento ou validade normativa.
 Critério de avanço: casos temporais, exceções e conflitos são reproduzíveis,
 explicáveis e encaminhados para revisão quando necessário.
 
-Estado: temporalidade antecipada parcialmente; motor de regras não iniciado.
+Estado: temporalidade antecipada parcialmente. Um primeiro motor determinístico
+para regras revisadas atingiu 8/8 em desenvolvimento; auditoria estática de
+sobreposições, holdout e integração permanecem pendentes.
 
 ### 6. Grafos e primeiro checkpoint arquitetural
 

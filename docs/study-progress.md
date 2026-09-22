@@ -25,7 +25,7 @@ implementação dedicada.
 | 6 | Hybrid Retrieval | Experimental, não promovida | BM25, dense e RRF foram comparados; BM25 permanece como baseline principal. |
 | 7 | Reranking | Experimental, não promovida | Reranking semântico restrito aos candidatos foi avaliado sem justificar promoção. |
 | 8 | Query Understanding | Concluída para o ciclo atual | Roteamento, planejamento, execução e agrupamento opt-in por passo foram validados; reescrita semântica foi rejeitada. |
-| 9 | Regras estruturadas | Não iniciada | Será tratada depois do ciclo de Query Understanding. |
+| 9 | Regras estruturadas | Parcial | Schema versionado e motor determinístico de vigência, prioridade, condições e conflitos passaram em desenvolvimento sintético. |
 | 10 | Temporalidade e versionamento | Parcial, antecipada | Catálogo temporal, relações de substituição, snapshots por data e avaliações temporais já existem. |
 | 11–18 | Grafos, tools, APIs e agentes | Não iniciadas | Permanecem no roteiro futuro. |
 | 19 | Provenance e citações | Parcial, antecipada | IDs determinísticos, origem dos chunks e validação das citações já atravessam o pipeline. |
@@ -271,6 +271,10 @@ conteúdo e segurança em 12 tentativas. A verificação manteve a segurança, m
 reteve seis respostas corretas e reduziu o conteúdo respondível para 33,3%.
 A composição local foi rejeitada sem holdout. O próximo ciclo avança para regras
 estruturadas, preservando o verificador como experimento estreito.
+O primeiro baseline de regras estruturadas atingiu 8/8 em desenvolvimento.
+Ele preserva vigência, prioridade, condições e provenance, envia conflitos para
+revisão e representa ausência de regra explicitamente. O próximo marco é uma
+auditoria estática de sobreposições antes de qualquer holdout.
 
 Os números e decisões dos experimentos generativos estão em
 [Resultados](results/README.md). A composição técnica vigente está em

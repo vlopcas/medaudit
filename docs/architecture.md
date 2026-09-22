@@ -287,6 +287,18 @@ desenvolvimento e não pertence ao fluxo principal.
 Uma política anterior em camadas combinava sinais determinísticos e semânticos;
 ela permanece apenas como experimento e não controla o pipeline.
 
+## Regras estruturadas
+
+`DeterministicRuleEngine` resolve apenas regras já estruturadas e revisadas.
+Cada versão declara escopo, decisão `allow` ou `deny`, vigência inclusiva,
+prioridade, condições exatas e documento de origem. A maior prioridade
+aplicável vence; decisões divergentes na mesma prioridade produzem `review`, e
+ausência de regra produz `no_match`. Toda decisão aplicada conserva provenance
+em `rule_id@version`.
+
+Esse motor é independente do RAG e do LLM. Não existe importação do catálogo
+privado nem extração automática aprovada.
+
 Uma heurística estrutural para decomposição também existe como experimento
 isolado. Ela foi rejeitada no holdout e não é chamada pelo analisador nem pelo
 roteador principal.
@@ -356,6 +368,7 @@ em `data/processed/`, que é ignorado pelo Git.
 - [ADR-021: orquestração de síntese com liberação validada](decisions/ADR-021-guarded-synthesis-orchestration.md)
 - [ADR-022: aplicação de síntese opt-in](decisions/ADR-022-opt-in-synthesis-application.md)
 - [ADR-023: verificação independente antes da liberação](decisions/ADR-023-independent-release-verification.md)
+- [ADR-024: regras estruturadas revisadas](decisions/ADR-024-reviewed-structured-rule-engine.md)
 
 ## Ambiente de execução
 
