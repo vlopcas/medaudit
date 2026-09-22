@@ -204,12 +204,12 @@ não usar LLM, RAG, grafo ou agente.
 
 ## Próximos marcos
 
-1. Completar a fronteira sintética de publicação com aposentadorias
-   explicitamente revisadas e referências vinculadas ao snapshot anterior.
-2. Recusar aprovação de aposentadoria desatualizada, remoção parcial ambígua e
-   qualquer alteração da identidade determinística do snapshot.
-3. Avaliar o incremento somente em novos casos de desenvolvimento; a fronteira
-   atual atingiu 9/9, mas ainda não está pronta para holdout.
+1. Criar e congelar um holdout sintético inédito da fronteira de publicação,
+   combinando admissão, substituição e aposentadoria revisada.
+2. Registrar o hash antes da primeira execução e recusar sobrescrita do relatório
+   local; o desenvolvimento ampliado atingiu 11/11 e não será usado como holdout.
+3. Se aprovado, encerrar o conjunto e executar o checkpoint arquitetural da
+   Fase 9 antes de decidir se há necessidade concreta de grafo.
 4. Manter extração automática, catálogo privado e uso decisório real
    bloqueados até que revisão, provenance e política de falha fechada estejam
    validadas em conjunto.

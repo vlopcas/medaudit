@@ -288,9 +288,11 @@ com provenance explícita, sem conectar o catálogo privado.
 Essa fronteira passou em 9/9 casos de desenvolvimento. Ela recalcula a admissão,
 gera identidade determinística para o snapshot, conserva origem e versão, proíbe
 reescrita da mesma versão e regressão de numeração, e exige revisão explícita
-para substituições. Remoções silenciosas ficam em revisão; como ainda não existe
-um caminho para aprovar aposentadorias, a candidata não seguirá para holdout
-antes desse contrato ser definido.
+para substituições. O incremento seguinte vinculou aposentadorias às versões
+removidas e ao identificador do snapshot anterior, chegando a 11/11 casos de
+desenvolvimento. Remoções silenciosas ficam em revisão, e aprovações parciais,
+antigas ou dirigidas a regras ainda presentes falham fechado. A composição agora
+pode ser preparada para um holdout sintético inédito.
 
 ## Ambiente de desenvolvimento
 

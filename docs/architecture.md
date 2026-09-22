@@ -367,7 +367,10 @@ determinístico derivado de todo o conteúdo estruturado. Identidade, versão e
 origem permanecem no catálogo. Reescrever uma versão existente ou introduzir
 uma versão não monotônica é bloqueado; uma versão nova requer revisão explícita
 do par substituído/substituto. Remoções ainda param em revisão, sem caminho de
-aprovação nesta primeira iteração.
+aprovação nesta primeira iteração. O incremento posterior aceita aposentadorias
+somente quando todas as versões removidas são declaradas e a revisão referencia
+o `publication_id` do snapshot anterior. Aprovações parciais mantêm o catálogo
+em revisão; referências antigas ou destinadas a regras presentes são recusadas.
 
 ## Decisões relacionadas
 

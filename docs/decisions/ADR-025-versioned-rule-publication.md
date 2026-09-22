@@ -23,13 +23,16 @@ substituição silenciosa e perda de provenance entre snapshots.
   explicitamente o par anterior/novo revisado;
 - referências de substituição que não correspondem à mudança atual são
   recusadas;
-- remoções silenciosas ficam em revisão;
+- remoções silenciosas ficam em revisão; aposentadorias são aceitas somente
+  quando listam as versões removidas e referenciam o identificador do snapshot
+  anterior;
+- aprovação parcial de aposentadoria não publica o catálogo, e referências
+  antigas ou destinadas a regras ainda presentes são recusadas;
 - LLMs não participam da admissão, comparação ou publicação.
 
 ## Consequências
 
-O snapshot é reproduzível e mudanças de versão são explícitas, mas o primeiro
-contrato ainda não permite aprovar uma aposentadoria legítima. Essa capacidade
-deve ser modelada em novos casos de desenvolvimento antes de qualquer holdout.
-Persistência, assinatura, controle de acesso e catálogo privado permanecem fora
-do escopo.
+O snapshot é reproduzível, mudanças de versão e aposentadorias são explícitas e
+as revisões não sobrevivem silenciosamente a uma mudança do snapshot anterior.
+Persistência, assinatura, identidade do revisor, controle de acesso e catálogo
+privado permanecem fora do escopo.

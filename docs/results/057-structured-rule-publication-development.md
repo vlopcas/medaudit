@@ -23,6 +23,9 @@ O dataset público e integralmente sintético
 `structured_rule_publication_development.json`, política
 `structured-rule-publication-development-v1`, contém nove casos. Seu SHA-256 é
 `9e0166e0cd907ea7eac4ecb5b09aa1d2cfc7c25ef5203279f40781df3a045832`.
+Esse snapshot histórico está no commit `61e96b4`; o dataset de desenvolvimento
+foi ampliado posteriormente, sem alterar este resultado, no
+[Resultado 058](058-structured-rule-retirement-development.md).
 
 ```bash
 docker compose run --rm evaluate-structured-rule-publication
