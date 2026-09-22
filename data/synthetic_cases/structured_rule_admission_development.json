@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "policy": "structured-rule-admission-development-v1",
+  "notice": "Conteúdo integralmente sintético, sem reprodução de documentos reais.",
+  "cases": [
+    {
+      "case_id": "clean-catalog",
+      "rules": [
+        {"rule_id": "clean-base", "version": 1, "subject": "claim-a", "action": "pay", "decision": "allow", "effective_from": "2026-01-01", "effective_until": null, "priority": 5, "conditions": {"plan": "gold"}, "source_document_id": "synthetic-clean"}
+      ],
+      "reviewed_redundancies": [],
+      "expected": {"status": "admitted", "code": "clean_catalog", "finding_count": 0}
+    },
+    {
+      "case_id": "conflict-blocked",
+      "rules": [
+        {"rule_id": "conflict-allow", "version": 1, "subject": "claim-b", "action": "pay", "decision": "allow", "effective_from": "2026-01-01", "effective_until": null, "priority": 5, "conditions": {"plan": "gold"}, "source_document_id": "synthetic-conflict-a"},
+        {"rule_id": "conflict-deny", "version": 1, "subject": "claim-b", "action": "pay", "decision": "deny", "effective_from": "2026-01-01", "effective_until": null, "priority": 5, "conditions": {"plan": "gold"}, "source_document_id": "synthetic-conflict-b"}
+      ],
+      "reviewed_redundancies": [],
+      "expected": {"status": "rejected", "code": "conflicting_overlap", "finding_count": 1}
+    },
+    {
+      "case_id": "redundancy-review-required",
+      "rules": [
+        {"rule_id": "pending-base", "version": 1, "subject": "claim-c", "action": "pay", "decision": "allow", "effective_from": "2026-01-01", "effective_until": null, "priority": 5, "conditions": {"plan": "gold"}, "source_document_id": "synthetic-pending-a"},
+        {"rule_id": "pending-specific", "version": 1, "subject": "claim-c", "action": "pay", "decision": "allow", "effective_from": "2026-01-01", "effective_until": null, "priority": 5, "conditions": {"plan": "gold", "region": "south"}, "source_document_id": "synthetic-pending-b"}
+      ],
+      "reviewed_redundancies": [],
+      "expected": {"status": "review", "code": "redundancy_review_required", "finding_count": 1}
+    },
+    {
+      "case_id": "reviewed-redundancy-admitted",
+      "rules": [
+        {"rule_id": "reviewed-base", "version": 1, "subject": "claim-d", "action": "pay", "decision": "allow", "effective_from": "2026-01-01", "effective_until": null, "priority": 5, "conditions": {"plan": "gold"}, "source_document_id": "synthetic-reviewed-a"},
+        {"rule_id": "reviewed-specific", "version": 1, "subject": "claim-d", "action": "pay", "decision": "allow", "effective_from": "2026-01-01", "effective_until": null, "priority": 5, "conditions": {"plan": "gold", "region": "south"}, "source_document_id": "synthetic-reviewed-b"}
+      ],
+      "reviewed_redundancies": [["reviewed-base@1", "reviewed-specific@1"]],
+      "expected": {"status": "admitted", "code": "clean_catalog", "finding_count": 0}
+    },
+    {
+      "case_id": "conflict-precedes-reviewed-redundancy",
+      "rules": [
+        {"rule_id": "mixed-base", "version": 1, "subject": "claim-e", "action": "pay", "decision": "allow", "effective_from": "2026-01-01", "effective_until": null, "priority": 5, "conditions": {"plan": "gold"}, "source_document_id": "synthetic-mixed-a"},
+        {"rule_id": "mixed-deny", "version": 1, "subject": "claim-e", "action": "pay", "decision": "deny", "effective_from": "2026-01-01", "effective_until": null, "priority": 5, "conditions": {"plan": "gold"}, "source_document_id": "synthetic-mixed-b"},
+        {"rule_id": "mixed-specific", "version": 1, "subject": "claim-e", "action": "pay", "decision": "allow", "effective_from": "2026-01-01", "effective_until": null, "priority": 5, "conditions": {"plan": "gold", "region": "south"}, "source_document_id": "synthetic-mixed-c"}
+      ],
+      "reviewed_redundancies": [["mixed-base@1", "mixed-specific@1"]],
+      "expected": {"status": "rejected", "code": "conflicting_overlap", "finding_count": 2}
+    }
+  ]
+}
