@@ -52,3 +52,8 @@ desenvolvimento sintético. O próximo experimento deve executar compilação e
 traversal ponta a ponta e comparar a cadeia resultante ao BM25 usando as mesmas
 perguntas e evidências. Graph RAG, holdout, banco de grafo e corpus privado
 continuam bloqueados.
+
+A composição foi avaliada no
+[Resultado 064](064-graph-assisted-retrieval-development.md). O desenvolvimento
+passou e autorizou apenas o congelamento de um holdout sintético do gateway
+explícito.

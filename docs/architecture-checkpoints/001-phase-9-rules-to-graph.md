@@ -101,3 +101,10 @@ A primeira fronteira pergunta-entidade atingiu 10/10 no
 compila intenção explícita com duas referências revisadas; os demais casos não
 se aplicam ou seguem para revisão. O próximo gate é a composição completa e a
 comparação com BM25 nos mesmos inputs.
+
+A composição foi executada no
+[Resultado 064](../results/064-graph-assisted-retrieval-development.md): o
+gateway recuperou 4/4 cadeias contra 0/4 do BM25 no slice adversarial e acertou
+3/3 controles. Isso autoriza somente um holdout sintético congelado do gateway
+explícito, conforme a
+[ADR-028](../decisions/ADR-028-explicit-opt-in-graph-gateway.md).

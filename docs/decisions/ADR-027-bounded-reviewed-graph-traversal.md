@@ -42,3 +42,8 @@ O [Resultado 063](../results/063-explicit-graph-request-development.md) validou
 uma gramática conservadora para compilar solicitações. Ela atende ao
 pré-requisito inicial de entity resolution explícita, mas ainda não substitui a
 comparação integrada exigida por esta decisão.
+
+A composição posterior foi registrada no
+[Resultado 064](../results/064-graph-assisted-retrieval-development.md) e passou
+no desenvolvimento sintético. Seu uso permanece estreito e opt-in pela
+[ADR-028](ADR-028-explicit-opt-in-graph-gateway.md).

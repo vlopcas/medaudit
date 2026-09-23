@@ -140,8 +140,9 @@ seguinte encontrou quatro lacunas candidatas e autorizou somente um protótipo
 determinístico em memória. Esse protótipo recuperou as quatro categorias, mas
 recebeu entidades já resolvidas e ainda não constitui uma comparação integrada.
 Uma fronteira explícita pergunta-entidade passou em desenvolvimento sintético;
-o próximo gate é a composição ponta a ponta e sua comparação com BM25 sobre os
-mesmos inputs. A análise está no
+a composição ponta a ponta recuperou 4/4 cadeias contra 0/4 do BM25 no slice
+adversarial e acertou 3/3 controles. O próximo gate é um holdout sintético
+congelado para essa fronteira estreita. A análise está no
 [Checkpoint arquitetural 001](architecture-checkpoints/001-phase-9-rules-to-graph.md).
 
 ### 7. Tools, dados estruturados e agentes

@@ -77,3 +77,4 @@ para evitar a exposição indireta do corpus privado.
 - [Resultado 061: benchmark de necessidade de grafo](061-graph-necessity-development.md)
 - [Resultado 062: traversal determinístico em grafo](062-graph-traversal-development.md)
 - [Resultado 063: solicitação explícita de traversal](063-explicit-graph-request-development.md)
+- [Resultado 064: recuperação explícita assistida por grafo](064-graph-assisted-retrieval-development.md)

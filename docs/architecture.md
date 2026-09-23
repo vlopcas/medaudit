@@ -385,7 +385,11 @@ retrieval.
 Essa ligação agora possui uma primeira fronteira determinística: somente
 perguntas com intenção de caminho e duas referências revisadas geram uma
 solicitação tipada. Casos incompletos ou ambíguos param em revisão. A composição
-com traversal e a comparação no mesmo input do baseline continuam pendentes.
+com traversal foi realizada pelo `ExplicitGraphGateway` em desenvolvimento:
+perguntas
+fora da gramática não ativam grafo, ambiguidade exige revisão e entidades
+desconectadas retornam ausência de caminho. A avaliação de holdout permanece
+pendente e o componente não participa do pipeline padrão.
 
 ## Decisões relacionadas
 
@@ -416,6 +420,7 @@ com traversal e a comparação no mesmo input do baseline continuam pendentes.
 - [ADR-025: publicação versionada de regras](decisions/ADR-025-versioned-rule-publication.md)
 - [ADR-026: grafo adiado até lacuna medida](decisions/ADR-026-defer-graph-until-measured-gap.md)
 - [ADR-027: traversal em grafo limitado e revisado](decisions/ADR-027-bounded-reviewed-graph-traversal.md)
+- [ADR-028: gateway de grafo explícito e opt-in](decisions/ADR-028-explicit-opt-in-graph-gateway.md)
 
 ## Ambiente de execução
 

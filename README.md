@@ -316,6 +316,10 @@ explícitas em solicitações tipadas ou estados fechados de revisão. Ela exige
 exatamente duas referências revisadas e não tenta resolver semanticamente texto
 desconhecido. O próximo passo é compor essa fronteira com o traversal e comparar
 o resultado ao BM25 sobre as mesmas perguntas.
+Essa composição recuperou 4/4 cadeias explícitas que o BM25 não completou no
+slice adversarial e acertou 3/3 controles, sempre com provenance por aresta. O
+resultado autoriza congelar um holdout sintético para o gateway estreito, não
+adotar Graph RAG nem conectar dados privados.
 
 ## Ambiente de desenvolvimento
 
