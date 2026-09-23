@@ -10,6 +10,7 @@ from medaudit.graph.catalog import (
     GraphCatalogDraft,
     GraphEdgeCandidate,
     GraphEntityCandidate,
+    GraphRelationPolicy,
     admit_graph_catalog,
     audit_graph_catalog,
 )
@@ -60,6 +61,7 @@ __all__ = [
     "GraphPublicationCode",
     "GraphPublicationResult",
     "GraphPublicationStatus",
+    "GraphRelationPolicy",
     "GraphRequestCompilation",
     "GraphRequestStatus",
     "GraphTraversalRequest",

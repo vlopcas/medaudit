@@ -11,6 +11,7 @@ from medaudit.graph import (
     GraphCatalogDraft,
     GraphEdgeCandidate,
     GraphEntityCandidate,
+    GraphRelationPolicy,
     PublishedGraphCatalog,
     admit_graph_catalog,
     publish_graph_catalog,
@@ -43,9 +44,9 @@ def load_dataset(path: Path) -> dict[str, Any]:
 
 
 def evaluate(payload: dict[str, Any]) -> dict[str, Any]:
-    allowed_relations = frozenset(payload["allowed_relations"])
+    relation_policy = _relation_policy(payload)
     outcomes = [
-        _evaluate_case(case, allowed_relations=allowed_relations)
+        _evaluate_case(case, relation_policy=relation_policy)
         for case in payload["cases"]
     ]
     passed = sum(item["passed"] for item in outcomes)
@@ -63,23 +64,32 @@ def evaluate(payload: dict[str, Any]) -> dict[str, Any]:
 
 
 def _evaluate_case(
-    case: dict[str, Any], *, allowed_relations: frozenset[str]
+    case: dict[str, Any], *, relation_policy: GraphRelationPolicy
 ) -> dict[str, Any]:
-    previous = _previous_catalog(case, allowed_relations=allowed_relations)
+    previous_policy = relation_policy
+    if "previous_relation_policy" in case:
+        previous_policy = _relation_policy(case["previous_relation_policy"])
+    previous = _previous_catalog(case, relation_policy=previous_policy)
     admission = admit_graph_catalog(
-        _parse_draft(case["current"]), allowed_relations=allowed_relations
+        _parse_draft(case["current"]), relation_policy=relation_policy
     )
     review_reference = case.get("review_snapshot")
     if review_reference == "previous":
         if previous is None:
             raise ValueError("synthetic case cannot reference missing snapshot")
         review_reference = previous.publication_id
+    reviewed_changes = set(case.get("reviewed_changes", []))
+    if "$previous_relation_policy" in reviewed_changes:
+        if previous is None:
+            raise ValueError("synthetic case cannot review missing policy")
+        reviewed_changes.remove("$previous_relation_policy")
+        reviewed_changes.add(f"relation-policy:{previous.relation_policy_id}")
     try:
         result = publish_graph_catalog(
             admission,
             version=case["version"],
             previous=previous,
-            reviewed_changes=frozenset(case.get("reviewed_changes", [])),
+            reviewed_changes=frozenset(reviewed_changes),
             review_previous_publication_id=review_reference,
         )
         actual = {
@@ -99,13 +109,13 @@ def _evaluate_case(
 
 
 def _previous_catalog(
-    case: dict[str, Any], *, allowed_relations: frozenset[str]
+    case: dict[str, Any], *, relation_policy: GraphRelationPolicy
 ) -> PublishedGraphCatalog | None:
     previous_payload = case.get("previous")
     if previous_payload is None:
         return None
     admission = admit_graph_catalog(
-        _parse_draft(previous_payload), allowed_relations=allowed_relations
+        _parse_draft(previous_payload), relation_policy=relation_policy
     )
     result = publish_graph_catalog(
         admission, version=case.get("previous_version", 1)
@@ -113,6 +123,21 @@ def _previous_catalog(
     if result.catalog is None:
         raise ValueError("previous synthetic graph catalog must be publishable")
     return result.catalog
+
+
+def _relation_policy(payload: dict[str, Any]) -> GraphRelationPolicy:
+    policy = payload if "name" in payload else payload.get("relation_policy")
+    if policy is None:
+        return GraphRelationPolicy(
+            name=str(payload.get("policy", _POLICY)),
+            version=1,
+            allowed_relations=frozenset(payload["allowed_relations"]),
+        )
+    return GraphRelationPolicy(
+        name=policy["name"],
+        version=policy["version"],
+        allowed_relations=frozenset(policy["allowed_relations"]),
+    )
 
 
 def _parse_draft(payload: dict[str, Any]) -> GraphCatalogDraft:

@@ -11,6 +11,7 @@ from medaudit.graph import (
     GraphCatalogDraft,
     GraphEdgeCandidate,
     GraphEntityCandidate,
+    GraphRelationPolicy,
     admit_graph_catalog,
 )
 
@@ -46,9 +47,13 @@ def load_dataset(
 def evaluate(
     payload: dict[str, Any], *, policy: str = _POLICY
 ) -> dict[str, Any]:
-    allowed_relations = frozenset(payload["allowed_relations"])
+    relation_policy = GraphRelationPolicy(
+        name=policy,
+        version=1,
+        allowed_relations=frozenset(payload["allowed_relations"]),
+    )
     outcomes = [
-        _evaluate_case(case, allowed_relations=allowed_relations)
+        _evaluate_case(case, relation_policy=relation_policy)
         for case in payload["cases"]
     ]
     passed = sum(item["passed"] for item in outcomes)
@@ -66,7 +71,7 @@ def evaluate(
 
 
 def _evaluate_case(
-    case: dict[str, Any], *, allowed_relations: frozenset[str]
+    case: dict[str, Any], *, relation_policy: GraphRelationPolicy
 ) -> dict[str, Any]:
     draft = GraphCatalogDraft(
         entities=tuple(
@@ -88,7 +93,7 @@ def _evaluate_case(
             for item in case["edges"]
         ),
     )
-    result = admit_graph_catalog(draft, allowed_relations=allowed_relations)
+    result = admit_graph_catalog(draft, relation_policy=relation_policy)
     actual = {
         "status": result.status.value,
         "code": result.code.value,

@@ -13,7 +13,7 @@ class GraphCatalogPublicationEvaluationTest(unittest.TestCase):
         report = evaluate(payload)
 
         self.assertEqual(report["metrics"]["exact_match"], 1.0)
-        self.assertEqual(report["metrics"]["passed"], 10)
+        self.assertEqual(report["metrics"]["passed"], 12)
 
 
 if __name__ == "__main__":

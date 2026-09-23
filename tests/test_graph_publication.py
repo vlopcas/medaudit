@@ -7,17 +7,21 @@ from medaudit.graph import (
     GraphEntityCandidate,
     GraphPublicationCode,
     GraphPublicationStatus,
+    GraphRelationPolicy,
     admit_graph_catalog,
     publish_graph_catalog,
 )
 
-ALLOWED = frozenset({"regulated_by", "requires"})
+POLICY = GraphRelationPolicy(
+    "publication-test-policy", 1, frozenset({"regulated_by", "requires"})
+)
 
 
 def admitted(
     *,
     entities: tuple[GraphEntityCandidate, ...] | None = None,
     edges: tuple[GraphEdgeCandidate, ...] | None = None,
+    relation_policy: GraphRelationPolicy = POLICY,
 ) -> GraphAdmissionResult:
     return admit_graph_catalog(
         GraphCatalogDraft(
@@ -34,7 +38,7 @@ def admitted(
                 ),
             ),
         ),
-        allowed_relations=ALLOWED,
+        relation_policy=relation_policy,
     )
 
 
@@ -65,7 +69,7 @@ class GraphPublicationTest(unittest.TestCase):
                 ),
                 edges=(),
             ),
-            allowed_relations=ALLOWED,
+            relation_policy=POLICY,
         )
 
         result = publish_graph_catalog(admission, version=1)
@@ -112,6 +116,53 @@ class GraphPublicationTest(unittest.TestCase):
         result = publish_graph_catalog(expanded, version=2, previous=first.catalog)
 
         self.assertEqual(result.status, GraphPublicationStatus.PUBLISHED)
+
+    def test_relation_policy_change_requires_snapshot_bound_review(self) -> None:
+        first = publish_graph_catalog(admitted(), version=1)
+        assert first.catalog is not None
+        changed_policy = GraphRelationPolicy(
+            "publication-test-policy",
+            2,
+            frozenset({"regulated_by", "requires", "supersedes"}),
+        )
+        current = admitted(relation_policy=changed_policy)
+        change = f"relation-policy:{POLICY.policy_id}"
+
+        pending = publish_graph_catalog(
+            current, version=2, previous=first.catalog
+        )
+        published = publish_graph_catalog(
+            current,
+            version=2,
+            previous=first.catalog,
+            reviewed_changes=frozenset({change}),
+            review_previous_publication_id=first.catalog.publication_id,
+        )
+
+        self.assertEqual(pending.status, GraphPublicationStatus.REVIEW)
+        self.assertEqual(pending.affected_changes, (change,))
+        self.assertEqual(published.status, GraphPublicationStatus.PUBLISHED)
+        assert published.catalog is not None
+        self.assertEqual(
+            published.catalog.relation_policy_id, changed_policy.policy_id
+        )
+
+    def test_relation_policy_identity_changes_publication_identity(self) -> None:
+        first = publish_graph_catalog(admitted(), version=1)
+        alternate = GraphRelationPolicy(
+            "alternate-publication-policy",
+            1,
+            POLICY.allowed_relations,
+        )
+        second = publish_graph_catalog(
+            admitted(relation_policy=alternate), version=1
+        )
+
+        assert first.catalog is not None
+        assert second.catalog is not None
+        self.assertNotEqual(
+            first.catalog.publication_id, second.catalog.publication_id
+        )
 
     def test_removal_requires_snapshot_bound_review(self) -> None:
         first = publish_graph_catalog(admitted(), version=1)

@@ -1,11 +1,41 @@
 """Raw reviewed candidates and fail-closed graph catalog admission."""
 
+import hashlib
+import json
 from collections import Counter, defaultdict
 from dataclasses import dataclass
 from enum import StrEnum
 
 from medaudit.graph.models import GraphEdge, GraphEntity
 from medaudit.graph.traversal import InMemoryKnowledgeGraph
+
+
+@dataclass(frozen=True, slots=True)
+class GraphRelationPolicy:
+    """Named, versioned allowlist with deterministic identity."""
+
+    name: str
+    version: int
+    allowed_relations: frozenset[str]
+
+    def __post_init__(self) -> None:
+        if not self.name or self.version < 1:
+            raise ValueError("graph relation policy name and version are required")
+        if not self.allowed_relations or any(
+            not relation for relation in self.allowed_relations
+        ):
+            raise ValueError("allowed graph relations must be non-empty")
+
+    @property
+    def policy_id(self) -> str:
+        """Return the stable identity of policy metadata and relation set."""
+        payload = {
+            "name": self.name,
+            "version": self.version,
+            "allowed_relations": sorted(self.allowed_relations),
+        }
+        rendered = json.dumps(payload, sort_keys=True, separators=(",", ":"))
+        return hashlib.sha256(rendered.encode("utf-8")).hexdigest()
 
 
 @dataclass(frozen=True, slots=True)
@@ -89,6 +119,7 @@ class GraphAdmissionResult:
     status: GraphAdmissionStatus
     code: GraphAdmissionCode
     findings: tuple[GraphAuditFinding, ...]
+    relation_policy_id: str
     graph: InMemoryKnowledgeGraph | None = None
 
     def __post_init__(self) -> None:
@@ -97,17 +128,16 @@ class GraphAdmissionResult:
             raise ValueError("only admitted graph catalogs may be executable")
         if admitted != (not self.findings):
             raise ValueError("only admitted graph catalogs may be finding-free")
+        if not self.relation_policy_id:
+            raise ValueError("graph admission must identify its relation policy")
 
 
 def audit_graph_catalog(
     draft: GraphCatalogDraft,
     *,
-    allowed_relations: frozenset[str],
+    relation_policy: GraphRelationPolicy,
 ) -> tuple[GraphAuditFinding, ...]:
     """Audit raw graph candidates without constructing executable models."""
-    if not allowed_relations or any(not relation for relation in allowed_relations):
-        raise ValueError("allowed graph relations must be non-empty")
-
     findings: list[GraphAuditFinding] = []
     if not draft.entities:
         findings.append(
@@ -196,7 +226,10 @@ def audit_graph_catalog(
                     (edge_ref,),
                 )
             )
-        if edge.relation and edge.relation not in allowed_relations:
+        if (
+            edge.relation
+            and edge.relation not in relation_policy.allowed_relations
+        ):
             findings.append(
                 GraphAuditFinding(
                     GraphAuditCode.UNKNOWN_RELATION,
@@ -231,10 +264,10 @@ def audit_graph_catalog(
 def admit_graph_catalog(
     draft: GraphCatalogDraft,
     *,
-    allowed_relations: frozenset[str],
+    relation_policy: GraphRelationPolicy,
 ) -> GraphAdmissionResult:
     """Construct an executable graph only from a clean candidate catalog."""
-    findings = audit_graph_catalog(draft, allowed_relations=allowed_relations)
+    findings = audit_graph_catalog(draft, relation_policy=relation_policy)
     errors = tuple(
         finding
         for finding in findings
@@ -245,12 +278,14 @@ def admit_graph_catalog(
             GraphAdmissionStatus.REJECTED,
             GraphAdmissionCode.INVALID_CATALOG,
             errors,
+            relation_policy.policy_id,
         )
     if findings:
         return GraphAdmissionResult(
             GraphAdmissionStatus.REVIEW,
             GraphAdmissionCode.REVIEW_REQUIRED,
             findings,
+            relation_policy.policy_id,
         )
 
     graph = InMemoryKnowledgeGraph(
@@ -273,5 +308,6 @@ def admit_graph_catalog(
         GraphAdmissionStatus.ADMITTED,
         GraphAdmissionCode.CLEAN_CATALOG,
         (),
+        relation_policy.policy_id,
         graph,
     )

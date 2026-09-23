@@ -3,6 +3,11 @@
   "policy": "graph-catalog-publication-development-v1",
   "notice": "Conteúdo integralmente sintético, sem reprodução de documentos reais.",
   "allowed_relations": ["regulated_by", "requires"],
+  "relation_policy": {
+    "name": "synthetic-graph-relations",
+    "version": 2,
+    "allowed_relations": ["regulated_by", "requires"]
+  },
   "cases": [
     {
       "case_id": "initial-publication",
@@ -110,6 +115,44 @@
         "edges": [{"source_id": "PROC-A", "relation": "regulated_by", "target_id": "RULE-A", "document_id": "pub-new", "chunk_id": "pub-edge-new"}]
       },
       "expected": {"status": "review", "code": "destructive_change_review_required", "affected_count": 1, "published_version": null}
+    },
+    {
+      "case_id": "relation-policy-change-pending",
+      "version": 2,
+      "previous_relation_policy": {
+        "name": "synthetic-graph-relations",
+        "version": 1,
+        "allowed_relations": ["regulated_by", "requires"]
+      },
+      "previous": {
+        "entities": [{"entity_id": "PROC-A", "entity_type": "procedure"}, {"entity_id": "RULE-A", "entity_type": "rule"}],
+        "edges": [{"source_id": "PROC-A", "relation": "regulated_by", "target_id": "RULE-A", "document_id": "pub-a", "chunk_id": "pub-edge-a"}]
+      },
+      "current": {
+        "entities": [{"entity_id": "PROC-A", "entity_type": "procedure"}, {"entity_id": "RULE-A", "entity_type": "rule"}],
+        "edges": [{"source_id": "PROC-A", "relation": "regulated_by", "target_id": "RULE-A", "document_id": "pub-a", "chunk_id": "pub-edge-a"}]
+      },
+      "expected": {"status": "review", "code": "destructive_change_review_required", "affected_count": 1, "published_version": null}
+    },
+    {
+      "case_id": "relation-policy-change-reviewed",
+      "version": 2,
+      "previous_relation_policy": {
+        "name": "synthetic-graph-relations",
+        "version": 1,
+        "allowed_relations": ["regulated_by", "requires"]
+      },
+      "previous": {
+        "entities": [{"entity_id": "PROC-A", "entity_type": "procedure"}, {"entity_id": "RULE-A", "entity_type": "rule"}],
+        "edges": [{"source_id": "PROC-A", "relation": "regulated_by", "target_id": "RULE-A", "document_id": "pub-a", "chunk_id": "pub-edge-a"}]
+      },
+      "current": {
+        "entities": [{"entity_id": "PROC-A", "entity_type": "procedure"}, {"entity_id": "RULE-A", "entity_type": "rule"}],
+        "edges": [{"source_id": "PROC-A", "relation": "regulated_by", "target_id": "RULE-A", "document_id": "pub-a", "chunk_id": "pub-edge-a"}]
+      },
+      "reviewed_changes": ["$previous_relation_policy"],
+      "review_snapshot": "previous",
+      "expected": {"status": "published", "code": "published", "affected_count": 0, "published_version": 2}
     },
     {
       "case_id": "stale-change-review",

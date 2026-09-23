@@ -6,10 +6,13 @@ from medaudit.graph import (
     GraphCatalogDraft,
     GraphEdgeCandidate,
     GraphEntityCandidate,
+    GraphRelationPolicy,
     admit_graph_catalog,
 )
 
-ALLOWED = frozenset({"regulated_by", "requires"})
+POLICY = GraphRelationPolicy(
+    "catalog-test-policy", 1, frozenset({"regulated_by", "requires"})
+)
 
 
 def clean_draft() -> GraphCatalogDraft:
@@ -27,11 +30,29 @@ def clean_draft() -> GraphCatalogDraft:
 
 
 class GraphCatalogAdmissionTest(unittest.TestCase):
+    def test_relation_policy_identity_is_deterministic_and_order_independent(
+        self,
+    ) -> None:
+        reordered = GraphRelationPolicy(
+            "catalog-test-policy",
+            1,
+            frozenset({"requires", "regulated_by"}),
+        )
+
+        self.assertEqual(POLICY.policy_id, reordered.policy_id)
+
+    def test_relation_policy_requires_versioned_non_empty_allowlist(self) -> None:
+        with self.assertRaisesRegex(ValueError, "name and version"):
+            GraphRelationPolicy("", 1, frozenset({"requires"}))
+        with self.assertRaisesRegex(ValueError, "non-empty"):
+            GraphRelationPolicy("catalog-test-policy", 1, frozenset())
+
     def test_clean_catalog_is_admitted_as_executable_graph(self) -> None:
-        result = admit_graph_catalog(clean_draft(), allowed_relations=ALLOWED)
+        result = admit_graph_catalog(clean_draft(), relation_policy=POLICY)
 
         self.assertEqual(result.status, GraphAdmissionStatus.ADMITTED)
         self.assertIsNotNone(result.graph)
+        self.assertEqual(result.relation_policy_id, POLICY.policy_id)
 
     def test_orphan_edge_is_rejected(self) -> None:
         draft = GraphCatalogDraft(
@@ -43,7 +64,7 @@ class GraphCatalogAdmissionTest(unittest.TestCase):
             ),
         )
 
-        result = admit_graph_catalog(draft, allowed_relations=ALLOWED)
+        result = admit_graph_catalog(draft, relation_policy=POLICY)
 
         self.assertEqual(result.status, GraphAdmissionStatus.REJECTED)
         self.assertEqual(result.findings[0].code, GraphAuditCode.ORPHAN_EDGE)
@@ -58,7 +79,7 @@ class GraphCatalogAdmissionTest(unittest.TestCase):
             ),
         )
 
-        result = admit_graph_catalog(draft, allowed_relations=ALLOWED)
+        result = admit_graph_catalog(draft, relation_policy=POLICY)
 
         self.assertEqual(result.status, GraphAdmissionStatus.REJECTED)
         self.assertEqual(result.findings[0].code, GraphAuditCode.EMPTY_EDGE_FIELD)
@@ -72,7 +93,7 @@ class GraphCatalogAdmissionTest(unittest.TestCase):
             edges=(),
         )
 
-        result = admit_graph_catalog(draft, allowed_relations=ALLOWED)
+        result = admit_graph_catalog(draft, relation_policy=POLICY)
 
         self.assertEqual(result.status, GraphAdmissionStatus.REVIEW)
         self.assertEqual(
@@ -89,7 +110,7 @@ class GraphCatalogAdmissionTest(unittest.TestCase):
             ),
         )
 
-        result = admit_graph_catalog(draft, allowed_relations=ALLOWED)
+        result = admit_graph_catalog(draft, relation_policy=POLICY)
 
         self.assertEqual(result.status, GraphAdmissionStatus.REVIEW)
         self.assertEqual(result.findings[0].code, GraphAuditCode.UNKNOWN_RELATION)
@@ -107,7 +128,7 @@ class GraphCatalogAdmissionTest(unittest.TestCase):
             ),
         )
 
-        result = admit_graph_catalog(draft, allowed_relations=ALLOWED)
+        result = admit_graph_catalog(draft, relation_policy=POLICY)
 
         self.assertEqual(result.status, GraphAdmissionStatus.REVIEW)
         self.assertEqual(result.findings[0].code, GraphAuditCode.DUPLICATE_EDGE)

@@ -39,6 +39,7 @@ class PublishedGraphCatalog:
     publication_id: str
     version: int
     previous_publication_id: str | None
+    relation_policy_id: str
     entities: tuple[GraphEntity, ...]
     edges: tuple[GraphEdge, ...]
 
@@ -48,6 +49,7 @@ class PublishedGraphCatalog:
         expected = _publication_id(
             self.version,
             self.previous_publication_id,
+            self.relation_policy_id,
             self.entities,
             self.edges,
         )
@@ -112,7 +114,14 @@ def publish_graph_catalog(
                 admission,
                 (),
             )
-        return _published(admission, version, None, entities, edges)
+        return _published(
+            admission,
+            version,
+            None,
+            admission.relation_policy_id,
+            entities,
+            edges,
+        )
 
     if version != previous.version + 1:
         return _stopped(
@@ -122,7 +131,9 @@ def publish_graph_catalog(
             (),
         )
 
-    required_changes = _destructive_changes(previous, entities, edges)
+    required_changes = _destructive_changes(
+        previous, admission.relation_policy_id, entities, edges
+    )
     if not reviewed_changes <= required_changes:
         raise ValueError("reviewed graph changes must reference current changes")
     if reviewed_changes and review_previous_publication_id != previous.publication_id:
@@ -142,6 +153,7 @@ def publish_graph_catalog(
         admission,
         version,
         previous.publication_id,
+        admission.relation_policy_id,
         entities,
         edges,
     )
@@ -149,6 +161,7 @@ def publish_graph_catalog(
 
 def _destructive_changes(
     previous: PublishedGraphCatalog,
+    relation_policy_id: str,
     entities: tuple[GraphEntity, ...],
     edges: tuple[GraphEdge, ...],
 ) -> frozenset[str]:
@@ -162,22 +175,33 @@ def _destructive_changes(
     edge_changes = {
         _edge_reference(edge) for edge in previous.edges if edge not in current_edges
     }
-    return frozenset(entity_changes | edge_changes)
+    policy_changes = (
+        {f"relation-policy:{previous.relation_policy_id}"}
+        if previous.relation_policy_id != relation_policy_id
+        else set()
+    )
+    return frozenset(entity_changes | edge_changes | policy_changes)
 
 
 def _published(
     admission: GraphAdmissionResult,
     version: int,
     previous_publication_id: str | None,
+    relation_policy_id: str,
     entities: tuple[GraphEntity, ...],
     edges: tuple[GraphEdge, ...],
 ) -> GraphPublicationResult:
     catalog = PublishedGraphCatalog(
         publication_id=_publication_id(
-            version, previous_publication_id, entities, edges
+            version,
+            previous_publication_id,
+            relation_policy_id,
+            entities,
+            edges,
         ),
         version=version,
         previous_publication_id=previous_publication_id,
+        relation_policy_id=relation_policy_id,
         entities=entities,
         edges=edges,
     )
@@ -202,12 +226,14 @@ def _stopped(
 def _publication_id(
     version: int,
     previous_publication_id: str | None,
+    relation_policy_id: str,
     entities: tuple[GraphEntity, ...],
     edges: tuple[GraphEdge, ...],
 ) -> str:
     payload = {
         "version": version,
         "previous_publication_id": previous_publication_id,
+        "relation_policy_id": relation_policy_id,
         "entities": [asdict(entity) for entity in entities],
         "edges": [asdict(edge) for edge in edges],
     }
