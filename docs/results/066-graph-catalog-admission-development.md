@@ -54,3 +54,7 @@ sobre revisão, colisões entre ID e alias e múltiplos achados.
 
 Extração automática, catálogo privado, persistência e Graph RAG continuam
 bloqueados.
+
+O holdout congelado posterior foi registrado no
+[Resultado 067](067-graph-catalog-admission-holdout.md) e atingiu 8/8. O
+conjunto está encerrado e não será usado para tuning.

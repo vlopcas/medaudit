@@ -120,3 +120,8 @@ A primeira resposta a esse risco foi implementada no
 admissão fail-closed atingiu 10/10, mas ainda precisa de holdout próprio antes de
 ser considerada validada. A política está registrada na
 [ADR-029](../decisions/ADR-029-fail-closed-graph-catalog-admission.md).
+
+O holdout da admissão foi encerrado no
+[Resultado 067](../results/067-graph-catalog-admission-holdout.md), com 8/8
+casos corretos e precedência fail-closed preservada. O próximo risco passa a ser
+publicar e versionar somente catálogos admitidos.

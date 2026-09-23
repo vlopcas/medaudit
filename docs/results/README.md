@@ -80,3 +80,4 @@ para evitar a exposição indireta do corpus privado.
 - [Resultado 064: recuperação explícita assistida por grafo](064-graph-assisted-retrieval-development.md)
 - [Resultado 065: holdout da recuperação assistida por grafo](065-graph-assisted-retrieval-holdout.md)
 - [Resultado 066: admissão de catálogo de grafo](066-graph-catalog-admission-development.md)
+- [Resultado 067: holdout da admissão de catálogo de grafo](067-graph-catalog-admission-holdout.md)

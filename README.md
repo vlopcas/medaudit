@@ -328,6 +328,10 @@ Uma primeira fronteira de admissão atingiu 10/10 em desenvolvimento sintético:
 defeitos estruturais são rejeitados, pendências semânticas seguem para revisão e
 somente um catálogo limpo se torna executável. O próximo passo é congelar um
 holdout adversarial dessa política antes de qualquer extração.
+Esse holdout atingiu 8/8, incluindo precedência de rejeição sobre revisão,
+colisões ID–alias e múltiplos achados. A admissão está validada no escopo
+sintético. O próximo gate é uma publicação versionada e determinística de
+catálogos admitidos.
 
 ## Ambiente de desenvolvimento
 

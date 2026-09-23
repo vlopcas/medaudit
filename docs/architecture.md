@@ -395,6 +395,9 @@ dessa fronteira.
 Uma fronteira posterior separa `GraphCatalogDraft` não confiável do grafo
 executável. A auditoria rejeita defeitos estruturais, encaminha pendências
 semânticas para revisão e só materializa o grafo quando não há achados.
+O holdout dessa fronteira atingiu 8/8. A admissão fica separada de uma futura
+publicação: ainda não há identidade de snapshot, controle de versão ou revisão
+de mudanças destrutivas do grafo.
 
 ## Decisões relacionadas
 

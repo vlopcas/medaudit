@@ -27,7 +27,7 @@ implementação dedicada.
 | 8 | Query Understanding | Concluída para o ciclo atual | Roteamento, planejamento, execução e agrupamento opt-in por passo foram validados; reescrita semântica foi rejeitada. |
 | 9 | Regras estruturadas | Concluída para o ciclo sintético | Motor, auditoria, admissão e publicação versionada passaram em desenvolvimento e holdouts controlados. |
 | 10 | Temporalidade e versionamento | Parcial, antecipada | Catálogo temporal, relações de substituição, snapshots por data e avaliações temporais já existem. |
-| 11–18 | Grafos, tools, APIs e agentes | Gateway validado e admissão em desenvolvimento; demais não iniciadas | O gateway passou no holdout; admissão fail-closed atingiu 10/10 e aguarda holdout próprio. |
+| 11–18 | Grafos, tools, APIs e agentes | Gateway e admissão de grafo validados; demais não iniciadas | Gateway e admissão passaram em holdouts sintéticos; publicação e construção do grafo seguem pendentes. |
 | 19 | Provenance e citações | Parcial, antecipada | IDs determinísticos, origem dos chunks e validação das citações já atravessam o pipeline. |
 | 20–26 | Verifier até arquitetura final | Parcial, experimental | A fronteira foi integrada; a candidata estruturada passou em desenvolvimento e holdout como opt-in estreito. Arquitetura final permanece futura. |
 
@@ -66,7 +66,9 @@ atingiu 4/4 cadeias com grafo contra 0/4 do BM25 e 3/3 controles.
 O holdout sintético subsequente do gateway explícito atingiu 8/8 e está
 encerrado. A primeira fronteira de admissão e governança atingiu 10/10 e só
 materializa grafos sem achados, ainda sem extração automática ou dados privados.
-O próximo marco é congelar um holdout sintético adversarial dessa política.
+Seu holdout adversarial atingiu 8/8 e está encerrado. O próximo marco é uma
+fronteira de publicação versionada para catálogos admitidos, ainda sem extração
+automática ou dados privados.
 
 O histórico que levou a esse marco permanece abaixo. Na **Fase 8 — Query
 Understanding**, após chegar a 100% no

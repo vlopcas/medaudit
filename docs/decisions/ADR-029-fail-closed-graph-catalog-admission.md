@@ -34,3 +34,11 @@ mesmas garantias.
 
 A decisão não aprova extração, resolução automática de revisão, persistência ou
 uso de entidades reais. Esses temas exigem avaliações próprias.
+
+## Resultado posterior
+
+O holdout congelado do
+[Resultado 067](../results/067-graph-catalog-admission-holdout.md) atingiu 8/8,
+incluindo múltiplos achados e precedência de rejeição sobre revisão. A fronteira
+fica validada no escopo sintético atual; publicação e versionamento permanecem
+separados.
