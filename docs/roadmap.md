@@ -143,7 +143,9 @@ Uma fronteira explícita pergunta-entidade passou em desenvolvimento sintético;
 a composição ponta a ponta recuperou 4/4 cadeias contra 0/4 do BM25 no slice
 adversarial e acertou 3/3 controles. O holdout sintético congelado subsequente
 atingiu 8/8 e está encerrado. O próximo gate é governar a admissão de entidades
-e relações revisadas antes de qualquer extração ou persistência. A análise está no
+e relações revisadas antes de qualquer extração ou persistência. Uma primeira
+fronteira fail-closed atingiu 10/10; o próximo gate é seu holdout sintético
+congelado. A análise está no
 [Checkpoint arquitetural 001](architecture-checkpoints/001-phase-9-rules-to-graph.md).
 
 ### 7. Tools, dados estruturados e agentes

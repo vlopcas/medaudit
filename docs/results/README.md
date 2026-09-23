@@ -79,3 +79,4 @@ para evitar a exposição indireta do corpus privado.
 - [Resultado 063: solicitação explícita de traversal](063-explicit-graph-request-development.md)
 - [Resultado 064: recuperação explícita assistida por grafo](064-graph-assisted-retrieval-development.md)
 - [Resultado 065: holdout da recuperação assistida por grafo](065-graph-assisted-retrieval-holdout.md)
+- [Resultado 066: admissão de catálogo de grafo](066-graph-catalog-admission-development.md)

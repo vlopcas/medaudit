@@ -41,3 +41,6 @@ O holdout congelado do
 com quatro cadeias e quatro controles corretos. O gateway fica aprovado como
 componente estreito e opt-in sobre relações revisadas. As demais restrições
 desta decisão permanecem vigentes.
+
+A governança da entrada do grafo foi separada posteriormente pela
+[ADR-029](ADR-029-fail-closed-graph-catalog-admission.md).

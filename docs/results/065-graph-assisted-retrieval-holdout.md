@@ -59,3 +59,7 @@ privado.
 O holdout está encerrado e não será reutilizado para tuning. O próximo gate deve
 avaliar a admissão e governança de entidades e relações candidatas antes que um
 grafo possa ser construído a partir de qualquer processo de extração.
+
+A primeira fronteira dessa admissão foi avaliada no
+[Resultado 066](066-graph-catalog-admission-development.md) e atingiu 10/10 em
+desenvolvimento sintético.

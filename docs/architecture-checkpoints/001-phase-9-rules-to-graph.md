@@ -114,3 +114,9 @@ O holdout subsequente foi encerrado no
 casos corretos. O gateway estreito fica validado para relações revisadas; o
 próximo risco arquitetural é admitir e governar as entidades e arestas que
 compõem o grafo, não ampliar o roteamento ou adicionar um banco.
+
+A primeira resposta a esse risco foi implementada no
+[Resultado 066](../results/066-graph-catalog-admission-development.md). A
+admissão fail-closed atingiu 10/10, mas ainda precisa de holdout próprio antes de
+ser considerada validada. A política está registrada na
+[ADR-029](../decisions/ADR-029-fail-closed-graph-catalog-admission.md).

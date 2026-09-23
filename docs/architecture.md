@@ -386,12 +386,15 @@ Essa ligação agora possui uma primeira fronteira determinística: somente
 perguntas com intenção de caminho e duas referências revisadas geram uma
 solicitação tipada. Casos incompletos ou ambíguos param em revisão. A composição
 com traversal foi realizada pelo `ExplicitGraphGateway` em desenvolvimento:
-perguntas
-fora da gramática não ativam grafo, ambiguidade exige revisão e entidades
+perguntas fora da gramática não ativam grafo, ambiguidade exige revisão e
+entidades
 desconectadas retornam ausência de caminho. O holdout posterior atingiu 8/8 e
 aprovou somente esse uso estreito e opt-in. O componente não participa do
 pipeline padrão; construção, admissão e versionamento do grafo continuam fora
 dessa fronteira.
+Uma fronteira posterior separa `GraphCatalogDraft` não confiável do grafo
+executável. A auditoria rejeita defeitos estruturais, encaminha pendências
+semânticas para revisão e só materializa o grafo quando não há achados.
 
 ## Decisões relacionadas
 
@@ -423,6 +426,7 @@ dessa fronteira.
 - [ADR-026: grafo adiado até lacuna medida](decisions/ADR-026-defer-graph-until-measured-gap.md)
 - [ADR-027: traversal em grafo limitado e revisado](decisions/ADR-027-bounded-reviewed-graph-traversal.md)
 - [ADR-028: gateway de grafo explícito e opt-in](decisions/ADR-028-explicit-opt-in-graph-gateway.md)
+- [ADR-029: admissão fail-closed de catálogo de grafo](decisions/ADR-029-fail-closed-graph-catalog-admission.md)
 
 ## Ambiente de execução
 

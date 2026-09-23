@@ -324,6 +324,10 @@ O holdout congelado subsequente atingiu 8/8: quatro cadeias completas, quatro
 controles corretos e provenance integral. O gateway fica aprovado somente como
 componente opt-in sobre relações revisadas. O próximo gate é a admissão e
 governança das entidades e relações que formariam o grafo.
+Uma primeira fronteira de admissão atingiu 10/10 em desenvolvimento sintético:
+defeitos estruturais são rejeitados, pendências semânticas seguem para revisão e
+somente um catálogo limpo se torna executável. O próximo passo é congelar um
+holdout adversarial dessa política antes de qualquer extração.
 
 ## Ambiente de desenvolvimento
 
