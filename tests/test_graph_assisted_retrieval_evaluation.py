@@ -22,6 +22,28 @@ class GraphAssistedRetrievalEvaluationTest(unittest.TestCase):
         )
         self.assertEqual(report["metrics"]["control_exact_match"], 1.0)
         self.assertTrue(report["metrics"]["graph_provenance_complete"])
+        self.assertEqual(report["metrics"]["exact_match"], 1.0)
+
+    def test_loader_rejects_unexpected_policy(self) -> None:
+        with self.assertRaisesRegex(ValueError, "unsupported"):
+            load_dataset(
+                Path(
+                    "data/synthetic_cases/"
+                    "graph_assisted_retrieval_development.json"
+                ),
+                expected_policy="graph-assisted-retrieval-holdout-v1",
+            )
+
+    def test_holdout_schema_is_frozen_under_its_own_policy(self) -> None:
+        cases = load_dataset(
+            Path(
+                "data/synthetic_cases/"
+                "graph_assisted_retrieval_holdout.json"
+            ),
+            expected_policy="graph-assisted-retrieval-holdout-v1",
+        )
+
+        self.assertEqual(len(cases), 8)
 
 
 if __name__ == "__main__":

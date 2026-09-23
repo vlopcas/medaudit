@@ -18,15 +18,18 @@ from medaudit.retrieval import BM25Index
 
 _NOTICE = "Conteúdo integralmente sintético, sem reprodução de documentos reais."
 _POLICY = "graph-assisted-retrieval-development-v1"
+_HOLDOUT_POLICY = "graph-assisted-retrieval-holdout-v1"
 
 
-def load_dataset(path: Path) -> list[dict[str, Any]]:
+def load_dataset(
+    path: Path, *, expected_policy: str = _POLICY
+) -> list[dict[str, Any]]:
     payload = cast(
         dict[str, Any], json.loads(path.read_text(encoding="utf-8"))
     )
     if (
         payload.get("schema_version") != 1
-        or payload.get("policy") != _POLICY
+        or payload.get("policy") != expected_policy
         or payload.get("notice") != _NOTICE
     ):
         raise ValueError("unsupported graph-assisted retrieval schema")
@@ -39,7 +42,9 @@ def load_dataset(path: Path) -> list[dict[str, Any]]:
     return cases
 
 
-def evaluate(cases: list[dict[str, Any]]) -> dict[str, Any]:
+def evaluate(
+    cases: list[dict[str, Any]], *, policy: str = _POLICY
+) -> dict[str, Any]:
     outcomes = [_evaluate_case(case) for case in cases]
     chain_cases = [item for item in outcomes if item["expected_chain"]]
     control_cases = [item for item in outcomes if not item["expected_chain"]]
@@ -47,7 +52,7 @@ def evaluate(cases: list[dict[str, Any]]) -> dict[str, Any]:
         raise ValueError("evaluation requires chain and control cases")
     return {
         "schema_version": 1,
-        "policy": _POLICY,
+        "policy": policy,
         "case_count": len(outcomes),
         "metrics": {
             "bm25_complete_chain_rate": sum(
@@ -65,6 +70,8 @@ def evaluate(cases: list[dict[str, Any]]) -> dict[str, Any]:
             "graph_provenance_complete": all(
                 item["graph_provenance_complete"] for item in chain_cases
             ),
+            "exact_match": sum(item["passed"] for item in outcomes)
+            / len(outcomes),
         },
         "cases": outcomes,
     }
@@ -112,6 +119,18 @@ def _evaluate_case(case: dict[str, Any]) -> dict[str, Any]:
     graph_provenance_complete = graph_result.path is None or all(
         edge.document_id and edge.chunk_id for edge in graph_result.path.edges
     )
+    chain_passed = (
+        not expected_chain
+        or (
+            graph_result.status.value == "path_found"
+            and graph_chunks == expected_chain
+            and graph_provenance_complete
+        )
+    )
+    control_passed = bool(expected_chain) or (
+        graph_result.status.value == case["expected_gateway_status"]
+        and not graph_chunks
+    )
     return {
         "case_id": case["case_id"],
         "category": case["category"],
@@ -127,16 +146,39 @@ def _evaluate_case(case: dict[str, Any]) -> dict[str, Any]:
         "graph_complete_chain": bool(expected_chain)
         and graph_chunks == expected_chain,
         "graph_provenance_complete": graph_provenance_complete,
+        "passed": (
+            graph_result.status.value == case["expected_gateway_status"]
+            and chain_passed
+            and control_passed
+        ),
     }
 
 
 def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dataset", type=Path, required=True)
+    parser.add_argument(
+        "--dataset-policy",
+        choices=(_POLICY, _HOLDOUT_POLICY),
+        default=_POLICY,
+    )
+    parser.add_argument("--expected-sha256")
+    parser.add_argument("--output", type=Path)
+    parser.add_argument("--refuse-overwrite", action="store_true")
     args = parser.parse_args(argv)
-    report = evaluate(load_dataset(args.dataset))
-    report["input_sha256"] = verify_input(args.dataset, None)
-    print(json.dumps(report, ensure_ascii=False, indent=2))
+    if args.output and args.refuse_overwrite and args.output.exists():
+        raise FileExistsError(f"refusing to overwrite existing report: {args.output}")
+    report = evaluate(
+        load_dataset(args.dataset, expected_policy=args.dataset_policy),
+        policy=args.dataset_policy,
+    )
+    report["input_sha256"] = verify_input(args.dataset, args.expected_sha256)
+    rendered = json.dumps(report, ensure_ascii=False, indent=2) + "\n"
+    if args.output:
+        args.output.parent.mkdir(parents=True, exist_ok=True)
+        args.output.write_text(rendered, encoding="utf-8")
+    else:
+        print(rendered, end="")
     return 0
 
 

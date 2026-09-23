@@ -1036,6 +1036,25 @@ services:
       - --dataset
       - /app/data/synthetic_cases/graph_assisted_retrieval_development.json
 
+  evaluate-graph-assisted-retrieval-holdout:
+    extends: evaluate-graph-assisted-retrieval
+    user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
+    volumes:
+      - type: bind
+        source: ./artifacts
+        target: /artifacts
+    command:
+      - medaudit-evaluate-graph-assisted-retrieval
+      - --dataset
+      - /app/data/synthetic_cases/graph_assisted_retrieval_holdout.json
+      - --dataset-policy
+      - graph-assisted-retrieval-holdout-v1
+      - --expected-sha256
+      - d395bdcb5bd3c3e4aad6d74cc418597247d98acbfb1ad449cb8ab06abb0c75f7
+      - --output
+      - /artifacts/graph-assisted-retrieval-holdout.local.json
+      - --refuse-overwrite
+
   evaluate-explicit-query-routing-holdout:
     extends: evaluate-explicit-query-routing
     user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"

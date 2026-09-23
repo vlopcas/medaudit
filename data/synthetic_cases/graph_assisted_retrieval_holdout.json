@@ -1,0 +1,193 @@
+{
+  "schema_version": 1,
+  "policy": "graph-assisted-retrieval-holdout-v1",
+  "notice": "Conteúdo integralmente sintético, sem reprodução de documentos reais.",
+  "cases": [
+    {
+      "case_id": "holdout-two-hop-canonical",
+      "category": "two_hop",
+      "query": "Mostre o caminho de PROC-L até EX-LIMA.",
+      "top_k": 2,
+      "entities": [
+        {"entity_id": "PROC-L", "entity_type": "procedure"},
+        {"entity_id": "RULE-L", "entity_type": "rule"},
+        {"entity_id": "EX-LIMA", "entity_type": "exception"}
+      ],
+      "edges": [
+        {"source_id": "PROC-L", "relation": "regulated_by", "target_id": "RULE-L", "document_id": "holdout-two-source-a", "chunk_id": "holdout-two-edge-a"},
+        {"source_id": "RULE-L", "relation": "has_exception", "target_id": "EX-LIMA", "document_id": "holdout-two-source-b", "chunk_id": "holdout-two-edge-b"}
+      ],
+      "chunks": [
+        {"chunk_id": "holdout-two-edge-a", "document_id": "holdout-two-source-a", "text": "PROC-L recebe orientação da RULE-L."},
+        {"chunk_id": "holdout-two-edge-b", "document_id": "holdout-two-source-b", "text": "RULE-L registra a EX-LIMA."},
+        {"chunk_id": "holdout-two-decoy", "document_id": "holdout-two-source-c", "text": "PROC-L e EX-LIMA constam no índice remissivo."}
+      ],
+      "expected_chain": ["holdout-two-edge-a", "holdout-two-edge-b"],
+      "expected_gateway_status": "path_found"
+    },
+    {
+      "case_id": "holdout-three-hop-aliases",
+      "category": "three_hop",
+      "query": "Qual o caminho do procedimento violeta até condição onze?",
+      "top_k": 3,
+      "entities": [
+        {"entity_id": "PROC-V", "entity_type": "procedure", "aliases": ["PROCEDIMENTO VIOLETA"]},
+        {"entity_id": "RULE-V", "entity_type": "rule"},
+        {"entity_id": "EX-V", "entity_type": "exception"},
+        {"entity_id": "COND-11", "entity_type": "condition", "aliases": ["CONDIÇÃO ONZE"]}
+      ],
+      "edges": [
+        {"source_id": "PROC-V", "relation": "regulated_by", "target_id": "RULE-V", "document_id": "holdout-three-source-a", "chunk_id": "holdout-three-edge-a"},
+        {"source_id": "RULE-V", "relation": "has_exception", "target_id": "EX-V", "document_id": "holdout-three-source-b", "chunk_id": "holdout-three-edge-b"},
+        {"source_id": "EX-V", "relation": "requires", "target_id": "COND-11", "document_id": "holdout-three-source-c", "chunk_id": "holdout-three-edge-c"}
+      ],
+      "chunks": [
+        {"chunk_id": "holdout-three-edge-a", "document_id": "holdout-three-source-a", "text": "PROC-V é orientado por RULE-V."},
+        {"chunk_id": "holdout-three-edge-b", "document_id": "holdout-three-source-b", "text": "RULE-V contém a exceção EX-V."},
+        {"chunk_id": "holdout-three-edge-c", "document_id": "holdout-three-source-c", "text": "EX-V depende de COND-11."},
+        {"chunk_id": "holdout-three-decoy-a", "document_id": "holdout-three-source-d", "text": "Procedimento violeta aparece no glossário sintético."},
+        {"chunk_id": "holdout-three-decoy-b", "document_id": "holdout-three-source-e", "text": "Condição onze aparece no glossário sintético."}
+      ],
+      "expected_chain": ["holdout-three-edge-a", "holdout-three-edge-b", "holdout-three-edge-c"],
+      "expected_gateway_status": "path_found"
+    },
+    {
+      "case_id": "holdout-four-hop-canonical",
+      "category": "four_hop",
+      "query": "Trace o caminho de PROC-Q até RULE-Q9.",
+      "top_k": 4,
+      "entities": [
+        {"entity_id": "PROC-Q", "entity_type": "procedure"},
+        {"entity_id": "RULE-Q1", "entity_type": "rule"},
+        {"entity_id": "EX-Q", "entity_type": "exception"},
+        {"entity_id": "COND-Q", "entity_type": "condition"},
+        {"entity_id": "RULE-Q9", "entity_type": "rule"}
+      ],
+      "edges": [
+        {"source_id": "PROC-Q", "relation": "regulated_by", "target_id": "RULE-Q1", "document_id": "holdout-four-source-a", "chunk_id": "holdout-four-edge-a"},
+        {"source_id": "RULE-Q1", "relation": "has_exception", "target_id": "EX-Q", "document_id": "holdout-four-source-b", "chunk_id": "holdout-four-edge-b"},
+        {"source_id": "EX-Q", "relation": "requires", "target_id": "COND-Q", "document_id": "holdout-four-source-c", "chunk_id": "holdout-four-edge-c"},
+        {"source_id": "COND-Q", "relation": "activates", "target_id": "RULE-Q9", "document_id": "holdout-four-source-d", "chunk_id": "holdout-four-edge-d"}
+      ],
+      "chunks": [
+        {"chunk_id": "holdout-four-edge-a", "document_id": "holdout-four-source-a", "text": "PROC-Q aponta para RULE-Q1."},
+        {"chunk_id": "holdout-four-edge-b", "document_id": "holdout-four-source-b", "text": "RULE-Q1 incorpora EX-Q."},
+        {"chunk_id": "holdout-four-edge-c", "document_id": "holdout-four-source-c", "text": "EX-Q exige COND-Q."},
+        {"chunk_id": "holdout-four-edge-d", "document_id": "holdout-four-source-d", "text": "COND-Q ativa RULE-Q9."},
+        {"chunk_id": "holdout-four-decoy-a", "document_id": "holdout-four-source-e", "text": "PROC-Q possui entrada auxiliar."},
+        {"chunk_id": "holdout-four-decoy-b", "document_id": "holdout-four-source-f", "text": "RULE-Q9 possui entrada auxiliar."}
+      ],
+      "expected_chain": ["holdout-four-edge-a", "holdout-four-edge-b", "holdout-four-edge-c", "holdout-four-edge-d"],
+      "expected_gateway_status": "path_found"
+    },
+    {
+      "case_id": "holdout-reverse-four-hop",
+      "category": "reverse_impact",
+      "query": "Mostre o caminho reverso de COND-R até PROC-R.",
+      "top_k": 4,
+      "entities": [
+        {"entity_id": "COND-R", "entity_type": "condition"},
+        {"entity_id": "EX-R", "entity_type": "exception"},
+        {"entity_id": "RULE-R2", "entity_type": "rule"},
+        {"entity_id": "RULE-R1", "entity_type": "rule"},
+        {"entity_id": "PROC-R", "entity_type": "procedure"}
+      ],
+      "edges": [
+        {"source_id": "PROC-R", "relation": "regulated_by", "target_id": "RULE-R1", "document_id": "holdout-reverse-source-d", "chunk_id": "holdout-reverse-edge-d"},
+        {"source_id": "RULE-R1", "relation": "delegates_to", "target_id": "RULE-R2", "document_id": "holdout-reverse-source-c", "chunk_id": "holdout-reverse-edge-c"},
+        {"source_id": "RULE-R2", "relation": "modified_by", "target_id": "EX-R", "document_id": "holdout-reverse-source-b", "chunk_id": "holdout-reverse-edge-b"},
+        {"source_id": "EX-R", "relation": "activated_by", "target_id": "COND-R", "document_id": "holdout-reverse-source-a", "chunk_id": "holdout-reverse-edge-a"}
+      ],
+      "chunks": [
+        {"chunk_id": "holdout-reverse-edge-a", "document_id": "holdout-reverse-source-a", "text": "EX-R é ativada por COND-R."},
+        {"chunk_id": "holdout-reverse-edge-b", "document_id": "holdout-reverse-source-b", "text": "RULE-R2 é modificada por EX-R."},
+        {"chunk_id": "holdout-reverse-edge-c", "document_id": "holdout-reverse-source-c", "text": "RULE-R1 delega para RULE-R2."},
+        {"chunk_id": "holdout-reverse-edge-d", "document_id": "holdout-reverse-source-d", "text": "PROC-R é regulado por RULE-R1."},
+        {"chunk_id": "holdout-reverse-decoy-a", "document_id": "holdout-reverse-source-e", "text": "COND-R aparece em índice independente."},
+        {"chunk_id": "holdout-reverse-decoy-b", "document_id": "holdout-reverse-source-f", "text": "PROC-R aparece em índice independente."}
+      ],
+      "expected_chain": ["holdout-reverse-edge-a", "holdout-reverse-edge-b", "holdout-reverse-edge-c", "holdout-reverse-edge-d"],
+      "expected_gateway_status": "path_found"
+    },
+    {
+      "case_id": "holdout-reverse-no-path",
+      "category": "no_path",
+      "query": "Qual o caminho reverso de COND-S até PROC-S?",
+      "top_k": 2,
+      "entities": [
+        {"entity_id": "COND-S", "entity_type": "condition"},
+        {"entity_id": "RULE-S", "entity_type": "rule"},
+        {"entity_id": "PROC-S", "entity_type": "procedure"},
+        {"entity_id": "RULE-T", "entity_type": "rule"}
+      ],
+      "edges": [
+        {"source_id": "RULE-S", "relation": "requires", "target_id": "COND-S", "document_id": "holdout-no-path-source-a", "chunk_id": "holdout-no-path-edge-a"},
+        {"source_id": "PROC-S", "relation": "regulated_by", "target_id": "RULE-T", "document_id": "holdout-no-path-source-b", "chunk_id": "holdout-no-path-edge-b"}
+      ],
+      "chunks": [
+        {"chunk_id": "holdout-no-path-edge-a", "document_id": "holdout-no-path-source-a", "text": "RULE-S requer COND-S."},
+        {"chunk_id": "holdout-no-path-edge-b", "document_id": "holdout-no-path-source-b", "text": "PROC-S é regulado por RULE-T."}
+      ],
+      "expected_chain": [],
+      "expected_gateway_status": "no_path"
+    },
+    {
+      "case_id": "holdout-ambiguous-target",
+      "category": "ambiguous_entity",
+      "query": "Qual o caminho de PROC-M até OMEGA?",
+      "top_k": 2,
+      "entities": [
+        {"entity_id": "PROC-M", "entity_type": "procedure"},
+        {"entity_id": "OMEGA-1", "entity_type": "rule", "aliases": ["OMEGA"]},
+        {"entity_id": "OMEGA-2", "entity_type": "rule", "aliases": ["OMEGA"]}
+      ],
+      "edges": [
+        {"source_id": "PROC-M", "relation": "regulated_by", "target_id": "OMEGA-1", "document_id": "holdout-ambiguous-source-a", "chunk_id": "holdout-ambiguous-edge-a"}
+      ],
+      "chunks": [
+        {"chunk_id": "holdout-ambiguous-edge-a", "document_id": "holdout-ambiguous-source-a", "text": "PROC-M aponta para OMEGA-1."},
+        {"chunk_id": "holdout-ambiguous-decoy", "document_id": "holdout-ambiguous-source-b", "text": "OMEGA também identifica OMEGA-2."}
+      ],
+      "expected_chain": [],
+      "expected_gateway_status": "review"
+    },
+    {
+      "case_id": "holdout-unknown-target",
+      "category": "unknown_entity",
+      "query": "Qual o caminho de PROC-N até RULE-INEXISTENTE?",
+      "top_k": 2,
+      "entities": [
+        {"entity_id": "PROC-N", "entity_type": "procedure"},
+        {"entity_id": "RULE-N", "entity_type": "rule"}
+      ],
+      "edges": [
+        {"source_id": "PROC-N", "relation": "regulated_by", "target_id": "RULE-N", "document_id": "holdout-unknown-source-a", "chunk_id": "holdout-unknown-edge-a"}
+      ],
+      "chunks": [
+        {"chunk_id": "holdout-unknown-edge-a", "document_id": "holdout-unknown-source-a", "text": "PROC-N aponta para RULE-N."},
+        {"chunk_id": "holdout-unknown-decoy", "document_id": "holdout-unknown-source-b", "text": "RULE-INEXISTENTE aparece apenas na pergunta de controle."}
+      ],
+      "expected_chain": [],
+      "expected_gateway_status": "review"
+    },
+    {
+      "case_id": "holdout-non-graph-intent",
+      "category": "not_applicable",
+      "query": "Resuma as diferenças entre RULE-U1 e RULE-U2.",
+      "top_k": 2,
+      "entities": [
+        {"entity_id": "RULE-U1", "entity_type": "rule"},
+        {"entity_id": "RULE-U2", "entity_type": "rule"}
+      ],
+      "edges": [
+        {"source_id": "RULE-U1", "relation": "compared_with", "target_id": "RULE-U2", "document_id": "holdout-non-graph-source", "chunk_id": "holdout-non-graph-edge"}
+      ],
+      "chunks": [
+        {"chunk_id": "holdout-non-graph-a", "document_id": "holdout-non-graph-source-a", "text": "RULE-U1 admite o fluxo U1."},
+        {"chunk_id": "holdout-non-graph-b", "document_id": "holdout-non-graph-source-b", "text": "RULE-U2 recusa o fluxo U2."}
+      ],
+      "expected_chain": [],
+      "expected_gateway_status": "not_applicable"
+    }
+  ]
+}
