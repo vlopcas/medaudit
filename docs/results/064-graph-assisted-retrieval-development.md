@@ -54,3 +54,7 @@ artefato de saída devem ser congelados, com recusa de sobrescrita.
 
 BM25 permanece como baseline padrão. Graph RAG, banco de grafo, extração
 automática, respostas generativas e corpus privado continuam bloqueados.
+
+O holdout congelado posterior foi registrado no
+[Resultado 065](065-graph-assisted-retrieval-holdout.md) e atingiu 8/8. O
+conjunto está encerrado e não será usado para tuning.

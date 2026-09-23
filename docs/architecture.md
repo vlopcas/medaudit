@@ -388,8 +388,10 @@ solicitação tipada. Casos incompletos ou ambíguos param em revisão. A compos
 com traversal foi realizada pelo `ExplicitGraphGateway` em desenvolvimento:
 perguntas
 fora da gramática não ativam grafo, ambiguidade exige revisão e entidades
-desconectadas retornam ausência de caminho. A avaliação de holdout permanece
-pendente e o componente não participa do pipeline padrão.
+desconectadas retornam ausência de caminho. O holdout posterior atingiu 8/8 e
+aprovou somente esse uso estreito e opt-in. O componente não participa do
+pipeline padrão; construção, admissão e versionamento do grafo continuam fora
+dessa fronteira.
 
 ## Decisões relacionadas
 

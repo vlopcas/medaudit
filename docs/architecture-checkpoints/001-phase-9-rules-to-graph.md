@@ -108,3 +108,9 @@ gateway recuperou 4/4 cadeias contra 0/4 do BM25 no slice adversarial e acertou
 3/3 controles. Isso autoriza somente um holdout sintético congelado do gateway
 explícito, conforme a
 [ADR-028](../decisions/ADR-028-explicit-opt-in-graph-gateway.md).
+
+O holdout subsequente foi encerrado no
+[Resultado 065](../results/065-graph-assisted-retrieval-holdout.md), com 8/8
+casos corretos. O gateway estreito fica validado para relações revisadas; o
+próximo risco arquitetural é admitir e governar as entidades e arestas que
+compõem o grafo, não ampliar o roteamento ou adicionar um banco.

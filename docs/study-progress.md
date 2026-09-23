@@ -27,7 +27,7 @@ implementação dedicada.
 | 8 | Query Understanding | Concluída para o ciclo atual | Roteamento, planejamento, execução e agrupamento opt-in por passo foram validados; reescrita semântica foi rejeitada. |
 | 9 | Regras estruturadas | Concluída para o ciclo sintético | Motor, auditoria, admissão e publicação versionada passaram em desenvolvimento e holdouts controlados. |
 | 10 | Temporalidade e versionamento | Parcial, antecipada | Catálogo temporal, relações de substituição, snapshots por data e avaliações temporais já existem. |
-| 11–18 | Grafos, tools, APIs e agentes | Gateway de grafo experimental; demais não iniciadas | A integração explícita superou BM25 no slice adversarial; holdout e Graph RAG ainda não estão autorizados. |
+| 11–18 | Grafos, tools, APIs e agentes | Gateway de grafo estreito validado; demais não iniciadas | O holdout atingiu 8/8 sobre relações revisadas; construção do grafo e Graph RAG não estão autorizados. |
 | 19 | Provenance e citações | Parcial, antecipada | IDs determinísticos, origem dos chunks e validação das citações já atravessam o pipeline. |
 | 20–26 | Verifier até arquitetura final | Parcial, experimental | A fronteira foi integrada; a candidata estruturada passou em desenvolvimento e holdout como opt-in estreito. Arquitetura final permanece futura. |
 
@@ -63,8 +63,9 @@ categorias, preservou provenance e falhou fechado nos controles. Como recebeu
 IDs já resolvidos, uma fronteira explícita foi avaliada em seguida e atingiu
 10/10 sem adivinhar referências ausentes ou ambíguas. A composição subsequente
 atingiu 4/4 cadeias com grafo contra 0/4 do BM25 e 3/3 controles.
-O próximo marco é congelar e executar uma única vez um holdout sintético do
-gateway explícito, ainda sem conexão ao catálogo privado.
+O holdout sintético subsequente do gateway explícito atingiu 8/8 e está
+encerrado. O próximo marco é avaliar admissão e governança de entidades e
+relações candidatas, sem extração automática ou dados privados.
 
 O histórico que levou a esse marco permanece abaixo. Na **Fase 8 — Query
 Understanding**, após chegar a 100% no

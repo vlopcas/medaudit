@@ -320,6 +320,10 @@ Essa composição recuperou 4/4 cadeias explícitas que o BM25 não completou no
 slice adversarial e acertou 3/3 controles, sempre com provenance por aresta. O
 resultado autoriza congelar um holdout sintético para o gateway estreito, não
 adotar Graph RAG nem conectar dados privados.
+O holdout congelado subsequente atingiu 8/8: quatro cadeias completas, quatro
+controles corretos e provenance integral. O gateway fica aprovado somente como
+componente opt-in sobre relações revisadas. O próximo gate é a admissão e
+governança das entidades e relações que formariam o grafo.
 
 ## Ambiente de desenvolvimento
 

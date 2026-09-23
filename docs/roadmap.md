@@ -141,8 +141,9 @@ determinístico em memória. Esse protótipo recuperou as quatro categorias, mas
 recebeu entidades já resolvidas e ainda não constitui uma comparação integrada.
 Uma fronteira explícita pergunta-entidade passou em desenvolvimento sintético;
 a composição ponta a ponta recuperou 4/4 cadeias contra 0/4 do BM25 no slice
-adversarial e acertou 3/3 controles. O próximo gate é um holdout sintético
-congelado para essa fronteira estreita. A análise está no
+adversarial e acertou 3/3 controles. O holdout sintético congelado subsequente
+atingiu 8/8 e está encerrado. O próximo gate é governar a admissão de entidades
+e relações revisadas antes de qualquer extração ou persistência. A análise está no
 [Checkpoint arquitetural 001](architecture-checkpoints/001-phase-9-rules-to-graph.md).
 
 ### 7. Tools, dados estruturados e agentes

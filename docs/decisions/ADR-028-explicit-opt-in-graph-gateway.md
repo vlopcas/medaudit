@@ -33,3 +33,11 @@ ou pedem esclarecimento; o gateway não infere endpoints ausentes.
 Mesmo um holdout aprovado validará apenas esta fronteira estreita. Construção e
 governança do grafo, respostas finais e custo operacional exigirão gates
 independentes.
+
+## Resultado posterior
+
+O holdout congelado do
+[Resultado 065](../results/065-graph-assisted-retrieval-holdout.md) atingiu 8/8,
+com quatro cadeias e quatro controles corretos. O gateway fica aprovado como
+componente estreito e opt-in sobre relações revisadas. As demais restrições
+desta decisão permanecem vigentes.
