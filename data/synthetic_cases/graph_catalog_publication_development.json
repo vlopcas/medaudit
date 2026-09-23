@@ -1,0 +1,130 @@
+{
+  "schema_version": 1,
+  "policy": "graph-catalog-publication-development-v1",
+  "notice": "Conteúdo integralmente sintético, sem reprodução de documentos reais.",
+  "allowed_relations": ["regulated_by", "requires"],
+  "cases": [
+    {
+      "case_id": "initial-publication",
+      "version": 1,
+      "current": {
+        "entities": [{"entity_id": "PROC-A", "entity_type": "procedure"}, {"entity_id": "RULE-A", "entity_type": "rule"}],
+        "edges": [{"source_id": "PROC-A", "relation": "regulated_by", "target_id": "RULE-A", "document_id": "pub-a", "chunk_id": "pub-edge-a"}]
+      },
+      "expected": {"status": "published", "code": "published", "affected_count": 0, "published_version": 1}
+    },
+    {
+      "case_id": "catalog-not-admitted",
+      "version": 1,
+      "current": {
+        "entities": [{"entity_id": "ITEM-A", "entity_type": "item", "aliases": ["ALFA"]}, {"entity_id": "ITEM-B", "entity_type": "item", "aliases": ["alfa"]}],
+        "edges": []
+      },
+      "expected": {"status": "review", "code": "catalog_not_admitted", "affected_count": 0, "published_version": null}
+    },
+    {
+      "case_id": "invalid-initial-version",
+      "version": 2,
+      "current": {
+        "entities": [{"entity_id": "PROC-A", "entity_type": "procedure"}, {"entity_id": "RULE-A", "entity_type": "rule"}],
+        "edges": [{"source_id": "PROC-A", "relation": "regulated_by", "target_id": "RULE-A", "document_id": "pub-a", "chunk_id": "pub-edge-a"}]
+      },
+      "expected": {"status": "blocked", "code": "initial_version_invalid", "affected_count": 0, "published_version": null}
+    },
+    {
+      "case_id": "non-monotonic-version",
+      "version": 3,
+      "previous": {
+        "entities": [{"entity_id": "PROC-A", "entity_type": "procedure"}, {"entity_id": "RULE-A", "entity_type": "rule"}],
+        "edges": [{"source_id": "PROC-A", "relation": "regulated_by", "target_id": "RULE-A", "document_id": "pub-a", "chunk_id": "pub-edge-a"}]
+      },
+      "current": {
+        "entities": [{"entity_id": "PROC-A", "entity_type": "procedure"}, {"entity_id": "RULE-A", "entity_type": "rule"}],
+        "edges": [{"source_id": "PROC-A", "relation": "regulated_by", "target_id": "RULE-A", "document_id": "pub-a", "chunk_id": "pub-edge-a"}]
+      },
+      "expected": {"status": "blocked", "code": "version_not_monotonic", "affected_count": 0, "published_version": null}
+    },
+    {
+      "case_id": "additive-update",
+      "version": 2,
+      "previous": {
+        "entities": [{"entity_id": "PROC-A", "entity_type": "procedure"}, {"entity_id": "RULE-A", "entity_type": "rule"}],
+        "edges": [{"source_id": "PROC-A", "relation": "regulated_by", "target_id": "RULE-A", "document_id": "pub-a", "chunk_id": "pub-edge-a"}]
+      },
+      "current": {
+        "entities": [{"entity_id": "PROC-A", "entity_type": "procedure"}, {"entity_id": "RULE-A", "entity_type": "rule"}, {"entity_id": "COND-A", "entity_type": "condition"}],
+        "edges": [{"source_id": "PROC-A", "relation": "regulated_by", "target_id": "RULE-A", "document_id": "pub-a", "chunk_id": "pub-edge-a"}, {"source_id": "RULE-A", "relation": "requires", "target_id": "COND-A", "document_id": "pub-b", "chunk_id": "pub-edge-b"}]
+      },
+      "expected": {"status": "published", "code": "published", "affected_count": 0, "published_version": 2}
+    },
+    {
+      "case_id": "edge-removal-pending",
+      "version": 2,
+      "previous": {
+        "entities": [{"entity_id": "PROC-A", "entity_type": "procedure"}, {"entity_id": "RULE-A", "entity_type": "rule"}],
+        "edges": [{"source_id": "PROC-A", "relation": "regulated_by", "target_id": "RULE-A", "document_id": "pub-a", "chunk_id": "pub-edge-a"}]
+      },
+      "current": {
+        "entities": [{"entity_id": "PROC-A", "entity_type": "procedure"}, {"entity_id": "RULE-A", "entity_type": "rule"}],
+        "edges": []
+      },
+      "expected": {"status": "review", "code": "destructive_change_review_required", "affected_count": 1, "published_version": null}
+    },
+    {
+      "case_id": "edge-removal-reviewed",
+      "version": 2,
+      "previous": {
+        "entities": [{"entity_id": "PROC-A", "entity_type": "procedure"}, {"entity_id": "RULE-A", "entity_type": "rule"}],
+        "edges": [{"source_id": "PROC-A", "relation": "regulated_by", "target_id": "RULE-A", "document_id": "pub-a", "chunk_id": "pub-edge-a"}]
+      },
+      "current": {
+        "entities": [{"entity_id": "PROC-A", "entity_type": "procedure"}, {"entity_id": "RULE-A", "entity_type": "rule"}],
+        "edges": []
+      },
+      "reviewed_changes": ["edge:PROC-A|regulated_by|RULE-A|pub-a|pub-edge-a"],
+      "review_snapshot": "previous",
+      "expected": {"status": "published", "code": "published", "affected_count": 0, "published_version": 2}
+    },
+    {
+      "case_id": "entity-mutation-pending",
+      "version": 2,
+      "previous": {
+        "entities": [{"entity_id": "PROC-A", "entity_type": "procedure"}, {"entity_id": "RULE-A", "entity_type": "rule"}],
+        "edges": [{"source_id": "PROC-A", "relation": "regulated_by", "target_id": "RULE-A", "document_id": "pub-a", "chunk_id": "pub-edge-a"}]
+      },
+      "current": {
+        "entities": [{"entity_id": "PROC-A", "entity_type": "procedure", "aliases": ["PROCEDIMENTO NOVO"]}, {"entity_id": "RULE-A", "entity_type": "rule"}],
+        "edges": [{"source_id": "PROC-A", "relation": "regulated_by", "target_id": "RULE-A", "document_id": "pub-a", "chunk_id": "pub-edge-a"}]
+      },
+      "expected": {"status": "review", "code": "destructive_change_review_required", "affected_count": 1, "published_version": null}
+    },
+    {
+      "case_id": "provenance-mutation-pending",
+      "version": 2,
+      "previous": {
+        "entities": [{"entity_id": "PROC-A", "entity_type": "procedure"}, {"entity_id": "RULE-A", "entity_type": "rule"}],
+        "edges": [{"source_id": "PROC-A", "relation": "regulated_by", "target_id": "RULE-A", "document_id": "pub-a", "chunk_id": "pub-edge-a"}]
+      },
+      "current": {
+        "entities": [{"entity_id": "PROC-A", "entity_type": "procedure"}, {"entity_id": "RULE-A", "entity_type": "rule"}],
+        "edges": [{"source_id": "PROC-A", "relation": "regulated_by", "target_id": "RULE-A", "document_id": "pub-new", "chunk_id": "pub-edge-new"}]
+      },
+      "expected": {"status": "review", "code": "destructive_change_review_required", "affected_count": 1, "published_version": null}
+    },
+    {
+      "case_id": "stale-change-review",
+      "version": 2,
+      "previous": {
+        "entities": [{"entity_id": "PROC-A", "entity_type": "procedure"}, {"entity_id": "RULE-A", "entity_type": "rule"}],
+        "edges": [{"source_id": "PROC-A", "relation": "regulated_by", "target_id": "RULE-A", "document_id": "pub-a", "chunk_id": "pub-edge-a"}]
+      },
+      "current": {
+        "entities": [{"entity_id": "PROC-A", "entity_type": "procedure"}, {"entity_id": "RULE-A", "entity_type": "rule"}],
+        "edges": [{"source_id": "PROC-A", "relation": "regulated_by", "target_id": "RULE-A", "document_id": "pub-a", "chunk_id": "pub-edge-a"}]
+      },
+      "reviewed_changes": ["entity:STALE"],
+      "review_snapshot": "previous",
+      "expected": {"status": "error", "code": "invalid_review", "affected_count": 0, "published_version": null}
+    }
+  ]
+}

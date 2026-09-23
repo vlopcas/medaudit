@@ -26,6 +26,13 @@ from medaudit.graph.models import (
     TraversalResult,
     TraversalStatus,
 )
+from medaudit.graph.publication import (
+    GraphPublicationCode,
+    GraphPublicationResult,
+    GraphPublicationStatus,
+    PublishedGraphCatalog,
+    publish_graph_catalog,
+)
 from medaudit.graph.request import (
     ExplicitGraphRequestCompiler,
     GraphRequestCompilation,
@@ -50,14 +57,19 @@ __all__ = [
     "GraphEntityCandidate",
     "GraphGatewayResult",
     "GraphGatewayStatus",
+    "GraphPublicationCode",
+    "GraphPublicationResult",
+    "GraphPublicationStatus",
     "GraphRequestCompilation",
     "GraphRequestStatus",
     "GraphTraversalRequest",
     "InMemoryKnowledgeGraph",
+    "PublishedGraphCatalog",
     "TraversalDirection",
     "TraversalPath",
     "TraversalResult",
     "TraversalStatus",
     "admit_graph_catalog",
     "audit_graph_catalog",
+    "publish_graph_catalog",
 ]

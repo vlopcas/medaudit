@@ -87,6 +87,7 @@ medaudit-evaluate-graph-traversal = "medaudit.evaluation.graph_traversal:main"
 medaudit-evaluate-graph-request = "medaudit.evaluation.graph_request:main"
 medaudit-evaluate-graph-assisted-retrieval = "medaudit.evaluation.graph_assisted_retrieval:main"
 medaudit-evaluate-graph-catalog-admission = "medaudit.evaluation.graph_catalog_admission:main"
+medaudit-evaluate-graph-catalog-publication = "medaudit.evaluation.graph_catalog_publication:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/medaudit"]

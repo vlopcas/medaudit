@@ -1081,6 +1081,13 @@ services:
       - /artifacts/graph-catalog-admission-holdout.local.json
       - --refuse-overwrite
 
+  evaluate-graph-catalog-publication:
+    extends: evaluate-release-verification
+    command:
+      - medaudit-evaluate-graph-catalog-publication
+      - --dataset
+      - /app/data/synthetic_cases/graph_catalog_publication_development.json
+
   evaluate-explicit-query-routing-holdout:
     extends: evaluate-explicit-query-routing
     user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
