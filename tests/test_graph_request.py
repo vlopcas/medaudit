@@ -46,6 +46,13 @@ class ExplicitGraphRequestCompilerTest(unittest.TestCase):
         self.assertEqual(result.status, GraphRequestStatus.REVIEW)
         self.assertEqual(result.review_references, ("alfa",))
 
+    def test_longer_canonical_id_is_not_shadowed_by_alias(self) -> None:
+        result = make_compiler().compile("Qual o caminho de ALFA-1 até RULE-1?")
+
+        self.assertEqual(result.status, GraphRequestStatus.READY)
+        assert result.request is not None
+        self.assertEqual(result.request.start_id, "ALFA-1")
+
     def test_incomplete_reference_set_requires_review(self) -> None:
         result = make_compiler().compile("Qual o caminho a partir de PX-A?")
 

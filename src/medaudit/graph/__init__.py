@@ -1,5 +1,10 @@
 """Reviewed in-memory graph contracts and bounded traversal."""
 
+from medaudit.graph.gateway import (
+    ExplicitGraphGateway,
+    GraphGatewayResult,
+    GraphGatewayStatus,
+)
 from medaudit.graph.models import (
     GraphEdge,
     GraphEntity,
@@ -17,9 +22,12 @@ from medaudit.graph.request import (
 from medaudit.graph.traversal import InMemoryKnowledgeGraph
 
 __all__ = [
+    "ExplicitGraphGateway",
     "ExplicitGraphRequestCompiler",
     "GraphEdge",
     "GraphEntity",
+    "GraphGatewayResult",
+    "GraphGatewayStatus",
     "GraphRequestCompilation",
     "GraphRequestStatus",
     "GraphTraversalRequest",

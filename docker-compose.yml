@@ -1029,6 +1029,13 @@ services:
       - --dataset
       - /app/data/synthetic_cases/graph_request_development.json
 
+  evaluate-graph-assisted-retrieval:
+    extends: evaluate-release-verification
+    command:
+      - medaudit-evaluate-graph-assisted-retrieval
+      - --dataset
+      - /app/data/synthetic_cases/graph_assisted_retrieval_development.json
+
   evaluate-explicit-query-routing-holdout:
     extends: evaluate-explicit-query-routing
     user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"

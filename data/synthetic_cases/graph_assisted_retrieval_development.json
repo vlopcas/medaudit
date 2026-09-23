@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "policy": "graph-assisted-retrieval-development-v1",
+  "notice": "Conteúdo integralmente sintético, sem reprodução de documentos reais.",
+  "cases": [
+    {
+      "case_id": "two-hop-explicit-path",
+      "category": "two_hop",
+      "query": "Qual o caminho de PX-A até EX-AZUL?",
+      "top_k": 2,
+      "entities": [
+        {"entity_id": "PX-A", "entity_type": "procedure"},
+        {"entity_id": "RA-10", "entity_type": "rule"},
+        {"entity_id": "EX-AZUL", "entity_type": "exception"}
+      ],
+      "edges": [
+        {"source_id": "PX-A", "relation": "regulated_by", "target_id": "RA-10", "document_id": "synthetic-two-a", "chunk_id": "two-edge-1"},
+        {"source_id": "RA-10", "relation": "has_exception", "target_id": "EX-AZUL", "document_id": "synthetic-two-b", "chunk_id": "two-edge-2"}
+      ],
+      "chunks": [
+        {"chunk_id": "two-edge-1", "document_id": "synthetic-two-a", "text": "O procedimento PX-A é regulado pela regra RA-10."},
+        {"chunk_id": "two-edge-2", "document_id": "synthetic-two-b", "text": "A regra RA-10 possui a exceção EX-AZUL."},
+        {"chunk_id": "two-distractor", "document_id": "synthetic-two-c", "text": "PX-A e EX-AZUL aparecem juntos apenas neste índice auxiliar."}
+      ],
+      "expected_chain": ["two-edge-1", "two-edge-2"],
+      "expected_gateway_status": "path_found"
+    },
+    {
+      "case_id": "three-hop-explicit-path",
+      "category": "three_hop",
+      "query": "Qual o caminho de PX-B até CD-30?",
+      "top_k": 3,
+      "entities": [
+        {"entity_id": "PX-B", "entity_type": "procedure"},
+        {"entity_id": "RB-20", "entity_type": "rule"},
+        {"entity_id": "EX-VERDE", "entity_type": "exception"},
+        {"entity_id": "CD-30", "entity_type": "condition"}
+      ],
+      "edges": [
+        {"source_id": "PX-B", "relation": "regulated_by", "target_id": "RB-20", "document_id": "synthetic-three-a", "chunk_id": "three-edge-1"},
+        {"source_id": "RB-20", "relation": "has_exception", "target_id": "EX-VERDE", "document_id": "synthetic-three-b", "chunk_id": "three-edge-2"},
+        {"source_id": "EX-VERDE", "relation": "requires", "target_id": "CD-30", "document_id": "synthetic-three-c", "chunk_id": "three-edge-3"}
+      ],
+      "chunks": [
+        {"chunk_id": "three-edge-1", "document_id": "synthetic-three-a", "text": "PX-B é regulado pela regra RB-20."},
+        {"chunk_id": "three-edge-2", "document_id": "synthetic-three-b", "text": "RB-20 referencia a exceção EX-VERDE."},
+        {"chunk_id": "three-edge-3", "document_id": "synthetic-three-c", "text": "EX-VERDE depende da condição CD-30."},
+        {"chunk_id": "three-distractor-1", "document_id": "synthetic-three-d", "text": "PX-B possui anotação auxiliar sem relação normativa."},
+        {"chunk_id": "three-distractor-2", "document_id": "synthetic-three-e", "text": "CD-30 possui anotação auxiliar sem relação normativa."}
+      ],
+      "expected_chain": ["three-edge-1", "three-edge-2", "three-edge-3"],
+      "expected_gateway_status": "path_found"
+    },
+    {
+      "case_id": "four-hop-explicit-path",
+      "category": "four_hop",
+      "query": "Qual o caminho de PX-C até RF-9?",
+      "top_k": 4,
+      "entities": [
+        {"entity_id": "PX-C", "entity_type": "procedure"},
+        {"entity_id": "RC-1", "entity_type": "rule"},
+        {"entity_id": "EX-CINZA", "entity_type": "exception"},
+        {"entity_id": "CD-40", "entity_type": "condition"},
+        {"entity_id": "RF-9", "entity_type": "rule"}
+      ],
+      "edges": [
+        {"source_id": "PX-C", "relation": "regulated_by", "target_id": "RC-1", "document_id": "synthetic-four-a", "chunk_id": "four-edge-1"},
+        {"source_id": "RC-1", "relation": "has_exception", "target_id": "EX-CINZA", "document_id": "synthetic-four-b", "chunk_id": "four-edge-2"},
+        {"source_id": "EX-CINZA", "relation": "requires", "target_id": "CD-40", "document_id": "synthetic-four-c", "chunk_id": "four-edge-3"},
+        {"source_id": "CD-40", "relation": "activates", "target_id": "RF-9", "document_id": "synthetic-four-d", "chunk_id": "four-edge-4"}
+      ],
+      "chunks": [
+        {"chunk_id": "four-edge-1", "document_id": "synthetic-four-a", "text": "PX-C aponta para a regra RC-1."},
+        {"chunk_id": "four-edge-2", "document_id": "synthetic-four-b", "text": "RC-1 possui a exceção EX-CINZA."},
+        {"chunk_id": "four-edge-3", "document_id": "synthetic-four-c", "text": "EX-CINZA exige a condição CD-40."},
+        {"chunk_id": "four-edge-4", "document_id": "synthetic-four-d", "text": "CD-40 aciona a regra final RF-9."},
+        {"chunk_id": "four-distractor-1", "document_id": "synthetic-four-e", "text": "PX-C aparece em um índice auxiliar."},
+        {"chunk_id": "four-distractor-2", "document_id": "synthetic-four-f", "text": "RF-9 aparece em um índice auxiliar."}
+      ],
+      "expected_chain": ["four-edge-1", "four-edge-2", "four-edge-3", "four-edge-4"],
+      "expected_gateway_status": "path_found"
+    },
+    {
+      "case_id": "reverse-impact-explicit-path",
+      "category": "reverse_impact",
+      "query": "Qual o caminho reverso de CD-DELTA até PX-D?",
+      "top_k": 3,
+      "entities": [
+        {"entity_id": "CD-DELTA", "entity_type": "condition"},
+        {"entity_id": "EX-DELTA", "entity_type": "exception"},
+        {"entity_id": "RD-50", "entity_type": "rule"},
+        {"entity_id": "PX-D", "entity_type": "procedure"}
+      ],
+      "edges": [
+        {"source_id": "PX-D", "relation": "regulated_by", "target_id": "RD-50", "document_id": "synthetic-reverse-c", "chunk_id": "reverse-edge-3"},
+        {"source_id": "RD-50", "relation": "modified_by", "target_id": "EX-DELTA", "document_id": "synthetic-reverse-b", "chunk_id": "reverse-edge-2"},
+        {"source_id": "EX-DELTA", "relation": "activated_by", "target_id": "CD-DELTA", "document_id": "synthetic-reverse-a", "chunk_id": "reverse-edge-1"}
+      ],
+      "chunks": [
+        {"chunk_id": "reverse-edge-1", "document_id": "synthetic-reverse-a", "text": "A condição CD-DELTA ativa a exceção EX-DELTA."},
+        {"chunk_id": "reverse-edge-2", "document_id": "synthetic-reverse-b", "text": "EX-DELTA altera a regra RD-50."},
+        {"chunk_id": "reverse-edge-3", "document_id": "synthetic-reverse-c", "text": "RD-50 regula o procedimento PX-D."},
+        {"chunk_id": "reverse-distractor-1", "document_id": "synthetic-reverse-d", "text": "CD-DELTA aparece em nota auxiliar."},
+        {"chunk_id": "reverse-distractor-2", "document_id": "synthetic-reverse-e", "text": "PX-D aparece em nota auxiliar."}
+      ],
+      "expected_chain": ["reverse-edge-1", "reverse-edge-2", "reverse-edge-3"],
+      "expected_gateway_status": "path_found"
+    },
+    {
+      "case_id": "disconnected-explicit-path",
+      "category": "no_path",
+      "query": "Qual o caminho de PX-F até CD-ZETA?",
+      "top_k": 2,
+      "entities": [
+        {"entity_id": "PX-F", "entity_type": "procedure"},
+        {"entity_id": "RF-60", "entity_type": "rule"},
+        {"entity_id": "CD-ZETA", "entity_type": "condition"},
+        {"entity_id": "RZ-70", "entity_type": "rule"}
+      ],
+      "edges": [
+        {"source_id": "PX-F", "relation": "regulated_by", "target_id": "RF-60", "document_id": "synthetic-no-path-a", "chunk_id": "no-path-a"},
+        {"source_id": "CD-ZETA", "relation": "belongs_to", "target_id": "RZ-70", "document_id": "synthetic-no-path-b", "chunk_id": "no-path-b"}
+      ],
+      "chunks": [
+        {"chunk_id": "no-path-a", "document_id": "synthetic-no-path-a", "text": "PX-F é regulado exclusivamente por RF-60."},
+        {"chunk_id": "no-path-b", "document_id": "synthetic-no-path-b", "text": "CD-ZETA pertence ao fluxo independente RZ-70."}
+      ],
+      "expected_chain": [],
+      "expected_gateway_status": "no_path"
+    },
+    {
+      "case_id": "ambiguous-explicit-path",
+      "category": "ambiguous_entity",
+      "query": "Qual o caminho de ALFA até RULE-ALFA?",
+      "top_k": 2,
+      "entities": [
+        {"entity_id": "ALFA-1", "entity_type": "item", "aliases": ["ALFA"]},
+        {"entity_id": "ALFA-2", "entity_type": "item", "aliases": ["ALFA"]},
+        {"entity_id": "RULE-ALFA", "entity_type": "rule"}
+      ],
+      "edges": [
+        {"source_id": "ALFA-1", "relation": "regulated_by", "target_id": "RULE-ALFA", "document_id": "synthetic-ambiguous-a", "chunk_id": "ambiguous-a"}
+      ],
+      "chunks": [
+        {"chunk_id": "ambiguous-a", "document_id": "synthetic-ambiguous-a", "text": "ALFA-1 aponta para RULE-ALFA."},
+        {"chunk_id": "ambiguous-b", "document_id": "synthetic-ambiguous-b", "text": "ALFA-2 pertence a outro escopo."}
+      ],
+      "expected_chain": [],
+      "expected_gateway_status": "review"
+    },
+    {
+      "case_id": "non-graph-query-control",
+      "category": "not_applicable",
+      "query": "Compare RX-1 com RX-2.",
+      "top_k": 2,
+      "entities": [
+        {"entity_id": "RX-1", "entity_type": "rule"},
+        {"entity_id": "RX-2", "entity_type": "rule"}
+      ],
+      "edges": [
+        {"source_id": "RX-1", "relation": "compared_with", "target_id": "RX-2", "document_id": "synthetic-comparison", "chunk_id": "comparison-edge"}
+      ],
+      "chunks": [
+        {"chunk_id": "comparison-a", "document_id": "synthetic-comparison-a", "text": "RX-1 permite o fluxo A."},
+        {"chunk_id": "comparison-b", "document_id": "synthetic-comparison-b", "text": "RX-2 nega o fluxo B."}
+      ],
+      "expected_chain": [],
+      "expected_gateway_status": "not_applicable"
+    }
+  ]
+}

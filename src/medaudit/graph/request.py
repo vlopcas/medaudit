@@ -90,8 +90,7 @@ class ExplicitGraphRequestCompiler:
     def _mentioned_references(
         self, query: str
     ) -> tuple[tuple[str, tuple[str, ...]], ...]:
-        candidates: dict[str, set[str]] = {}
-        positions: dict[str, int] = {}
+        mentions: list[tuple[int, int, str, str]] = []
         for entity in self.entities:
             for reference in (entity.entity_id, *entity.aliases):
                 match = re.search(
@@ -99,11 +98,31 @@ class ExplicitGraphRequestCompiler:
                     query,
                     flags=re.IGNORECASE,
                 )
-                if match is None:
-                    continue
-                key = reference.casefold()
-                candidates.setdefault(key, set()).add(entity.entity_id)
-                positions[key] = min(positions.get(key, match.start()), match.start())
+                if match is not None:
+                    mentions.append(
+                        (
+                            match.start(),
+                            match.end(),
+                            reference.casefold(),
+                            entity.entity_id,
+                        )
+                    )
+
+        retained = [
+            mention
+            for mention in mentions
+            if not any(
+                other[0] <= mention[0]
+                and mention[1] <= other[1]
+                and (other[1] - other[0]) > (mention[1] - mention[0])
+                for other in mentions
+            )
+        ]
+        candidates: dict[str, set[str]] = {}
+        positions: dict[str, int] = {}
+        for start, _, key, entity_id in retained:
+            candidates.setdefault(key, set()).add(entity_id)
+            positions[key] = min(positions.get(key, start), start)
         return tuple(
             (key, tuple(sorted(candidates[key])))
             for key in sorted(candidates, key=positions.__getitem__)

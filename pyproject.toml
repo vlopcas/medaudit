@@ -85,6 +85,7 @@ medaudit-evaluate-structured-rule-publication = "medaudit.evaluation.structured_
 medaudit-evaluate-graph-necessity = "medaudit.evaluation.graph_necessity:main"
 medaudit-evaluate-graph-traversal = "medaudit.evaluation.graph_traversal:main"
 medaudit-evaluate-graph-request = "medaudit.evaluation.graph_request:main"
+medaudit-evaluate-graph-assisted-retrieval = "medaudit.evaluation.graph_assisted_retrieval:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/medaudit"]
