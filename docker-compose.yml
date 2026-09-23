@@ -1062,6 +1062,25 @@ services:
       - --dataset
       - /app/data/synthetic_cases/graph_catalog_admission_development.json
 
+  evaluate-graph-catalog-admission-holdout:
+    extends: evaluate-graph-catalog-admission
+    user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
+    volumes:
+      - type: bind
+        source: ./artifacts
+        target: /artifacts
+    command:
+      - medaudit-evaluate-graph-catalog-admission
+      - --dataset
+      - /app/data/synthetic_cases/graph_catalog_admission_holdout.json
+      - --dataset-policy
+      - graph-catalog-admission-holdout-v1
+      - --expected-sha256
+      - 7d7a8de3eb97603370a864257e13f3b5aa9d6de3a3eda2f201b41b0f5b5345f7
+      - --output
+      - /artifacts/graph-catalog-admission-holdout.local.json
+      - --refuse-overwrite
+
   evaluate-explicit-query-routing-holdout:
     extends: evaluate-explicit-query-routing
     user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"

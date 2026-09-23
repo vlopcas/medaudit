@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "policy": "graph-catalog-admission-holdout-v1",
+  "notice": "Conteúdo integralmente sintético, sem reprodução de documentos reais.",
+  "allowed_relations": ["regulated_by", "requires", "supersedes"],
+  "cases": [
+    {
+      "case_id": "holdout-clean-multi-edge",
+      "entities": [
+        {"entity_id": "PROC-H1", "entity_type": "procedure", "aliases": ["PROCEDIMENTO H1"]},
+        {"entity_id": "RULE-H1", "entity_type": "rule", "aliases": ["REGRA H1"]},
+        {"entity_id": "COND-H1", "entity_type": "condition"}
+      ],
+      "edges": [
+        {"source_id": "PROC-H1", "relation": "regulated_by", "target_id": "RULE-H1", "document_id": "holdout-clean-a", "chunk_id": "holdout-clean-edge-a"},
+        {"source_id": "RULE-H1", "relation": "requires", "target_id": "COND-H1", "document_id": "holdout-clean-b", "chunk_id": "holdout-clean-edge-b"}
+      ],
+      "expected": {"status": "admitted", "code": "clean_catalog", "finding_codes": [], "executable": true}
+    },
+    {
+      "case_id": "holdout-id-alias-collision",
+      "entities": [
+        {"entity_id": "TERM-Z", "entity_type": "item"},
+        {"entity_id": "ITEM-Z", "entity_type": "item", "aliases": ["term-z"]}
+      ],
+      "edges": [],
+      "expected": {"status": "review", "code": "review_required", "finding_codes": ["ambiguous_reference"], "executable": false}
+    },
+    {
+      "case_id": "holdout-multiple-review-findings",
+      "entities": [
+        {"entity_id": "PROC-V", "entity_type": "procedure"},
+        {"entity_id": "RULE-V", "entity_type": "rule"}
+      ],
+      "edges": [
+        {"source_id": "PROC-V", "relation": "unreviewed_relation", "target_id": "RULE-V", "document_id": "holdout-review-a", "chunk_id": "holdout-review-edge-a"},
+        {"source_id": "PROC-V", "relation": "unreviewed_relation", "target_id": "RULE-V", "document_id": "holdout-review-b", "chunk_id": "holdout-review-edge-b"}
+      ],
+      "expected": {"status": "review", "code": "review_required", "finding_codes": ["duplicate_edge", "unknown_relation", "unknown_relation"], "executable": false}
+    },
+    {
+      "case_id": "holdout-error-precedes-review",
+      "entities": [
+        {"entity_id": "PROC-E", "entity_type": "procedure"}
+      ],
+      "edges": [
+        {"source_id": "PROC-E", "relation": "unreviewed_relation", "target_id": "RULE-ABSENT", "document_id": "holdout-precedence", "chunk_id": "holdout-precedence-edge"}
+      ],
+      "expected": {"status": "rejected", "code": "invalid_catalog", "finding_codes": ["orphan_edge"], "executable": false}
+    },
+    {
+      "case_id": "holdout-duplicate-id-precedes-alias-review",
+      "entities": [
+        {"entity_id": "ITEM-D", "entity_type": "item"},
+        {"entity_id": "ITEM-D", "entity_type": "item"},
+        {"entity_id": "ITEM-A", "entity_type": "item", "aliases": ["SHARED"]},
+        {"entity_id": "ITEM-B", "entity_type": "item", "aliases": ["shared"]}
+      ],
+      "edges": [],
+      "expected": {"status": "rejected", "code": "invalid_catalog", "finding_codes": ["duplicate_entity_id"], "executable": false}
+    },
+    {
+      "case_id": "holdout-multiple-structural-errors",
+      "entities": [
+        {"entity_id": "RULE-S", "entity_type": "rule"}
+      ],
+      "edges": [
+        {"source_id": "RULE-S", "relation": "requires", "target_id": "RULE-S", "document_id": "", "chunk_id": "holdout-self-edge"}
+      ],
+      "expected": {"status": "rejected", "code": "invalid_catalog", "finding_codes": ["empty_edge_field", "self_edge"], "executable": false}
+    },
+    {
+      "case_id": "holdout-case-insensitive-id-collision",
+      "entities": [
+        {"entity_id": "Node-A", "entity_type": "item"},
+        {"entity_id": "node-a", "entity_type": "item"}
+      ],
+      "edges": [],
+      "expected": {"status": "review", "code": "review_required", "finding_codes": ["ambiguous_reference"], "executable": false}
+    },
+    {
+      "case_id": "holdout-clean-disconnected-entities",
+      "entities": [
+        {"entity_id": "ITEM-X", "entity_type": "item"},
+        {"entity_id": "ITEM-Y", "entity_type": "item"}
+      ],
+      "edges": [],
+      "expected": {"status": "admitted", "code": "clean_catalog", "finding_codes": [], "executable": true}
+    }
+  ]
+}
