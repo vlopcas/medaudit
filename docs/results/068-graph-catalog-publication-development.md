@@ -57,3 +57,9 @@ A fronteira de publicação é válida em desenvolvimento, mas ainda não deve s
 para holdout. O próximo incremento deve vincular uma identidade determinística
 da política de relações à admissão e ao snapshot publicado. Somente depois dessa
 composição será preparado um holdout sintético inédito.
+
+## Resultado posterior
+
+A identidade versionada da política foi incorporada à admissão e à publicação
+no [Resultado 069](069-graph-relation-policy-identity-development.md), que
+atingiu 12/12. O pré-requisito para preparar o holdout foi atendido.

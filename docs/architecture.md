@@ -432,6 +432,7 @@ relações ainda não integra o snapshot e bloqueia o holdout dessa composição
 - [ADR-028: gateway de grafo explícito e opt-in](decisions/ADR-028-explicit-opt-in-graph-gateway.md)
 - [ADR-029: admissão fail-closed de catálogo de grafo](decisions/ADR-029-fail-closed-graph-catalog-admission.md)
 - [ADR-030: publicação versionada do catálogo de grafo](decisions/ADR-030-versioned-graph-catalog-publication.md)
+- [ADR-031: política versionada de relações do grafo](decisions/ADR-031-versioned-graph-relation-policy.md)
 
 ## Ambiente de execução
 

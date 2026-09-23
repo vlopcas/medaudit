@@ -31,3 +31,9 @@ de grafo ou integração ao runtime padrão.
 
 A identidade da allowlist de relações permanece um pré-requisito explícito para
 o próximo gate.
+
+## Decisão posterior
+
+O pré-requisito foi atendido pela
+[ADR-031](ADR-031-versioned-graph-relation-policy.md): a política agora possui
+identidade versionada, acompanha a admissão e integra o hash da publicação.

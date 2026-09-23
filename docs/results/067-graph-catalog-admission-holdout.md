@@ -60,4 +60,6 @@ continuam bloqueados.
 
 A primeira fronteira de publicação foi avaliada no
 [Resultado 068](068-graph-catalog-publication-development.md) e atingiu 10/10.
-Ela ainda precisa vincular a política de relações antes do holdout.
+Sua política de relações foi vinculada posteriormente no
+[Resultado 069](069-graph-relation-policy-identity-development.md), que atingiu
+12/12 e liberou a preparação do holdout de publicação.

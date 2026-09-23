@@ -127,7 +127,9 @@ casos corretos e precedência fail-closed preservada. O próximo risco passa a s
 publicar e versionar somente catálogos admitidos.
 
 A primeira fronteira de publicação atingiu 10/10 no
-[Resultado 068](../results/068-graph-catalog-publication-development.md). Antes
-de um holdout, a identidade da política de relações deve integrar a admissão e o
-snapshot, conforme a
-[ADR-030](../decisions/ADR-030-versioned-graph-catalog-publication.md).
+[Resultado 068](../results/068-graph-catalog-publication-development.md). A
+identidade versionada da política de relações integrou depois a admissão e o
+snapshot, atingindo 12/12 no
+[Resultado 069](../results/069-graph-relation-policy-identity-development.md).
+O próximo gate é congelar um holdout sintético inédito da publicação completa,
+conforme a [ADR-031](../decisions/ADR-031-versioned-graph-relation-policy.md).

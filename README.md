@@ -334,8 +334,10 @@ sintético. O próximo gate é uma publicação versionada e determinística de
 catálogos admitidos.
 Essa publicação atingiu 10/10 em desenvolvimento: snapshots são encadeados,
 versões são monotônicas e mudanças destrutivas exigem revisão ligada ao snapshot
-anterior. Antes do holdout, a identidade da allowlist de relações ainda precisa
-integrar admissão e publicação.
+anterior. A identidade versionada da política de relações foi então integrada à
+admissão e ao hash do snapshot; mudanças de política passaram a exigir revisão
+vinculada e a avaliação ampliada atingiu 12/12. O próximo gate é congelar um
+holdout sintético inédito da publicação completa.
 
 ## Ambiente de desenvolvimento
 
