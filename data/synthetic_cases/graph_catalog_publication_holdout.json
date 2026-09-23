@@ -1,0 +1,117 @@
+{
+  "schema_version": 1,
+  "policy": "graph-catalog-publication-holdout-v1",
+  "notice": "Conteúdo integralmente sintético, sem reprodução de documentos reais.",
+  "allowed_relations": ["depends_on", "governed_by", "replaces"],
+  "relation_policy": {
+    "name": "synthetic-holdout-graph-relations",
+    "version": 3,
+    "allowed_relations": ["depends_on", "governed_by", "replaces"]
+  },
+  "cases": [
+    {
+      "case_id": "holdout-initial-publication",
+      "version": 1,
+      "current": {
+        "entities": [{"entity_id": "ACT-H1", "entity_type": "action"}, {"entity_id": "POL-H1", "entity_type": "policy"}],
+        "edges": [{"source_id": "ACT-H1", "relation": "governed_by", "target_id": "POL-H1", "document_id": "holdout-pub-a", "chunk_id": "holdout-edge-a"}]
+      },
+      "expected": {"status": "published", "code": "published", "affected_count": 0, "published_version": 1}
+    },
+    {
+      "case_id": "holdout-review-catalog-not-published",
+      "version": 1,
+      "current": {
+        "entities": [{"entity_id": "TERM-H2", "entity_type": "term", "aliases": ["SHARED-H2"]}, {"entity_id": "ITEM-H2", "entity_type": "item", "aliases": ["shared-h2"]}],
+        "edges": []
+      },
+      "expected": {"status": "review", "code": "catalog_not_admitted", "affected_count": 0, "published_version": null}
+    },
+    {
+      "case_id": "holdout-version-gap-blocked",
+      "version": 3,
+      "previous": {
+        "entities": [{"entity_id": "ACT-H3", "entity_type": "action"}, {"entity_id": "POL-H3", "entity_type": "policy"}],
+        "edges": [{"source_id": "ACT-H3", "relation": "governed_by", "target_id": "POL-H3", "document_id": "holdout-pub-b", "chunk_id": "holdout-edge-b"}]
+      },
+      "current": {
+        "entities": [{"entity_id": "ACT-H3", "entity_type": "action"}, {"entity_id": "POL-H3", "entity_type": "policy"}],
+        "edges": [{"source_id": "ACT-H3", "relation": "governed_by", "target_id": "POL-H3", "document_id": "holdout-pub-b", "chunk_id": "holdout-edge-b"}]
+      },
+      "expected": {"status": "blocked", "code": "version_not_monotonic", "affected_count": 0, "published_version": null}
+    },
+    {
+      "case_id": "holdout-additive-chain",
+      "version": 2,
+      "previous": {
+        "entities": [{"entity_id": "ACT-H4", "entity_type": "action"}, {"entity_id": "POL-H4", "entity_type": "policy"}],
+        "edges": [{"source_id": "ACT-H4", "relation": "governed_by", "target_id": "POL-H4", "document_id": "holdout-pub-c", "chunk_id": "holdout-edge-c"}]
+      },
+      "current": {
+        "entities": [{"entity_id": "ACT-H4", "entity_type": "action"}, {"entity_id": "POL-H4", "entity_type": "policy"}, {"entity_id": "COND-H4", "entity_type": "condition"}],
+        "edges": [{"source_id": "ACT-H4", "relation": "governed_by", "target_id": "POL-H4", "document_id": "holdout-pub-c", "chunk_id": "holdout-edge-c"}, {"source_id": "POL-H4", "relation": "depends_on", "target_id": "COND-H4", "document_id": "holdout-pub-d", "chunk_id": "holdout-edge-d"}]
+      },
+      "expected": {"status": "published", "code": "published", "affected_count": 0, "published_version": 2}
+    },
+    {
+      "case_id": "holdout-policy-change-pending",
+      "version": 2,
+      "previous_relation_policy": {"name": "synthetic-holdout-graph-relations", "version": 2, "allowed_relations": ["depends_on", "governed_by"]},
+      "previous": {
+        "entities": [{"entity_id": "ACT-H5", "entity_type": "action"}, {"entity_id": "POL-H5", "entity_type": "policy"}],
+        "edges": [{"source_id": "ACT-H5", "relation": "governed_by", "target_id": "POL-H5", "document_id": "holdout-pub-e", "chunk_id": "holdout-edge-e"}]
+      },
+      "current": {
+        "entities": [{"entity_id": "ACT-H5", "entity_type": "action"}, {"entity_id": "POL-H5", "entity_type": "policy"}],
+        "edges": [{"source_id": "ACT-H5", "relation": "governed_by", "target_id": "POL-H5", "document_id": "holdout-pub-e", "chunk_id": "holdout-edge-e"}]
+      },
+      "expected": {"status": "review", "code": "destructive_change_review_required", "affected_count": 1, "published_version": null}
+    },
+    {
+      "case_id": "holdout-policy-change-reviewed",
+      "version": 2,
+      "previous_relation_policy": {"name": "synthetic-holdout-graph-relations", "version": 2, "allowed_relations": ["depends_on", "governed_by"]},
+      "previous": {
+        "entities": [{"entity_id": "ACT-H6", "entity_type": "action"}, {"entity_id": "POL-H6", "entity_type": "policy"}],
+        "edges": [{"source_id": "ACT-H6", "relation": "governed_by", "target_id": "POL-H6", "document_id": "holdout-pub-f", "chunk_id": "holdout-edge-f"}]
+      },
+      "current": {
+        "entities": [{"entity_id": "ACT-H6", "entity_type": "action"}, {"entity_id": "POL-H6", "entity_type": "policy"}],
+        "edges": [{"source_id": "ACT-H6", "relation": "governed_by", "target_id": "POL-H6", "document_id": "holdout-pub-f", "chunk_id": "holdout-edge-f"}]
+      },
+      "reviewed_changes": ["$previous_relation_policy"],
+      "review_snapshot": "previous",
+      "expected": {"status": "published", "code": "published", "affected_count": 0, "published_version": 2}
+    },
+    {
+      "case_id": "holdout-compound-governed-change",
+      "version": 2,
+      "previous_relation_policy": {"name": "synthetic-holdout-graph-relations", "version": 2, "allowed_relations": ["depends_on", "governed_by"]},
+      "previous": {
+        "entities": [{"entity_id": "ACT-H7", "entity_type": "action", "aliases": ["ACTION OLD"]}, {"entity_id": "POL-H7", "entity_type": "policy"}],
+        "edges": [{"source_id": "ACT-H7", "relation": "governed_by", "target_id": "POL-H7", "document_id": "holdout-pub-g", "chunk_id": "holdout-edge-g"}]
+      },
+      "current": {
+        "entities": [{"entity_id": "ACT-H7", "entity_type": "action", "aliases": ["ACTION NEW"]}, {"entity_id": "POL-H7", "entity_type": "policy"}],
+        "edges": []
+      },
+      "expected": {"status": "review", "code": "destructive_change_review_required", "affected_count": 3, "published_version": null}
+    },
+    {
+      "case_id": "holdout-stale-snapshot-review",
+      "version": 2,
+      "previous_relation_policy": {"name": "synthetic-holdout-graph-relations", "version": 2, "allowed_relations": ["depends_on", "governed_by"]},
+      "previous": {
+        "entities": [{"entity_id": "ACT-H8", "entity_type": "action"}, {"entity_id": "POL-H8", "entity_type": "policy"}],
+        "edges": [{"source_id": "ACT-H8", "relation": "governed_by", "target_id": "POL-H8", "document_id": "holdout-pub-h", "chunk_id": "holdout-edge-h"}]
+      },
+      "current": {
+        "entities": [{"entity_id": "ACT-H8", "entity_type": "action"}, {"entity_id": "POL-H8", "entity_type": "policy"}],
+        "edges": [{"source_id": "ACT-H8", "relation": "governed_by", "target_id": "POL-H8", "document_id": "holdout-pub-h", "chunk_id": "holdout-edge-h"}]
+      },
+      "reviewed_changes": ["$previous_relation_policy"],
+      "review_snapshot": "stale-publication-id",
+      "expected": {"status": "error", "code": "invalid_review", "affected_count": 0, "published_version": null}
+    }
+  ]
+}
