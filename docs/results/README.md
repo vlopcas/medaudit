@@ -83,3 +83,4 @@ para evitar a exposição indireta do corpus privado.
 - [Resultado 067: holdout da admissão de catálogo de grafo](067-graph-catalog-admission-holdout.md)
 - [Resultado 068: publicação versionada de catálogo de grafo](068-graph-catalog-publication-development.md)
 - [Resultado 069: identidade versionada da política de relações](069-graph-relation-policy-identity-development.md)
+- [Resultado 070: holdout da publicação de catálogo de grafo](070-graph-catalog-publication-holdout.md)

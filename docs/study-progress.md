@@ -27,7 +27,7 @@ implementação dedicada.
 | 8 | Query Understanding | Concluída para o ciclo atual | Roteamento, planejamento, execução e agrupamento opt-in por passo foram validados; reescrita semântica foi rejeitada. |
 | 9 | Regras estruturadas | Concluída para o ciclo sintético | Motor, auditoria, admissão e publicação versionada passaram em desenvolvimento e holdouts controlados. |
 | 10 | Temporalidade e versionamento | Parcial, antecipada | Catálogo temporal, relações de substituição, snapshots por data e avaliações temporais já existem. |
-| 11–18 | Grafos, tools, APIs e agentes | Gateway e admissão validados; publicação pronta para holdout | A publicação atingiu 12/12 com identidade versionada da política; o próximo gate é seu holdout sintético. |
+| 11–18 | Grafos, tools, APIs e agentes | Gateway, admissão e publicação validados no escopo sintético | A publicação com política versionada atingiu 12/12 e repetiu 8/8 em holdout congelado. |
 | 19 | Provenance e citações | Parcial, antecipada | IDs determinísticos, origem dos chunks e validação das citações já atravessam o pipeline. |
 | 20–26 | Verifier até arquitetura final | Parcial, experimental | A fronteira foi integrada; a candidata estruturada passou em desenvolvimento e holdout como opt-in estreito. Arquitetura final permanece futura. |
 

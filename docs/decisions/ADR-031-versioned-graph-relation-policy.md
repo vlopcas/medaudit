@@ -35,3 +35,8 @@ persistência, extração automática, corpus privado ou uso no runtime padrão.
 
 Com essa composição validada em desenvolvimento, o próximo gate pode ser um
 holdout sintético inédito da publicação completa.
+
+## Resultado posterior
+
+O holdout do [Resultado 070](../results/070-graph-catalog-publication-holdout.md)
+atingiu 8/8 e validou a decisão no escopo sintético atual.

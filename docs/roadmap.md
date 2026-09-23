@@ -148,7 +148,8 @@ fronteira fail-closed atingiu 10/10 e seu holdout atingiu 8/8. O próximo gate �
 publicar snapshots determinísticos somente a partir de catálogos admitidos. A
 primeira publicação atingiu 10/10. A identidade versionada da política de
 relações foi incorporada em seguida e a avaliação ampliada atingiu 12/12. O
-próximo gate é congelar um holdout sintético inédito. A análise está no
+holdout sintético congelado subsequente atingiu 8/8 e encerrou o gate de
+publicação. A análise está no
 [Checkpoint arquitetural 001](architecture-checkpoints/001-phase-9-rules-to-graph.md).
 
 ### 7. Tools, dados estruturados e agentes

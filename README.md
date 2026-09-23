@@ -337,7 +337,9 @@ versões são monotônicas e mudanças destrutivas exigem revisão ligada ao sna
 anterior. A identidade versionada da política de relações foi então integrada à
 admissão e ao hash do snapshot; mudanças de política passaram a exigir revisão
 vinculada e a avaliação ampliada atingiu 12/12. O próximo gate é congelar um
-holdout sintético inédito da publicação completa.
+holdout sintético inédito da publicação completa. Esse holdout congelado atingiu
+8/8, preservando admissão, monotonicidade, revisão de mudanças compostas e
+vínculo da política. Ele está encerrado e não será usado para ajuste.
 
 ## Ambiente de desenvolvimento
 

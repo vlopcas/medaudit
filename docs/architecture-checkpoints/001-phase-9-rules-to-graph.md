@@ -133,3 +133,8 @@ snapshot, atingindo 12/12 no
 [Resultado 069](../results/069-graph-relation-policy-identity-development.md).
 O próximo gate é congelar um holdout sintético inédito da publicação completa,
 conforme a [ADR-031](../decisions/ADR-031-versioned-graph-relation-policy.md).
+
+Esse holdout foi congelado e executado uma única vez no
+[Resultado 070](../results/070-graph-catalog-publication-holdout.md), atingindo
+8/8. A publicação está validada no escopo sintético; extração, persistência e
+adoção arquitetural mais ampla continuam fora do escopo.

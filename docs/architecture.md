@@ -397,8 +397,10 @@ executável. A auditoria rejeita defeitos estruturais, encaminha pendências
 semânticas para revisão e só materializa o grafo quando não há achados.
 O holdout dessa fronteira atingiu 8/8. A admissão fica separada de uma futura
 publicação. Uma primeira versão agora ordena o conteúdo, encadeia snapshots e
-exige revisão vinculada para remoções ou mutações. A identidade da política de
-relações ainda não integra o snapshot e bloqueia o holdout dessa composição.
+exige revisão vinculada para remoções ou mutações. A política de relações passou
+a ter identidade versionada, acompanhar a admissão e integrar o hash do
+snapshot. A composição atingiu 12/12 em desenvolvimento e 8/8 em holdout
+congelado. Ela permanece em memória e fora do pipeline padrão.
 
 ## Decisões relacionadas
 

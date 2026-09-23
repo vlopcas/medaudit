@@ -50,3 +50,9 @@ vez.
 
 Persistência, concorrência, assinatura, extração e dados privados continuam fora
 do escopo.
+
+## Resultado posterior
+
+O holdout congelado do
+[Resultado 070](070-graph-catalog-publication-holdout.md) atingiu 8/8 e encerrou
+esse gate sem reutilização para ajuste.
