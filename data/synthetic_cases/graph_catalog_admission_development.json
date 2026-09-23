@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "policy": "graph-catalog-admission-development-v1",
+  "notice": "Conteúdo integralmente sintético, sem reprodução de documentos reais.",
+  "allowed_relations": ["regulated_by", "requires"],
+  "cases": [
+    {
+      "case_id": "clean-catalog",
+      "entities": [
+        {"entity_id": "PROC-A", "entity_type": "procedure", "aliases": ["PROCEDIMENTO A"]},
+        {"entity_id": "RULE-A", "entity_type": "rule"}
+      ],
+      "edges": [
+        {"source_id": "PROC-A", "relation": "regulated_by", "target_id": "RULE-A", "document_id": "synthetic-clean", "chunk_id": "clean-edge"}
+      ],
+      "expected": {"status": "admitted", "code": "clean_catalog", "finding_codes": [], "executable": true}
+    },
+    {
+      "case_id": "empty-catalog",
+      "entities": [],
+      "edges": [],
+      "expected": {"status": "rejected", "code": "invalid_catalog", "finding_codes": ["empty_catalog"], "executable": false}
+    },
+    {
+      "case_id": "duplicate-entity-id",
+      "entities": [
+        {"entity_id": "ITEM-D", "entity_type": "item"},
+        {"entity_id": "ITEM-D", "entity_type": "item"}
+      ],
+      "edges": [],
+      "expected": {"status": "rejected", "code": "invalid_catalog", "finding_codes": ["duplicate_entity_id"], "executable": false}
+    },
+    {
+      "case_id": "empty-entity-type",
+      "entities": [
+        {"entity_id": "ITEM-E", "entity_type": ""}
+      ],
+      "edges": [],
+      "expected": {"status": "rejected", "code": "invalid_catalog", "finding_codes": ["empty_entity_field"], "executable": false}
+    },
+    {
+      "case_id": "orphan-edge",
+      "entities": [
+        {"entity_id": "PROC-O", "entity_type": "procedure"}
+      ],
+      "edges": [
+        {"source_id": "PROC-O", "relation": "regulated_by", "target_id": "RULE-MISSING", "document_id": "synthetic-orphan", "chunk_id": "orphan-edge"}
+      ],
+      "expected": {"status": "rejected", "code": "invalid_catalog", "finding_codes": ["orphan_edge"], "executable": false}
+    },
+    {
+      "case_id": "self-edge",
+      "entities": [
+        {"entity_id": "RULE-S", "entity_type": "rule"}
+      ],
+      "edges": [
+        {"source_id": "RULE-S", "relation": "requires", "target_id": "RULE-S", "document_id": "synthetic-self", "chunk_id": "self-edge"}
+      ],
+      "expected": {"status": "rejected", "code": "invalid_catalog", "finding_codes": ["self_edge"], "executable": false}
+    },
+    {
+      "case_id": "missing-provenance",
+      "entities": [
+        {"entity_id": "PROC-P", "entity_type": "procedure"},
+        {"entity_id": "RULE-P", "entity_type": "rule"}
+      ],
+      "edges": [
+        {"source_id": "PROC-P", "relation": "regulated_by", "target_id": "RULE-P", "document_id": "", "chunk_id": "missing-source"}
+      ],
+      "expected": {"status": "rejected", "code": "invalid_catalog", "finding_codes": ["empty_edge_field"], "executable": false}
+    },
+    {
+      "case_id": "ambiguous-reference",
+      "entities": [
+        {"entity_id": "ITEM-A1", "entity_type": "item", "aliases": ["ALFA"]},
+        {"entity_id": "ITEM-A2", "entity_type": "item", "aliases": ["alfa"]}
+      ],
+      "edges": [],
+      "expected": {"status": "review", "code": "review_required", "finding_codes": ["ambiguous_reference"], "executable": false}
+    },
+    {
+      "case_id": "unknown-relation",
+      "entities": [
+        {"entity_id": "PROC-U", "entity_type": "procedure"},
+        {"entity_id": "RULE-U", "entity_type": "rule"}
+      ],
+      "edges": [
+        {"source_id": "PROC-U", "relation": "invented_relation", "target_id": "RULE-U", "document_id": "synthetic-unknown", "chunk_id": "unknown-edge"}
+      ],
+      "expected": {"status": "review", "code": "review_required", "finding_codes": ["unknown_relation"], "executable": false}
+    },
+    {
+      "case_id": "duplicate-semantic-edge",
+      "entities": [
+        {"entity_id": "PROC-R", "entity_type": "procedure"},
+        {"entity_id": "RULE-R", "entity_type": "rule"}
+      ],
+      "edges": [
+        {"source_id": "PROC-R", "relation": "regulated_by", "target_id": "RULE-R", "document_id": "synthetic-duplicate-a", "chunk_id": "duplicate-edge-a"},
+        {"source_id": "PROC-R", "relation": "regulated_by", "target_id": "RULE-R", "document_id": "synthetic-duplicate-b", "chunk_id": "duplicate-edge-b"}
+      ],
+      "expected": {"status": "review", "code": "review_required", "finding_codes": ["duplicate_edge"], "executable": false}
+    }
+  ]
+}
