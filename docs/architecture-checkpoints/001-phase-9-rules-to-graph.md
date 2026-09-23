@@ -125,3 +125,9 @@ O holdout da admissão foi encerrado no
 [Resultado 067](../results/067-graph-catalog-admission-holdout.md), com 8/8
 casos corretos e precedência fail-closed preservada. O próximo risco passa a ser
 publicar e versionar somente catálogos admitidos.
+
+A primeira fronteira de publicação atingiu 10/10 no
+[Resultado 068](../results/068-graph-catalog-publication-development.md). Antes
+de um holdout, a identidade da política de relações deve integrar a admissão e o
+snapshot, conforme a
+[ADR-030](../decisions/ADR-030-versioned-graph-catalog-publication.md).

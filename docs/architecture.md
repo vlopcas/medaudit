@@ -396,8 +396,9 @@ Uma fronteira posterior separa `GraphCatalogDraft` não confiável do grafo
 executável. A auditoria rejeita defeitos estruturais, encaminha pendências
 semânticas para revisão e só materializa o grafo quando não há achados.
 O holdout dessa fronteira atingiu 8/8. A admissão fica separada de uma futura
-publicação: ainda não há identidade de snapshot, controle de versão ou revisão
-de mudanças destrutivas do grafo.
+publicação. Uma primeira versão agora ordena o conteúdo, encadeia snapshots e
+exige revisão vinculada para remoções ou mutações. A identidade da política de
+relações ainda não integra o snapshot e bloqueia o holdout dessa composição.
 
 ## Decisões relacionadas
 
@@ -430,6 +431,7 @@ de mudanças destrutivas do grafo.
 - [ADR-027: traversal em grafo limitado e revisado](decisions/ADR-027-bounded-reviewed-graph-traversal.md)
 - [ADR-028: gateway de grafo explícito e opt-in](decisions/ADR-028-explicit-opt-in-graph-gateway.md)
 - [ADR-029: admissão fail-closed de catálogo de grafo](decisions/ADR-029-fail-closed-graph-catalog-admission.md)
+- [ADR-030: publicação versionada do catálogo de grafo](decisions/ADR-030-versioned-graph-catalog-publication.md)
 
 ## Ambiente de execução
 

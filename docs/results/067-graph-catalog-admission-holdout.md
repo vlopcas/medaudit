@@ -57,3 +57,7 @@ O próximo gate será uma fronteira de publicação versionada que aceite soment
 catálogos admitidos, produza identidade determinística e exija revisão para
 mudanças destrutivas. Extração automática, banco de grafo e corpus privado
 continuam bloqueados.
+
+A primeira fronteira de publicação foi avaliada no
+[Resultado 068](068-graph-catalog-publication-development.md) e atingiu 10/10.
+Ela ainda precisa vincular a política de relações antes do holdout.

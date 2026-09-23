@@ -332,6 +332,10 @@ Esse holdout atingiu 8/8, incluindo precedência de rejeição sobre revisão,
 colisões ID–alias e múltiplos achados. A admissão está validada no escopo
 sintético. O próximo gate é uma publicação versionada e determinística de
 catálogos admitidos.
+Essa publicação atingiu 10/10 em desenvolvimento: snapshots são encadeados,
+versões são monotônicas e mudanças destrutivas exigem revisão ligada ao snapshot
+anterior. Antes do holdout, a identidade da allowlist de relações ainda precisa
+integrar admissão e publicação.
 
 ## Ambiente de desenvolvimento
 

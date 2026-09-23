@@ -146,7 +146,8 @@ atingiu 8/8 e está encerrado. O próximo gate é governar a admissão de entida
 e relações revisadas antes de qualquer extração ou persistência. Uma primeira
 fronteira fail-closed atingiu 10/10 e seu holdout atingiu 8/8. O próximo gate é
 publicar snapshots determinísticos somente a partir de catálogos admitidos. A
-análise está no
+primeira publicação atingiu 10/10; o próximo gate é incorporar a identidade da
+política de relações ao snapshot antes de congelar um holdout. A análise está no
 [Checkpoint arquitetural 001](architecture-checkpoints/001-phase-9-rules-to-graph.md).
 
 ### 7. Tools, dados estruturados e agentes

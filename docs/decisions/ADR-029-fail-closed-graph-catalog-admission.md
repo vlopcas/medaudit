@@ -42,3 +42,6 @@ O holdout congelado do
 incluindo múltiplos achados e precedência de rejeição sobre revisão. A fronteira
 fica validada no escopo sintético atual; publicação e versionamento permanecem
 separados.
+
+A publicação posterior foi separada na
+[ADR-030](ADR-030-versioned-graph-catalog-publication.md).
